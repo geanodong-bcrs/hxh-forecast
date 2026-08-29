@@ -1,0 +1,88 @@
+{
+  "forecast_timestamp": "2026-08-27",
+  "target": "start of batch 50 (ch 421-430)",
+  "level": "1 \u2014 historical publication data only, no production evidence",
+  "n_observations": 16,
+  "gaps_issues": [
+    79,
+    9,
+    19,
+    50,
+    0,
+    56,
+    0,
+    0,
+    105,
+    80,
+    46,
+    18,
+    22,
+    184,
+    84,
+    73
+  ],
+  "batch49_end_seq": 1428,
+  "batch49_end_on_sale": "2026-09-07",
+  "batch49_end_projected": true,
+  "half_life_grid": [
+    "None",
+    "8",
+    "5",
+    "3"
+  ],
+  "results": {
+    "None": {
+      "ess": 16.0,
+      "p_gap_zero": 0.1875,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 0,
+        "0.25": 12,
+        "0.5": 48,
+        "0.75": 79,
+        "0.9": 104,
+        "0.95": 178
+      }
+    },
+    "8": {
+      "ess": 13.858535648420158,
+      "p_gap_zero": 0.1487348108424722,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 0,
+        "0.25": 18,
+        "0.5": 56,
+        "0.75": 83,
+        "0.9": 115,
+        "0.95": 183
+      }
+    },
+    "5": {
+      "ess": 11.613809678711942,
+      "p_gap_zero": 0.12124363729652493,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 0,
+        "0.25": 21,
+        "0.5": 65,
+        "0.75": 85,
+        "0.9": 174,
+        "0.95": 185
+      }
+    },
+    "3": {
+      "ess": 8.273774123981768,
+      "p_gap_zero": 0.076418038525154,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 10,
+        "0.25": 28,
+        "0.5": 72,
+        "0.75": 87,
+        "0.9": 179,
+        "0.95": 187
+      }
+    }
+  },
+  "note": "Half-life is NOT selected here. Phase 1C picks it by out-of-sample calibration."
+}

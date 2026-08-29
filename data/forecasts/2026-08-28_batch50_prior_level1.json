@@ -1,0 +1,46 @@
+{
+  "forecast_timestamp": "2026-08-28",
+  "target": "start of batch 50 (ch 421-430)",
+  "level": "1 \u2014 historical publication data only, no production evidence",
+  "n_observations": 16,
+  "gaps_issues": [
+    79,
+    9,
+    19,
+    50,
+    0,
+    56,
+    0,
+    0,
+    105,
+    80,
+    46,
+    18,
+    22,
+    184,
+    84,
+    73
+  ],
+  "batch49_end_seq": 1428,
+  "batch49_end_on_sale": "2026-09-07",
+  "batch49_end_projected": true,
+  "half_life_grid": [
+    "None"
+  ],
+  "results": {
+    "None": {
+      "ess": 15.517241379310345,
+      "p_gap_zero": 0.13333333333333333,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 0,
+        "0.25": 24,
+        "0.5": 67,
+        "0.75": 114,
+        "0.9": 161,
+        "0.95": 190
+      }
+    }
+  },
+  "note": "Half-life is NOT selected here. Phase 1C picks it by out-of-sample calibration."
+}

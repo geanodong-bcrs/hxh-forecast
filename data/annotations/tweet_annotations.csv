@@ -1,0 +1,2 @@
+tweet_id,transcribed_text,chapters,stage_raw,annotator,method,confidence,annotated_at,image_archived,notes
+2092902182790341023,"No.429 背景指定書 完成",429,背景指定書完成,claude,vision_model,high,2026-08-27T11:10:00Z,1,"Handwritten in a speech bubble on a yellow 共同印刷 manuscript envelope, with a Killua drawing. Text is large and unambiguous. Same stage vocabulary as the text-bearing 2026-07-03 post for No.428 (背景指定書作成完了)."

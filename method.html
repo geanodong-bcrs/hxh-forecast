@@ -1,0 +1,105 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>How the Hunter × Hunter forecast works</title><meta name=description content="Method and limitations behind the Hunter x Hunter publication forecast."><style>
+:root{--bg:#fff;--fg:#14161a;--mut:#697079;--line:#e4e7ec;--card:#f7f8fa;
+ --accent:#2f6fd0;--band:#2f6fd01f;--ok:#1f7a4d;--pend:#c8901a;--soft:#e9edf3}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e8eaed;--mut:#98a1ac;
+ --line:#272b33;--card:#161920;--accent:#6fa8ff;--band:#6fa8ff26;--ok:#5fd39a;
+ --pend:#e0b44a;--soft:#1d222b}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:840px;margin:0 auto;padding:30px 20px 72px}
+h1{font-size:15px;font-weight:600;margin:0;color:var(--mut);letter-spacing:.01em}
+h2{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--mut);margin:46px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;font-weight:600;margin:20px 0 6px}
+p{margin:10px 0} a{color:var(--accent)}
+.hero{margin:20px 0 4px}
+.hero .ch{font-size:12px;color:var(--mut);letter-spacing:.09em;text-transform:uppercase}
+.hero .date{font-size:46px;font-weight:650;letter-spacing:-.025em;line-height:1.08;margin:6px 0 2px}
+.hero .sub{color:var(--mut)}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;
+ font-weight:600;background:var(--band);color:var(--accent)}
+.pill.plain{background:var(--soft);color:var(--mut)}
+.chart{width:100%;height:auto;display:block;margin:10px 0 2px;overflow:visible}
+.grid{stroke:var(--line);stroke-width:1}
+.grid.yr{stroke:var(--mut);opacity:.4}
+.ax{fill:var(--mut);font-size:11px}
+.ax.yr{font-weight:600}
+.area{fill:var(--band);stroke:none}
+.cdfline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+.band{fill:var(--band)}
+.med{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
+.pt{fill:var(--accent);stroke:var(--bg);stroke-width:1.5}
+.pt.tweet{fill:var(--pend)} .pt.annotation{fill:var(--ok)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.hi td{background:var(--card);font-weight:600}
+tr.sep td{border-top:2px solid var(--line)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.note{color:var(--mut);font-size:13.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+/* span is inline by default, so width/height are ignored without this —
+   which is exactly why the status squares rendered as nothing at all */
+.st{display:inline-block;width:14px;height:14px;border-radius:3px;
+ background:var(--soft);border:1px solid var(--line);vertical-align:middle}
+.st.done{background:var(--ok);border-color:transparent}
+.st.prog{background:var(--pend);border-color:transparent}
+.legend{display:flex;gap:15px;flex-wrap:wrap;color:var(--mut);font-size:12.5px;margin:10px 0}
+.legend span{display:flex;gap:6px;align-items:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;
+ background:var(--soft);border:1px solid var(--line)}
+.tblwrap{overflow-x:auto}
+.strip{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:12px 0}
+@media(max-width:560px){.strip{grid-template-columns:repeat(5,1fr)}}
+.chip{display:flex;align-items:center;justify-content:center;height:38px;
+ border-radius:5px;font-weight:650;font-size:14px;color:#12240f;
+ background:var(--soft);border:1px solid var(--line);cursor:default}
+.chip.delivered{background:#63a844;border-color:transparent;color:#0e2408}
+.chip.spec{background:#5b96d6;border-color:transparent;color:#08182b}
+.chip.drawn{background:#dd8f36;border-color:transparent;color:#2a1704}
+.chip.none{background:#b3453d;border-color:transparent;color:#fff}
+.dot.delivered{background:#63a844;border-color:transparent}
+.dot.spec{background:#5b96d6;border-color:transparent}
+.dot.drawn{background:#dd8f36;border-color:transparent}
+.dot.none{background:#b3453d;border-color:transparent}
+.dot.done{background:var(--ok);border-color:transparent}
+.dot.assumed{background:transparent;border:2px solid var(--ok)}
+.st.assumed{background:transparent;border:2px dashed var(--ok)}
+.jp{font-size:12px;color:var(--mut);font-weight:400}
+th.stg{font-size:10px;line-height:1.25;white-space:nowrap}
+footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);color:var(--mut);font-size:12.5px}
+footer code{font-size:11.5px;word-break:break-all}
+ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
+</style><div class=wrap>
+<h1><a href="index.html">&larr; Forecast</a></h1>
+<div class=hero><div class=date style="font-size:30px">How this works</div>
+<div class=sub>and where it is weakest</div></div>
+<h2>The question</h2>
+<p>Hunter &times; Hunter has not been a weekly series since 2006. It comes out in <strong>runs of about ten chapters</strong>, separated by breaks that have ranged from nothing at all to three and a half years. Within a run, chapters appear one per week almost without exception &mdash; 143 of the last 145 gaps were exactly one issue.</p>
+<p>So there is really only one hard question: <strong>when does the next run start?</strong> Everything else follows from it, which is why the ten-chapter tables are so tightly bunched.</p>
+<h2>The three levels</h2>
+<div class=card><h3>0 &mdash; already announced</h3><p class=note>If Shueisha has named the issue, there is nothing to predict. That chapter is recorded as scheduled and drops out of the model.</p></div>
+<div class=card><h3>1 &mdash; what history alone suggests</h3><p class=note>Built from publication records only, never from Togashi&rsquo;s posts &mdash; otherwise the next step would not be an update. There are 16 gaps between runs since 2007, and they are <em>bimodal</em>: three times the next run began with no wait at all, the rest after waits of 9 to 184 issues. A single smooth curve would describe neither case, so the model uses a mixture.</p></div>
+<div class=card><h3>2 &mdash; what Togashi&rsquo;s posts add</h3><p class=note>Production data covers only 3 past runs. That is far too few to fit a curve to, but enough to ask a different question: <em>if this run behaves like that one, when would it start?</em> Each past run is replayed onto the current production dates.</p><table><tr><th>If it behaves like&hellip;</th><th>&hellip;chapter 421 comes out</th></tr>
+<tr><td>the run starting at chapter 391</td><td>27 Aug 2026</td></tr>
+<tr><td>the run starting at chapter 401</td><td>8 Aug 2026</td></tr>
+<tr><td>the run starting at chapter 411</td><td>25 Jan 2027</td></tr>
+</table><p class=note>Two of the three point at a date that has already passed. That is informative &mdash; it means this run is <em>not</em> behaving like them.</p></div>
+<div class=card><h3>Putting them together</h3><p class=note>Togashi has posted 28 production updates about this run. Those are <strong>not</strong> 28 independent pieces of evidence &mdash; they are one person&rsquo;s working process observed 28 times. Treating them as independent would produce a forecast about a week wide: very impressive, and wrong. So each <em>past run</em> counts once, and the confidence scales with how many comparable runs exist (three), not how many posts there are.</p></div>
+<h2>Where it is weakest</h2>
+<div class=card><h3>The headline number is the least defensible part</h3><p class=note>The 50.6% on 14 Sep 26 comes from a point mass estimated from <strong>two clustered observations from 2010&ndash;2012</strong>. It says there is roughly an even chance the series rolls straight from this run into the next with no break &mdash; which has not actually happened since 2012. It survived every check I ran, and it is still the claim I would least want to defend.</p></div>
+<ol class=caveats>
+<li><strong>The production side has never been scored against a real outcome.</strong> Three comparable runs, and none has started since the method was built. Chapter 421 will be the first genuine test.</li>
+<li><strong>No accuracy figures are published.</strong> Scoring honestly means separating forecasts made <em>before</em> an official announcement from those made after, and that record has not been built yet. Without the split the numbers would measure how early Shueisha announces things, not whether this model knows anything. They are left out rather than estimated.</li>
+<li><strong>The date slides later every week nothing happens.</strong> Once an issue passes without a chapter, that possibility is removed and the rest rescales. This is correct, but it will look like the model changing its mind.</li>
+<li><strong>Chapters 431&ndash;440 rest on history alone.</strong> The only production events reported for them are at the earliest stage, which says nothing about scheduling.</li>
+<li><strong>Where this run ends is assumed, not confirmed.</strong> A post from April 2026 can be read as &ldquo;chapter 420 onward&rdquo;, which would shift everything by ten chapters.</li>
+<li><strong>Both publication sources are secondary.</strong> Nothing has been checked against Shueisha directly.</li>
+</ol>
+<footer>
+<p>Forecast run <code>20260829T022129Z</code>, triggered by <code>manual</code>. Evidence as of <code>2026-08-27T09:08</code>. Snapshot <code>data/forecasts/20260829T022129Z_batch50_posterior.json</code>.</p>
+<p>Every forecast this model has ever made is kept unedited, including the wrong ones. Built from 418 chapters, 490 posts and 497 production events. <a href="index.html">Back to the forecast</a></p>
+</footer></div></html>

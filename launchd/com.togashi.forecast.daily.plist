@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
+  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+  <key>Label</key>
+  <string>com.togashi.forecast.daily</string>
+
+  <!-- The daily rerun: 09:30 local, half an hour after the last poll.
+
+       Deliberately NOT anchored to a Tokyo hour. Daylight saving drifts this
+       against JST by an hour twice a year and that does not matter — the daily
+       run exists to guarantee one snapshot a day, not to land on a Tokyo
+       instant. Nothing in the model is a function of the hour it runs at.
+
+       Placing it right after the 09:00 poll means the last thing that happened
+       before it was a fresh look at X, so the daily snapshot is built on the
+       most recent evidence the night's polling found.
+
+       --daily guarantees the snapshot; the guard in run_update.py keeps it to
+       one a day if launchd replays a run missed while the Mac slept.
+       --no-poll: this run costs nothing at the API. It re-forecasts on evidence
+       already on disk, which is what moves when a chapter ships and the
+       truncation floor advances. -->
+  <key>StartCalendarInterval</key>
+  <array>
+    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>
+  </array>
+
+  <key>ProgramArguments</key>
+  <array>
+    <string>__PYTHON__</string>
+    <string>__REPO__/scripts/run_update.py</string>
+    <string>--no-poll</string>
+    <string>--daily</string>
+  </array>
+
+  <key>WorkingDirectory</key>
+  <string>__REPO__</string>
+
+  <key>EnvironmentVariables</key>
+  <dict>
+    <key>PATH</key>
+    <string>__HOME__/.local/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin</string>
+  </dict>
+
+  <key>StandardOutPath</key>
+  <string>__REPO__/data/automation/launchd.daily.out.log</string>
+  <key>StandardErrorPath</key>
+  <string>__REPO__/data/automation/launchd.daily.err.log</string>
+
+  <key>RunAtLoad</key>
+  <false/>
+  <key>ProcessType</key>
+  <string>Background</string>
+</dict>
+</plist>

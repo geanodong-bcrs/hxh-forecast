@@ -1,0 +1,300 @@
+tweet_id,date,image_type,pages_shown,transcribed_text,chapters,stage_raw,annotator,method,confidence,annotated_at,status,notes,sheet
+1529260655236091904,2022-05-25,unclear,,,,,claude,vision_model,low,2026-08-27T12:00:00Z,proposed,blurred close-up of inked foliage; no page number visible,sheet_001.jpg
+1529663083605397504,2022-05-26,page_log,7,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_001.jpg
+1530022135413952512,2022-05-27,page_log,8,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_001.jpg
+1530401076385525761,2022-05-28,page_log,9,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_001.jpg
+1530748357731225600,2022-05-29,page_log,10,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_001.jpg
+1531112345321078784,2022-05-30,page_log,11,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_001.jpg
+1531471347540295680,2022-05-31,page_log,12,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1531834543920951296,2022-06-01,page_log,13,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1532195450983313408,2022-06-02,page_log,14,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1532558267385188352,2022-06-03,page_log,15 16,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1532920523406995456,2022-06-04,page_log,17 18,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1533283644227260416,2022-06-05,page_log,19,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_002.jpg
+1534007690053099520,2022-06-07,page_log,2,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,page count RESETS -> new chapter,sheet_003.jpg
+1534370156809310210,2022-06-08,page_log,3 4,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_003.jpg
+1534732400604745733,2022-06-09,page_log,5,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_003.jpg
+1535094793100857345,2022-06-10,page_log,6,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_003.jpg
+1535457193008320513,2022-06-11,page_log,7,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_003.jpg
+1535820071188082688,2022-06-12,page_log,8 9,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_003.jpg
+1536181741542526976,2022-06-13,page_log,10,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_004.jpg
+1536544533474791424,2022-06-14,page_log,11,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_004.jpg
+1536906649612750848,2022-06-15,page_log,12 13 14 15,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,four sheets fanned out,sheet_004.jpg
+1537269290688122881,2022-06-16,page_log,16,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_004.jpg
+1537632258311323648,2022-06-17,page_log,17,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_004.jpg
+1537993636297658369,2022-06-18,page_log,18 19,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,chapter ends at p19,sheet_004.jpg
+1538794911759077378,2022-06-20,page_log,3,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,page count RESETS -> new chapter,sheet_005.jpg
+1539081629632630784,2022-06-21,page_log,4,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_005.jpg
+1539443851487694848,2022-06-22,page_log,,,,,claude,vision_model,low,2026-08-27T12:30:00Z,proposed,page number not visible in frame,sheet_005.jpg
+1539806147745484800,2022-06-23,page_log,6,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_005.jpg
+1540177798618263552,2022-06-24,page_log,7,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_005.jpg
+1540530537512611841,2022-06-25,page_log,8,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_005.jpg
+1540895966798028801,2022-06-26,page_log,9,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1541255538029125633,2022-06-27,page_log,10,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1541676030489833472,2022-06-28,page_log,11,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1541980381552922624,2022-06-29,page_log,12,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1542343325021196291,2022-06-30,page_log,13,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1542705613519523840,2022-07-01,page_log,14,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_006.jpg
+1543068288862760960,2022-07-02,page_log,15,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_007.jpg
+1543431031293767680,2022-07-03,page_log,16,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_007.jpg
+1543792686947110912,2022-07-04,page_log,17,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_007.jpg
+1544155535347290113,2022-07-05,page_log,18,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,,sheet_007.jpg
+1544517962953920513,2022-07-06,page_log,19,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,chapter ends at p19,sheet_007.jpg
+1545242707840225281,2022-07-08,page_log,2,,,,claude,vision_model,high,2026-08-27T12:30:00Z,proposed,page count RESETS -> new chapter,sheet_007.jpg
+1545606271935533059,2022-07-09,page_log,3,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1545966491199188993,2022-07-10,page_log,4,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1546329266433826816,2022-07-11,page_log,5,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1546691419129098245,2022-07-12,page_log,6,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1547054032136863744,2022-07-13,page_log,7,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1547423498426978304,2022-07-14,page_log,8,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_008.jpg
+1547778808207380485,2022-07-15,page_log,9,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1548141221406642177,2022-07-16,page_log,10,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1548503498697760768,2022-07-17,page_log,11,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1548865803268734976,2022-07-18,page_log,12,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1549228293349466112,2022-07-19,page_log,13,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1549591364169437184,2022-07-20,page_log,14,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_009.jpg
+1549952765966725120,2022-07-21,page_log,15,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_010.jpg
+1550315226242764802,2022-07-22,page_log,16,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_010.jpg
+1550677625844027392,2022-07-23,page_log,17,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_010.jpg
+1551045024028143616,2022-07-24,page_log,18,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_010.jpg
+1551402850256707586,2022-07-25,page_log,19,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,chapter ends at p19,sheet_010.jpg
+1553257639051546625,2022-07-30,page_log,5,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,RESET; 07-26..29 gap - he switches to chapter-number text posts here,sheet_010.jpg
+1553943032554106882,2022-08-01,page_log,8,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_011.jpg
+1554301262388084736,2022-08-02,page_log,9,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_011.jpg
+1555389385784274946,2022-08-05,page_log,12,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_011.jpg
+1555751795451777026,2022-08-06,page_log,13,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_011.jpg
+1556114159313379328,2022-08-07,page_log,14,,,,claude,vision_model,high,2026-08-27T12:45:00Z,proposed,,sheet_011.jpg
+1556478800333905920,2022-08-08,page_log,15,,,,claude,vision_model,medium,2026-08-27T12:45:00Z,proposed,number on a different form-like sheet,sheet_011.jpg
+1556839262779088896,2022-08-09,page_log,16,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_012.jpg
+1557202514189045760,2022-08-10,page_log,17,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_012.jpg
+1557572968888164352,2022-08-11,page_log,18,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_012.jpg
+1565901913752686592,2022-09-03,page_log,3,,,,claude,vision_model,medium,2026-08-27T13:00:00Z,proposed,number rotated at frame edge,sheet_012.jpg
+1566280525488148480,2022-09-04,page_log,4,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_012.jpg
+1568203247898460161,2022-09-09,page_log,9,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_012.jpg
+1568856569747755009,2022-09-11,page_log,11,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_013.jpg
+1569235741808664576,2022-09-12,page_log,12,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_013.jpg
+1571060822352494592,2022-09-17,page_log,,,,,claude,vision_model,low,2026-08-27T13:00:00Z,proposed,digit ambiguous (reads 21 rotated; 21 implausible for a ~19pp chapter),sheet_013.jpg
+1571408244450684931,2022-09-18,page_log,18,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_013.jpg
+1571722358100234240,2022-09-19,page_log,19,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,chapter ends at p19,sheet_013.jpg
+1572428421187371008,2022-09-21,page_log,2,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,page count RESETS -> new chapter,sheet_013.jpg
+1572812396757852160,2022-09-22,page_log,3,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1573236757432336384,2022-09-23,page_log,4,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1573549188888993792,2022-09-24,page_log,5,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1574001223505567744,2022-09-25,page_log,6,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1574326539394592768,2022-09-26,page_log,7,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1575098686904111104,2022-09-28,page_log,8 9,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_014.jpg
+1576177741103124481,2022-10-01,page_log,10 11 12 13,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_015.jpg
+1579463294104240129,2022-10-10,page_log,3 4 5 6,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,RESET,sheet_015.jpg
+1580904454253002753,2022-10-14,page_log,10,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_015.jpg
+1581202157696475136,2022-10-15,page_log,11,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_015.jpg
+1785895428573319488,2024-05-02,page_log,6 7,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,2024 era begins; multiple pages per post,sheet_015.jpg
+1786271534228951329,2024-05-03,page_log,8 9,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_015.jpg
+1786653489306972278,2024-05-04,page_log,10 11,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_016.jpg
+1786998395732988294,2024-05-05,page_log,12 13 14,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_016.jpg
+1787384568330301456,2024-05-06,page_log,15 16 17,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_016.jpg
+1788466465072640148,2024-05-09,page_log,4 5 6,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,RESET,sheet_016.jpg
+1788817836695331294,2024-05-10,page_log,7 8 9,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_016.jpg
+1789536557353087288,2024-05-12,page_log,13 14 15,,,,claude,vision_model,high,2026-08-27T13:00:00Z,proposed,,sheet_016.jpg
+1790651329960087686,2024-05-15,page_log,4 5 7,,,,claude,vision_model,medium,2026-08-27T13:15:00Z,proposed,p6 likely hidden under the stack,sheet_017.jpg
+1790999903046599157,2024-05-16,page_log,8 9 10,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_017.jpg
+1791354446531695090,2024-05-17,page_log,11 12 13,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_017.jpg
+1792827789370110105,2024-05-21,page_log,4 6,,,,claude,vision_model,medium,2026-08-27T13:15:00Z,proposed,RESET; middle sheet obscured,sheet_017.jpg
+1793190105412153752,2024-05-22,page_log,7 8 9,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_017.jpg
+1793249714126897478,2024-05-22,other,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,box of discs labelled あとで見る系 円盤BOX 2024.1月〜4月 - not production,sheet_017.jpg
+1793552523011469780,2024-05-23,page_log,10 11 12,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_018.jpg
+1793914960952861172,2024-05-24,page_log,13 14 15,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_018.jpg
+1794277256837374185,2024-05-25,page_log,16 17 18,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_018.jpg
+1795015895884193978,2024-05-27,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,"finished inked group illustration, signed",sheet_018.jpg
+1795364445029597344,2024-05-28,page_log,6 7 8,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,RESET,sheet_018.jpg
+1795726834904289495,2024-05-29,page_log,9 10 11,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_018.jpg
+1795737253144379689,2024-05-29,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Jump-mascot astronaut,sheet_019.jpg
+1796089191438447033,2024-05-30,page_log,12 13 14,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_019.jpg
+1796126794719895863,2024-05-30,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Gon,sheet_019.jpg
+1796452021056545038,2024-05-31,page_log,15 16 17,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_019.jpg
+1796517064666137032,2024-05-31,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Gon + mascot,sheet_019.jpg
+1796824355005206711,2024-06-01,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Gon with staff,sheet_019.jpg
+1797197820585497053,2024-06-02,page_log,2 3,,,,claude,vision_model,medium,2026-08-27T12:00:00Z,proposed,third sheet partly obscured,sheet_020.jpg
+1797235656940540335,2024-06-02,artwork,,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,colour illustration beside the 2008 WSJ #14 revival cover,sheet_020.jpg
+1797538778439090611,2024-06-03,page_log,5 6 7,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_020.jpg
+1797558564116165098,2024-06-03,artwork,,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,colour Killua beside the same WSJ cover,sheet_020.jpg
+1797901236098023911,2024-06-04,page_log,8 9 10,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_020.jpg
+1797930703407263899,2024-06-04,artwork,,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,"colour illustration, cat-like character",sheet_020.jpg
+1798263559031501158,2024-06-05,page_log,11 12 13,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_021.jpg
+1798281414670250400,2024-06-05,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,"colour painting, Biscuit and others",sheet_021.jpg
+1798626376557498622,2024-06-06,page_log,14 15 16,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_021.jpg
+1798661926345637997,2024-06-06,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Gon/Killua/Biscuit,sheet_021.jpg
+1798988560256864617,2024-06-07,page_log,17 18 19,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,chapter ends at p19,sheet_021.jpg
+1799350843986350568,2024-06-08,page_log,1 2 3,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,"RESET - includes p1, unusual",sheet_021.jpg
+1799770247752503341,2024-06-09,page_log,4 5 6,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_022.jpg
+1800075528600428979,2024-06-10,page_log,7 8 9,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_022.jpg
+1800497805502620009,2024-06-11,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour Killua,sheet_022.jpg
+1800800295573971089,2024-06-12,page_log,13 14 15,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_022.jpg
+1800837214533996652,2024-06-12,artwork,,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,colour chibi with fish,sheet_022.jpg
+1801162627944722613,2024-06-13,page_log,16 17 18,,,,claude,vision_model,high,2026-08-27T13:15:00Z,proposed,,sheet_022.jpg
+1801239618127647228,2024-06-13,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour portrait,sheet_023.jpg
+1802612319396168016,2024-06-17,page_log,3 4 5,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,RESET,sheet_023.jpg
+1802665606199803994,2024-06-17,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon,sheet_023.jpg
+1802985026558320957,2024-06-18,page_log,6,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_023.jpg
+1803337143743664338,2024-06-19,page_log,7 8 9,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_023.jpg
+1803394314233663704,2024-06-19,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,two colour Gon cuts,sheet_023.jpg
+1803699785347768718,2024-06-20,page_log,10 11 12,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_024.jpg
+1803755471377219814,2024-06-20,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour chibi cuts,sheet_024.jpg
+1804061999074284017,2024-06-21,page_log,13 14,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_024.jpg
+1804110838887850221,2024-06-21,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,four marker portraits,sheet_024.jpg
+1804424248049700901,2024-06-22,page_log,15 16 17,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_024.jpg
+1804449791382020492,2024-06-22,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,"colour Gon on skateboard, vol.36",sheet_024.jpg
+1805149366791049565,2024-06-24,page_log,2 3 4,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,RESET,sheet_025.jpg
+1805517941452292310,2024-06-25,page_log,5 6 7,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_025.jpg
+1805557906429165596,2024-06-25,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon face,sheet_025.jpg
+1805873828775817614,2024-06-26,page_log,8 9 10,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_025.jpg
+1805941576918819074,2024-06-26,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon with can,sheet_025.jpg
+1806236277743976470,2024-06-27,page_log,11 12 13,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_025.jpg
+1806282788271952085,2024-06-27,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon cutout,sheet_026.jpg
+1806598842818970067,2024-06-28,page_log,14 15 16,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_026.jpg
+1806670555355189615,2024-06-28,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon jumping,sheet_026.jpg
+1807352100143473112,2024-06-30,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,"archival YuYu Hakusho WSJ cover art, 11月19日号",sheet_026.jpg
+1807686257998438618,2024-07-01,page_log,4 5 6,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,RESET,sheet_026.jpg
+1808101122328219828,2024-07-02,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,archival YuYu Hakusho No.13 表紙カット,sheet_026.jpg
+1808412582673543479,2024-07-03,page_log,8 9,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_027.jpg
+1808470754931171460,2024-07-03,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour Gon riding a lizard,sheet_027.jpg
+1808824172191363436,2024-07-04,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,"ink drawing, witch figure",sheet_027.jpg
+1809146020481372306,2024-07-05,page_log,11,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,,sheet_027.jpg
+1809200403084677200,2024-07-05,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,colour beach illustration,sheet_027.jpg
+1809551429457310084,2024-07-06,artwork,,,,,claude,vision_model,high,2026-08-27T13:30:00Z,proposed,archival YuYu Hakusho cut,sheet_027.jpg
+1809902608343286011,2024-07-07,page_log,13,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_028.jpg
+1809919979640483905,2024-07-07,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,birthday illustration dated 2024.7.7,sheet_028.jpg
+1810270404361195758,2024-07-08,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,archival YuYu Hakusho カットD,sheet_028.jpg
+1810586451555287478,2024-07-09,page_log,16 17,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_028.jpg
+1810635015652610210,2024-07-09,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,"colour Gon, calendar cut",sheet_028.jpg
+1810947358655705229,2024-07-10,page_log,18 19,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,chapter ends at p19,sheet_028.jpg
+1810995321079472380,2024-07-10,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,"watercolour, birthday present piece",sheet_029.jpg
+1811402349354856520,2024-07-11,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,archival YuYu Hakusho cuts B/C,sheet_029.jpg
+1811672073313607994,2024-07-12,page_log,3 5,,,,claude,vision_model,medium,2026-08-27T13:45:00Z,proposed,RESET; a third sheet is partly hidden,sheet_029.jpg
+1811723086066323863,2024-07-12,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Killua,sheet_029.jpg
+1812039691157324227,2024-07-13,page_log,6 7 8,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_029.jpg
+1812094156149494211,2024-07-13,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Kurapika and Gon,sheet_029.jpg
+1812419869390029241,2024-07-14,page_log,9 10 11,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_030.jpg
+1812421516320977273,2024-07-14,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,archival colour cuts,sheet_030.jpg
+1812759219067818266,2024-07-15,page_log,12 13,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_030.jpg
+1812815567503647036,2024-07-15,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Leorio,sheet_030.jpg
+1813121614911009153,2024-07-16,page_log,14 15,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_030.jpg
+1813159799070335298,2024-07-16,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Gon,sheet_030.jpg
+1813485171863351313,2024-07-17,page_log,16 17,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_031.jpg
+1813543475453075530,2024-07-17,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Killua,sheet_031.jpg
+1813899259953172729,2024-07-18,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,inked group illustration,sheet_031.jpg
+1814274778473373700,2024-07-19,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,"archival colour piece, オカルト特捜団",sheet_031.jpg
+1814572154119463163,2024-07-20,page_log,3,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,RESET,sheet_031.jpg
+1814619700581834851,2024-07-20,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,archival YuYu Hakusho colour cuts,sheet_031.jpg
+1814934744771272834,2024-07-21,page_log,4,,,,claude,vision_model,medium,2026-08-27T13:45:00Z,proposed,a second sheet is stacked but obscured,sheet_032.jpg
+1815296394288357729,2024-07-22,page_log,5,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_032.jpg
+1815665065259114815,2024-07-23,page_log,6 7,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_032.jpg
+1816102624497725593,2024-07-24,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,green-toned figure painting,sheet_032.jpg
+1816383027968405535,2024-07-25,page_log,9,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,,sheet_032.jpg
+1816443366999285898,2024-07-25,artwork,,,,,claude,vision_model,high,2026-08-27T13:45:00Z,proposed,colour Gon and Killua,sheet_032.jpg
+1816745938922405924,2024-07-26,page_log,10 11,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_033.jpg
+1817170859867652406,2024-07-27,artwork,,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,airbrush-style colour group piece,sheet_033.jpg
+1817474591658586607,2024-07-28,page_log,13,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_033.jpg
+1817534075084865875,2024-07-28,artwork,,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,archival YuYu Hakusho colour カットC,sheet_033.jpg
+1817833700547273164,2024-07-29,page_log,14 15,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_033.jpg
+1818196050169217461,2024-07-30,page_log,16 17,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_033.jpg
+1818263260392808635,2024-07-30,artwork,,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,archival YuYu Hakusho cuts 68-71,sheet_034.jpg
+1818610833964056593,2024-07-31,artwork,,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,colour Gon with stick,sheet_034.jpg
+1819282115009380402,2024-08-02,page_log,2,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,RESET,sheet_034.jpg
+1819645880905224671,2024-08-03,page_log,3,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_034.jpg
+1820007259818352688,2024-08-04,page_log,4,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_034.jpg
+1820380125768331689,2024-08-05,page_log,5 6,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_034.jpg
+1820754308746600934,2024-08-06,page_log,7 8,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1821094894129307742,2024-08-07,page_log,9 10,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1821474816077254935,2024-08-08,page_log,11,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1821819211624391128,2024-08-09,page_log,12,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1822190708452893045,2024-08-10,page_log,13,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1822565040462942210,2024-08-11,page_log,14,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_035.jpg
+1823271123489812566,2024-08-13,page_log,16,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_036.jpg
+1823645373308535190,2024-08-14,page_log,17,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_036.jpg
+1823994863806828636,2024-08-15,page_log,18,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_036.jpg
+1825081134868283791,2024-08-18,page_log,2,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,RESET,sheet_036.jpg
+1825492550997934220,2024-08-19,page_log,3 4,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_036.jpg
+1825809560046809595,2024-08-20,page_log,5 6,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_036.jpg
+1826169801531863275,2024-08-21,page_log,7,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1826540225738539468,2024-08-22,page_log,8,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1826892826421989629,2024-08-23,page_log,9,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1827297359690395824,2024-08-24,page_log,10,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1827619471848304826,2024-08-25,page_log,11,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1827981905326977056,2024-08-26,page_log,12,,,,claude,vision_model,high,2026-08-27T14:00:00Z,proposed,,sheet_037.jpg
+1828342600266649952,2024-08-27,page_log,13,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,blue ink spill on the desk,sheet_038.jpg
+1831648845610283430,2024-09-05,page_log,15,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_038.jpg
+1831980618533732490,2024-09-06,page_log,16 17,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_038.jpg
+1832380555985646004,2024-09-07,page_log,18,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_038.jpg
+1833426874980306991,2024-09-10,page_log,2,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,RESET,sheet_038.jpg
+1834174699338858589,2024-09-12,page_log,4,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,pencil figure sketch on the sheet,sheet_038.jpg
+1834532700780429764,2024-09-13,page_log,5,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1834886992758555072,2024-09-14,page_log,6,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1835237596362060120,2024-09-15,page_log,7,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1835590695081427080,2024-09-16,page_log,8 9,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1836344533979926813,2024-09-18,page_log,12,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1836677429173325882,2024-09-19,page_log,13 14,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_039.jpg
+1838851210801246321,2024-09-25,page_log,6 7 8,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_040.jpg
+1839217283606131150,2024-09-26,page_log,9 10 11,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_040.jpg
+1839602562120712194,2024-09-27,page_log,12 13 14,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_040.jpg
+1839938838791368773,2024-09-28,page_log,15 16 17,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_040.jpg
+1841074277870944293,2024-10-01,page_log,3 4,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,page count RESETS -> new chapter,sheet_040.jpg
+1841427298068930625,2024-10-02,page_log,5 6,,,,claude,vision_model,high,2026-08-27T12:00:00Z,proposed,,sheet_040.jpg
+1841771494793216024,2024-10-03,page_log,7 8,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1842182988823699493,2024-10-04,page_log,9 10,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1842526216286572951,2024-10-05,page_log,11,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1842846392790000107,2024-10-06,page_log,12 13,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1843201422437028274,2024-10-07,page_log,14 15,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1843568558225404363,2024-10-08,page_log,16 17,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_041.jpg
+1844302318327759090,2024-10-10,page_log,1 2,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_042.jpg
+1844660092039569635,2024-10-11,page_log,3 4,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_042.jpg
+1845098019890586057,2024-10-12,page_log,5 6,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_042.jpg
+1845749854292840874,2024-10-14,page_log,9 10,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,,sheet_new.jpg
+1846118283449446869,2024-10-15,page_log,11 12,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,,sheet_new.jpg
+1846466366150529357,2024-10-16,page_log,13 14,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,,sheet_new.jpg
+1846836490732818622,2024-10-17,page_log,15 16,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,,sheet_new.jpg
+1847277399219802336,2024-10-18,page_log,17 18,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,,sheet_new.jpg
+1847921641529225252,2024-10-20,page_log,2 3,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,page count RESETS -> new chapter,sheet_new.jpg
+1848276953876631635,2024-10-21,page_log,4 5,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,RESET,sheet_042.jpg
+1849027649039188449,2024-10-23,page_log,8 9,,,,claude,vision_model,medium,2026-08-27T14:15:00Z,proposed,partly covered by a plush toy,sheet_042.jpg
+1849380852440215626,2024-10-24,page_log,10 11,,,,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,Shueisha envelope on the desk,sheet_new.jpg
+1849740459159191597,2024-10-25,page_log,12 13,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,pencil Gon sketch resting on the stack,sheet_042.jpg
+1850136722241425490,2024-10-26,page_log,14 15,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_043.jpg
+1850465656988475814,2024-10-27,page_log,16 17,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_043.jpg
+1851536123706941636,2024-10-30,page_log,3 4,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,RESET,sheet_043.jpg
+1851926903923577299,2024-10-31,page_log,5 6,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_043.jpg
+1852330736583692500,2024-11-01,page_log,7 8,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_043.jpg
+1852646493074702518,2024-11-02,page_log,9 10,,,,claude,vision_model,high,2026-08-27T14:15:00Z,proposed,,sheet_043.jpg
+1853010843467960685,2024-11-03,page_log,11 12,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,group illustration resting on the stack,sheet_044.jpg
+1853392073246011796,2024-11-04,page_log,13 14,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_044.jpg
+1853779871308411363,2024-11-05,page_log,15 16,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_044.jpg
+1975659435868758215,2025-10-07,milestone_text,,No.414 台詞入れ 完了!,414,台詞入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,2025-10 era: milestone written on the sheet,sheet_044.jpg
+1975887096029348124,2025-10-08,milestone_text,,No.415 台詞入れ 完了,415,台詞入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_044.jpg
+1976303383805092095,2025-10-09,milestone_text,,No.417 台詞入れ 完了,417,台詞入れ完了,claude,vision_model,medium,2026-08-27T14:30:00Z,proposed,reads 417; sequence would suggest 416 - verify,sheet_044.jpg
+1976212321283485898,2025-10-09,milestone_text,,No.416 台詞入れ 完了!,416,台詞入れ完了,claude,vision_model,medium,2026-08-27T18:00:00Z,proposed,small handwriting in a bubble beside a pencil portrait; second post that day,sheet_new.jpg
+1976594157939638610,2025-10-10,milestone_text,,No.418 台詞入れ 完了!,418,台詞入れ完了,claude,vision_model,medium,2026-08-27T14:30:00Z,proposed,"digits read as ""48""; 418 inferred from sequence",sheet_045.jpg
+1977033686664331359,2025-10-11,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,420,台詞入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,ALSO states specifications for 10 chapters are complete,sheet_045.jpg
+1978401791663390746,2025-10-15,page_log,2,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_045.jpg
+1978697089862271029,2025-10-16,page_log,3,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_045.jpg
+1979061149418057774,2025-10-17,page_log,4,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_045.jpg
+1979771078940762586,2025-10-19,page_log,5,,,,claude,vision_model,medium,2026-08-27T14:30:00Z,proposed,a second sheet partly hidden,sheet_045.jpg
+1981366885301309657,2025-10-23,page_log,6,,,,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_046.jpg
+1987834494318162019,2025-11-10,milestone_text,,No.426 ペン入れ 開始!,426,ペン入れ開始,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,"start event, not a completion",sheet_046.jpg
+2000981302913458294,2025-12-16,milestone_text,,No.426 人物ペン入れ 完了,426,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_046.jpg
+2004867336483078549,2025-12-27,milestone_text,,No.412 原稿完成,412,原稿完成,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_046.jpg
+2011143493742387642,2026-01-13,milestone_text,,No.413 原稿完成,413,原稿完成,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_046.jpg
+2011145474154381687,2026-01-13,unclear,,,,,claude,vision_model,low,2026-08-27T18:00:00Z,proposed,"monthly schedule board, two date cells scribbled out, no readable chapter",sheet_new.jpg
+2011305545647735170,2026-01-14,milestone_text,,No.414 原稿完成!,414,原稿完成,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,written on a chocolate carton,sheet_046.jpg
+2013553432829813035,2026-01-20,milestone_text,,No.415 原稿完成,415,原稿完成,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_047.jpg
+2014782311775236214,2026-01-23,milestone_text,,No.416 原稿完成,416,原稿完成,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_047.jpg
+2014789100658950178,2026-01-23,milestone_text,,No.427 人物ペン入れ完了。,427,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,written on a Shueisha envelope; numbered page stack beneath,sheet_047.jpg
+2015898522009403793,2026-01-26,milestone_text,,No.421 背景指定書 作成完了,421,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_047.jpg
+2016302995970076779,2026-01-28,milestone_text,,No.421 表紙用カラーと台詞入れ完了,421,台詞入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,also cover colour complete,sheet_047.jpg
+2019278910136193215,2026-02-05,milestone_text,,No.417 原稿完成,417,原稿完成,claude,vision_model,high,2026-08-27T18:00:00Z,proposed,fills the gap: ch417 had no manuscript_complete event before this,sheet_new.jpg
+2023496133910425796,2026-02-16,milestone_text,,No.428 人物ペン入れ 完了,428,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_047.jpg
+2029207167656706336,2026-03-04,milestone_text,,No.422 台詞と背景指定書 作成完了,422,台詞入れ完了;背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,two stages in one post,sheet_048.jpg
+2030043233129226406,2026-03-06,milestone_text,,No.423 背景指定 完成,423,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_048.jpg
+2032117895745192356,2026-03-12,milestone_text,,No.425 背景指定書作成 完了…,425,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_048.jpg
+2033276639208153570,2026-03-15,milestone_text,,No.427 背景指定書 完了,427,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_048.jpg
+2033764977727967457,2026-03-17,milestone_text,,No.429 人物ペン入れ完了…,429,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_048.jpg
+2084155567363539307,2026-08-03,milestone_text,,No.433 人物ペン入れ完了。,433,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,photographed against roses,sheet_048.jpg
+2092902182790341023,2026-08-27,milestone_text,,No.429 背景指定書 完成,429,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,"user-supplied tweet, 2026-08-27",sheet_049.jpg

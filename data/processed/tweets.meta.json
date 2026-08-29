@@ -1,0 +1,18 @@
+{
+  "built_utc": "2026-08-28T19:54:59.838883+00:00",
+  "handle": "Un4v5s8bgsVk9Xp",
+  "row_count": 492,
+  "by_togashi": 490,
+  "span": [
+    "2022-05-24",
+    "2026-08-27"
+  ],
+  "with_text": 191,
+  "image_only": 299,
+  "image_only_pct": 61.0,
+  "mentioning_chapter_number": 120,
+  "active_months": 30,
+  "discovery": "Wayback CDX enumeration of status URLs",
+  "hydration": "cdn.syndication.twimg.com (unauthenticated)",
+  "completeness": "UNKNOWN - discovery is limited to tweets the Wayback Machine captured. Deleted tweets and never-archived tweets are invisible. Treat counts as a lower bound."
+}

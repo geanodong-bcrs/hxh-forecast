@@ -1,0 +1,63 @@
+{
+  "run_id": "20260829T012912Z",
+  "written_utc": "2026-08-29T01:29:14.132817+00:00",
+  "trigger": "manual",
+  "trigger_detail": "",
+  "annotation_status": "confirmed",
+  "evidence_asof": "2026-08-27T09:08:59.000Z",
+  "batch": 50,
+  "input_sha256": {
+    "chapters": "ec9c741f809910ad51675f7d9bbbb084c4bca5d233d2139bbc3a500dfd02f7dc",
+    "wsj_issues": "8830b98c830cce507015d3290f92da1e0bc6f0199b72ac48f58fcae1055aff09",
+    "production_events": "0492be4d291b19b1c54e8e48d0847d4f027c68395c7ff2bd71638a129d0b6ee6",
+    "production_intervals": "3399e1492a3b2dd7e3aa4fa54dd10465fdac262e32c6529fd5a1b4dd5f3d6a8c",
+    "tweets": "35f8b914757d3e06841edfd0bc4f6cf57463350a318b0c3b2bfe6f28e5c8603f",
+    "image_annotations_confirmed": "3ace2ec84fcce8e11fe9c0c61d3835068be6b0a09df0fb87c05194ff031fe997",
+    "announcements": "eea30cf1bb12c3fda29771c3f4ceb3800cc8970ea5becd8e81f7bf0c0e2266c4"
+  },
+  "forecast_timestamp": "2026-08-28",
+  "target": "start of batch 50 (ch 421-430)",
+  "level": "1 — historical publication data only, no production evidence",
+  "n_observations": 16,
+  "gaps_issues": [
+    79,
+    9,
+    19,
+    50,
+    0,
+    56,
+    0,
+    0,
+    105,
+    80,
+    46,
+    18,
+    22,
+    184,
+    84,
+    73
+  ],
+  "batch_end_seq": 1428,
+  "batch_end_on_sale": "2026-09-07",
+  "batch_end_projected": true,
+  "n_announced_ahead": 2,
+  "half_life_grid": [
+    "None"
+  ],
+  "results": {
+    "None": {
+      "ess": 15.517241379310345,
+      "p_gap_zero": 0.13333333333333333,
+      "quantiles_issues": {
+        "0.05": 0,
+        "0.1": 0,
+        "0.25": 24,
+        "0.5": 67,
+        "0.75": 114,
+        "0.9": 161,
+        "0.95": 190
+      }
+    }
+  },
+  "note": "Half-life is NOT selected here. Phase 1C picks it by out-of-sample calibration."
+}

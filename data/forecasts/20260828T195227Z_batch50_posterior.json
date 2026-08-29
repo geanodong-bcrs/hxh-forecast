@@ -1,0 +1,179 @@
+{
+  "run_id": "20260828T195227Z",
+  "written_utc": "2026-08-28T19:52:28.517677+00:00",
+  "trigger": "manual",
+  "trigger_detail": "",
+  "annotation_status": "confirmed",
+  "evidence_asof": "2026-08-27T09:08:59.000Z",
+  "batch": 50,
+  "input_sha256": {
+    "chapters": "ec9c741f809910ad51675f7d9bbbb084c4bca5d233d2139bbc3a500dfd02f7dc",
+    "wsj_issues": "8830b98c830cce507015d3290f92da1e0bc6f0199b72ac48f58fcae1055aff09",
+    "production_events": "0492be4d291b19b1c54e8e48d0847d4f027c68395c7ff2bd71638a129d0b6ee6",
+    "production_intervals": "3399e1492a3b2dd7e3aa4fa54dd10465fdac262e32c6529fd5a1b4dd5f3d6a8c",
+    "tweets": "622735027a1b9eb9ac813188bd118fe0d3f990b034313e079a1665929bfa931b",
+    "image_annotations_confirmed": "3bde0af70bbcd991ee8d7c6b71cc958d18697573552dbe8f12e7abbd0cfe3dd1",
+    "announcements": "eea30cf1bb12c3fda29771c3f4ceb3800cc8970ea5becd8e81f7bf0c0e2266c4"
+  },
+  "forecast_timestamp": "2026-08-28",
+  "target": "W_50 — publication of ch 421",
+  "level": "1+2 combined posterior",
+  "half_life_batches": null,
+  "analogs": [
+    47,
+    48,
+    49
+  ],
+  "n_events_current_batch": 28,
+  "implied_by_analog": {
+    "47": "2026-08-27",
+    "48": "2026-08-08",
+    "49": "2027-01-25"
+  },
+  "truncation_floor": "2026-09-14",
+  "median": "2026-09-14",
+  "intervals": {
+    "50": [
+      "2026-09-14",
+      "2027-01-15"
+    ],
+    "80": [
+      "2026-09-14",
+      "2027-05-21"
+    ],
+    "90": [
+      "2026-09-14",
+      "2027-07-23"
+    ]
+  },
+  "p_started_by": {
+    "2026-12-31": 0.7204,
+    "2027-03-31": 0.8487,
+    "2027-06-30": 0.9316,
+    "2027-12-31": 0.9951,
+    "2028-12-31": 1.0
+  },
+  "ten_chapter_forecast": [
+    {
+      "chapter": 421,
+      "median": "2026-09-14",
+      "i50": [
+        "2026-09-14",
+        "2027-01-15"
+      ],
+      "i80": [
+        "2026-09-14",
+        "2027-05-21"
+      ]
+    },
+    {
+      "chapter": 422,
+      "median": "2026-09-28",
+      "i50": [
+        "2026-09-21",
+        "2027-01-22"
+      ],
+      "i80": [
+        "2026-09-21",
+        "2027-05-28"
+      ]
+    },
+    {
+      "chapter": 423,
+      "median": "2026-10-05",
+      "i50": [
+        "2026-09-28",
+        "2027-01-29"
+      ],
+      "i80": [
+        "2026-09-28",
+        "2027-06-04"
+      ]
+    },
+    {
+      "chapter": 424,
+      "median": "2026-10-12",
+      "i50": [
+        "2026-10-05",
+        "2027-02-05"
+      ],
+      "i80": [
+        "2026-10-05",
+        "2027-06-11"
+      ]
+    },
+    {
+      "chapter": 425,
+      "median": "2026-10-19",
+      "i50": [
+        "2026-10-12",
+        "2027-02-12"
+      ],
+      "i80": [
+        "2026-10-12",
+        "2027-06-18"
+      ]
+    },
+    {
+      "chapter": 426,
+      "median": "2026-10-26",
+      "i50": [
+        "2026-10-19",
+        "2027-02-19"
+      ],
+      "i80": [
+        "2026-10-19",
+        "2027-06-25"
+      ]
+    },
+    {
+      "chapter": 427,
+      "median": "2026-11-02",
+      "i50": [
+        "2026-10-26",
+        "2027-02-26"
+      ],
+      "i80": [
+        "2026-10-26",
+        "2027-07-02"
+      ]
+    },
+    {
+      "chapter": 428,
+      "median": "2026-11-09",
+      "i50": [
+        "2026-11-02",
+        "2027-03-05"
+      ],
+      "i80": [
+        "2026-11-02",
+        "2027-07-09"
+      ]
+    },
+    {
+      "chapter": 429,
+      "median": "2026-11-16",
+      "i50": [
+        "2026-11-09",
+        "2027-03-12"
+      ],
+      "i80": [
+        "2026-11-09",
+        "2027-07-16"
+      ]
+    },
+    {
+      "chapter": 430,
+      "median": "2026-11-23",
+      "i50": [
+        "2026-11-16",
+        "2027-03-19"
+      ],
+      "i80": [
+        "2026-11-16",
+        "2027-07-23"
+      ]
+    }
+  ],
+  "correlation_note": "Each analog contributes ONE likelihood factor. The 28 observed production events are one correlated process (§11); treating them as independent would badly over-sharpen the posterior."
+}

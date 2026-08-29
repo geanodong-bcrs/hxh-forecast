@@ -1,0 +1,300 @@
+tweet_id,date,priority,my_image_type,my_pages,my_text,my_confidence,my_note,verdict,fix_image_type,fix_pages,fix_text,reviewer_note,image,url
+1529260655236091904,2022-05-25,CHECK,unclear,,,low,blurred close-up of inked foliage; no page number visible,Fix,page_log,,,Ch 397 p. 6 artwork,review/thumbs/1529260655236091904.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1529260655236091904
+1529663083605397504,2022-05-26,,page_log,7,,high,,OK,,,,,review/thumbs/1529663083605397504.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1529663083605397504
+1530022135413952512,2022-05-27,,page_log,8,,high,,OK,,,,Ch 397 p. 8 sketch,review/thumbs/1530022135413952512.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1530022135413952512
+1530401076385525761,2022-05-28,,page_log,9,,high,,OK,,,,Ch 397 p. 9 sketch,review/thumbs/1530401076385525761.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1530401076385525761
+1530748357731225600,2022-05-29,,page_log,10,,high,,OK,,,,Ch 397 p. 10 sketch,review/thumbs/1530748357731225600.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1530748357731225600
+1531112345321078784,2022-05-30,,page_log,11,,high,,OK,,,,Ch 397 p. 11 sketch,review/thumbs/1531112345321078784.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1531112345321078784
+1531471347540295680,2022-05-31,,page_log,12,,high,,OK,,,,Ch 397 p. 12 sketch,review/thumbs/1531471347540295680.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1531471347540295680
+1531834543920951296,2022-06-01,,page_log,13,,high,,OK,,,,Ch 397 p. 13 sketch,review/thumbs/1531834543920951296.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1531834543920951296
+1532195450983313408,2022-06-02,,page_log,14,,high,,OK,,,,Ch 397 p. 14 sketch,review/thumbs/1532195450983313408.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1532195450983313408
+1532558267385188352,2022-06-03,,page_log,15 16,,high,,OK,,,,Ch 397 p. 15 16 sketch,review/thumbs/1532558267385188352.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1532558267385188352
+1532920523406995456,2022-06-04,,page_log,17 18,,high,,OK,,,,Ch 397 p. 17 18 sketch,review/thumbs/1532920523406995456.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1532920523406995456
+1533283644227260416,2022-06-05,,page_log,19,,high,,OK,,,,Ch 397 p. 19 sketch,review/thumbs/1533283644227260416.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1533283644227260416
+1534007690053099520,2022-06-07,,page_log,2,,high,page count RESETS -> new chapter,OK,,,,Ch 398 p. 2 sketch,review/thumbs/1534007690053099520.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1534007690053099520
+1534370156809310210,2022-06-08,,page_log,3 4,,high,,OK,,,,,review/thumbs/1534370156809310210.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1534370156809310210
+1534732400604745733,2022-06-09,,page_log,5,,high,,OK,,,,Ch 398 p. 5 sketch,review/thumbs/1534732400604745733.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1534732400604745733
+1535094793100857345,2022-06-10,,page_log,6,,high,,OK,,,,,review/thumbs/1535094793100857345.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1535094793100857345
+1535457193008320513,2022-06-11,,page_log,7,,high,,OK,,,,Ch 398 p. 7 sketch,review/thumbs/1535457193008320513.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1535457193008320513
+1535820071188082688,2022-06-12,,page_log,8 9,,high,,OK,,,,Ch 398 p. 9 sketch,review/thumbs/1535820071188082688.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1535820071188082688
+1536181741542526976,2022-06-13,,page_log,10,,high,,OK,,,,,review/thumbs/1536181741542526976.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1536181741542526976
+1536544533474791424,2022-06-14,,page_log,11,,high,,OK,,,,Ch 398 p. 11 sketch,review/thumbs/1536544533474791424.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1536544533474791424
+1536906649612750848,2022-06-15,,page_log,12 13 14 15,,high,four sheets fanned out,OK,,,,,review/thumbs/1536906649612750848.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1536906649612750848
+1537269290688122881,2022-06-16,,page_log,16,,high,,OK,,,,,review/thumbs/1537269290688122881.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1537269290688122881
+1537632258311323648,2022-06-17,,page_log,17,,high,,OK,,,,Ch 398 p. 17 sketch,review/thumbs/1537632258311323648.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1537632258311323648
+1537993636297658369,2022-06-18,,page_log,18 19,,high,chapter ends at p19,OK,,,,,review/thumbs/1537993636297658369.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1537993636297658369
+1538794911759077378,2022-06-20,,page_log,3,,high,page count RESETS -> new chapter,OK,,,,,review/thumbs/1538794911759077378.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1538794911759077378
+1539081629632630784,2022-06-21,,page_log,4,,high,,OK,,,,,review/thumbs/1539081629632630784.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1539081629632630784
+1539443851487694848,2022-06-22,CHECK,page_log,,,low,page number not visible in frame,Fix,,5,,"Page number is 5, visible but in a special font",review/thumbs/1539443851487694848.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1539443851487694848
+1539806147745484800,2022-06-23,,page_log,6,,high,,OK,,,,,review/thumbs/1539806147745484800.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1539806147745484800
+1540177798618263552,2022-06-24,,page_log,7,,high,,OK,,,,,review/thumbs/1540177798618263552.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1540177798618263552
+1540530537512611841,2022-06-25,,page_log,8,,high,,OK,,,,,review/thumbs/1540530537512611841.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1540530537512611841
+1540895966798028801,2022-06-26,,page_log,9,,high,,OK,,,,Ch 399 p.9 sketch,review/thumbs/1540895966798028801.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1540895966798028801
+1541255538029125633,2022-06-27,,page_log,10,,high,,OK,,,,Ch 399 p.10 sketch,review/thumbs/1541255538029125633.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1541255538029125633
+1541676030489833472,2022-06-28,,page_log,11,,high,,OK,,,,Ch 399 p.11 sketch,review/thumbs/1541676030489833472.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1541676030489833472
+1541980381552922624,2022-06-29,,page_log,12,,high,,OK,,,,Ch 399 p.12 sketch,review/thumbs/1541980381552922624.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1541980381552922624
+1542343325021196291,2022-06-30,,page_log,13,,high,,OK,,,,Ch 399 p.13 sketch,review/thumbs/1542343325021196291.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1542343325021196291
+1542705613519523840,2022-07-01,,page_log,14,,high,,OK,,,,Ch 399 p.14 sketch,review/thumbs/1542705613519523840.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1542705613519523840
+1543068288862760960,2022-07-02,,page_log,15,,high,,OK,,,,Ch 399 p.15 sketch,review/thumbs/1543068288862760960.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1543068288862760960
+1543431031293767680,2022-07-03,,page_log,16,,high,,OK,,,,Ch 399 p.16 sketch,review/thumbs/1543431031293767680.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1543431031293767680
+1543792686947110912,2022-07-04,,page_log,17,,high,,OK,,,,Ch 399 p.17 sketch,review/thumbs/1543792686947110912.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1543792686947110912
+1544155535347290113,2022-07-05,,page_log,18,,high,,OK,,,,Ch 399 p.18 sketch,review/thumbs/1544155535347290113.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1544155535347290113
+1544517962953920513,2022-07-06,,page_log,19,,high,chapter ends at p19,OK,,,,Ch 399 p.19 sketch,review/thumbs/1544517962953920513.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1544517962953920513
+1545242707840225281,2022-07-08,,page_log,2,,high,page count RESETS -> new chapter,OK,,,,Ch 400 p. 2 sketch,review/thumbs/1545242707840225281.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1545242707840225281
+1545606271935533059,2022-07-09,,page_log,3,,high,,OK,,,,Ch 400 p. 3 sketch,review/thumbs/1545606271935533059.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1545606271935533059
+1545966491199188993,2022-07-10,,page_log,4,,high,,OK,,,,Ch 400 p. 4 sketch,review/thumbs/1545966491199188993.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1545966491199188993
+1546329266433826816,2022-07-11,,page_log,5,,high,,OK,,,,Ch 400 p. 5 sketch,review/thumbs/1546329266433826816.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1546329266433826816
+1546691419129098245,2022-07-12,,page_log,6,,high,,OK,,,,Ch 400 p. 6 sketch,review/thumbs/1546691419129098245.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1546691419129098245
+1547054032136863744,2022-07-13,,page_log,7,,high,,OK,,,,,review/thumbs/1547054032136863744.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1547054032136863744
+1547423498426978304,2022-07-14,,page_log,8,,high,,OK,,,,Ch 400 p. 8 sketch,review/thumbs/1547423498426978304.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1547423498426978304
+1547778808207380485,2022-07-15,,page_log,9,,high,,OK,,,,,review/thumbs/1547778808207380485.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1547778808207380485
+1548141221406642177,2022-07-16,,page_log,10,,high,,OK,,,,Ch 400 p. 10 sketch,review/thumbs/1548141221406642177.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1548141221406642177
+1548503498697760768,2022-07-17,,page_log,11,,high,,OK,,,,,review/thumbs/1548503498697760768.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1548503498697760768
+1548865803268734976,2022-07-18,,page_log,12,,high,,OK,,,,Ch 400 p. 12 sketch,review/thumbs/1548865803268734976.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1548865803268734976
+1549228293349466112,2022-07-19,,page_log,13,,high,,OK,,,,Ch 400 p. 13 sketch,review/thumbs/1549228293349466112.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1549228293349466112
+1549591364169437184,2022-07-20,,page_log,14,,high,,OK,,,,Ch 400 p. 14 sketch,review/thumbs/1549591364169437184.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1549591364169437184
+1549952765966725120,2022-07-21,,page_log,15,,high,,OK,,,,Ch 400 p. 15 sketch,review/thumbs/1549952765966725120.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1549952765966725120
+1550315226242764802,2022-07-22,,page_log,16,,high,,OK,,,,Ch 400 p. 16 sketch,review/thumbs/1550315226242764802.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1550315226242764802
+1550677625844027392,2022-07-23,,page_log,17,,high,,OK,,,,Ch 400 p. 17 sketch,review/thumbs/1550677625844027392.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1550677625844027392
+1551045024028143616,2022-07-24,,page_log,18,,high,,OK,,,,,review/thumbs/1551045024028143616.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1551045024028143616
+1551402850256707586,2022-07-25,,page_log,19,,high,chapter ends at p19,OK,,,,Ch 400 p. 19 sketch Kurapika,review/thumbs/1551402850256707586.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1551402850256707586
+1553257639051546625,2022-07-30,,page_log,5,,high,RESET; 07-26..29 gap - he switches to chapter-number text posts here,OK,,,,,review/thumbs/1553257639051546625.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1553257639051546625
+1553943032554106882,2022-08-01,,page_log,8,,high,,OK,,,,Ch 401 p. 8 sketch,review/thumbs/1553943032554106882.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1553943032554106882
+1554301262388084736,2022-08-02,,page_log,9,,high,,OK,,,,Ch 401 p. 9 sketch,review/thumbs/1554301262388084736.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1554301262388084736
+1555389385784274946,2022-08-05,,page_log,12,,high,,OK,,,,Ch 401 p. 12 sketch,review/thumbs/1555389385784274946.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1555389385784274946
+1555751795451777026,2022-08-06,,page_log,13,,high,,OK,,,,Ch 401 p. 13 sketch,review/thumbs/1555751795451777026.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1555751795451777026
+1556114159313379328,2022-08-07,,page_log,14,,high,,OK,,,,,review/thumbs/1556114159313379328.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1556114159313379328
+1556478800333905920,2022-08-08,CHECK,page_log,15,,medium,number on a different form-like sheet,OK,,,,,review/thumbs/1556478800333905920.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1556478800333905920
+1556839262779088896,2022-08-09,,page_log,16,,high,,OK,,,,,review/thumbs/1556839262779088896.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1556839262779088896
+1557202514189045760,2022-08-10,,page_log,17,,high,,OK,,,,,review/thumbs/1557202514189045760.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1557202514189045760
+1557572968888164352,2022-08-11,,page_log,18,,high,,OK,,,,,review/thumbs/1557572968888164352.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1557572968888164352
+1565901913752686592,2022-09-03,CHECK,page_log,3,,medium,number rotated at frame edge,OK,,,,Ch 402 p. 3 sketch,review/thumbs/1565901913752686592.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1565901913752686592
+1566280525488148480,2022-09-04,,page_log,4,,high,,OK,,,,Ch 402 p. 4 sketch,review/thumbs/1566280525488148480.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1566280525488148480
+1568203247898460161,2022-09-09,,page_log,9,,high,,OK,,,,,review/thumbs/1568203247898460161.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1568203247898460161
+1568856569747755009,2022-09-11,,page_log,11,,high,,OK,,,,,review/thumbs/1568856569747755009.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1568856569747755009
+1569235741808664576,2022-09-12,,page_log,12,,high,,OK,,,,,review/thumbs/1569235741808664576.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1569235741808664576
+1571060822352494592,2022-09-17,CHECK,page_log,,,low,digit ambiguous (reads 21 rotated; 21 implausible for a ~19pp chapter),Fix,,17,,Page number is 17,review/thumbs/1571060822352494592.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1571060822352494592
+1571408244450684931,2022-09-18,,page_log,18,,high,,OK,,,,Ch 402 p. 18 sketch,review/thumbs/1571408244450684931.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1571408244450684931
+1571722358100234240,2022-09-19,,page_log,19,,high,chapter ends at p19,OK,,,,,review/thumbs/1571722358100234240.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1571722358100234240
+1572428421187371008,2022-09-21,,page_log,2,,high,page count RESETS -> new chapter,OK,,,,,review/thumbs/1572428421187371008.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1572428421187371008
+1572812396757852160,2022-09-22,,page_log,3,,high,,OK,,,,,review/thumbs/1572812396757852160.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1572812396757852160
+1573236757432336384,2022-09-23,,page_log,4,,high,,OK,,,,Ch 403 p. 4 sketch,review/thumbs/1573236757432336384.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1573236757432336384
+1573549188888993792,2022-09-24,,page_log,5,,high,,OK,,,,Ch 403 p. 5 sketch,review/thumbs/1573549188888993792.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1573549188888993792
+1574001223505567744,2022-09-25,,page_log,6,,high,,OK,,,,,review/thumbs/1574001223505567744.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1574001223505567744
+1574326539394592768,2022-09-26,,page_log,7,,high,,OK,,,,Ch 403 p. 7 sketch,review/thumbs/1574326539394592768.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1574326539394592768
+1575098686904111104,2022-09-28,,page_log,8 9,,high,,OK,,,,,review/thumbs/1575098686904111104.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1575098686904111104
+1576177741103124481,2022-10-01,,page_log,10 11 12 13,,high,,OK,,,,,review/thumbs/1576177741103124481.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1576177741103124481
+1579463294104240129,2022-10-10,,page_log,3 4 5 6,,high,RESET,OK,,,,Ch 404 p. 6 sketch,review/thumbs/1579463294104240129.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1579463294104240129
+1580904454253002753,2022-10-14,,page_log,10,,high,,OK,,,,Ch 404 p. 10 sketch,review/thumbs/1580904454253002753.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1580904454253002753
+1581202157696475136,2022-10-15,,page_log,11,,high,,OK,,,,,review/thumbs/1581202157696475136.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1581202157696475136
+1785895428573319488,2024-05-02,,page_log,6 7,,high,2024 era begins; multiple pages per post,OK,,,,Ch 405 p. 7 sketch,review/thumbs/1785895428573319488.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1785895428573319488
+1786271534228951329,2024-05-03,,page_log,8 9,,high,,OK,,,,Ch 405 p. 8 sketch,review/thumbs/1786271534228951329.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1786271534228951329
+1786653489306972278,2024-05-04,,page_log,10 11,,high,,OK,,,,Ch 405 p. 11 sketch,review/thumbs/1786653489306972278.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1786653489306972278
+1786998395732988294,2024-05-05,,page_log,12 13 14,,high,,OK,,,,Ch 405 p. 14 sketch,review/thumbs/1786998395732988294.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1786998395732988294
+1787384568330301456,2024-05-06,,page_log,15 16 17,,high,,OK,,,,Ch 405 p. 16 sketch,review/thumbs/1787384568330301456.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1787384568330301456
+1788466465072640148,2024-05-09,,page_log,4 5 6,,high,RESET,OK,,,,Ch 406 p. 4 sketch,review/thumbs/1788466465072640148.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1788466465072640148
+1788817836695331294,2024-05-10,,page_log,7 8 9,,high,,OK,,,,Ch 406 p. 9 sketch,review/thumbs/1788817836695331294.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1788817836695331294
+1789536557353087288,2024-05-12,,page_log,13 14 15,,high,,OK,,,,Ch 406 p. 14 sketch,review/thumbs/1789536557353087288.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1789536557353087288
+1790651329960087686,2024-05-15,CHECK,page_log,4 5 7,,medium,p6 likely hidden under the stack,OK,,,,,review/thumbs/1790651329960087686.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1790651329960087686
+1790999903046599157,2024-05-16,,page_log,8 9 10,,high,,OK,,,,Ch 407 p. 7 matches p. 8 sketch,review/thumbs/1790999903046599157.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1790999903046599157
+1791354446531695090,2024-05-17,,page_log,11 12 13,,high,,OK,,,,Ch 407 p. 10 & 11 matches p. 11 & 12 sketch,review/thumbs/1791354446531695090.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1791354446531695090
+1792827789370110105,2024-05-21,CHECK,page_log,4 6,,medium,RESET; middle sheet obscured,OK,,,,,review/thumbs/1792827789370110105.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1792827789370110105
+1793190105412153752,2024-05-22,,page_log,7 8 9,,high,,OK,,,,Ch 408 p. 7 sketch,review/thumbs/1793190105412153752.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1793190105412153752
+1793249714126897478,2024-05-22,,other,,,high,box of discs labelled あとで見る系 円盤BOX 2024.1月〜4月 - not production,OK,,,,,review/thumbs/1793249714126897478.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1793249714126897478
+1793552523011469780,2024-05-23,,page_log,10 11 12,,high,,OK,,,,Ch 408 p. 12 sketch,review/thumbs/1793552523011469780.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1793552523011469780
+1793914960952861172,2024-05-24,,page_log,13 14 15,,high,,OK,,,,Ch 408 p. 13 sketch,review/thumbs/1793914960952861172.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1793914960952861172
+1794277256837374185,2024-05-25,,page_log,16 17 18,,high,,OK,,,,,review/thumbs/1794277256837374185.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1794277256837374185
+1795015895884193978,2024-05-27,,artwork,,,high,"finished inked group illustration, signed",OK,,,,Irrelevant to HxH,review/thumbs/1795015895884193978.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1795015895884193978
+1795364445029597344,2024-05-28,,page_log,6 7 8,,high,RESET,OK,,,,Ch 409 p. 6 & 7 sketch,review/thumbs/1795364445029597344.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1795364445029597344
+1795726834904289495,2024-05-29,,page_log,9 10 11,,high,,OK,,,,,review/thumbs/1795726834904289495.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1795726834904289495
+1795737253144379689,2024-05-29,,artwork,,,high,colour Jump-mascot astronaut,OK,,,,Gon,review/thumbs/1795737253144379689.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1795737253144379689
+1796089191438447033,2024-05-30,,page_log,12 13 14,,high,,OK,,,,Ch 409 p. 12 sketch,review/thumbs/1796089191438447033.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1796089191438447033
+1796126794719895863,2024-05-30,,artwork,,,high,colour Gon,OK,,,,,review/thumbs/1796126794719895863.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1796126794719895863
+1796452021056545038,2024-05-31,,page_log,15 16 17,,high,,OK,,,,Ch 409 p. 15 & 16 sketch,review/thumbs/1796452021056545038.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1796452021056545038
+1796517064666137032,2024-05-31,,artwork,,,high,colour Gon + mascot,OK,,,,,review/thumbs/1796517064666137032.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1796517064666137032
+1796824355005206711,2024-06-01,,artwork,,,high,colour Gon with staff,OK,,,,,review/thumbs/1796824355005206711.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1796824355005206711
+1797197820585497053,2024-06-02,CHECK,page_log,2 3,,medium,third sheet partly obscured,Fix,,2 3 4,,Ch 410 p. 4 sketch,review/thumbs/1797197820585497053.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797197820585497053
+1797235656940540335,2024-06-02,,artwork,,,high,colour illustration beside the 2008 WSJ #14 revival cover,OK,,,,,review/thumbs/1797235656940540335.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797235656940540335
+1797538778439090611,2024-06-03,,page_log,5 6 7,,high,,OK,,,,Ch 410 p. 6 sketch; Killua sketch showing “p. 5” is just for numbering the page not actually appears on the published version,review/thumbs/1797538778439090611.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797538778439090611
+1797558564116165098,2024-06-03,,artwork,,,high,colour Killua beside the same WSJ cover,OK,,,,,review/thumbs/1797558564116165098.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797558564116165098
+1797901236098023911,2024-06-04,,page_log,8 9 10,,high,,OK,,,,Ch 410 p. 8 sketch,review/thumbs/1797901236098023911.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797901236098023911
+1797930703407263899,2024-06-04,,artwork,,,high,"colour illustration, cat-like character",OK,,,,The character is Pitou,review/thumbs/1797930703407263899.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1797930703407263899
+1798263559031501158,2024-06-05,,page_log,11 12 13,,high,,OK,,,,,review/thumbs/1798263559031501158.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1798263559031501158
+1798281414670250400,2024-06-05,,artwork,,,high,"colour painting, Biscuit and others",OK,,,,The characters are chimera ant arc characters,review/thumbs/1798281414670250400.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1798281414670250400
+1798626376557498622,2024-06-06,,page_log,14 15 16,,high,,OK,,,,,review/thumbs/1798626376557498622.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1798626376557498622
+1798661926345637997,2024-06-06,,artwork,,,high,colour Gon/Killua/Biscuit,OK,,,,,review/thumbs/1798661926345637997.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1798661926345637997
+1798988560256864617,2024-06-07,,page_log,17 18 19,,high,chapter ends at p19,OK,,,,,review/thumbs/1798988560256864617.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1798988560256864617
+1799350843986350568,2024-06-08,,page_log,1 2 3,,high,"RESET - includes p1, unusual",OK,,,,Ch 411 p. 1 sketch,review/thumbs/1799350843986350568.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1799350843986350568
+1799770247752503341,2024-06-09,,page_log,4 5 6,,high,,OK,,,,Ch 411 p. 5 sketch,review/thumbs/1799770247752503341.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1799770247752503341
+1800075528600428979,2024-06-10,,page_log,7 8 9,,high,,OK,,,,Ch 411 p. 8 & 9 sketch,review/thumbs/1800075528600428979.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1800075528600428979
+1800497805502620009,2024-06-11,,artwork,,,high,colour Killua,OK,,,,,review/thumbs/1800497805502620009.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1800497805502620009
+1800800295573971089,2024-06-12,,page_log,13 14 15,,high,,OK,,,,Ch 411 p. 14 sketch,review/thumbs/1800800295573971089.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1800800295573971089
+1800837214533996652,2024-06-12,,artwork,,,high,colour chibi with fish,OK,,,,Gon,review/thumbs/1800837214533996652.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1800837214533996652
+1801162627944722613,2024-06-13,,page_log,16 17 18,,high,,OK,,,,,review/thumbs/1801162627944722613.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1801162627944722613
+1801239618127647228,2024-06-13,,artwork,,,high,colour portrait,OK,,,,Genthru,review/thumbs/1801239618127647228.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1801239618127647228
+1802612319396168016,2024-06-17,,page_log,3 4 5,,high,RESET,OK,,,,Ch 412 p. 2 & 3 match 3 & 4,review/thumbs/1802612319396168016.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1802612319396168016
+1802665606199803994,2024-06-17,,artwork,,,high,colour Gon,OK,,,,,review/thumbs/1802665606199803994.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1802665606199803994
+1802985026558320957,2024-06-18,,page_log,6,,high,,OK,,,,Ch 412 p. 5 matches 6,review/thumbs/1802985026558320957.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1802985026558320957
+1803337143743664338,2024-06-19,,page_log,7 8 9,,high,,OK,,,,Ch 412 p. 9 & 10 match 10 & 11,review/thumbs/1803337143743664338.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1803337143743664338
+1803394314233663704,2024-06-19,,artwork,,,high,two colour Gon cuts,OK,,,,,review/thumbs/1803394314233663704.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1803394314233663704
+1803699785347768718,2024-06-20,,page_log,10 11 12,,high,,OK,,,,,review/thumbs/1803699785347768718.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1803699785347768718
+1803755471377219814,2024-06-20,,artwork,,,high,colour chibi cuts,OK,,,,Both are Gon,review/thumbs/1803755471377219814.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1803755471377219814
+1804061999074284017,2024-06-21,,page_log,13 14,,high,,OK,,,,Ch 412 p. 12 matches 13,review/thumbs/1804061999074284017.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1804061999074284017
+1804110838887850221,2024-06-21,,artwork,,,high,four marker portraits,OK,,,,Gon/Killua/Leorio/Kurapika,review/thumbs/1804110838887850221.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1804110838887850221
+1804424248049700901,2024-06-22,,page_log,15 16 17,,high,,OK,,,,,review/thumbs/1804424248049700901.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1804424248049700901
+1804449791382020492,2024-06-22,,artwork,,,high,"colour Gon on skateboard, vol.36",OK,,,,,review/thumbs/1804449791382020492.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1804449791382020492
+1805149366791049565,2024-06-24,,page_log,2 3 4,,high,RESET,OK,,,,,review/thumbs/1805149366791049565.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1805149366791049565
+1805517941452292310,2024-06-25,,page_log,5 6 7,,high,,OK,,,,,review/thumbs/1805517941452292310.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1805517941452292310
+1805557906429165596,2024-06-25,,artwork,,,high,colour Gon face,OK,,,,,review/thumbs/1805557906429165596.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1805557906429165596
+1805873828775817614,2024-06-26,,page_log,8 9 10,,high,,OK,,,,,review/thumbs/1805873828775817614.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1805873828775817614
+1805941576918819074,2024-06-26,,artwork,,,high,colour Gon with can,OK,,,,,review/thumbs/1805941576918819074.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1805941576918819074
+1806236277743976470,2024-06-27,,page_log,11 12 13,,high,,OK,,,,Ch 413 p. 11 sketch,review/thumbs/1806236277743976470.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1806236277743976470
+1806282788271952085,2024-06-27,,artwork,,,high,colour Gon cutout,OK,,,,,review/thumbs/1806282788271952085.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1806282788271952085
+1806598842818970067,2024-06-28,,page_log,14 15 16,,high,,OK,,,,Ch 413 p. 14 sketch,review/thumbs/1806598842818970067.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1806598842818970067
+1806670555355189615,2024-06-28,,artwork,,,high,colour Gon jumping,OK,,,,,review/thumbs/1806670555355189615.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1806670555355189615
+1807352100143473112,2024-06-30,,artwork,,,high,"archival YuYu Hakusho WSJ cover art, 11月19日号",OK,,,,,review/thumbs/1807352100143473112.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1807352100143473112
+1807686257998438618,2024-07-01,,page_log,4 5 6,,high,RESET,OK,,,,Ch 414 p. 4 sketch,review/thumbs/1807686257998438618.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1807686257998438618
+1808101122328219828,2024-07-02,,artwork,,,high,archival YuYu Hakusho No.13 表紙カット,OK,,,,,review/thumbs/1808101122328219828.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1808101122328219828
+1808412582673543479,2024-07-03,,page_log,8 9,,high,,OK,,,,,review/thumbs/1808412582673543479.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1808412582673543479
+1808470754931171460,2024-07-03,,artwork,,,high,colour Gon riding a lizard,OK,,,,,review/thumbs/1808470754931171460.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1808470754931171460
+1808824172191363436,2024-07-04,,artwork,,,high,"ink drawing, witch figure",OK,,,,,review/thumbs/1808824172191363436.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1808824172191363436
+1809146020481372306,2024-07-05,,page_log,11,,high,,OK,,,,,review/thumbs/1809146020481372306.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1809146020481372306
+1809200403084677200,2024-07-05,,artwork,,,high,colour beach illustration,OK,,,,Gon/Killua/Leorio/Kurapika,review/thumbs/1809200403084677200.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1809200403084677200
+1809551429457310084,2024-07-06,,artwork,,,high,archival YuYu Hakusho cut,OK,,,,,review/thumbs/1809551429457310084.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1809551429457310084
+1809902608343286011,2024-07-07,,page_log,13,,high,,OK,,,,,review/thumbs/1809902608343286011.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1809902608343286011
+1809919979640483905,2024-07-07,,artwork,,,high,birthday illustration dated 2024.7.7,OK,,,,,review/thumbs/1809919979640483905.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1809919979640483905
+1810270404361195758,2024-07-08,,artwork,,,high,archival YuYu Hakusho カットD,OK,,,,,review/thumbs/1810270404361195758.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1810270404361195758
+1810586451555287478,2024-07-09,,page_log,16 17,,high,,OK,,,,Ch 414 p. 16 sketch,review/thumbs/1810586451555287478.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1810586451555287478
+1810635015652610210,2024-07-09,,artwork,,,high,"colour Gon, calendar cut",OK,,,,,review/thumbs/1810635015652610210.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1810635015652610210
+1810947358655705229,2024-07-10,,page_log,18 19,,high,chapter ends at p19,OK,,,,,review/thumbs/1810947358655705229.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1810947358655705229
+1810995321079472380,2024-07-10,,artwork,,,high,"watercolour, birthday present piece",OK,,,,,review/thumbs/1810995321079472380.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1810995321079472380
+1811402349354856520,2024-07-11,,artwork,,,high,archival YuYu Hakusho cuts B/C,OK,,,,,review/thumbs/1811402349354856520.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1811402349354856520
+1811672073313607994,2024-07-12,CHECK,page_log,3 5,,medium,RESET; a third sheet is partly hidden,Fix,,3 4 5,,Ch 415 p. 4 sketch,review/thumbs/1811672073313607994.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1811672073313607994
+1811723086066323863,2024-07-12,,artwork,,,high,colour Killua,OK,,,,,review/thumbs/1811723086066323863.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1811723086066323863
+1812039691157324227,2024-07-13,,page_log,6 7 8,,high,,OK,,,,Ch 415 p. 6 sketch,review/thumbs/1812039691157324227.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812039691157324227
+1812094156149494211,2024-07-13,,artwork,,,high,colour Kurapika and Gon,OK,,,,,review/thumbs/1812094156149494211.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812094156149494211
+1812419869390029241,2024-07-14,,page_log,9 10 11,,high,,OK,,,,Ch 415 p. 10 sketch,review/thumbs/1812419869390029241.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812419869390029241
+1812421516320977273,2024-07-14,,artwork,,,high,archival colour cuts,OK,,,,,review/thumbs/1812421516320977273.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812421516320977273
+1812759219067818266,2024-07-15,,page_log,12 13,,high,,OK,,,,,review/thumbs/1812759219067818266.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812759219067818266
+1812815567503647036,2024-07-15,,artwork,,,high,colour Leorio,OK,,,,,review/thumbs/1812815567503647036.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1812815567503647036
+1813121614911009153,2024-07-16,,page_log,14 15,,high,,OK,,,,Ch 415 p. 14 & 15 sketch,review/thumbs/1813121614911009153.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1813121614911009153
+1813159799070335298,2024-07-16,,artwork,,,high,colour Gon,OK,,,,,review/thumbs/1813159799070335298.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1813159799070335298
+1813485171863351313,2024-07-17,,page_log,16 17,,high,,OK,,,,,review/thumbs/1813485171863351313.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1813485171863351313
+1813543475453075530,2024-07-17,,artwork,,,high,colour Killua,OK,,,,,review/thumbs/1813543475453075530.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1813543475453075530
+1813899259953172729,2024-07-18,,artwork,,,high,inked group illustration,OK,,,,,review/thumbs/1813899259953172729.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1813899259953172729
+1814274778473373700,2024-07-19,,artwork,,,high,"archival colour piece, オカルト特捜団",OK,,,,,review/thumbs/1814274778473373700.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1814274778473373700
+1814572154119463163,2024-07-20,,page_log,3,,high,RESET,OK,,,,Ch 416 p. 3 sketch,review/thumbs/1814572154119463163.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1814572154119463163
+1814619700581834851,2024-07-20,,artwork,,,high,archival YuYu Hakusho colour cuts,OK,,,,,review/thumbs/1814619700581834851.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1814619700581834851
+1814934744771272834,2024-07-21,CHECK,page_log,4,,medium,a second sheet is stacked but obscured,OK,,,,both pages are 4,review/thumbs/1814934744771272834.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1814934744771272834
+1815296394288357729,2024-07-22,,page_log,5,,high,,OK,,,,,review/thumbs/1815296394288357729.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1815296394288357729
+1815665065259114815,2024-07-23,,page_log,6 7,,high,,OK,,,,,review/thumbs/1815665065259114815.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1815665065259114815
+1816102624497725593,2024-07-24,,artwork,,,high,green-toned figure painting,OK,,,,Meruem,review/thumbs/1816102624497725593.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1816102624497725593
+1816383027968405535,2024-07-25,,page_log,9,,high,,OK,,,,Ch 416 p. 9 sketch,review/thumbs/1816383027968405535.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1816383027968405535
+1816443366999285898,2024-07-25,,artwork,,,high,colour Gon and Killua,OK,,,,,review/thumbs/1816443366999285898.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1816443366999285898
+1816745938922405924,2024-07-26,,page_log,10 11,,high,,OK,,,,Ch 416 p. 10 sketch,review/thumbs/1816745938922405924.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1816745938922405924
+1817170859867652406,2024-07-27,,artwork,,,high,airbrush-style colour group piece,OK,,,,,review/thumbs/1817170859867652406.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1817170859867652406
+1817474591658586607,2024-07-28,,page_log,13,,high,,OK,,,,,review/thumbs/1817474591658586607.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1817474591658586607
+1817534075084865875,2024-07-28,,artwork,,,high,archival YuYu Hakusho colour カットC,OK,,,,,review/thumbs/1817534075084865875.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1817534075084865875
+1817833700547273164,2024-07-29,,page_log,14 15,,high,,OK,,,,,review/thumbs/1817833700547273164.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1817833700547273164
+1818196050169217461,2024-07-30,,page_log,16 17,,high,,OK,,,,Ch 416 p. 17 sketch,review/thumbs/1818196050169217461.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1818196050169217461
+1818263260392808635,2024-07-30,,artwork,,,high,archival YuYu Hakusho cuts 68-71,OK,,,,,review/thumbs/1818263260392808635.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1818263260392808635
+1818610833964056593,2024-07-31,,artwork,,,high,colour Gon with stick,OK,,,,,review/thumbs/1818610833964056593.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1818610833964056593
+1819282115009380402,2024-08-02,,page_log,2,,high,RESET,OK,,,,Ch 417 p. 2 sketch,review/thumbs/1819282115009380402.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1819282115009380402
+1819645880905224671,2024-08-03,,page_log,3,,high,,OK,,,,Ch 417 p. 3 sketch,review/thumbs/1819645880905224671.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1819645880905224671
+1820007259818352688,2024-08-04,,page_log,4,,high,,OK,,,,,review/thumbs/1820007259818352688.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1820007259818352688
+1820380125768331689,2024-08-05,,page_log,5 6,,high,,OK,,,,Ch 417 p. 5 sketch,review/thumbs/1820380125768331689.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1820380125768331689
+1820754308746600934,2024-08-06,,page_log,7 8,,high,,OK,,,,Ch 417 p. 7 sketch,review/thumbs/1820754308746600934.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1820754308746600934
+1821094894129307742,2024-08-07,,page_log,9 10,,high,,OK,,,,,review/thumbs/1821094894129307742.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1821094894129307742
+1821474816077254935,2024-08-08,,page_log,11,,high,,OK,,,,,review/thumbs/1821474816077254935.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1821474816077254935
+1821819211624391128,2024-08-09,,page_log,12,,high,,OK,,,,,review/thumbs/1821819211624391128.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1821819211624391128
+1822190708452893045,2024-08-10,,page_log,13,,high,,OK,,,,Ch 417 p. 13 sketch,review/thumbs/1822190708452893045.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1822190708452893045
+1822565040462942210,2024-08-11,,page_log,14,,high,,OK,,,,Ch 417 p. 14 sketch,review/thumbs/1822565040462942210.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1822565040462942210
+1823271123489812566,2024-08-13,,page_log,16,,high,,OK,,,,Ch 417 p. 16 sketch,review/thumbs/1823271123489812566.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1823271123489812566
+1823645373308535190,2024-08-14,,page_log,17,,high,,OK,,,,,review/thumbs/1823645373308535190.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1823645373308535190
+1823994863806828636,2024-08-15,,page_log,18,,high,,OK,,,,Ch 417 p. 18 sketch,review/thumbs/1823994863806828636.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1823994863806828636
+1825081134868283791,2024-08-18,,page_log,2,,high,RESET,OK,,,,Ch 418 p. 2 sketch,review/thumbs/1825081134868283791.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1825081134868283791
+1825492550997934220,2024-08-19,,page_log,3 4,,high,,OK,,,,,review/thumbs/1825492550997934220.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1825492550997934220
+1825809560046809595,2024-08-20,,page_log,5 6,,high,,OK,,,,Ch 418 p. 5 sketch,review/thumbs/1825809560046809595.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1825809560046809595
+1826169801531863275,2024-08-21,,page_log,7,,high,,OK,,,,Ch 418 p. 7 sketch,review/thumbs/1826169801531863275.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1826169801531863275
+1826540225738539468,2024-08-22,,page_log,8,,high,,OK,,,,Ch 418 p. 8 sketch,review/thumbs/1826540225738539468.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1826540225738539468
+1826892826421989629,2024-08-23,,page_log,9,,high,,OK,,,,Ch 418 p. 9 sketch,review/thumbs/1826892826421989629.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1826892826421989629
+1827297359690395824,2024-08-24,,page_log,10,,high,,OK,,,,,review/thumbs/1827297359690395824.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1827297359690395824
+1827619471848304826,2024-08-25,,page_log,11,,high,,OK,,,,Ch 418 p. 11 sketch,review/thumbs/1827619471848304826.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1827619471848304826
+1827981905326977056,2024-08-26,,page_log,12,,high,,OK,,,,Ch 418 p. 12 sketch,review/thumbs/1827981905326977056.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1827981905326977056
+1828342600266649952,2024-08-27,,page_log,13,,high,blue ink spill on the desk,OK,,,,Ch 418 p. 13 sketch,review/thumbs/1828342600266649952.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1828342600266649952
+1831648845610283430,2024-09-05,,page_log,15,,high,,OK,,,,,review/thumbs/1831648845610283430.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1831648845610283430
+1831980618533732490,2024-09-06,,page_log,16 17,,high,,OK,,,,Ch 418 p. 16 sketch,review/thumbs/1831980618533732490.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1831980618533732490
+1832380555985646004,2024-09-07,,page_log,18,,high,,OK,,,,Ch 418 p. 18 sketch,review/thumbs/1832380555985646004.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1832380555985646004
+1833426874980306991,2024-09-10,,page_log,2,,high,RESET,OK,,,,,review/thumbs/1833426874980306991.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1833426874980306991
+1834174699338858589,2024-09-12,,page_log,4,,high,pencil figure sketch on the sheet,OK,,,,,review/thumbs/1834174699338858589.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1834174699338858589
+1834532700780429764,2024-09-13,,page_log,5,,high,,OK,,,,,review/thumbs/1834532700780429764.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1834532700780429764
+1834886992758555072,2024-09-14,,page_log,6,,high,,OK,,,,,review/thumbs/1834886992758555072.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1834886992758555072
+1835237596362060120,2024-09-15,,page_log,7,,high,,OK,,,,,review/thumbs/1835237596362060120.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1835237596362060120
+1835590695081427080,2024-09-16,,page_log,8 9,,high,,OK,,,,,review/thumbs/1835590695081427080.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1835590695081427080
+1836344533979926813,2024-09-18,,page_log,12,,high,,OK,,,,,review/thumbs/1836344533979926813.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1836344533979926813
+1836677429173325882,2024-09-19,,page_log,13 14,,high,,OK,,,,,review/thumbs/1836677429173325882.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1836677429173325882
+1838851210801246321,2024-09-25,,page_log,6 7 8,,high,,OK,,,,,review/thumbs/1838851210801246321.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1838851210801246321
+1839217283606131150,2024-09-26,,page_log,9 10 11,,high,,OK,,,,,review/thumbs/1839217283606131150.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1839217283606131150
+1839602562120712194,2024-09-27,,page_log,12 13 14,,high,,OK,,,,,review/thumbs/1839602562120712194.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1839602562120712194
+1839938838791368773,2024-09-28,,page_log,15 16 17,,high,,OK,,,,,review/thumbs/1839938838791368773.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1839938838791368773
+1841074277870944293,2024-10-01,,page_log,3 4,,high,page count RESETS -> new chapter,OK,,,,,review/thumbs/1841074277870944293.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1841074277870944293
+1841427298068930625,2024-10-02,,page_log,5 6,,high,,OK,,,,,review/thumbs/1841427298068930625.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1841427298068930625
+1841771494793216024,2024-10-03,,page_log,7 8,,high,,OK,,,,,review/thumbs/1841771494793216024.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1841771494793216024
+1842182988823699493,2024-10-04,,page_log,9 10,,high,,OK,,,,,review/thumbs/1842182988823699493.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1842182988823699493
+1842526216286572951,2024-10-05,,page_log,11,,high,,OK,,,,,review/thumbs/1842526216286572951.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1842526216286572951
+1842846392790000107,2024-10-06,,page_log,12 13,,high,,OK,,,,,review/thumbs/1842846392790000107.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1842846392790000107
+1843201422437028274,2024-10-07,,page_log,14 15,,high,,OK,,,,,review/thumbs/1843201422437028274.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1843201422437028274
+1843568558225404363,2024-10-08,,page_log,16 17,,high,,OK,,,,,review/thumbs/1843568558225404363.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1843568558225404363
+1844302318327759090,2024-10-10,,page_log,1 2,,high,,OK,,,,,review/thumbs/1844302318327759090.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1844302318327759090
+1844660092039569635,2024-10-11,,page_log,3 4,,high,,OK,,,,,review/thumbs/1844660092039569635.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1844660092039569635
+1845098019890586057,2024-10-12,,page_log,5 6,,high,,OK,,,,,review/thumbs/1845098019890586057.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1845098019890586057
+1845749854292840874,2024-10-14,,page_log,9 10,,high,,OK,,,,,review/thumbs/1845749854292840874.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1845749854292840874
+1846118283449446869,2024-10-15,,page_log,11 12,,high,,OK,,,,,review/thumbs/1846118283449446869.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1846118283449446869
+1846466366150529357,2024-10-16,,page_log,13 14,,high,,OK,,,,,review/thumbs/1846466366150529357.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1846466366150529357
+1846836490732818622,2024-10-17,,page_log,15 16,,high,,OK,,,,,review/thumbs/1846836490732818622.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1846836490732818622
+1847277399219802336,2024-10-18,,page_log,17 18,,high,,OK,,,,,review/thumbs/1847277399219802336.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1847277399219802336
+1847921641529225252,2024-10-20,,page_log,2 3,,high,page count RESETS -> new chapter,OK,,,,,review/thumbs/1847921641529225252.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1847921641529225252
+1848276953876631635,2024-10-21,,page_log,4 5,,high,RESET,OK,,,,,review/thumbs/1848276953876631635.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1848276953876631635
+1849027649039188449,2024-10-23,CHECK,page_log,8 9,,medium,partly covered by a plush toy,OK,,,,,review/thumbs/1849027649039188449.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1849027649039188449
+1849380852440215626,2024-10-24,,page_log,10 11,,high,Shueisha envelope on the desk,OK,,,,,review/thumbs/1849380852440215626.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1849380852440215626
+1849740459159191597,2024-10-25,,page_log,12 13,,high,pencil Gon sketch resting on the stack,OK,,,,,review/thumbs/1849740459159191597.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1849740459159191597
+1850136722241425490,2024-10-26,,page_log,14 15,,high,,OK,,,,,review/thumbs/1850136722241425490.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1850136722241425490
+1850465656988475814,2024-10-27,,page_log,16 17,,high,,OK,,,,,review/thumbs/1850465656988475814.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1850465656988475814
+1851536123706941636,2024-10-30,,page_log,3 4,,high,RESET,OK,,,,,review/thumbs/1851536123706941636.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1851536123706941636
+1851926903923577299,2024-10-31,,page_log,5 6,,high,,OK,,,,,review/thumbs/1851926903923577299.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1851926903923577299
+1852330736583692500,2024-11-01,,page_log,7 8,,high,,OK,,,,,review/thumbs/1852330736583692500.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1852330736583692500
+1852646493074702518,2024-11-02,,page_log,9 10,,high,,OK,,,,,review/thumbs/1852646493074702518.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1852646493074702518
+1853010843467960685,2024-11-03,,page_log,11 12,,high,group illustration resting on the stack,OK,,,,,review/thumbs/1853010843467960685.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1853010843467960685
+1853392073246011796,2024-11-04,,page_log,13 14,,high,,OK,,,,,review/thumbs/1853392073246011796.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1853392073246011796
+1853779871308411363,2024-11-05,,page_log,15 16,,high,,OK,,,,,review/thumbs/1853779871308411363.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1853779871308411363
+1975659435868758215,2025-10-07,,milestone_text,,No.414 台詞入れ 完了!,high,2025-10 era: milestone written on the sheet,OK,,,,,review/thumbs/1975659435868758215.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1975659435868758215
+1975887096029348124,2025-10-08,,milestone_text,,No.415 台詞入れ 完了,high,,OK,,,,,review/thumbs/1975887096029348124.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1975887096029348124
+1976303383805092095,2025-10-09,CHECK,milestone_text,,No.417 台詞入れ 完了,medium,reads 417; sequence would suggest 416 - verify,OK,,,,,review/thumbs/1976303383805092095.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1976303383805092095
+1976212321283485898,2025-10-09,CHECK,milestone_text,,No.416 台詞入れ 完了!,medium,small handwriting in a bubble beside a pencil portrait; second post that day,OK,,,,,review/thumbs/1976212321283485898.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1976212321283485898
+1976594157939638610,2025-10-10,CHECK,milestone_text,,No.418 台詞入れ 完了!,medium,"digits read as ""48""; 418 inferred from sequence",OK,,,,,review/thumbs/1976594157939638610.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1976594157939638610
+1977033686664331359,2025-10-11,,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,high,ALSO states specifications for 10 chapters are complete,OK,,,,,review/thumbs/1977033686664331359.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1977033686664331359
+1978401791663390746,2025-10-15,,page_log,2,,high,,OK,,,,,review/thumbs/1978401791663390746.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1978401791663390746
+1978697089862271029,2025-10-16,,page_log,3,,high,,OK,,,,,review/thumbs/1978697089862271029.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1978697089862271029
+1979061149418057774,2025-10-17,,page_log,4,,high,,OK,,,,,review/thumbs/1979061149418057774.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1979061149418057774
+1979771078940762586,2025-10-19,CHECK,page_log,5,,medium,a second sheet partly hidden,OK,,,,,review/thumbs/1979771078940762586.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1979771078940762586
+1981366885301309657,2025-10-23,,page_log,6,,high,,Fix,,6 7,,,review/thumbs/1981366885301309657.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1981366885301309657
+1987834494318162019,2025-11-10,,milestone_text,,No.426 ペン入れ 開始!,high,"start event, not a completion",Fix,,1,,This is also a page log,review/thumbs/1987834494318162019.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/1987834494318162019
+2000981302913458294,2025-12-16,,milestone_text,,No.426 人物ペン入れ 完了,high,,OK,,,,,review/thumbs/2000981302913458294.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2000981302913458294
+2004867336483078549,2025-12-27,,milestone_text,,No.412 原稿完成,high,,OK,,,,,review/thumbs/2004867336483078549.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2004867336483078549
+2011143493742387642,2026-01-13,,milestone_text,,No.413 原稿完成,high,,OK,,,,,review/thumbs/2011143493742387642.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2011143493742387642
+2011145474154381687,2026-01-13,CHECK,unclear,,,low,"monthly schedule board, two date cells scribbled out, no readable chapter",OK,,,,There is no handwriting in this photo. Those two dots are not scribbled dates. They are eyes of an unfinished sketch.,review/thumbs/2011145474154381687.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2011145474154381687
+2011305545647735170,2026-01-14,,milestone_text,,No.414 原稿完成!,high,written on a chocolate carton,OK,,,,,review/thumbs/2011305545647735170.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2011305545647735170
+2013553432829813035,2026-01-20,,milestone_text,,No.415 原稿完成,high,,OK,,,,,review/thumbs/2013553432829813035.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2013553432829813035
+2014782311775236214,2026-01-23,,milestone_text,,No.416 原稿完成,high,,OK,,,,,review/thumbs/2014782311775236214.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2014782311775236214
+2014789100658950178,2026-01-23,,milestone_text,,No.427 人物ペン入れ完了。,high,written on a Shueisha envelope; numbered page stack beneath,OK,,,,,review/thumbs/2014789100658950178.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2014789100658950178
+2015898522009403793,2026-01-26,,milestone_text,,No.421 背景指定書 作成完了,high,,OK,,,,,review/thumbs/2015898522009403793.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2015898522009403793
+2016302995970076779,2026-01-28,,milestone_text,,No.421 表紙用カラーと台詞入れ完了,high,also cover colour complete,OK,,,,,review/thumbs/2016302995970076779.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2016302995970076779
+2019278910136193215,2026-02-05,,milestone_text,,No.417 原稿完成,high,fills the gap: ch417 had no manuscript_complete event before this,OK,,,,,review/thumbs/2019278910136193215.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2019278910136193215
+2023496133910425796,2026-02-16,,milestone_text,,No.428 人物ペン入れ 完了,high,,OK,,,,,review/thumbs/2023496133910425796.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2023496133910425796
+2029207167656706336,2026-03-04,,milestone_text,,No.422 台詞と背景指定書 作成完了,high,two stages in one post,OK,,,,,review/thumbs/2029207167656706336.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2029207167656706336
+2030043233129226406,2026-03-06,,milestone_text,,No.423 背景指定 完成,high,,OK,,,,,review/thumbs/2030043233129226406.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2030043233129226406
+2032117895745192356,2026-03-12,,milestone_text,,No.425 背景指定書作成 完了…,high,,OK,,,,,review/thumbs/2032117895745192356.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2032117895745192356
+2033276639208153570,2026-03-15,,milestone_text,,No.427 背景指定書 完了,high,,OK,,,,,review/thumbs/2033276639208153570.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2033276639208153570
+2033764977727967457,2026-03-17,,milestone_text,,No.429 人物ペン入れ完了…,high,,OK,,,,,review/thumbs/2033764977727967457.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2033764977727967457
+2084155567363539307,2026-08-03,,milestone_text,,No.433 人物ペン入れ完了。,high,photographed against roses,OK,,,,,review/thumbs/2084155567363539307.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2084155567363539307
+2092902182790341023,2026-08-27,,milestone_text,,No.429 背景指定書 完成,high,"user-supplied tweet, 2026-08-27",OK,,,,,review/thumbs/2092902182790341023.jpg,https://x.com/Un4v5s8bgsVk9Xp/status/2092902182790341023

@@ -1,0 +1,50 @@
+{
+  "forecast_timestamp": "2026-08-28",
+  "target": "W_50 \u2014 publication date of ch 421, first chapter of batch 50",
+  "level": "2 \u2014 production evidence, analog method",
+  "analog_batches": [
+    47,
+    48,
+    49
+  ],
+  "n_observations_current_batch": 28,
+  "truncation_floor": "2026-09-14",
+  "per_analog": {
+    "47": {
+      "n": 12,
+      "median": "2026-08-31",
+      "min": "2025-12-03",
+      "max": "2026-11-08",
+      "n_falsified": 7
+    },
+    "48": {
+      "n": 13,
+      "median": "2026-08-08",
+      "min": "2026-04-06",
+      "max": "2027-12-25",
+      "n_falsified": 7
+    },
+    "49": {
+      "n": 28,
+      "median": "2027-01-29",
+      "min": "2026-10-15",
+      "max": "2028-01-12",
+      "n_falsified": 0
+    }
+  },
+  "predictive": {
+    "None": {
+      "n_samples": 39,
+      "quantiles": {
+        "0.05": "2026-09-15",
+        "0.1": "2026-09-21",
+        "0.25": "2026-10-20",
+        "0.5": "2027-01-11",
+        "0.75": "2027-10-10",
+        "0.9": "2027-12-25",
+        "0.95": "2028-01-04"
+      }
+    }
+  },
+  "caveat": "Three analogs. Each analog is one historical batch's behaviour replayed onto current production dates; the spread WITHIN an analog is measurement noise, the spread BETWEEN analogs is the real uncertainty and it is not reducible with n=3."
+}

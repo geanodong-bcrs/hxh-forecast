@@ -1,0 +1,22 @@
+{
+  "built_utc": "2026-08-28T17:10:12.818935Z",
+  "raw_snapshot": "hunterpedia_chapters_20260827T031413Z.json",
+  "raw_retrieved_utc": "2026-08-27T03:14:23.361570Z",
+  "source": "hunterxhunter.fandom.com (Hunterpedia)",
+  "source_type": "community_wiki_secondary",
+  "row_count": 418,
+  "chapter_range": [
+    1,
+    418
+  ],
+  "batch_gap_issues_threshold": 4,
+  "split_run_above": 15,
+  "split_unit": 10,
+  "modeling_era_first_chapter": 261,
+  "run_count": 28,
+  "batch_count": 49,
+  "batch_count_modeling_era": 16,
+  "corrections_applied": 1,
+  "corrections_file": "chapter_corrections.csv",
+  "verification_status": "CROSS-CHECKED against jajanken.net (independent JP magazine index); see data/processed/validation_report.csv"
+}

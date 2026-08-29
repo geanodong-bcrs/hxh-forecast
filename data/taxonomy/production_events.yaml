@@ -1,0 +1,175 @@
+# Production-event taxonomy — Agents.md §8
+#
+# Derived from the corpus, not assumed: 212 text-bearing sources (189 text posts
+# + 23 milestone texts read off images) and 218 page-log posts, ch. 397-426.
+#
+# Matching rules for whoever writes the extractor:
+#   - Match stage patterns LONGEST-FIRST. 人物ペン入れ must beat ペン入れ, and
+#     背景指定書 must beat 背景, or the era-2022 posts collapse into the wrong stage.
+#   - Status is matched independently of stage, then paired.
+#   - Everything here is a synonym set, never a literal string. The 2022 and
+#     2024+ eras use different words for the same stages.
+
+version: 1
+created: 2026-08-27
+source_of_vocabulary: data/processed/tweets.csv + data/annotations/image_annotations.confirmed.csv
+
+# ---------------------------------------------------------------- stages
+# order = pipeline order, per Togashi's own description (2024-09-24):
+#   アナログで人物ペン入れ → アナログで背景 → デジタルで背景・効果・装飾 → プリントアウト原稿に加筆
+stages:
+  - id: name
+    order: 1
+    actor: togashi
+    en: storyboard
+    patterns: [ネーム]
+
+  - id: character_inking
+    order: 2
+    actor: togashi
+    en: character inking (analog)
+    patterns: [人物ペン入れ, ペン入れ]
+
+  - id: panel_layout
+    order: 3
+    actor: togashi
+    en: panel borders and empty speech balloons
+    # Found only by the coverage check — 2022 era, and it precedes dialogue:
+    # the balloons are drawn first, then 「フキダシ内の台詞清書」 fills them.
+    patterns: [枠線・フキダシ, 枠線, フキダシ]
+
+  - id: bg_spec
+    order: 4
+    actor: togashi
+    en: background specification document
+    # Togashi marks up what the staff should draw. 2022 wording differs.
+    # 指示作成 covers writing retake instructions for the staff.
+    patterns: [背景指定書作成, 背景指定書, 背景効果指定, 背景指定, 指定作成, 修正指定書作成, 指示作成]
+
+  - id: bg_work
+    order: 5
+    actor: staff
+    en: backgrounds / effects / decoration
+    # Done by assistants; this is where 返却待ち blocking happens.
+    patterns: [背景効果, 背景]
+
+  - id: dialogue
+    order: 6
+    actor: togashi
+    en: dialogue insertion
+    patterns: [フキダシ内の台詞清書, 台詞清書, 台詞入れ, 台詞]
+
+  - id: retouch
+    order: 7
+    actor: togashi
+    en: touch-ups on the printed manuscript
+    patterns: [最終加筆, 加筆]
+
+  - id: manuscript_complete
+    order: 8
+    actor: togashi
+    en: manuscript complete
+    # Terminal stage. 完成 alone counts only when bound to a chapter number.
+    patterns: [原稿完成, 原稿完了]
+
+# ---------------------------------------------------------------- statuses
+statuses:
+  - id: started
+    en: started
+    patterns: [開始]
+  - id: in_progress
+    en: in progress
+    patterns: [進行中, 作成中, 中]
+  - id: complete
+    en: complete
+    patterns: [完了, 完成, 終了]
+  - id: awaiting_return
+    en: blocked, waiting on staff to return the pages
+    # 待ち last: it is the generic "waiting", and catches 指定作成待ち etc.
+    patterns: [返却待ち, 返却, 待ち]
+    is_blocked: true          # NOT progress — see §8 rule 4
+  - id: under_review
+    en: with the editor
+    patterns: [確認中]
+    is_blocked: true
+  - id: retake
+    en: rework ordered
+    patterns: [リテイク]
+    regresses: true           # sends the chapter backwards — see §8 rule 2
+
+# ---------------------------------------------------------------- scoping
+# A status reported with NO stage is scoped to the whole chapter, not to a stage.
+# 「No391 完成。」 means the chapter is done, not that some unnamed stage is.
+# Without this rule ~25% of the 2022 corpus fails to classify.
+bare_status_scope:
+  complete: manuscript_complete   # bare 完成 on a chapter = manuscript complete
+  under_review: chapter_level     # 確認中 - whole chapter with the editor
+  awaiting_return: chapter_level  # 返却待ち - whole chapter out with staff
+  retake: chapter_level           # リテイク - chapter sent back
+  started: chapter_level
+  in_progress: chapter_level
+
+# ------------------------------------------------- non-chapter event classes
+event_classes:
+  - id: chapter_stage
+    en: a (stage, status) event scoped to one chapter
+    requires: [chapter, stage, status]
+
+  - id: page_completed
+    en: manuscript pages photographed as finished
+    requires: [chapter, pages_manuscript]
+    source: data/processed/production_pages.csv
+    note: >
+      Highest-volume evidence in the corpus (218 posts vs ~150 chapter-stage
+      events). A production RATE, not a milestone. Manuscript page numbers run
+      up to one ahead of published page numbers; keep the manuscript number.
+
+  - id: batch_countdown
+    en: explicit statement of chapters remaining in the current batch
+    requires: [chapters_remaining]
+    patterns: ['あと(\d+)話', '次の(\d+)話分あと(\d+)話', '次はあと(\d+)話']
+    note: >
+      Direct evidence about batch completion, far stronger than inferring from
+      stage milestones. Observed 9 times, all in 2022. Decrements exactly when a
+      page cycle completes.
+
+  - id: batch_scope
+    en: a stage completed across a whole batch at once
+    requires: [n_chapters, stage]
+    patterns: ['(\d+)話分の(.+?)が完了', '(\d+)話分']
+    example: 2025-10-11 「10話分の指定が完了しました」
+
+  - id: disruption
+    en: an event that stops or reverses production
+    requires: [kind]
+    kinds:
+      - lost_manuscript      # 2025-10-12 「No.424の原稿捜索中。」
+      - health               # 2022-08-12 治療・回復に時間を大幅に割く
+      - workspace            # 2024-09-21 studio reorganised, work paused
+      - staffing             # 2022-08-29 スタッフを増員する事にしました
+      - workflow_change      # 2022-11-22 半デジタル化…完全に失敗でした
+    note: >
+      Explains silences that are not slow progress. Without this class a hiatus
+      caused by a lost manuscript is indistinguishable from one caused by pace.
+
+  - id: ancillary_work
+    en: Togashi output that is not chapter production
+    requires: [kind]
+    kinds: [tankobon, cover, colour_illustration, commissioned, other]
+    patterns: [単行本, 表紙, カラー, 依頼イラスト]
+    note: >
+      Competes for the same hours as chapter production, so it is evidence about
+      capacity even though it produces no chapter progress.
+
+# ---------------------------------------------------------------- guards
+guards:
+  chapter_number:
+    # Togashi mistypes his own: 「No388.399…完成」 where 388 should be 398.
+    min: 380
+    max: 460
+    on_violation: flag_do_not_drop
+  multi_event_posts:
+    max_chapters_seen_in_one_post: 8
+  notation_variants:
+    # all observed forms of a chapter reference
+    patterns: ['No\.?\s*(\d{3})', 'No\s(\d{3})', 'NO\.?(\d{3})', 'Mo\.(\d{3})']

@@ -1,0 +1,62 @@
+{
+  "computed": "2026-08-27",
+  "level": "2 \u2014 production evidence",
+  "historical_starts": [
+    {
+      "batch": 47,
+      "start": "2022-10-24",
+      "gap_issues": 184,
+      "character_inking": 10,
+      "bg_spec": 10,
+      "dialogue": 10,
+      "retouch": 7,
+      "manuscript_complete": 6
+    },
+    {
+      "batch": 48,
+      "start": "2024-10-07",
+      "gap_issues": 84,
+      "character_inking": 10,
+      "bg_spec": 9,
+      "dialogue": 10,
+      "retouch": 5,
+      "manuscript_complete": 7
+    },
+    {
+      "batch": 49,
+      "start": "2026-06-29",
+      "gap_issues": 73,
+      "character_inking": 10,
+      "bg_spec": 10,
+      "dialogue": 10,
+      "retouch": 9,
+      "manuscript_complete": 9
+    }
+  ],
+  "next_batch": {
+    "batch_id": 50,
+    "chapters": [
+      421,
+      422,
+      423,
+      424,
+      425,
+      426,
+      427,
+      428,
+      429,
+      430
+    ],
+    "inventory": {
+      "character_inking": 10,
+      "bg_spec": 9,
+      "dialogue": 6,
+      "retouch": 6,
+      "manuscript_complete": 6
+    }
+  },
+  "min_historical_start_inventory": 6,
+  "feasibility_met": true,
+  "n_observations": 3,
+  "caveat": "Three observations. This is conditional evidence, not a fitted likelihood. The feasibility bar is met, so production evidence does not currently constrain the forecast \u2014 the remaining uncertainty is editorial."
+}
