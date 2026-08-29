@@ -295,3 +295,97 @@ as certain, so probabilities above 0.99 render as `>99%`.
 
 Nothing is deployed yet. `site/` is two static files, so GitHub Pages or any
 static host serves them as-is.
+
+## The X reply bot
+
+`scripts/reply_bot.py` prepares a reply under Togashi's **production posts only** —
+the threads already full of fans tracking exactly this. It never replies to
+anything else he posts, and there is no flag that makes it.
+
+    poll finds a new post
+        -> did our extractor turn it into production events?   no -> silence
+        -> did the forecast actually move?                     no -> silence
+        -> already replied / daily cap / PAUSE file?           yes -> silence
+        -> render card + compose text
+        -> post   (explicit; not wired to the scheduler)
+
+### The five gates
+
+| gate | why |
+|---|---|
+| production post | classified by our own event table, not by keyword matching |
+| forecast moved | ≥7 days on the median, or ≥2 points on the leading issue |
+| not already replied | `data/automation/replies.json` |
+| daily cap (2) | a burst of posts in one evening cannot become a burst of replies |
+| no `data/automation/PAUSE` | `touch` that file to stop everything immediately |
+
+**The "forecast moved" gate does the most work.** Most production posts move the
+forecast slightly or not at all, and "the forecast is unchanged" under someone's
+post is worse than saying nothing.
+
+### The card
+
+`scripts/build_card.py` renders a 1600×900 PNG. Its design follows the data-viz
+contract rather than taste:
+
+- **Hero figure + emphasis chart**, not a chart alone. The card's job is one
+  headline number and its delta — that is a stat tile, so the date is the hero
+  and the curve is context.
+- **The two curves are not two categories.** The new forecast is the point, the
+  previous one is context: accent + de-emphasis gray, never two categorical hues.
+- **Dark surface**, because X is mostly read dark and a PNG cannot adapt.
+- **No area fill under the cumulative curve** — the area under a CDF is not a
+  quantity, and filling it buries the line that is the actual mark.
+- **The opening riser is drawn.** The curve starts from zero rather than from
+  50%, so the single most important feature — half the probability landing on one
+  issue — is visible as a jump.
+- **The delta colour is always redundant.** "Earlier" green and "later" red fail
+  CVD separation against each other (deutan ΔE 4.1), as red/green always will.
+  They never appear together, and the colour is always paired with an arrow glyph
+  *and* the word, so nothing rests on hue. The pairs that *can* co-occur (accent
+  vs each status) were run through the palette validator and pass all six checks.
+
+Preview one without waiting for a real change:
+
+```bash
+python3 scripts/build_card.py --demo -21     # pretend the median moved 21 days earlier
+```
+
+### Credentials
+
+Posting uses **OAuth 2.0 user context** — a different credential from the
+app-only bearer token in `.env`, which can read but cannot post. Authorised as
+**@GDforecast**.
+
+    python3 scripts/x_auth.py          # one-time browser flow -> X_REFRESH_TOKEN
+    python3 scripts/x_post.py --whoami # verify; performs a real refresh
+
+Two things here silently brick a bot, and both are handled:
+
+**Refresh tokens rotate.** Every refresh returns a new refresh token and
+invalidates the old one. Miss the write-back and the bot authenticates exactly
+once, then locks itself out forever. `x_post.refresh()` persists the rotated
+token to `.env` before returning — verified across consecutive refreshes.
+
+**`media.write` is required and is not implied by `tweet.write`.** Without it
+`POST /2/media/upload` returns a bare `403 Forbidden` naming no permission, which
+is impossible to diagnose from the response alone. Full scope set:
+`tweet.read tweet.write users.read media.write offline.access`. Changing scopes
+requires re-running the auth flow — consent does not upgrade in place.
+
+Media upload and tweet creation are separate calls: a tweet cannot carry image
+bytes, so the card is uploaded first for a `media_id`. Uploading media creates
+nothing public (unused media simply expires), so that half is safe to test
+repeatedly without publishing anything.
+
+Cost: **$0.015 per post without a link, $0.20 with one.** The reply text
+therefore carries no URL — the site goes in the account bio, and the card renders
+it as plain text.
+
+X also requires automated accounts to identify themselves as automated in the
+bio.
+
+### Chapter releases and announcements
+
+Deliberately manual. Those are once-a-batch moments worth a human sentence, and
+they are not time-critical in the way a reply under a fresh production post is.

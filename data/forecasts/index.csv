@@ -28,3 +28,9 @@ run_id,written_utc,trigger,trigger_detail,kind,batch,annotation_status,evidence_
 20260829T022129Z,2026-08-29T02:21:31.138128+00:00,manual,,prior_level1,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T022129Z_batch50_prior_level1.json
 20260829T022129Z,2026-08-29T02:21:31.656243+00:00,manual,,level2_analog,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T022129Z_batch50_level2_analog.json
 20260829T022129Z,2026-08-29T02:21:32.156663+00:00,manual,,posterior,50,confirmed,2026-08-27T09:08:59.000Z,2026-09-14,2026-09-14,2027-01-15,2026-09-14,2027-05-21,2026-09-14,2027-07-23,data/forecasts/20260829T022129Z_batch50_posterior.json
+20260829T133346Z,2026-08-29T13:33:52.818003+00:00,daily,scheduled daily run,prior_level1,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T133346Z_batch50_prior_level1.json
+20260829T133346Z,2026-08-29T13:33:55.909289+00:00,daily,scheduled daily run,level2_analog,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T133346Z_batch50_level2_analog.json
+20260829T133346Z,2026-08-29T13:34:15.216698+00:00,daily,scheduled daily run,posterior,50,confirmed,2026-08-27T09:08:59.000Z,2026-09-14,2026-09-14,2027-01-15,2026-09-14,2027-05-21,2026-09-14,2027-07-23,data/forecasts/20260829T133346Z_batch50_posterior.json
+20260829T171722Z,2026-08-29T17:17:24.139289+00:00,manual,,prior_level1,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T171722Z_batch50_prior_level1.json
+20260829T171722Z,2026-08-29T17:17:24.630443+00:00,manual,,level2_analog,50,confirmed,2026-08-27T09:08:59.000Z,,,,,,,,data/forecasts/20260829T171722Z_batch50_level2_analog.json
+20260829T171722Z,2026-08-29T17:17:25.133675+00:00,manual,,posterior,50,confirmed,2026-08-27T09:08:59.000Z,2026-09-14,2026-09-14,2027-01-15,2026-09-14,2027-05-21,2026-09-14,2027-07-23,data/forecasts/20260829T171722Z_batch50_posterior.json

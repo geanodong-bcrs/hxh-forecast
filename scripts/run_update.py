@@ -138,6 +138,8 @@ def main():
                     help="forecast and snapshot even if nothing changed")
     ap.add_argument("--no-vision", action="store_true",
                     help="skip auto-transcription of new images")
+    ap.add_argument("--no-reply", action="store_true",
+                    help="skip the reply-bot decision entirely")
     ap.add_argument("--dry-run", action="store_true",
                     help="report what would run; touch nothing")
     args = ap.parse_args()
@@ -233,6 +235,11 @@ def main():
         # the page reads the snapshot just written, so it is never staler than
         # the forecast; if the forecast failed there is nothing new to render.
         run("build_site.py")
+        # Reply consideration runs only for a tweet-triggered update, and only
+        # ever in dry-run from here — posting stays an explicit act until the
+        # credentials exist and the output has been watched for a while.
+        if new_ids and not args.no_reply:
+            run("reply_bot.py")
 
     if args.dry_run:
         print("\n(dry run — nothing written)")
