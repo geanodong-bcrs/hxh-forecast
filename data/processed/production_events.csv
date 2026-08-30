@@ -1,67 +1,67 @@
 event_id,event_date,post_created_at,chapter,event_class,stage,status,kind,pages_manuscript,n_pages,chapters_remaining,n_chapters,source_text_ja,extraction_method,confidence,notes,tweet_id,source_url
 E00001,2022-05-24,2022-05-24T06:32:04.129000+00:00,,batch_countdown,,,,,,4,,とりあえずあと4話。,text_explicit,high,,1528987173927522304,https://x.com/Un4v5s8bgsVk9Xp/status/1528987173927522304
-E00273,2022-05-25,2022-05-25,397,page_completed,,,,,0,,,,image_transcription,high,chapter via reviewer_anchor,1529260655236091904,https://x.com/Un4v5s8bgsVk9Xp/status/1529260655236091904
-E00274,2022-05-26,2022-05-26,397,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1529663083605397504,https://x.com/Un4v5s8bgsVk9Xp/status/1529663083605397504
-E00275,2022-05-27,2022-05-27,397,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1530022135413952512,https://x.com/Un4v5s8bgsVk9Xp/status/1530022135413952512
-E00276,2022-05-28,2022-05-28,397,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1530401076385525761,https://x.com/Un4v5s8bgsVk9Xp/status/1530401076385525761
-E00277,2022-05-29,2022-05-29,397,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1530748357731225600,https://x.com/Un4v5s8bgsVk9Xp/status/1530748357731225600
-E00278,2022-05-30,2022-05-30,397,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1531112345321078784,https://x.com/Un4v5s8bgsVk9Xp/status/1531112345321078784
-E00279,2022-05-31,2022-05-31,397,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1531471347540295680,https://x.com/Un4v5s8bgsVk9Xp/status/1531471347540295680
-E00280,2022-06-01,2022-06-01,397,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1531834543920951296,https://x.com/Un4v5s8bgsVk9Xp/status/1531834543920951296
-E00281,2022-06-02,2022-06-02,397,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1532195450983313408,https://x.com/Un4v5s8bgsVk9Xp/status/1532195450983313408
-E00282,2022-06-03,2022-06-03,397,page_completed,,,,15 16,2,,,,image_transcription,high,chapter via reviewer_anchor,1532558267385188352,https://x.com/Un4v5s8bgsVk9Xp/status/1532558267385188352
-E00283,2022-06-04,2022-06-04,397,page_completed,,,,17 18,2,,,,image_transcription,high,chapter via reviewer_anchor,1532920523406995456,https://x.com/Un4v5s8bgsVk9Xp/status/1532920523406995456
-E00284,2022-06-05,2022-06-05,397,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1533283644227260416,https://x.com/Un4v5s8bgsVk9Xp/status/1533283644227260416
+E00274,2022-05-25,2022-05-25,397,page_completed,,,,,0,,,,image_transcription,high,chapter via reviewer_anchor,1529260655236091904,https://x.com/Un4v5s8bgsVk9Xp/status/1529260655236091904
+E00275,2022-05-26,2022-05-26,397,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1529663083605397504,https://x.com/Un4v5s8bgsVk9Xp/status/1529663083605397504
+E00276,2022-05-27,2022-05-27,397,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1530022135413952512,https://x.com/Un4v5s8bgsVk9Xp/status/1530022135413952512
+E00277,2022-05-28,2022-05-28,397,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1530401076385525761,https://x.com/Un4v5s8bgsVk9Xp/status/1530401076385525761
+E00278,2022-05-29,2022-05-29,397,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1530748357731225600,https://x.com/Un4v5s8bgsVk9Xp/status/1530748357731225600
+E00279,2022-05-30,2022-05-30,397,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1531112345321078784,https://x.com/Un4v5s8bgsVk9Xp/status/1531112345321078784
+E00280,2022-05-31,2022-05-31,397,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1531471347540295680,https://x.com/Un4v5s8bgsVk9Xp/status/1531471347540295680
+E00281,2022-06-01,2022-06-01,397,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1531834543920951296,https://x.com/Un4v5s8bgsVk9Xp/status/1531834543920951296
+E00282,2022-06-02,2022-06-02,397,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1532195450983313408,https://x.com/Un4v5s8bgsVk9Xp/status/1532195450983313408
+E00283,2022-06-03,2022-06-03,397,page_completed,,,,15 16,2,,,,image_transcription,high,chapter via reviewer_anchor,1532558267385188352,https://x.com/Un4v5s8bgsVk9Xp/status/1532558267385188352
+E00284,2022-06-04,2022-06-04,397,page_completed,,,,17 18,2,,,,image_transcription,high,chapter via reviewer_anchor,1532920523406995456,https://x.com/Un4v5s8bgsVk9Xp/status/1532920523406995456
+E00285,2022-06-05,2022-06-05,397,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1533283644227260416,https://x.com/Un4v5s8bgsVk9Xp/status/1533283644227260416
 E00002,2022-06-06,2022-06-06T03:06:13.437000+00:00,,batch_countdown,,,,,,3,,とりあえず、あと3話。,text_explicit,high,,1533646413623529474,https://x.com/Un4v5s8bgsVk9Xp/status/1533646413623529474
-E00285,2022-06-07,2022-06-07,398,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1534007690053099520,https://x.com/Un4v5s8bgsVk9Xp/status/1534007690053099520
-E00286,2022-06-08,2022-06-08,398,page_completed,,,,3 4,2,,,,image_transcription,medium,chapter via cycle_anchor,1534370156809310210,https://x.com/Un4v5s8bgsVk9Xp/status/1534370156809310210
-E00287,2022-06-09,2022-06-09,398,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1534732400604745733,https://x.com/Un4v5s8bgsVk9Xp/status/1534732400604745733
-E00288,2022-06-10,2022-06-10,398,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1535094793100857345,https://x.com/Un4v5s8bgsVk9Xp/status/1535094793100857345
-E00289,2022-06-11,2022-06-11,398,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1535457193008320513,https://x.com/Un4v5s8bgsVk9Xp/status/1535457193008320513
-E00290,2022-06-12,2022-06-12,398,page_completed,,,,8 9,2,,,,image_transcription,high,chapter via reviewer_anchor,1535820071188082688,https://x.com/Un4v5s8bgsVk9Xp/status/1535820071188082688
-E00291,2022-06-13,2022-06-13,398,page_completed,,,,10,1,,,,image_transcription,medium,chapter via cycle_anchor,1536181741542526976,https://x.com/Un4v5s8bgsVk9Xp/status/1536181741542526976
-E00292,2022-06-14,2022-06-14,398,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1536544533474791424,https://x.com/Un4v5s8bgsVk9Xp/status/1536544533474791424
-E00293,2022-06-15,2022-06-15,398,page_completed,,,,12 13 14 15,4,,,,image_transcription,medium,chapter via cycle_anchor,1536906649612750848,https://x.com/Un4v5s8bgsVk9Xp/status/1536906649612750848
-E00294,2022-06-16,2022-06-16,398,page_completed,,,,16,1,,,,image_transcription,medium,chapter via cycle_anchor,1537269290688122881,https://x.com/Un4v5s8bgsVk9Xp/status/1537269290688122881
-E00295,2022-06-17,2022-06-17,398,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1537632258311323648,https://x.com/Un4v5s8bgsVk9Xp/status/1537632258311323648
-E00296,2022-06-18,2022-06-18,398,page_completed,,,,18 19,2,,,,image_transcription,medium,chapter via cycle_anchor,1537993636297658369,https://x.com/Un4v5s8bgsVk9Xp/status/1537993636297658369
+E00286,2022-06-07,2022-06-07,398,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1534007690053099520,https://x.com/Un4v5s8bgsVk9Xp/status/1534007690053099520
+E00287,2022-06-08,2022-06-08,398,page_completed,,,,3 4,2,,,,image_transcription,medium,chapter via cycle_anchor,1534370156809310210,https://x.com/Un4v5s8bgsVk9Xp/status/1534370156809310210
+E00288,2022-06-09,2022-06-09,398,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1534732400604745733,https://x.com/Un4v5s8bgsVk9Xp/status/1534732400604745733
+E00289,2022-06-10,2022-06-10,398,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1535094793100857345,https://x.com/Un4v5s8bgsVk9Xp/status/1535094793100857345
+E00290,2022-06-11,2022-06-11,398,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1535457193008320513,https://x.com/Un4v5s8bgsVk9Xp/status/1535457193008320513
+E00291,2022-06-12,2022-06-12,398,page_completed,,,,8 9,2,,,,image_transcription,high,chapter via reviewer_anchor,1535820071188082688,https://x.com/Un4v5s8bgsVk9Xp/status/1535820071188082688
+E00292,2022-06-13,2022-06-13,398,page_completed,,,,10,1,,,,image_transcription,medium,chapter via cycle_anchor,1536181741542526976,https://x.com/Un4v5s8bgsVk9Xp/status/1536181741542526976
+E00293,2022-06-14,2022-06-14,398,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1536544533474791424,https://x.com/Un4v5s8bgsVk9Xp/status/1536544533474791424
+E00294,2022-06-15,2022-06-15,398,page_completed,,,,12 13 14 15,4,,,,image_transcription,medium,chapter via cycle_anchor,1536906649612750848,https://x.com/Un4v5s8bgsVk9Xp/status/1536906649612750848
+E00295,2022-06-16,2022-06-16,398,page_completed,,,,16,1,,,,image_transcription,medium,chapter via cycle_anchor,1537269290688122881,https://x.com/Un4v5s8bgsVk9Xp/status/1537269290688122881
+E00296,2022-06-17,2022-06-17,398,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1537632258311323648,https://x.com/Un4v5s8bgsVk9Xp/status/1537632258311323648
+E00297,2022-06-18,2022-06-18,398,page_completed,,,,18 19,2,,,,image_transcription,medium,chapter via cycle_anchor,1537993636297658369,https://x.com/Un4v5s8bgsVk9Xp/status/1537993636297658369
 E00003,2022-06-19,2022-06-19T03:01:51.923000+00:00,,batch_countdown,,,,,,2,,取り敢えず、あと2話。,text_explicit,high,,1538356359007072256,https://x.com/Un4v5s8bgsVk9Xp/status/1538356359007072256
-E00297,2022-06-20,2022-06-20,399,page_completed,,,,3,1,,,,image_transcription,medium,chapter via cycle_anchor,1538794911759077378,https://x.com/Un4v5s8bgsVk9Xp/status/1538794911759077378
-E00298,2022-06-21,2022-06-21,399,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1539081629632630784,https://x.com/Un4v5s8bgsVk9Xp/status/1539081629632630784
-E00299,2022-06-22,2022-06-22,399,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1539443851487694848,https://x.com/Un4v5s8bgsVk9Xp/status/1539443851487694848
-E00300,2022-06-23,2022-06-23,399,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1539806147745484800,https://x.com/Un4v5s8bgsVk9Xp/status/1539806147745484800
-E00301,2022-06-24,2022-06-24,399,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1540177798618263552,https://x.com/Un4v5s8bgsVk9Xp/status/1540177798618263552
-E00302,2022-06-25,2022-06-25,399,page_completed,,,,8,1,,,,image_transcription,medium,chapter via cycle_anchor,1540530537512611841,https://x.com/Un4v5s8bgsVk9Xp/status/1540530537512611841
-E00303,2022-06-26,2022-06-26,399,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1540895966798028801,https://x.com/Un4v5s8bgsVk9Xp/status/1540895966798028801
-E00304,2022-06-27,2022-06-27,399,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1541255538029125633,https://x.com/Un4v5s8bgsVk9Xp/status/1541255538029125633
-E00305,2022-06-28,2022-06-28,399,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1541676030489833472,https://x.com/Un4v5s8bgsVk9Xp/status/1541676030489833472
-E00306,2022-06-29,2022-06-29,399,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1541980381552922624,https://x.com/Un4v5s8bgsVk9Xp/status/1541980381552922624
-E00307,2022-06-30,2022-06-30,399,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1542343325021196291,https://x.com/Un4v5s8bgsVk9Xp/status/1542343325021196291
-E00308,2022-07-01,2022-07-01,399,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1542705613519523840,https://x.com/Un4v5s8bgsVk9Xp/status/1542705613519523840
-E00309,2022-07-02,2022-07-02,399,page_completed,,,,15,1,,,,image_transcription,high,chapter via reviewer_anchor,1543068288862760960,https://x.com/Un4v5s8bgsVk9Xp/status/1543068288862760960
-E00310,2022-07-03,2022-07-03,399,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1543431031293767680,https://x.com/Un4v5s8bgsVk9Xp/status/1543431031293767680
-E00311,2022-07-04,2022-07-04,399,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1543792686947110912,https://x.com/Un4v5s8bgsVk9Xp/status/1543792686947110912
-E00312,2022-07-05,2022-07-05,399,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1544155535347290113,https://x.com/Un4v5s8bgsVk9Xp/status/1544155535347290113
-E00313,2022-07-06,2022-07-06,399,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1544517962953920513,https://x.com/Un4v5s8bgsVk9Xp/status/1544517962953920513
+E00298,2022-06-20,2022-06-20,399,page_completed,,,,3,1,,,,image_transcription,medium,chapter via cycle_anchor,1538794911759077378,https://x.com/Un4v5s8bgsVk9Xp/status/1538794911759077378
+E00299,2022-06-21,2022-06-21,399,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1539081629632630784,https://x.com/Un4v5s8bgsVk9Xp/status/1539081629632630784
+E00300,2022-06-22,2022-06-22,399,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1539443851487694848,https://x.com/Un4v5s8bgsVk9Xp/status/1539443851487694848
+E00301,2022-06-23,2022-06-23,399,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1539806147745484800,https://x.com/Un4v5s8bgsVk9Xp/status/1539806147745484800
+E00302,2022-06-24,2022-06-24,399,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1540177798618263552,https://x.com/Un4v5s8bgsVk9Xp/status/1540177798618263552
+E00303,2022-06-25,2022-06-25,399,page_completed,,,,8,1,,,,image_transcription,medium,chapter via cycle_anchor,1540530537512611841,https://x.com/Un4v5s8bgsVk9Xp/status/1540530537512611841
+E00304,2022-06-26,2022-06-26,399,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1540895966798028801,https://x.com/Un4v5s8bgsVk9Xp/status/1540895966798028801
+E00305,2022-06-27,2022-06-27,399,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1541255538029125633,https://x.com/Un4v5s8bgsVk9Xp/status/1541255538029125633
+E00306,2022-06-28,2022-06-28,399,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1541676030489833472,https://x.com/Un4v5s8bgsVk9Xp/status/1541676030489833472
+E00307,2022-06-29,2022-06-29,399,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1541980381552922624,https://x.com/Un4v5s8bgsVk9Xp/status/1541980381552922624
+E00308,2022-06-30,2022-06-30,399,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1542343325021196291,https://x.com/Un4v5s8bgsVk9Xp/status/1542343325021196291
+E00309,2022-07-01,2022-07-01,399,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1542705613519523840,https://x.com/Un4v5s8bgsVk9Xp/status/1542705613519523840
+E00310,2022-07-02,2022-07-02,399,page_completed,,,,15,1,,,,image_transcription,high,chapter via reviewer_anchor,1543068288862760960,https://x.com/Un4v5s8bgsVk9Xp/status/1543068288862760960
+E00311,2022-07-03,2022-07-03,399,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1543431031293767680,https://x.com/Un4v5s8bgsVk9Xp/status/1543431031293767680
+E00312,2022-07-04,2022-07-04,399,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1543792686947110912,https://x.com/Un4v5s8bgsVk9Xp/status/1543792686947110912
+E00313,2022-07-05,2022-07-05,399,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1544155535347290113,https://x.com/Un4v5s8bgsVk9Xp/status/1544155535347290113
+E00314,2022-07-06,2022-07-06,399,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1544517962953920513,https://x.com/Un4v5s8bgsVk9Xp/status/1544517962953920513
 E00004,2022-07-07,2022-07-07T03:04:45.774000+00:00,,batch_countdown,,,,,,1,,取り敢えず、あと1話。,text_explicit,high,,1544880069771833344,https://x.com/Un4v5s8bgsVk9Xp/status/1544880069771833344
-E00314,2022-07-08,2022-07-08,400,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1545242707840225281,https://x.com/Un4v5s8bgsVk9Xp/status/1545242707840225281
-E00315,2022-07-09,2022-07-09,400,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1545606271935533059,https://x.com/Un4v5s8bgsVk9Xp/status/1545606271935533059
-E00316,2022-07-10,2022-07-10,400,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1545966491199188993,https://x.com/Un4v5s8bgsVk9Xp/status/1545966491199188993
-E00317,2022-07-11,2022-07-11,400,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1546329266433826816,https://x.com/Un4v5s8bgsVk9Xp/status/1546329266433826816
-E00318,2022-07-12,2022-07-12,400,page_completed,,,,6,1,,,,image_transcription,high,chapter via reviewer_anchor,1546691419129098245,https://x.com/Un4v5s8bgsVk9Xp/status/1546691419129098245
-E00319,2022-07-13,2022-07-13,400,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1547054032136863744,https://x.com/Un4v5s8bgsVk9Xp/status/1547054032136863744
-E00320,2022-07-14,2022-07-14,400,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1547423498426978304,https://x.com/Un4v5s8bgsVk9Xp/status/1547423498426978304
-E00321,2022-07-15,2022-07-15,400,page_completed,,,,9,1,,,,image_transcription,medium,chapter via cycle_anchor,1547778808207380485,https://x.com/Un4v5s8bgsVk9Xp/status/1547778808207380485
-E00322,2022-07-16,2022-07-16,400,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1548141221406642177,https://x.com/Un4v5s8bgsVk9Xp/status/1548141221406642177
-E00323,2022-07-17,2022-07-17,400,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1548503498697760768,https://x.com/Un4v5s8bgsVk9Xp/status/1548503498697760768
-E00324,2022-07-18,2022-07-18,400,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1548865803268734976,https://x.com/Un4v5s8bgsVk9Xp/status/1548865803268734976
-E00325,2022-07-19,2022-07-19,400,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1549228293349466112,https://x.com/Un4v5s8bgsVk9Xp/status/1549228293349466112
-E00326,2022-07-20,2022-07-20,400,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1549591364169437184,https://x.com/Un4v5s8bgsVk9Xp/status/1549591364169437184
-E00327,2022-07-21,2022-07-21,400,page_completed,,,,15,1,,,,image_transcription,high,chapter via reviewer_anchor,1549952765966725120,https://x.com/Un4v5s8bgsVk9Xp/status/1549952765966725120
-E00328,2022-07-22,2022-07-22,400,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1550315226242764802,https://x.com/Un4v5s8bgsVk9Xp/status/1550315226242764802
-E00329,2022-07-23,2022-07-23,400,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1550677625844027392,https://x.com/Un4v5s8bgsVk9Xp/status/1550677625844027392
-E00330,2022-07-24,2022-07-24,400,page_completed,,,,18,1,,,,image_transcription,medium,chapter via cycle_anchor,1551045024028143616,https://x.com/Un4v5s8bgsVk9Xp/status/1551045024028143616
-E00331,2022-07-25,2022-07-25,400,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1551402850256707586,https://x.com/Un4v5s8bgsVk9Xp/status/1551402850256707586
+E00315,2022-07-08,2022-07-08,400,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1545242707840225281,https://x.com/Un4v5s8bgsVk9Xp/status/1545242707840225281
+E00316,2022-07-09,2022-07-09,400,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1545606271935533059,https://x.com/Un4v5s8bgsVk9Xp/status/1545606271935533059
+E00317,2022-07-10,2022-07-10,400,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1545966491199188993,https://x.com/Un4v5s8bgsVk9Xp/status/1545966491199188993
+E00318,2022-07-11,2022-07-11,400,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1546329266433826816,https://x.com/Un4v5s8bgsVk9Xp/status/1546329266433826816
+E00319,2022-07-12,2022-07-12,400,page_completed,,,,6,1,,,,image_transcription,high,chapter via reviewer_anchor,1546691419129098245,https://x.com/Un4v5s8bgsVk9Xp/status/1546691419129098245
+E00320,2022-07-13,2022-07-13,400,page_completed,,,,7,1,,,,image_transcription,medium,chapter via cycle_anchor,1547054032136863744,https://x.com/Un4v5s8bgsVk9Xp/status/1547054032136863744
+E00321,2022-07-14,2022-07-14,400,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1547423498426978304,https://x.com/Un4v5s8bgsVk9Xp/status/1547423498426978304
+E00322,2022-07-15,2022-07-15,400,page_completed,,,,9,1,,,,image_transcription,medium,chapter via cycle_anchor,1547778808207380485,https://x.com/Un4v5s8bgsVk9Xp/status/1547778808207380485
+E00323,2022-07-16,2022-07-16,400,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1548141221406642177,https://x.com/Un4v5s8bgsVk9Xp/status/1548141221406642177
+E00324,2022-07-17,2022-07-17,400,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1548503498697760768,https://x.com/Un4v5s8bgsVk9Xp/status/1548503498697760768
+E00325,2022-07-18,2022-07-18,400,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1548865803268734976,https://x.com/Un4v5s8bgsVk9Xp/status/1548865803268734976
+E00326,2022-07-19,2022-07-19,400,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1549228293349466112,https://x.com/Un4v5s8bgsVk9Xp/status/1549228293349466112
+E00327,2022-07-20,2022-07-20,400,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1549591364169437184,https://x.com/Un4v5s8bgsVk9Xp/status/1549591364169437184
+E00328,2022-07-21,2022-07-21,400,page_completed,,,,15,1,,,,image_transcription,high,chapter via reviewer_anchor,1549952765966725120,https://x.com/Un4v5s8bgsVk9Xp/status/1549952765966725120
+E00329,2022-07-22,2022-07-22,400,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1550315226242764802,https://x.com/Un4v5s8bgsVk9Xp/status/1550315226242764802
+E00330,2022-07-23,2022-07-23,400,page_completed,,,,17,1,,,,image_transcription,high,chapter via reviewer_anchor,1550677625844027392,https://x.com/Un4v5s8bgsVk9Xp/status/1550677625844027392
+E00331,2022-07-24,2022-07-24,400,page_completed,,,,18,1,,,,image_transcription,medium,chapter via cycle_anchor,1551045024028143616,https://x.com/Un4v5s8bgsVk9Xp/status/1551045024028143616
+E00332,2022-07-25,2022-07-25,400,page_completed,,,,19,1,,,,image_transcription,high,chapter via reviewer_anchor,1551402850256707586,https://x.com/Un4v5s8bgsVk9Xp/status/1551402850256707586
 E00005,2022-07-26,2022-07-26T04:17:22.047000+00:00,,batch_scope,character_inking,,,,,,10,取り敢えず人物ペン入れ10話分完了。,text_explicit,high,,1551783710751485952,https://x.com/Un4v5s8bgsVk9Xp/status/1551783710751485952
 E00006,2022-07-26,2022-07-26T04:17:22.047000+00:00,,batch_scope,,,,,,,10,引き続き次の10話分の原稿進めます。,text_explicit,high,,1551783710751485952,https://x.com/Un4v5s8bgsVk9Xp/status/1551783710751485952
 E00007,2022-07-27,2022-07-27T03:09:37.412000+00:00,391,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1552129050302226432,https://x.com/Un4v5s8bgsVk9Xp/status/1552129050302226432
@@ -79,23 +79,23 @@ E00018,2022-07-30,2022-07-30T06:10:20.603000+00:00,397,chapter_stage,bg_spec,awa
 E00019,2022-07-30,2022-07-30T06:10:20.603000+00:00,398,chapter_stage,panel_layout,,,,,,,オレの枠線・フキダシ,text_explicit,medium,,1553261693538484224,https://x.com/Un4v5s8bgsVk9Xp/status/1553261693538484224
 E00020,2022-07-30,2022-07-30T06:10:20.603000+00:00,398,chapter_stage,bg_spec,awaiting_return,,,,,,背景効果指定の作成待ち。,text_explicit,high,,1553261693538484224,https://x.com/Un4v5s8bgsVk9Xp/status/1553261693538484224
 E00021,2022-07-30,2022-07-30T06:10:20.603000+00:00,399,chapter_stage,chapter_level,under_review,,,,,,確認中。,text_explicit,high,"bare status, scoped to chapter",1553261693538484224,https://x.com/Un4v5s8bgsVk9Xp/status/1553261693538484224
-E00332,2022-07-30,2022-07-30,401,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1553257639051546625,https://x.com/Un4v5s8bgsVk9Xp/status/1553257639051546625
+E00333,2022-07-30,2022-07-30,401,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1553257639051546625,https://x.com/Un4v5s8bgsVk9Xp/status/1553257639051546625
 E00022,2022-07-31,2022-07-31T03:06:35.056000+00:00,394,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1553577836908204032,https://x.com/Un4v5s8bgsVk9Xp/status/1553577836908204032
 E00023,2022-07-31,2022-07-31T03:06:35.056000+00:00,397,chapter_stage,panel_layout,complete,,,,,,枠線・フキダシ完了。,text_explicit,high,,1553577836908204032,https://x.com/Un4v5s8bgsVk9Xp/status/1553577836908204032
 E00024,2022-07-31,2022-07-31T03:06:35.056000+00:00,397,chapter_stage,bg_spec,in_progress,,,,,,背景効果指定作成中。,text_explicit,high,,1553577836908204032,https://x.com/Un4v5s8bgsVk9Xp/status/1553577836908204032
-E00333,2022-08-01,2022-08-01,401,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1553943032554106882,https://x.com/Un4v5s8bgsVk9Xp/status/1553943032554106882
-E00334,2022-08-02,2022-08-02,401,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1554301262388084736,https://x.com/Un4v5s8bgsVk9Xp/status/1554301262388084736
+E00334,2022-08-01,2022-08-01,401,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1553943032554106882,https://x.com/Un4v5s8bgsVk9Xp/status/1553943032554106882
+E00335,2022-08-02,2022-08-02,401,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1554301262388084736,https://x.com/Un4v5s8bgsVk9Xp/status/1554301262388084736
 E00025,2022-08-03,2022-08-03T03:06:52.018000+00:00,392,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1554665071648731136,https://x.com/Un4v5s8bgsVk9Xp/status/1554665071648731136
 E00026,2022-08-03,2022-08-03T03:06:52.018000+00:00,395,chapter_stage,dialogue,in_progress,,,,,,台詞清書中。,text_explicit,high,,1554665071648731136,https://x.com/Un4v5s8bgsVk9Xp/status/1554665071648731136
 E00027,2022-08-04,2022-08-04T03:05:53.756000+00:00,395,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1555027215145807878,https://x.com/Un4v5s8bgsVk9Xp/status/1555027215145807878
 E00028,2022-08-04,2022-08-04T03:05:53.756000+00:00,396,chapter_stage,dialogue,in_progress,,,,,,台詞清書中。,text_explicit,high,,1555027215145807878,https://x.com/Un4v5s8bgsVk9Xp/status/1555027215145807878
-E00335,2022-08-05,2022-08-05,401,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1555389385784274946,https://x.com/Un4v5s8bgsVk9Xp/status/1555389385784274946
-E00336,2022-08-06,2022-08-06,401,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1555751795451777026,https://x.com/Un4v5s8bgsVk9Xp/status/1555751795451777026
-E00337,2022-08-07,2022-08-07,401,page_completed,,,,14,1,,,,image_transcription,medium,chapter via cycle_anchor,1556114159313379328,https://x.com/Un4v5s8bgsVk9Xp/status/1556114159313379328
-E00338,2022-08-08,2022-08-08,401,page_completed,,,,15,1,,,,image_transcription,medium,chapter via cycle_anchor,1556478800333905920,https://x.com/Un4v5s8bgsVk9Xp/status/1556478800333905920
-E00339,2022-08-09,2022-08-09,401,page_completed,,,,16,1,,,,image_transcription,medium,chapter via cycle_anchor,1556839262779088896,https://x.com/Un4v5s8bgsVk9Xp/status/1556839262779088896
-E00340,2022-08-10,2022-08-10,401,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1557202514189045760,https://x.com/Un4v5s8bgsVk9Xp/status/1557202514189045760
-E00341,2022-08-11,2022-08-11,401,page_completed,,,,18,1,,,,image_transcription,medium,chapter via cycle_anchor,1557572968888164352,https://x.com/Un4v5s8bgsVk9Xp/status/1557572968888164352
+E00336,2022-08-05,2022-08-05,401,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1555389385784274946,https://x.com/Un4v5s8bgsVk9Xp/status/1555389385784274946
+E00337,2022-08-06,2022-08-06,401,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1555751795451777026,https://x.com/Un4v5s8bgsVk9Xp/status/1555751795451777026
+E00338,2022-08-07,2022-08-07,401,page_completed,,,,14,1,,,,image_transcription,medium,chapter via cycle_anchor,1556114159313379328,https://x.com/Un4v5s8bgsVk9Xp/status/1556114159313379328
+E00339,2022-08-08,2022-08-08,401,page_completed,,,,15,1,,,,image_transcription,medium,chapter via cycle_anchor,1556478800333905920,https://x.com/Un4v5s8bgsVk9Xp/status/1556478800333905920
+E00340,2022-08-09,2022-08-09,401,page_completed,,,,16,1,,,,image_transcription,medium,chapter via cycle_anchor,1556839262779088896,https://x.com/Un4v5s8bgsVk9Xp/status/1556839262779088896
+E00341,2022-08-10,2022-08-10,401,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1557202514189045760,https://x.com/Un4v5s8bgsVk9Xp/status/1557202514189045760
+E00342,2022-08-11,2022-08-11,401,page_completed,,,,18,1,,,,image_transcription,medium,chapter via cycle_anchor,1557572968888164352,https://x.com/Un4v5s8bgsVk9Xp/status/1557572968888164352
 E00029,2022-08-12,2022-08-12T03:11:00.162000+00:00,399,chapter_stage,bg_spec,in_progress,,,,,,背景効果指定作成中。,text_explicit,high,,1557927603230498817,https://x.com/Un4v5s8bgsVk9Xp/status/1557927603230498817
 E00030,2022-08-12,2022-08-12T03:11:00.162000+00:00,,disruption,,,health,,,,,症状が改善せず、治療・回復に,text_explicit,high,,1557927603230498817,https://x.com/Un4v5s8bgsVk9Xp/status/1557927603230498817
 E00031,2022-08-15,2022-08-15T10:56:08.293000+00:00,396,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1559131822012780551,https://x.com/Un4v5s8bgsVk9Xp/status/1559131822012780551
@@ -133,46 +133,46 @@ E00062,2022-09-02,2022-09-02T03:01:12.946000+00:00,397,chapter_stage,bg_work,awa
 E00063,2022-09-02,2022-09-02T03:01:12.946000+00:00,398,chapter_stage,bg_work,awaiting_return,,,,,,背景効果返却待ち。,text_explicit,high,,1565535285445701633,https://x.com/Un4v5s8bgsVk9Xp/status/1565535285445701633
 E00064,2022-09-02,2022-09-02T03:01:12.946000+00:00,399,chapter_stage,bg_work,awaiting_return,,,,,,背景効果返却待ち。,text_explicit,high,,1565535285445701633,https://x.com/Un4v5s8bgsVk9Xp/status/1565535285445701633
 E00065,2022-09-02,2022-09-02T03:01:12.946000+00:00,400,chapter_stage,bg_work,awaiting_return,,,,,,背景効果返却待ち。,text_explicit,high,,1565535285445701633,https://x.com/Un4v5s8bgsVk9Xp/status/1565535285445701633
-E00342,2022-09-03,2022-09-03,402,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1565901913752686592,https://x.com/Un4v5s8bgsVk9Xp/status/1565901913752686592
-E00343,2022-09-04,2022-09-04,402,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1566280525488148480,https://x.com/Un4v5s8bgsVk9Xp/status/1566280525488148480
+E00343,2022-09-03,2022-09-03,402,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1565901913752686592,https://x.com/Un4v5s8bgsVk9Xp/status/1565901913752686592
+E00344,2022-09-04,2022-09-04,402,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1566280525488148480,https://x.com/Un4v5s8bgsVk9Xp/status/1566280525488148480
 E00066,2022-09-05,2022-09-05T04:38:15.948000+00:00,,ancillary_work,,,tankobon,,,,,単行本作業見開き一枚除いて完了。,text_explicit,high,,1566646872483065856,https://x.com/Un4v5s8bgsVk9Xp/status/1566646872483065856
 E00067,2022-09-07,2022-09-07T07:16:15.361000+00:00,393,chapter_stage,manuscript_complete,complete,,,,,,完了。,text_explicit,high,"bare status, scoped to chapter",1567411407754506240,https://x.com/Un4v5s8bgsVk9Xp/status/1567411407754506240
 E00068,2022-09-07,2022-09-07T07:16:15.361000+00:00,394,chapter_stage,panel_layout,,,,,,,オレのフキダシ描き忘れ。,text_explicit,medium,,1567411407754506240,https://x.com/Un4v5s8bgsVk9Xp/status/1567411407754506240
 E00069,2022-09-07,2022-09-07T07:16:15.361000+00:00,395,chapter_stage,bg_work,,,,,,,オレの人物、背景に合わせる,text_explicit,medium,,1567411407754506240,https://x.com/Un4v5s8bgsVk9Xp/status/1567411407754506240
 E00070,2022-09-07,2022-09-07T07:16:15.361000+00:00,395,chapter_stage,retouch,in_progress,,,,,,部分の加筆中。,text_explicit,high,,1567411407754506240,https://x.com/Un4v5s8bgsVk9Xp/status/1567411407754506240
 E00071,2022-09-07,2022-09-07T07:16:15.361000+00:00,,ancillary_work,,,tankobon,,,,,単行本作業完了。,text_explicit,high,,1567411407754506240,https://x.com/Un4v5s8bgsVk9Xp/status/1567411407754506240
-E00344,2022-09-09,2022-09-09,402,page_completed,,,,9,1,,,,image_transcription,medium,chapter via cycle_anchor,1568203247898460161,https://x.com/Un4v5s8bgsVk9Xp/status/1568203247898460161
+E00345,2022-09-09,2022-09-09,402,page_completed,,,,9,1,,,,image_transcription,medium,chapter via cycle_anchor,1568203247898460161,https://x.com/Un4v5s8bgsVk9Xp/status/1568203247898460161
 E00072,2022-09-10,2022-09-10T03:50:02.322000+00:00,395,chapter_stage,retouch,retake,,,,,,加筆、リテイク指示作成完了。,text_explicit,high,multi-stage phrase,1568446675064324098,https://x.com/Un4v5s8bgsVk9Xp/status/1568446675064324098
 E00073,2022-09-10,2022-09-10T03:50:02.322000+00:00,395,chapter_stage,bg_spec,complete,,,,,,加筆、リテイク指示作成完了。,text_explicit,high,multi-stage phrase,1568446675064324098,https://x.com/Un4v5s8bgsVk9Xp/status/1568446675064324098
 E00074,2022-09-10,2022-09-10T03:50:02.322000+00:00,395,chapter_stage,chapter_level,awaiting_return,,,,,,返却待ち。,text_explicit,high,"bare status, scoped to chapter",1568446675064324098,https://x.com/Un4v5s8bgsVk9Xp/status/1568446675064324098
 E00075,2022-09-10,2022-09-10T03:50:02.322000+00:00,397,chapter_stage,dialogue,in_progress,,,,,,台詞清書中。,text_explicit,high,,1568446675064324098,https://x.com/Un4v5s8bgsVk9Xp/status/1568446675064324098
 E00076,2022-09-10,2022-09-10T03:50:02.322000+00:00,398,chapter_stage,retouch,in_progress,,,,,,加筆中。,text_explicit,high,,1568446675064324098,https://x.com/Un4v5s8bgsVk9Xp/status/1568446675064324098
-E00345,2022-09-11,2022-09-11,402,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1568856569747755009,https://x.com/Un4v5s8bgsVk9Xp/status/1568856569747755009
-E00346,2022-09-12,2022-09-12,402,page_completed,,,,12,1,,,,image_transcription,medium,chapter via cycle_anchor,1569235741808664576,https://x.com/Un4v5s8bgsVk9Xp/status/1569235741808664576
+E00346,2022-09-11,2022-09-11,402,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1568856569747755009,https://x.com/Un4v5s8bgsVk9Xp/status/1568856569747755009
+E00347,2022-09-12,2022-09-12,402,page_completed,,,,12,1,,,,image_transcription,medium,chapter via cycle_anchor,1569235741808664576,https://x.com/Un4v5s8bgsVk9Xp/status/1569235741808664576
 E00077,2022-09-13,2022-09-13T11:11:55.965000+00:00,394,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1569645044940046336,https://x.com/Un4v5s8bgsVk9Xp/status/1569645044940046336
 E00078,2022-09-14,2022-09-14T09:10:52.034000+00:00,,disruption,,,workflow_change,,,,,扉模索中。,text_explicit,high,,1569976965670801411,https://x.com/Un4v5s8bgsVk9Xp/status/1569976965670801411
 E00079,2022-09-15,2022-09-15T10:50:55.192000+00:00,397,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1570364532605984770,https://x.com/Un4v5s8bgsVk9Xp/status/1570364532605984770
-E00347,2022-09-17,2022-09-17,402,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1571060822352494592,https://x.com/Un4v5s8bgsVk9Xp/status/1571060822352494592
-E00348,2022-09-18,2022-09-18,402,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1571408244450684931,https://x.com/Un4v5s8bgsVk9Xp/status/1571408244450684931
-E00349,2022-09-19,2022-09-19,402,page_completed,,,,19,1,,,,image_transcription,medium,chapter via cycle_anchor,1571722358100234240,https://x.com/Un4v5s8bgsVk9Xp/status/1571722358100234240
+E00348,2022-09-17,2022-09-17,402,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1571060822352494592,https://x.com/Un4v5s8bgsVk9Xp/status/1571060822352494592
+E00349,2022-09-18,2022-09-18,402,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1571408244450684931,https://x.com/Un4v5s8bgsVk9Xp/status/1571408244450684931
+E00350,2022-09-19,2022-09-19,402,page_completed,,,,19,1,,,,image_transcription,medium,chapter via cycle_anchor,1571722358100234240,https://x.com/Un4v5s8bgsVk9Xp/status/1571722358100234240
 E00080,2022-09-20,2022-09-20T08:07:19.050000+00:00,395,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1572135300050329603,https://x.com/Un4v5s8bgsVk9Xp/status/1572135300050329603
 E00081,2022-09-20,2022-09-20T08:07:19.050000+00:00,398,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1572135300050329603,https://x.com/Un4v5s8bgsVk9Xp/status/1572135300050329603
 E00082,2022-09-20,2022-09-20T08:07:19.050000+00:00,,batch_countdown,,,,,,8,,取り敢えず、次はあと8話。,text_explicit,high,,1572135300050329603,https://x.com/Un4v5s8bgsVk9Xp/status/1572135300050329603
 E00083,2022-09-20,2022-09-20T08:07:19.050000+00:00,,ancillary_work,,,cover,,,,,表紙カラー完了。,text_explicit,high,,1572135300050329603,https://x.com/Un4v5s8bgsVk9Xp/status/1572135300050329603
-E00350,2022-09-21,2022-09-21,403,page_completed,,,,2,1,,,,image_transcription,medium,chapter via cycle_anchor,1572428421187371008,https://x.com/Un4v5s8bgsVk9Xp/status/1572428421187371008
-E00351,2022-09-22,2022-09-22,403,page_completed,,,,3,1,,,,image_transcription,medium,chapter via cycle_anchor,1572812396757852160,https://x.com/Un4v5s8bgsVk9Xp/status/1572812396757852160
-E00352,2022-09-23,2022-09-23,403,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1573236757432336384,https://x.com/Un4v5s8bgsVk9Xp/status/1573236757432336384
-E00353,2022-09-24,2022-09-24,403,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1573549188888993792,https://x.com/Un4v5s8bgsVk9Xp/status/1573549188888993792
-E00354,2022-09-25,2022-09-25,403,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1574001223505567744,https://x.com/Un4v5s8bgsVk9Xp/status/1574001223505567744
-E00355,2022-09-26,2022-09-26,403,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1574326539394592768,https://x.com/Un4v5s8bgsVk9Xp/status/1574326539394592768
-E00356,2022-09-28,2022-09-28,403,page_completed,,,,8 9,2,,,,image_transcription,medium,chapter via cycle_anchor,1575098686904111104,https://x.com/Un4v5s8bgsVk9Xp/status/1575098686904111104
-E00357,2022-10-01,2022-10-01,403,page_completed,,,,10 11 12 13,4,,,,image_transcription,medium,chapter via cycle_anchor,1576177741103124481,https://x.com/Un4v5s8bgsVk9Xp/status/1576177741103124481
+E00351,2022-09-21,2022-09-21,403,page_completed,,,,2,1,,,,image_transcription,medium,chapter via cycle_anchor,1572428421187371008,https://x.com/Un4v5s8bgsVk9Xp/status/1572428421187371008
+E00352,2022-09-22,2022-09-22,403,page_completed,,,,3,1,,,,image_transcription,medium,chapter via cycle_anchor,1572812396757852160,https://x.com/Un4v5s8bgsVk9Xp/status/1572812396757852160
+E00353,2022-09-23,2022-09-23,403,page_completed,,,,4,1,,,,image_transcription,high,chapter via reviewer_anchor,1573236757432336384,https://x.com/Un4v5s8bgsVk9Xp/status/1573236757432336384
+E00354,2022-09-24,2022-09-24,403,page_completed,,,,5,1,,,,image_transcription,high,chapter via reviewer_anchor,1573549188888993792,https://x.com/Un4v5s8bgsVk9Xp/status/1573549188888993792
+E00355,2022-09-25,2022-09-25,403,page_completed,,,,6,1,,,,image_transcription,medium,chapter via cycle_anchor,1574001223505567744,https://x.com/Un4v5s8bgsVk9Xp/status/1574001223505567744
+E00356,2022-09-26,2022-09-26,403,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1574326539394592768,https://x.com/Un4v5s8bgsVk9Xp/status/1574326539394592768
+E00357,2022-09-28,2022-09-28,403,page_completed,,,,8 9,2,,,,image_transcription,medium,chapter via cycle_anchor,1575098686904111104,https://x.com/Un4v5s8bgsVk9Xp/status/1575098686904111104
+E00358,2022-10-01,2022-10-01,403,page_completed,,,,10 11 12 13,4,,,,image_transcription,medium,chapter via cycle_anchor,1576177741103124481,https://x.com/Un4v5s8bgsVk9Xp/status/1576177741103124481
 E00084,2022-10-08,2022-10-08T03:34:37.211000+00:00,,batch_countdown,,,,,,7,,取り敢えず、次はあと7話。,text_explicit,high,,1578589655104393218,https://x.com/Un4v5s8bgsVk9Xp/status/1578589655104393218
-E00358,2022-10-10,2022-10-10,404,page_completed,,,,3 4 5 6,4,,,,image_transcription,high,chapter via reviewer_anchor,1579463294104240129,https://x.com/Un4v5s8bgsVk9Xp/status/1579463294104240129
+E00359,2022-10-10,2022-10-10,404,page_completed,,,,3 4 5 6,4,,,,image_transcription,high,chapter via reviewer_anchor,1579463294104240129,https://x.com/Un4v5s8bgsVk9Xp/status/1579463294104240129
 E00085,2022-10-12,2022-10-12T06:52:26.521000+00:00,399,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1580088990060814337,https://x.com/Un4v5s8bgsVk9Xp/status/1580088990060814337
 E00086,2022-10-13,2022-10-13T03:24:18.207000+00:00,400,chapter_stage,dialogue,complete,,,,,,台詞清書完了。,text_explicit,high,,1580398998141009920,https://x.com/Un4v5s8bgsVk9Xp/status/1580398998141009920
-E00359,2022-10-14,2022-10-14,404,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1580904454253002753,https://x.com/Un4v5s8bgsVk9Xp/status/1580904454253002753
-E00360,2022-10-15,2022-10-15,404,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1581202157696475136,https://x.com/Un4v5s8bgsVk9Xp/status/1581202157696475136
+E00360,2022-10-14,2022-10-14,404,page_completed,,,,10,1,,,,image_transcription,high,chapter via reviewer_anchor,1580904454253002753,https://x.com/Un4v5s8bgsVk9Xp/status/1580904454253002753
+E00361,2022-10-15,2022-10-15,404,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1581202157696475136,https://x.com/Un4v5s8bgsVk9Xp/status/1581202157696475136
 E00087,2022-10-16,2022-10-16T06:44:27.631000+00:00,397,chapter_stage,retouch,in_progress,,,,,,加筆中。終わらない。,text_explicit,high,,1581536532912959488,https://x.com/Un4v5s8bgsVk9Xp/status/1581536532912959488
 E00088,2022-10-17,2022-10-17T11:45:53.400000+00:00,397,chapter_stage,retouch,in_progress,,,,,,加筆中。予定外じゃがしかたが,text_explicit,high,,1581974777991831552,https://x.com/Un4v5s8bgsVk9Xp/status/1581974777991831552
 E00089,2022-10-18,2022-10-18T15:40:11.434000+00:00,396,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1582396129526046721,https://x.com/Un4v5s8bgsVk9Xp/status/1582396129526046721
@@ -190,149 +190,149 @@ E00100,2022-11-22,2022-11-22T11:03:27.573000+00:00,,disruption,,,workflow_change
 E00101,2022-11-22,2022-11-22T11:03:27.573000+00:00,,disruption,,,workflow_change,,,,,完全に失敗でした。,text_explicit,high,,1595010063181254656,https://x.com/Un4v5s8bgsVk9Xp/status/1595010063181254656
 E00102,2022-11-22,2022-11-22T11:03:27.573000+00:00,,disruption,,,workflow_change,,,,,模索中。,text_explicit,high,,1595010063181254656,https://x.com/Un4v5s8bgsVk9Xp/status/1595010063181254656
 E00103,2023-03-09,2023-03-09T05:23:06.374000+00:00,401,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1633699912083996672,https://x.com/Un4v5s8bgsVk9Xp/status/1633699912083996672
-E00361,2024-05-02,2024-05-02,405,page_completed,,,,6 7,2,,,,image_transcription,high,chapter via reviewer_anchor,1785895428573319488,https://x.com/Un4v5s8bgsVk9Xp/status/1785895428573319488
-E00362,2024-05-03,2024-05-03,405,page_completed,,,,8 9,2,,,,image_transcription,high,chapter via reviewer_anchor,1786271534228951329,https://x.com/Un4v5s8bgsVk9Xp/status/1786271534228951329
-E00363,2024-05-04,2024-05-04,405,page_completed,,,,10 11,2,,,,image_transcription,high,chapter via reviewer_anchor,1786653489306972278,https://x.com/Un4v5s8bgsVk9Xp/status/1786653489306972278
-E00364,2024-05-05,2024-05-05,405,page_completed,,,,12 13 14,3,,,,image_transcription,high,chapter via reviewer_anchor,1786998395732988294,https://x.com/Un4v5s8bgsVk9Xp/status/1786998395732988294
-E00365,2024-05-06,2024-05-06,405,page_completed,,,,15 16 17,3,,,,image_transcription,high,chapter via reviewer_anchor,1787384568330301456,https://x.com/Un4v5s8bgsVk9Xp/status/1787384568330301456
+E00362,2024-05-02,2024-05-02,405,page_completed,,,,6 7,2,,,,image_transcription,high,chapter via reviewer_anchor,1785895428573319488,https://x.com/Un4v5s8bgsVk9Xp/status/1785895428573319488
+E00363,2024-05-03,2024-05-03,405,page_completed,,,,8 9,2,,,,image_transcription,high,chapter via reviewer_anchor,1786271534228951329,https://x.com/Un4v5s8bgsVk9Xp/status/1786271534228951329
+E00364,2024-05-04,2024-05-04,405,page_completed,,,,10 11,2,,,,image_transcription,high,chapter via reviewer_anchor,1786653489306972278,https://x.com/Un4v5s8bgsVk9Xp/status/1786653489306972278
+E00365,2024-05-05,2024-05-05,405,page_completed,,,,12 13 14,3,,,,image_transcription,high,chapter via reviewer_anchor,1786998395732988294,https://x.com/Un4v5s8bgsVk9Xp/status/1786998395732988294
+E00366,2024-05-06,2024-05-06,405,page_completed,,,,15 16 17,3,,,,image_transcription,high,chapter via reviewer_anchor,1787384568330301456,https://x.com/Un4v5s8bgsVk9Xp/status/1787384568330301456
 E00104,2024-05-07,2024-05-07T08:04:16.116000+00:00,405,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1787755312801333609,https://x.com/Un4v5s8bgsVk9Xp/status/1787755312801333609
 E00105,2024-05-08,2024-05-08T06:49:48.720000+00:00,406,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1788098963050213680,https://x.com/Un4v5s8bgsVk9Xp/status/1788098963050213680
-E00366,2024-05-09,2024-05-09,406,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1788466465072640148,https://x.com/Un4v5s8bgsVk9Xp/status/1788466465072640148
-E00367,2024-05-10,2024-05-10,406,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1788817836695331294,https://x.com/Un4v5s8bgsVk9Xp/status/1788817836695331294
-E00368,2024-05-12,2024-05-12,406,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1789536557353087288,https://x.com/Un4v5s8bgsVk9Xp/status/1789536557353087288
+E00367,2024-05-09,2024-05-09,406,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1788466465072640148,https://x.com/Un4v5s8bgsVk9Xp/status/1788466465072640148
+E00368,2024-05-10,2024-05-10,406,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1788817836695331294,https://x.com/Un4v5s8bgsVk9Xp/status/1788817836695331294
+E00369,2024-05-12,2024-05-12,406,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1789536557353087288,https://x.com/Un4v5s8bgsVk9Xp/status/1789536557353087288
 E00106,2024-05-13,2024-05-13T06:07:20.348000+00:00,406,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1789900213731078521,https://x.com/Un4v5s8bgsVk9Xp/status/1789900213731078521
 E00107,2024-05-14,2024-05-14T07:12:27.089000+00:00,407,chapter_stage,chapter_level,started,,,,,,開始,text_explicit,high,"bare status, scoped to chapter",1790278987656360051,https://x.com/Un4v5s8bgsVk9Xp/status/1790278987656360051
-E00369,2024-05-15,2024-05-15,407,page_completed,,,,4 5 7,3,,,,image_transcription,medium,chapter via cycle_anchor,1790651329960087686,https://x.com/Un4v5s8bgsVk9Xp/status/1790651329960087686
-E00370,2024-05-16,2024-05-16,407,page_completed,,,,8 9 10,3,,,,image_transcription,high,chapter via reviewer_anchor,1790999903046599157,https://x.com/Un4v5s8bgsVk9Xp/status/1790999903046599157
-E00371,2024-05-17,2024-05-17,407,page_completed,,,,11 12 13,3,,,,image_transcription,high,chapter via reviewer_anchor,1791354446531695090,https://x.com/Un4v5s8bgsVk9Xp/status/1791354446531695090
+E00370,2024-05-15,2024-05-15,407,page_completed,,,,4 5 7,3,,,,image_transcription,medium,chapter via cycle_anchor,1790651329960087686,https://x.com/Un4v5s8bgsVk9Xp/status/1790651329960087686
+E00371,2024-05-16,2024-05-16,407,page_completed,,,,8 9 10,3,,,,image_transcription,high,chapter via reviewer_anchor,1790999903046599157,https://x.com/Un4v5s8bgsVk9Xp/status/1790999903046599157
+E00372,2024-05-17,2024-05-17,407,page_completed,,,,11 12 13,3,,,,image_transcription,high,chapter via reviewer_anchor,1791354446531695090,https://x.com/Un4v5s8bgsVk9Xp/status/1791354446531695090
 E00108,2024-05-19,2024-05-19T08:00:19.349000+00:00,407,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1792102974116044826,https://x.com/Un4v5s8bgsVk9Xp/status/1792102974116044826
 E00109,2024-05-20,2024-05-20T08:00:04.543000+00:00,408,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1792465299880693916,https://x.com/Un4v5s8bgsVk9Xp/status/1792465299880693916
-E00372,2024-05-21,2024-05-21,408,page_completed,,,,4 6,2,,,,image_transcription,medium,chapter via cycle_anchor,1792827789370110105,https://x.com/Un4v5s8bgsVk9Xp/status/1792827789370110105
-E00373,2024-05-22,2024-05-22,408,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1793190105412153752,https://x.com/Un4v5s8bgsVk9Xp/status/1793190105412153752
-E00374,2024-05-23,2024-05-23,408,page_completed,,,,10 11 12,3,,,,image_transcription,high,chapter via reviewer_anchor,1793552523011469780,https://x.com/Un4v5s8bgsVk9Xp/status/1793552523011469780
-E00375,2024-05-24,2024-05-24,408,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1793914960952861172,https://x.com/Un4v5s8bgsVk9Xp/status/1793914960952861172
+E00373,2024-05-21,2024-05-21,408,page_completed,,,,4 6,2,,,,image_transcription,medium,chapter via cycle_anchor,1792827789370110105,https://x.com/Un4v5s8bgsVk9Xp/status/1792827789370110105
+E00374,2024-05-22,2024-05-22,408,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1793190105412153752,https://x.com/Un4v5s8bgsVk9Xp/status/1793190105412153752
+E00375,2024-05-23,2024-05-23,408,page_completed,,,,10 11 12,3,,,,image_transcription,high,chapter via reviewer_anchor,1793552523011469780,https://x.com/Un4v5s8bgsVk9Xp/status/1793552523011469780
+E00376,2024-05-24,2024-05-24,408,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1793914960952861172,https://x.com/Un4v5s8bgsVk9Xp/status/1793914960952861172
 E00110,2024-05-25,2024-05-25T08:30:36.348000+00:00,,ancillary_work,,,colour_illustration,,,,,カラー原稿の場合はコピーに,text_explicit,high,,1794284922355789914,https://x.com/Un4v5s8bgsVk9Xp/status/1794284922355789914
-E00376,2024-05-25,2024-05-25,408,page_completed,,,,16 17 18,3,,,,image_transcription,medium,chapter via cycle_anchor,1794277256837374185,https://x.com/Un4v5s8bgsVk9Xp/status/1794277256837374185
+E00377,2024-05-25,2024-05-25,408,page_completed,,,,16 17 18,3,,,,image_transcription,medium,chapter via cycle_anchor,1794277256837374185,https://x.com/Un4v5s8bgsVk9Xp/status/1794277256837374185
 E00111,2024-05-26,2024-05-26T08:00:13.082000+00:00,408,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1794639662889439474,https://x.com/Un4v5s8bgsVk9Xp/status/1794639662889439474
 E00112,2024-05-26,2024-05-26T08:00:13.082000+00:00,409,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1794639662889439474,https://x.com/Un4v5s8bgsVk9Xp/status/1794639662889439474
-E00377,2024-05-28,2024-05-28,409,page_completed,,,,6 7 8,3,,,,image_transcription,high,chapter via reviewer_anchor,1795364445029597344,https://x.com/Un4v5s8bgsVk9Xp/status/1795364445029597344
-E00378,2024-05-29,2024-05-29,409,page_completed,,,,9 10 11,3,,,,image_transcription,medium,chapter via cycle_anchor,1795726834904289495,https://x.com/Un4v5s8bgsVk9Xp/status/1795726834904289495
-E00379,2024-05-30,2024-05-30,409,page_completed,,,,12 13 14,3,,,,image_transcription,high,chapter via reviewer_anchor,1796089191438447033,https://x.com/Un4v5s8bgsVk9Xp/status/1796089191438447033
-E00380,2024-05-31,2024-05-31,409,page_completed,,,,15 16 17,3,,,,image_transcription,high,chapter via reviewer_anchor,1796452021056545038,https://x.com/Un4v5s8bgsVk9Xp/status/1796452021056545038
+E00378,2024-05-28,2024-05-28,409,page_completed,,,,6 7 8,3,,,,image_transcription,high,chapter via reviewer_anchor,1795364445029597344,https://x.com/Un4v5s8bgsVk9Xp/status/1795364445029597344
+E00379,2024-05-29,2024-05-29,409,page_completed,,,,9 10 11,3,,,,image_transcription,medium,chapter via cycle_anchor,1795726834904289495,https://x.com/Un4v5s8bgsVk9Xp/status/1795726834904289495
+E00380,2024-05-30,2024-05-30,409,page_completed,,,,12 13 14,3,,,,image_transcription,high,chapter via reviewer_anchor,1796089191438447033,https://x.com/Un4v5s8bgsVk9Xp/status/1796089191438447033
+E00381,2024-05-31,2024-05-31,409,page_completed,,,,15 16 17,3,,,,image_transcription,high,chapter via reviewer_anchor,1796452021056545038,https://x.com/Un4v5s8bgsVk9Xp/status/1796452021056545038
 E00113,2024-06-01,2024-06-01T08:03:35.463000+00:00,409,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1796814838930530361,https://x.com/Un4v5s8bgsVk9Xp/status/1796814838930530361
 E00114,2024-06-01,2024-06-01T08:03:35.463000+00:00,410,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1796814838930530361,https://x.com/Un4v5s8bgsVk9Xp/status/1796814838930530361
-E00381,2024-06-02,2024-06-02,410,page_completed,,,,2 3 4,3,,,,image_transcription,high,chapter via reviewer_anchor,1797197820585497053,https://x.com/Un4v5s8bgsVk9Xp/status/1797197820585497053
-E00382,2024-06-03,2024-06-03,410,page_completed,,,,5 6 7,3,,,,image_transcription,high,chapter via reviewer_anchor,1797538778439090611,https://x.com/Un4v5s8bgsVk9Xp/status/1797538778439090611
-E00383,2024-06-04,2024-06-04,410,page_completed,,,,8 9 10,3,,,,image_transcription,high,chapter via reviewer_anchor,1797901236098023911,https://x.com/Un4v5s8bgsVk9Xp/status/1797901236098023911
-E00384,2024-06-05,2024-06-05,410,page_completed,,,,11 12 13,3,,,,image_transcription,medium,chapter via cycle_anchor,1798263559031501158,https://x.com/Un4v5s8bgsVk9Xp/status/1798263559031501158
-E00385,2024-06-06,2024-06-06,410,page_completed,,,,14 15 16,3,,,,image_transcription,medium,chapter via cycle_anchor,1798626376557498622,https://x.com/Un4v5s8bgsVk9Xp/status/1798626376557498622
+E00382,2024-06-02,2024-06-02,410,page_completed,,,,2 3 4,3,,,,image_transcription,high,chapter via reviewer_anchor,1797197820585497053,https://x.com/Un4v5s8bgsVk9Xp/status/1797197820585497053
+E00383,2024-06-03,2024-06-03,410,page_completed,,,,5 6 7,3,,,,image_transcription,high,chapter via reviewer_anchor,1797538778439090611,https://x.com/Un4v5s8bgsVk9Xp/status/1797538778439090611
+E00384,2024-06-04,2024-06-04,410,page_completed,,,,8 9 10,3,,,,image_transcription,high,chapter via reviewer_anchor,1797901236098023911,https://x.com/Un4v5s8bgsVk9Xp/status/1797901236098023911
+E00385,2024-06-05,2024-06-05,410,page_completed,,,,11 12 13,3,,,,image_transcription,medium,chapter via cycle_anchor,1798263559031501158,https://x.com/Un4v5s8bgsVk9Xp/status/1798263559031501158
+E00386,2024-06-06,2024-06-06,410,page_completed,,,,14 15 16,3,,,,image_transcription,medium,chapter via cycle_anchor,1798626376557498622,https://x.com/Un4v5s8bgsVk9Xp/status/1798626376557498622
 E00115,2024-06-07,2024-06-07T11:37:03.559000+00:00,410,chapter_stage,character_inking,complete,,,,,,ペン入れ完了。,text_explicit,high,,1799042887172379083,https://x.com/Un4v5s8bgsVk9Xp/status/1799042887172379083
 E00116,2024-06-07,2024-06-07T11:37:03.559000+00:00,405,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1799042887172379083,https://x.com/Un4v5s8bgsVk9Xp/status/1799042887172379083
 E00117,2024-06-07,2024-06-07T11:37:03.559000+00:00,405,chapter_stage,bg_work,in_progress,,,,,,背景制作中。,text_explicit,high,,1799042887172379083,https://x.com/Un4v5s8bgsVk9Xp/status/1799042887172379083
 E00118,2024-06-07,2024-06-07T11:37:03.559000+00:00,411,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1799042887172379083,https://x.com/Un4v5s8bgsVk9Xp/status/1799042887172379083
-E00386,2024-06-07,2024-06-07,410,page_completed,,,,17 18 19,3,,,,image_transcription,medium,chapter via cycle_anchor,1798988560256864617,https://x.com/Un4v5s8bgsVk9Xp/status/1798988560256864617
+E00387,2024-06-07,2024-06-07,410,page_completed,,,,17 18 19,3,,,,image_transcription,medium,chapter via cycle_anchor,1798988560256864617,https://x.com/Un4v5s8bgsVk9Xp/status/1798988560256864617
 E00119,2024-06-08,2024-06-08T11:50:33.115000+00:00,406,chapter_stage,manuscript_complete,complete,,,,,,指定完了。,text_explicit,high,"bare status, scoped to chapter",1799408670562009560,https://x.com/Un4v5s8bgsVk9Xp/status/1799408670562009560
-E00387,2024-06-08,2024-06-08,411,page_completed,,,,1 2 3,3,,,,image_transcription,high,chapter via reviewer_anchor,1799350843986350568,https://x.com/Un4v5s8bgsVk9Xp/status/1799350843986350568
-E00388,2024-06-09,2024-06-09,411,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1799770247752503341,https://x.com/Un4v5s8bgsVk9Xp/status/1799770247752503341
+E00388,2024-06-08,2024-06-08,411,page_completed,,,,1 2 3,3,,,,image_transcription,high,chapter via reviewer_anchor,1799350843986350568,https://x.com/Un4v5s8bgsVk9Xp/status/1799350843986350568
+E00389,2024-06-09,2024-06-09,411,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1799770247752503341,https://x.com/Un4v5s8bgsVk9Xp/status/1799770247752503341
 E00120,2024-06-10,2024-06-10T14:04:29.975000+00:00,406,chapter_stage,dialogue,,,,,,,台詞入れ,text_explicit,medium,,1800167155327230169,https://x.com/Un4v5s8bgsVk9Xp/status/1800167155327230169
-E00389,2024-06-10,2024-06-10,411,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1800075528600428979,https://x.com/Un4v5s8bgsVk9Xp/status/1800075528600428979
+E00390,2024-06-10,2024-06-10,411,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1800075528600428979,https://x.com/Un4v5s8bgsVk9Xp/status/1800075528600428979
 E00121,2024-06-11,2024-06-11T08:00:20.716000+00:00,406,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1800437900758389133,https://x.com/Un4v5s8bgsVk9Xp/status/1800437900758389133
-E00390,2024-06-12,2024-06-12,411,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1800800295573971089,https://x.com/Un4v5s8bgsVk9Xp/status/1800800295573971089
-E00391,2024-06-13,2024-06-13,411,page_completed,,,,16 17 18,3,,,,image_transcription,medium,chapter via cycle_anchor,1801162627944722613,https://x.com/Un4v5s8bgsVk9Xp/status/1801162627944722613
+E00391,2024-06-12,2024-06-12,411,page_completed,,,,13 14 15,3,,,,image_transcription,high,chapter via reviewer_anchor,1800800295573971089,https://x.com/Un4v5s8bgsVk9Xp/status/1800800295573971089
+E00392,2024-06-13,2024-06-13,411,page_completed,,,,16 17 18,3,,,,image_transcription,medium,chapter via cycle_anchor,1801162627944722613,https://x.com/Un4v5s8bgsVk9Xp/status/1801162627944722613
 E00122,2024-06-14,2024-06-14T11:42:02.876000+00:00,411,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1801580857658065042,https://x.com/Un4v5s8bgsVk9Xp/status/1801580857658065042
 E00123,2024-06-15,2024-06-15T08:33:13.643000+00:00,412,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1801895727276109991,https://x.com/Un4v5s8bgsVk9Xp/status/1801895727276109991
 E00124,2024-06-15,2024-06-15T08:33:13.643000+00:00,407,chapter_stage,dialogue,in_progress,,,,,,指定　台詞入れ進行中。,text_explicit,high,,1801895727276109991,https://x.com/Un4v5s8bgsVk9Xp/status/1801895727276109991
 E00125,2024-06-15,2024-06-15T08:33:13.643000+00:00,,ancillary_work,,,colour_illustration,,,,,カラーの仕事、制作中。,text_explicit,high,,1801895727276109991,https://x.com/Un4v5s8bgsVk9Xp/status/1801895727276109991
 E00126,2024-06-16,2024-06-16T08:51:02.371000+00:00,,ancillary_work,,,colour_illustration,,,,,カラーの仕事、継続中。,text_explicit,high,,1802262597712089162,https://x.com/Un4v5s8bgsVk9Xp/status/1802262597712089162
 E00127,2024-06-16,2024-06-16T13:35:19.807000+00:00,,ancillary_work,,,colour_illustration,,,,,カラーの仕事、完了。,text_explicit,high,,1802334141784203348,https://x.com/Un4v5s8bgsVk9Xp/status/1802334141784203348
-E00392,2024-06-17,2024-06-17,412,page_completed,,,,3 4 5,3,,,,image_transcription,high,chapter via reviewer_anchor,1802612319396168016,https://x.com/Un4v5s8bgsVk9Xp/status/1802612319396168016
-E00393,2024-06-18,2024-06-18,412,page_completed,,,,6,1,,,,image_transcription,high,chapter via reviewer_anchor,1802985026558320957,https://x.com/Un4v5s8bgsVk9Xp/status/1802985026558320957
-E00394,2024-06-19,2024-06-19,412,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1803337143743664338,https://x.com/Un4v5s8bgsVk9Xp/status/1803337143743664338
-E00395,2024-06-20,2024-06-20,412,page_completed,,,,10 11 12,3,,,,image_transcription,medium,chapter via cycle_anchor,1803699785347768718,https://x.com/Un4v5s8bgsVk9Xp/status/1803699785347768718
-E00396,2024-06-21,2024-06-21,412,page_completed,,,,13 14,2,,,,image_transcription,high,chapter via reviewer_anchor,1804061999074284017,https://x.com/Un4v5s8bgsVk9Xp/status/1804061999074284017
-E00397,2024-06-22,2024-06-22,412,page_completed,,,,15 16 17,3,,,,image_transcription,medium,chapter via cycle_anchor,1804424248049700901,https://x.com/Un4v5s8bgsVk9Xp/status/1804424248049700901
+E00393,2024-06-17,2024-06-17,412,page_completed,,,,3 4 5,3,,,,image_transcription,high,chapter via reviewer_anchor,1802612319396168016,https://x.com/Un4v5s8bgsVk9Xp/status/1802612319396168016
+E00394,2024-06-18,2024-06-18,412,page_completed,,,,6,1,,,,image_transcription,high,chapter via reviewer_anchor,1802985026558320957,https://x.com/Un4v5s8bgsVk9Xp/status/1802985026558320957
+E00395,2024-06-19,2024-06-19,412,page_completed,,,,7 8 9,3,,,,image_transcription,high,chapter via reviewer_anchor,1803337143743664338,https://x.com/Un4v5s8bgsVk9Xp/status/1803337143743664338
+E00396,2024-06-20,2024-06-20,412,page_completed,,,,10 11 12,3,,,,image_transcription,medium,chapter via cycle_anchor,1803699785347768718,https://x.com/Un4v5s8bgsVk9Xp/status/1803699785347768718
+E00397,2024-06-21,2024-06-21,412,page_completed,,,,13 14,2,,,,image_transcription,high,chapter via reviewer_anchor,1804061999074284017,https://x.com/Un4v5s8bgsVk9Xp/status/1804061999074284017
+E00398,2024-06-22,2024-06-22,412,page_completed,,,,15 16 17,3,,,,image_transcription,medium,chapter via cycle_anchor,1804424248049700901,https://x.com/Un4v5s8bgsVk9Xp/status/1804424248049700901
 E00128,2024-06-23,2024-06-23T08:02:46.226000+00:00,412,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1804787165458489444,https://x.com/Un4v5s8bgsVk9Xp/status/1804787165458489444
 E00129,2024-06-23,2024-06-23T08:02:46.226000+00:00,413,chapter_stage,chapter_level,started,,,,,,開始。,text_explicit,high,"bare status, scoped to chapter",1804787165458489444,https://x.com/Un4v5s8bgsVk9Xp/status/1804787165458489444
-E00398,2024-06-24,2024-06-24,413,page_completed,,,,2 3 4,3,,,,image_transcription,medium,chapter via cycle_anchor,1805149366791049565,https://x.com/Un4v5s8bgsVk9Xp/status/1805149366791049565
-E00399,2024-06-25,2024-06-25,413,page_completed,,,,5 6 7,3,,,,image_transcription,medium,chapter via cycle_anchor,1805517941452292310,https://x.com/Un4v5s8bgsVk9Xp/status/1805517941452292310
-E00400,2024-06-26,2024-06-26,413,page_completed,,,,8 9 10,3,,,,image_transcription,medium,chapter via cycle_anchor,1805873828775817614,https://x.com/Un4v5s8bgsVk9Xp/status/1805873828775817614
-E00401,2024-06-27,2024-06-27,413,page_completed,,,,11 12 13,3,,,,image_transcription,high,chapter via reviewer_anchor,1806236277743976470,https://x.com/Un4v5s8bgsVk9Xp/status/1806236277743976470
-E00402,2024-06-28,2024-06-28,413,page_completed,,,,14 15 16,3,,,,image_transcription,high,chapter via reviewer_anchor,1806598842818970067,https://x.com/Un4v5s8bgsVk9Xp/status/1806598842818970067
+E00399,2024-06-24,2024-06-24,413,page_completed,,,,2 3 4,3,,,,image_transcription,medium,chapter via cycle_anchor,1805149366791049565,https://x.com/Un4v5s8bgsVk9Xp/status/1805149366791049565
+E00400,2024-06-25,2024-06-25,413,page_completed,,,,5 6 7,3,,,,image_transcription,medium,chapter via cycle_anchor,1805517941452292310,https://x.com/Un4v5s8bgsVk9Xp/status/1805517941452292310
+E00401,2024-06-26,2024-06-26,413,page_completed,,,,8 9 10,3,,,,image_transcription,medium,chapter via cycle_anchor,1805873828775817614,https://x.com/Un4v5s8bgsVk9Xp/status/1805873828775817614
+E00402,2024-06-27,2024-06-27,413,page_completed,,,,11 12 13,3,,,,image_transcription,high,chapter via reviewer_anchor,1806236277743976470,https://x.com/Un4v5s8bgsVk9Xp/status/1806236277743976470
+E00403,2024-06-28,2024-06-28,413,page_completed,,,,14 15 16,3,,,,image_transcription,high,chapter via reviewer_anchor,1806598842818970067,https://x.com/Un4v5s8bgsVk9Xp/status/1806598842818970067
 E00130,2024-06-29,2024-06-29T08:12:00.677000+00:00,413,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1806963818188468235,https://x.com/Un4v5s8bgsVk9Xp/status/1806963818188468235
 E00131,2024-06-30,2024-06-30T08:04:03.242000+00:00,414,chapter_stage,character_inking,started,,,,,,ペン入れ開始。,text_explicit,high,,1807324203546444177,https://x.com/Un4v5s8bgsVk9Xp/status/1807324203546444177
 E00132,2024-07-01,2024-07-01T11:18:48.138000+00:00,407,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1807735601418191006,https://x.com/Un4v5s8bgsVk9Xp/status/1807735601418191006
 E00133,2024-07-01,2024-07-01T11:18:48.138000+00:00,414,chapter_stage,chapter_level,in_progress,,,,,,原稿に逃避中。,text_explicit,high,"bare status, scoped to chapter",1807735601418191006,https://x.com/Un4v5s8bgsVk9Xp/status/1807735601418191006
 E00134,2024-07-01,2024-07-01T11:18:48.138000+00:00,,ancillary_work,,,colour_illustration,,,,,カラー制作中。　正確には、やらなきゃと,text_explicit,high,,1807735601418191006,https://x.com/Un4v5s8bgsVk9Xp/status/1807735601418191006
-E00403,2024-07-01,2024-07-01,414,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1807686257998438618,https://x.com/Un4v5s8bgsVk9Xp/status/1807686257998438618
+E00404,2024-07-01,2024-07-01,414,page_completed,,,,4 5 6,3,,,,image_transcription,high,chapter via reviewer_anchor,1807686257998438618,https://x.com/Un4v5s8bgsVk9Xp/status/1807686257998438618
 E00135,2024-07-02,2024-07-02T08:01:30.490000+00:00,408,chapter_stage,dialogue,in_progress,,,,,,台詞入れ進行中。,text_explicit,high,,1808048338589089854,https://x.com/Un4v5s8bgsVk9Xp/status/1808048338589089854
 E00136,2024-07-02,2024-07-02T08:01:30.490000+00:00,,ancillary_work,,,colour_illustration,,,,,カラー完了。コメント諸々完了。,text_explicit,high,,1808048338589089854,https://x.com/Un4v5s8bgsVk9Xp/status/1808048338589089854
-E00404,2024-07-03,2024-07-03,414,page_completed,,,,8 9,2,,,,image_transcription,medium,chapter via cycle_anchor,1808412582673543479,https://x.com/Un4v5s8bgsVk9Xp/status/1808412582673543479
+E00405,2024-07-03,2024-07-03,414,page_completed,,,,8 9,2,,,,image_transcription,medium,chapter via cycle_anchor,1808412582673543479,https://x.com/Un4v5s8bgsVk9Xp/status/1808412582673543479
 E00137,2024-07-04,2024-07-04T08:02:48.928000+00:00,407,chapter_stage,manuscript_complete,complete,,,,,,指定書完了。,text_explicit,high,"bare status, scoped to chapter",1808773443313414560,https://x.com/Un4v5s8bgsVk9Xp/status/1808773443313414560
 E00138,2024-07-04,2024-07-04T08:02:48.928000+00:00,408,chapter_stage,dialogue,in_progress,,,,,,台詞入れ.指定書作成中。,text_explicit,high,,1808773443313414560,https://x.com/Un4v5s8bgsVk9Xp/status/1808773443313414560
-E00405,2024-07-05,2024-07-05,414,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1809146020481372306,https://x.com/Un4v5s8bgsVk9Xp/status/1809146020481372306
+E00406,2024-07-05,2024-07-05,414,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1809146020481372306,https://x.com/Un4v5s8bgsVk9Xp/status/1809146020481372306
 E00139,2024-07-06,2024-07-06T08:36:02.491000+00:00,408,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1809506580653830258,https://x.com/Un4v5s8bgsVk9Xp/status/1809506580653830258
 E00140,2024-07-06,2024-07-06T08:36:02.491000+00:00,408,chapter_stage,manuscript_complete,complete,,,,,,指示書作成完了。,text_explicit,high,"bare status, scoped to chapter",1809506580653830258,https://x.com/Un4v5s8bgsVk9Xp/status/1809506580653830258
 E00141,2024-07-06,2024-07-06T08:36:02.491000+00:00,409,chapter_stage,dialogue,in_progress,,,,,,台詞入れ進行中。,text_explicit,high,,1809506580653830258,https://x.com/Un4v5s8bgsVk9Xp/status/1809506580653830258
 E00142,2024-07-06,2024-07-06T08:36:02.491000+00:00,409,chapter_stage,chapter_level,in_progress,,,,,,指示書作成中。,text_explicit,high,"bare status, scoped to chapter",1809506580653830258,https://x.com/Un4v5s8bgsVk9Xp/status/1809506580653830258
-E00406,2024-07-07,2024-07-07,414,page_completed,,,,13,1,,,,image_transcription,medium,chapter via cycle_anchor,1809902608343286011,https://x.com/Un4v5s8bgsVk9Xp/status/1809902608343286011
+E00407,2024-07-07,2024-07-07,414,page_completed,,,,13,1,,,,image_transcription,medium,chapter via cycle_anchor,1809902608343286011,https://x.com/Un4v5s8bgsVk9Xp/status/1809902608343286011
 E00143,2024-07-08,2024-07-08T08:03:11.968000+00:00,409,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1810223091412615191,https://x.com/Un4v5s8bgsVk9Xp/status/1810223091412615191
-E00407,2024-07-09,2024-07-09,414,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1810586451555287478,https://x.com/Un4v5s8bgsVk9Xp/status/1810586451555287478
-E00408,2024-07-10,2024-07-10,414,page_completed,,,,18 19,2,,,,image_transcription,medium,chapter via cycle_anchor,1810947358655705229,https://x.com/Un4v5s8bgsVk9Xp/status/1810947358655705229
+E00408,2024-07-09,2024-07-09,414,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1810586451555287478,https://x.com/Un4v5s8bgsVk9Xp/status/1810586451555287478
+E00409,2024-07-10,2024-07-10,414,page_completed,,,,18 19,2,,,,image_transcription,medium,chapter via cycle_anchor,1810947358655705229,https://x.com/Un4v5s8bgsVk9Xp/status/1810947358655705229
 E00144,2024-07-11,2024-07-11T11:19:18.963000+00:00,415,chapter_stage,character_inking,started,,,,,,ペン入れ開始。,text_explicit,high,,1811359609363296486,https://x.com/Un4v5s8bgsVk9Xp/status/1811359609363296486
-E00409,2024-07-12,2024-07-12,415,page_completed,,,,3 4 5,3,,,,image_transcription,high,chapter via reviewer_anchor,1811672073313607994,https://x.com/Un4v5s8bgsVk9Xp/status/1811672073313607994
-E00410,2024-07-13,2024-07-13,415,page_completed,,,,6 7 8,3,,,,image_transcription,high,chapter via reviewer_anchor,1812039691157324227,https://x.com/Un4v5s8bgsVk9Xp/status/1812039691157324227
-E00411,2024-07-14,2024-07-14,415,page_completed,,,,9 10 11,3,,,,image_transcription,high,chapter via reviewer_anchor,1812419869390029241,https://x.com/Un4v5s8bgsVk9Xp/status/1812419869390029241
-E00412,2024-07-15,2024-07-15,415,page_completed,,,,12 13,2,,,,image_transcription,medium,chapter via cycle_anchor,1812759219067818266,https://x.com/Un4v5s8bgsVk9Xp/status/1812759219067818266
-E00413,2024-07-16,2024-07-16,415,page_completed,,,,14 15,2,,,,image_transcription,high,chapter via reviewer_anchor,1813121614911009153,https://x.com/Un4v5s8bgsVk9Xp/status/1813121614911009153
-E00414,2024-07-17,2024-07-17,415,page_completed,,,,16 17,2,,,,image_transcription,medium,chapter via cycle_anchor,1813485171863351313,https://x.com/Un4v5s8bgsVk9Xp/status/1813485171863351313
+E00410,2024-07-12,2024-07-12,415,page_completed,,,,3 4 5,3,,,,image_transcription,high,chapter via reviewer_anchor,1811672073313607994,https://x.com/Un4v5s8bgsVk9Xp/status/1811672073313607994
+E00411,2024-07-13,2024-07-13,415,page_completed,,,,6 7 8,3,,,,image_transcription,high,chapter via reviewer_anchor,1812039691157324227,https://x.com/Un4v5s8bgsVk9Xp/status/1812039691157324227
+E00412,2024-07-14,2024-07-14,415,page_completed,,,,9 10 11,3,,,,image_transcription,high,chapter via reviewer_anchor,1812419869390029241,https://x.com/Un4v5s8bgsVk9Xp/status/1812419869390029241
+E00413,2024-07-15,2024-07-15,415,page_completed,,,,12 13,2,,,,image_transcription,medium,chapter via cycle_anchor,1812759219067818266,https://x.com/Un4v5s8bgsVk9Xp/status/1812759219067818266
+E00414,2024-07-16,2024-07-16,415,page_completed,,,,14 15,2,,,,image_transcription,high,chapter via reviewer_anchor,1813121614911009153,https://x.com/Un4v5s8bgsVk9Xp/status/1813121614911009153
+E00415,2024-07-17,2024-07-17,415,page_completed,,,,16 17,2,,,,image_transcription,medium,chapter via cycle_anchor,1813485171863351313,https://x.com/Un4v5s8bgsVk9Xp/status/1813485171863351313
 E00145,2024-07-18,2024-07-18T08:18:15.947000+00:00,415,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1813850761631293931,https://x.com/Un4v5s8bgsVk9Xp/status/1813850761631293931
 E00146,2024-07-19,2024-07-19T08:17:40.378000+00:00,416,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1814213000309387322,https://x.com/Un4v5s8bgsVk9Xp/status/1814213000309387322
-E00415,2024-07-20,2024-07-20,416,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1814572154119463163,https://x.com/Un4v5s8bgsVk9Xp/status/1814572154119463163
+E00416,2024-07-20,2024-07-20,416,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1814572154119463163,https://x.com/Un4v5s8bgsVk9Xp/status/1814572154119463163
 E00147,2024-07-21,2024-07-21T11:49:19.477000+00:00,410,chapter_stage,dialogue,complete,,,,,,台詞入れ完了。,text_explicit,high,,1814991039922655518,https://x.com/Un4v5s8bgsVk9Xp/status/1814991039922655518
 E00148,2024-07-21,2024-07-21T18:00:24.370000+00:00,409,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,1815084425652408599,https://x.com/Un4v5s8bgsVk9Xp/status/1815084425652408599
-E00416,2024-07-21,2024-07-21,416,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1814934744771272834,https://x.com/Un4v5s8bgsVk9Xp/status/1814934744771272834
+E00417,2024-07-21,2024-07-21,416,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1814934744771272834,https://x.com/Un4v5s8bgsVk9Xp/status/1814934744771272834
 E00149,2024-07-22,2024-07-22T09:19:29.423000+00:00,410,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,1815315720768745747,https://x.com/Un4v5s8bgsVk9Xp/status/1815315720768745747
-E00417,2024-07-22,2024-07-22,416,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1815296394288357729,https://x.com/Un4v5s8bgsVk9Xp/status/1815296394288357729
+E00418,2024-07-22,2024-07-22,416,page_completed,,,,5,1,,,,image_transcription,medium,chapter via cycle_anchor,1815296394288357729,https://x.com/Un4v5s8bgsVk9Xp/status/1815296394288357729
 E00150,2024-07-23,2024-07-23T12:08:12.025000+00:00,402,chapter_stage,retouch,in_progress,,,,,,最終加筆中。,text_explicit,high,,1815720565904191809,https://x.com/Un4v5s8bgsVk9Xp/status/1815720565904191809
 E00151,2024-07-23,2024-07-23T13:19:16.869000+00:00,402,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1815738453956710864,https://x.com/Un4v5s8bgsVk9Xp/status/1815738453956710864
 E00152,2024-07-23,2024-07-23T13:44:39.966000+00:00,403,chapter_stage,retouch,in_progress,,,,,,最終加筆中。,text_explicit,high,,1815744842288480493,https://x.com/Un4v5s8bgsVk9Xp/status/1815744842288480493
 E00153,2024-07-23,2024-07-23T17:25:21.672000+00:00,403,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1815800382028947551,https://x.com/Un4v5s8bgsVk9Xp/status/1815800382028947551
-E00418,2024-07-23,2024-07-23,416,page_completed,,,,6 7,2,,,,image_transcription,medium,chapter via cycle_anchor,1815665065259114815,https://x.com/Un4v5s8bgsVk9Xp/status/1815665065259114815
+E00419,2024-07-23,2024-07-23,416,page_completed,,,,6 7,2,,,,image_transcription,medium,chapter via cycle_anchor,1815665065259114815,https://x.com/Un4v5s8bgsVk9Xp/status/1815665065259114815
 E00154,2024-07-24,2024-07-24T08:01:15.821000+00:00,404,chapter_stage,retouch,in_progress,,,,,,最終加筆中。,text_explicit,high,,1816020810106282298,https://x.com/Un4v5s8bgsVk9Xp/status/1816020810106282298
-E00419,2024-07-25,2024-07-25,416,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1816383027968405535,https://x.com/Un4v5s8bgsVk9Xp/status/1816383027968405535
+E00420,2024-07-25,2024-07-25,416,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1816383027968405535,https://x.com/Un4v5s8bgsVk9Xp/status/1816383027968405535
 E00155,2024-07-26,2024-07-26T08:57:53.171000+00:00,404,chapter_stage,manuscript_complete,complete,,,,,,完成。,text_explicit,high,"bare status, scoped to chapter",1816759835356254574,https://x.com/Un4v5s8bgsVk9Xp/status/1816759835356254574
-E00420,2024-07-26,2024-07-26,416,page_completed,,,,10 11,2,,,,image_transcription,high,chapter via reviewer_anchor,1816745938922405924,https://x.com/Un4v5s8bgsVk9Xp/status/1816745938922405924
+E00421,2024-07-26,2024-07-26,416,page_completed,,,,10 11,2,,,,image_transcription,high,chapter via reviewer_anchor,1816745938922405924,https://x.com/Un4v5s8bgsVk9Xp/status/1816745938922405924
 E00156,2024-07-27,2024-07-27T08:13:13.877000+00:00,,ancillary_work,,,colour_illustration,,,,,ネーム、原稿、カラー、,text_explicit,high,,1817110985448259798,https://x.com/Un4v5s8bgsVk9Xp/status/1817110985448259798
-E00421,2024-07-28,2024-07-28,416,page_completed,,,,13,1,,,,image_transcription,medium,chapter via cycle_anchor,1817474591658586607,https://x.com/Un4v5s8bgsVk9Xp/status/1817474591658586607
-E00422,2024-07-29,2024-07-29,416,page_completed,,,,14 15,2,,,,image_transcription,medium,chapter via cycle_anchor,1817833700547273164,https://x.com/Un4v5s8bgsVk9Xp/status/1817833700547273164
-E00423,2024-07-30,2024-07-30,416,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1818196050169217461,https://x.com/Un4v5s8bgsVk9Xp/status/1818196050169217461
+E00422,2024-07-28,2024-07-28,416,page_completed,,,,13,1,,,,image_transcription,medium,chapter via cycle_anchor,1817474591658586607,https://x.com/Un4v5s8bgsVk9Xp/status/1817474591658586607
+E00423,2024-07-29,2024-07-29,416,page_completed,,,,14 15,2,,,,image_transcription,medium,chapter via cycle_anchor,1817833700547273164,https://x.com/Un4v5s8bgsVk9Xp/status/1817833700547273164
+E00424,2024-07-30,2024-07-30,416,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1818196050169217461,https://x.com/Un4v5s8bgsVk9Xp/status/1818196050169217461
 E00157,2024-07-31,2024-07-31T09:12:09.114000+00:00,416,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1818575364769431741,https://x.com/Un4v5s8bgsVk9Xp/status/1818575364769431741
 E00158,2024-08-01,2024-08-01T08:06:45.149000+00:00,417,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1818921294332936581,https://x.com/Un4v5s8bgsVk9Xp/status/1818921294332936581
-E00424,2024-08-02,2024-08-02,417,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1819282115009380402,https://x.com/Un4v5s8bgsVk9Xp/status/1819282115009380402
-E00425,2024-08-03,2024-08-03,417,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1819645880905224671,https://x.com/Un4v5s8bgsVk9Xp/status/1819645880905224671
-E00426,2024-08-04,2024-08-04,417,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1820007259818352688,https://x.com/Un4v5s8bgsVk9Xp/status/1820007259818352688
-E00427,2024-08-05,2024-08-05,417,page_completed,,,,5 6,2,,,,image_transcription,high,chapter via reviewer_anchor,1820380125768331689,https://x.com/Un4v5s8bgsVk9Xp/status/1820380125768331689
-E00428,2024-08-06,2024-08-06,417,page_completed,,,,7 8,2,,,,image_transcription,high,chapter via reviewer_anchor,1820754308746600934,https://x.com/Un4v5s8bgsVk9Xp/status/1820754308746600934
-E00429,2024-08-07,2024-08-07,417,page_completed,,,,9 10,2,,,,image_transcription,medium,chapter via cycle_anchor,1821094894129307742,https://x.com/Un4v5s8bgsVk9Xp/status/1821094894129307742
-E00430,2024-08-08,2024-08-08,417,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1821474816077254935,https://x.com/Un4v5s8bgsVk9Xp/status/1821474816077254935
-E00431,2024-08-09,2024-08-09,417,page_completed,,,,12,1,,,,image_transcription,medium,chapter via cycle_anchor,1821819211624391128,https://x.com/Un4v5s8bgsVk9Xp/status/1821819211624391128
-E00432,2024-08-10,2024-08-10,417,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1822190708452893045,https://x.com/Un4v5s8bgsVk9Xp/status/1822190708452893045
-E00433,2024-08-11,2024-08-11,417,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1822565040462942210,https://x.com/Un4v5s8bgsVk9Xp/status/1822565040462942210
-E00434,2024-08-13,2024-08-13,417,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1823271123489812566,https://x.com/Un4v5s8bgsVk9Xp/status/1823271123489812566
-E00435,2024-08-14,2024-08-14,417,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1823645373308535190,https://x.com/Un4v5s8bgsVk9Xp/status/1823645373308535190
-E00436,2024-08-15,2024-08-15,417,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1823994863806828636,https://x.com/Un4v5s8bgsVk9Xp/status/1823994863806828636
+E00425,2024-08-02,2024-08-02,417,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1819282115009380402,https://x.com/Un4v5s8bgsVk9Xp/status/1819282115009380402
+E00426,2024-08-03,2024-08-03,417,page_completed,,,,3,1,,,,image_transcription,high,chapter via reviewer_anchor,1819645880905224671,https://x.com/Un4v5s8bgsVk9Xp/status/1819645880905224671
+E00427,2024-08-04,2024-08-04,417,page_completed,,,,4,1,,,,image_transcription,medium,chapter via cycle_anchor,1820007259818352688,https://x.com/Un4v5s8bgsVk9Xp/status/1820007259818352688
+E00428,2024-08-05,2024-08-05,417,page_completed,,,,5 6,2,,,,image_transcription,high,chapter via reviewer_anchor,1820380125768331689,https://x.com/Un4v5s8bgsVk9Xp/status/1820380125768331689
+E00429,2024-08-06,2024-08-06,417,page_completed,,,,7 8,2,,,,image_transcription,high,chapter via reviewer_anchor,1820754308746600934,https://x.com/Un4v5s8bgsVk9Xp/status/1820754308746600934
+E00430,2024-08-07,2024-08-07,417,page_completed,,,,9 10,2,,,,image_transcription,medium,chapter via cycle_anchor,1821094894129307742,https://x.com/Un4v5s8bgsVk9Xp/status/1821094894129307742
+E00431,2024-08-08,2024-08-08,417,page_completed,,,,11,1,,,,image_transcription,medium,chapter via cycle_anchor,1821474816077254935,https://x.com/Un4v5s8bgsVk9Xp/status/1821474816077254935
+E00432,2024-08-09,2024-08-09,417,page_completed,,,,12,1,,,,image_transcription,medium,chapter via cycle_anchor,1821819211624391128,https://x.com/Un4v5s8bgsVk9Xp/status/1821819211624391128
+E00433,2024-08-10,2024-08-10,417,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1822190708452893045,https://x.com/Un4v5s8bgsVk9Xp/status/1822190708452893045
+E00434,2024-08-11,2024-08-11,417,page_completed,,,,14,1,,,,image_transcription,high,chapter via reviewer_anchor,1822565040462942210,https://x.com/Un4v5s8bgsVk9Xp/status/1822565040462942210
+E00435,2024-08-13,2024-08-13,417,page_completed,,,,16,1,,,,image_transcription,high,chapter via reviewer_anchor,1823271123489812566,https://x.com/Un4v5s8bgsVk9Xp/status/1823271123489812566
+E00436,2024-08-14,2024-08-14,417,page_completed,,,,17,1,,,,image_transcription,medium,chapter via cycle_anchor,1823645373308535190,https://x.com/Un4v5s8bgsVk9Xp/status/1823645373308535190
+E00437,2024-08-15,2024-08-15,417,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1823994863806828636,https://x.com/Un4v5s8bgsVk9Xp/status/1823994863806828636
 E00159,2024-08-16,2024-08-16T10:49:38.961000+00:00,417,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1824398106655342705,https://x.com/Un4v5s8bgsVk9Xp/status/1824398106655342705
 E00160,2024-08-17,2024-08-17T10:23:15.869000+00:00,418,chapter_stage,character_inking,started,,,,,,ペン入れ開始。,text_explicit,high,,1824753854551920752,https://x.com/Un4v5s8bgsVk9Xp/status/1824753854551920752
-E00437,2024-08-18,2024-08-18,418,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1825081134868283791,https://x.com/Un4v5s8bgsVk9Xp/status/1825081134868283791
-E00438,2024-08-19,2024-08-19,418,page_completed,,,,3 4,2,,,,image_transcription,medium,chapter via cycle_anchor,1825492550997934220,https://x.com/Un4v5s8bgsVk9Xp/status/1825492550997934220
-E00439,2024-08-20,2024-08-20,418,page_completed,,,,5 6,2,,,,image_transcription,high,chapter via reviewer_anchor,1825809560046809595,https://x.com/Un4v5s8bgsVk9Xp/status/1825809560046809595
-E00440,2024-08-21,2024-08-21,418,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1826169801531863275,https://x.com/Un4v5s8bgsVk9Xp/status/1826169801531863275
-E00441,2024-08-22,2024-08-22,418,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1826540225738539468,https://x.com/Un4v5s8bgsVk9Xp/status/1826540225738539468
-E00442,2024-08-23,2024-08-23,418,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1826892826421989629,https://x.com/Un4v5s8bgsVk9Xp/status/1826892826421989629
-E00443,2024-08-24,2024-08-24,418,page_completed,,,,10,1,,,,image_transcription,medium,chapter via cycle_anchor,1827297359690395824,https://x.com/Un4v5s8bgsVk9Xp/status/1827297359690395824
-E00444,2024-08-25,2024-08-25,418,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1827619471848304826,https://x.com/Un4v5s8bgsVk9Xp/status/1827619471848304826
-E00445,2024-08-26,2024-08-26,418,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1827981905326977056,https://x.com/Un4v5s8bgsVk9Xp/status/1827981905326977056
-E00446,2024-08-27,2024-08-27,418,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1828342600266649952,https://x.com/Un4v5s8bgsVk9Xp/status/1828342600266649952
+E00438,2024-08-18,2024-08-18,418,page_completed,,,,2,1,,,,image_transcription,high,chapter via reviewer_anchor,1825081134868283791,https://x.com/Un4v5s8bgsVk9Xp/status/1825081134868283791
+E00439,2024-08-19,2024-08-19,418,page_completed,,,,3 4,2,,,,image_transcription,medium,chapter via cycle_anchor,1825492550997934220,https://x.com/Un4v5s8bgsVk9Xp/status/1825492550997934220
+E00440,2024-08-20,2024-08-20,418,page_completed,,,,5 6,2,,,,image_transcription,high,chapter via reviewer_anchor,1825809560046809595,https://x.com/Un4v5s8bgsVk9Xp/status/1825809560046809595
+E00441,2024-08-21,2024-08-21,418,page_completed,,,,7,1,,,,image_transcription,high,chapter via reviewer_anchor,1826169801531863275,https://x.com/Un4v5s8bgsVk9Xp/status/1826169801531863275
+E00442,2024-08-22,2024-08-22,418,page_completed,,,,8,1,,,,image_transcription,high,chapter via reviewer_anchor,1826540225738539468,https://x.com/Un4v5s8bgsVk9Xp/status/1826540225738539468
+E00443,2024-08-23,2024-08-23,418,page_completed,,,,9,1,,,,image_transcription,high,chapter via reviewer_anchor,1826892826421989629,https://x.com/Un4v5s8bgsVk9Xp/status/1826892826421989629
+E00444,2024-08-24,2024-08-24,418,page_completed,,,,10,1,,,,image_transcription,medium,chapter via cycle_anchor,1827297359690395824,https://x.com/Un4v5s8bgsVk9Xp/status/1827297359690395824
+E00445,2024-08-25,2024-08-25,418,page_completed,,,,11,1,,,,image_transcription,high,chapter via reviewer_anchor,1827619471848304826,https://x.com/Un4v5s8bgsVk9Xp/status/1827619471848304826
+E00446,2024-08-26,2024-08-26,418,page_completed,,,,12,1,,,,image_transcription,high,chapter via reviewer_anchor,1827981905326977056,https://x.com/Un4v5s8bgsVk9Xp/status/1827981905326977056
+E00447,2024-08-27,2024-08-27,418,page_completed,,,,13,1,,,,image_transcription,high,chapter via reviewer_anchor,1828342600266649952,https://x.com/Un4v5s8bgsVk9Xp/status/1828342600266649952
 E00161,2024-08-28,2024-08-28T08:20:10.583000+00:00,,ancillary_work,,,colour_illustration,,,,,カラーは途中。,text_explicit,high,,1828709144938909918,https://x.com/Un4v5s8bgsVk9Xp/status/1828709144938909918
 E00162,2024-08-31,2024-08-31T11:02:10.951000+00:00,,disruption,,,health,,,,,施術してもらい、だいぶ回復。,text_explicit,high,,1829837078714024304,https://x.com/Un4v5s8bgsVk9Xp/status/1829837078714024304
 E00163,2024-08-31,2024-08-31T11:02:10.951000+00:00,,ancillary_work,,,colour_illustration,,,,,どうやらカラー制作中の姿勢が,text_explicit,high,,1829837078714024304,https://x.com/Un4v5s8bgsVk9Xp/status/1829837078714024304
@@ -342,70 +342,70 @@ E00166,2024-09-01,2024-09-01T11:07:02.710000+00:00,,ancillary_work,,,colour_illu
 E00167,2024-09-02,2024-09-02T09:39:59.985000+00:00,,ancillary_work,,,colour_illustration,,,,,頼りなく崩れそうな感覚のなかカラーを,text_explicit,high,,1830541172475043912,https://x.com/Un4v5s8bgsVk9Xp/status/1830541172475043912
 E00168,2024-09-03,2024-09-03T09:27:37.718000+00:00,,ancillary_work,,,colour_illustration,,,,,カラー原稿を渡せました。,text_explicit,high,,1830900447047037252,https://x.com/Un4v5s8bgsVk9Xp/status/1830900447047037252
 E00169,2024-09-04,2024-09-04T14:58:15.160000+00:00,,batch_scope,name,,,,,,1,もう1話分ネームが上がり、,text_explicit,high,,1831346039175188725,https://x.com/Un4v5s8bgsVk9Xp/status/1831346039175188725
-E00447,2024-09-05,2024-09-05,418,page_completed,,,,15,1,,,,image_transcription,medium,chapter via cycle_anchor,1831648845610283430,https://x.com/Un4v5s8bgsVk9Xp/status/1831648845610283430
-E00448,2024-09-06,2024-09-06,418,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1831980618533732490,https://x.com/Un4v5s8bgsVk9Xp/status/1831980618533732490
-E00449,2024-09-07,2024-09-07,418,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1832380555985646004,https://x.com/Un4v5s8bgsVk9Xp/status/1832380555985646004
+E00448,2024-09-05,2024-09-05,418,page_completed,,,,15,1,,,,image_transcription,medium,chapter via cycle_anchor,1831648845610283430,https://x.com/Un4v5s8bgsVk9Xp/status/1831648845610283430
+E00449,2024-09-06,2024-09-06,418,page_completed,,,,16 17,2,,,,image_transcription,high,chapter via reviewer_anchor,1831980618533732490,https://x.com/Un4v5s8bgsVk9Xp/status/1831980618533732490
+E00450,2024-09-07,2024-09-07,418,page_completed,,,,18,1,,,,image_transcription,high,chapter via reviewer_anchor,1832380555985646004,https://x.com/Un4v5s8bgsVk9Xp/status/1832380555985646004
 E00170,2024-09-08,2024-09-08T10:03:32.351000+00:00,418,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1832721423561060572,https://x.com/Un4v5s8bgsVk9Xp/status/1832721423561060572
 E00171,2024-09-09,2024-09-09T08:16:12.517000+00:00,419,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1833056800805151041,https://x.com/Un4v5s8bgsVk9Xp/status/1833056800805151041
-E00450,2024-09-10,2024-09-10,419,page_completed,,,,2,1,,,,inferred,medium,chapter via enumerated,1833426874980306991,https://x.com/Un4v5s8bgsVk9Xp/status/1833426874980306991
-E00451,2024-09-12,2024-09-12,419,page_completed,,,,4,1,,,,inferred,medium,chapter via enumerated,1834174699338858589,https://x.com/Un4v5s8bgsVk9Xp/status/1834174699338858589
-E00452,2024-09-13,2024-09-13,419,page_completed,,,,5,1,,,,inferred,medium,chapter via enumerated,1834532700780429764,https://x.com/Un4v5s8bgsVk9Xp/status/1834532700780429764
-E00453,2024-09-14,2024-09-14,419,page_completed,,,,6,1,,,,inferred,medium,chapter via enumerated,1834886992758555072,https://x.com/Un4v5s8bgsVk9Xp/status/1834886992758555072
-E00454,2024-09-15,2024-09-15,419,page_completed,,,,7,1,,,,inferred,medium,chapter via enumerated,1835237596362060120,https://x.com/Un4v5s8bgsVk9Xp/status/1835237596362060120
-E00455,2024-09-16,2024-09-16,419,page_completed,,,,8 9,2,,,,inferred,medium,chapter via enumerated,1835590695081427080,https://x.com/Un4v5s8bgsVk9Xp/status/1835590695081427080
-E00456,2024-09-18,2024-09-18,419,page_completed,,,,12,1,,,,inferred,medium,chapter via enumerated,1836344533979926813,https://x.com/Un4v5s8bgsVk9Xp/status/1836344533979926813
-E00457,2024-09-19,2024-09-19,419,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1836677429173325882,https://x.com/Un4v5s8bgsVk9Xp/status/1836677429173325882
+E00451,2024-09-10,2024-09-10,419,page_completed,,,,2,1,,,,inferred,medium,chapter via enumerated,1833426874980306991,https://x.com/Un4v5s8bgsVk9Xp/status/1833426874980306991
+E00452,2024-09-12,2024-09-12,419,page_completed,,,,4,1,,,,inferred,medium,chapter via enumerated,1834174699338858589,https://x.com/Un4v5s8bgsVk9Xp/status/1834174699338858589
+E00453,2024-09-13,2024-09-13,419,page_completed,,,,5,1,,,,inferred,medium,chapter via enumerated,1834532700780429764,https://x.com/Un4v5s8bgsVk9Xp/status/1834532700780429764
+E00454,2024-09-14,2024-09-14,419,page_completed,,,,6,1,,,,inferred,medium,chapter via enumerated,1834886992758555072,https://x.com/Un4v5s8bgsVk9Xp/status/1834886992758555072
+E00455,2024-09-15,2024-09-15,419,page_completed,,,,7,1,,,,inferred,medium,chapter via enumerated,1835237596362060120,https://x.com/Un4v5s8bgsVk9Xp/status/1835237596362060120
+E00456,2024-09-16,2024-09-16,419,page_completed,,,,8 9,2,,,,inferred,medium,chapter via enumerated,1835590695081427080,https://x.com/Un4v5s8bgsVk9Xp/status/1835590695081427080
+E00457,2024-09-18,2024-09-18,419,page_completed,,,,12,1,,,,inferred,medium,chapter via enumerated,1836344533979926813,https://x.com/Un4v5s8bgsVk9Xp/status/1836344533979926813
+E00458,2024-09-19,2024-09-19,419,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1836677429173325882,https://x.com/Un4v5s8bgsVk9Xp/status/1836677429173325882
 E00172,2024-09-21,2024-09-21T02:29:48.272000+00:00,,disruption,,,workspace,,,,,仕事場が綺麗になりました。,text_explicit,high,,1837318279750373841,https://x.com/Un4v5s8bgsVk9Xp/status/1837318279750373841
 E00173,2024-09-22,2024-09-22T10:34:11.170000+00:00,419,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1837802566245400912,https://x.com/Un4v5s8bgsVk9Xp/status/1837802566245400912
 E00174,2024-09-23,2024-09-23T08:05:58.472000+00:00,420,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1838127655432184208,https://x.com/Un4v5s8bgsVk9Xp/status/1838127655432184208
 E00175,2024-09-24,2024-09-24T08:03:12.081000+00:00,405,chapter_stage,retouch,complete,,,,,,加筆終了、完成。,text_explicit,high,,1838489345403330861,https://x.com/Un4v5s8bgsVk9Xp/status/1838489345403330861
-E00458,2024-09-25,2024-09-25,420,page_completed,,,,6 7 8,3,,,,inferred,medium,chapter via enumerated,1838851210801246321,https://x.com/Un4v5s8bgsVk9Xp/status/1838851210801246321
-E00459,2024-09-26,2024-09-26,420,page_completed,,,,9 10 11,3,,,,inferred,medium,chapter via enumerated,1839217283606131150,https://x.com/Un4v5s8bgsVk9Xp/status/1839217283606131150
-E00460,2024-09-27,2024-09-27,420,page_completed,,,,12 13 14,3,,,,inferred,medium,chapter via enumerated,1839602562120712194,https://x.com/Un4v5s8bgsVk9Xp/status/1839602562120712194
-E00461,2024-09-28,2024-09-28,420,page_completed,,,,15 16 17,3,,,,inferred,medium,chapter via enumerated,1839938838791368773,https://x.com/Un4v5s8bgsVk9Xp/status/1839938838791368773
+E00459,2024-09-25,2024-09-25,420,page_completed,,,,6 7 8,3,,,,inferred,medium,chapter via enumerated,1838851210801246321,https://x.com/Un4v5s8bgsVk9Xp/status/1838851210801246321
+E00460,2024-09-26,2024-09-26,420,page_completed,,,,9 10 11,3,,,,inferred,medium,chapter via enumerated,1839217283606131150,https://x.com/Un4v5s8bgsVk9Xp/status/1839217283606131150
+E00461,2024-09-27,2024-09-27,420,page_completed,,,,12 13 14,3,,,,inferred,medium,chapter via enumerated,1839602562120712194,https://x.com/Un4v5s8bgsVk9Xp/status/1839602562120712194
+E00462,2024-09-28,2024-09-28,420,page_completed,,,,15 16 17,3,,,,inferred,medium,chapter via enumerated,1839938838791368773,https://x.com/Un4v5s8bgsVk9Xp/status/1839938838791368773
 E00176,2024-09-29,2024-09-29T13:36:45.735000+00:00,420,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1840385228080046407,https://x.com/Un4v5s8bgsVk9Xp/status/1840385228080046407
 E00177,2024-09-29,2024-09-29T13:36:45.735000+00:00,,batch_scope,,,,,,,20,未掲載の20話分まで人物が,text_explicit,high,,1840385228080046407,https://x.com/Un4v5s8bgsVk9Xp/status/1840385228080046407
 E00178,2024-09-29,2024-09-29T13:36:45.735000+00:00,,batch_countdown,,,,,,10,,年内にあと10話分のペン入れ完了が,text_explicit,high,,1840385228080046407,https://x.com/Un4v5s8bgsVk9Xp/status/1840385228080046407
 E00179,2024-09-29,2024-09-29T13:36:45.735000+00:00,,batch_scope,character_inking,,,,,,10,年内にあと10話分のペン入れ完了が,text_explicit,high,,1840385228080046407,https://x.com/Un4v5s8bgsVk9Xp/status/1840385228080046407
 E00180,2024-09-30,2024-09-30T10:37:52.312000+00:00,421,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1840702596706898044,https://x.com/Un4v5s8bgsVk9Xp/status/1840702596706898044
-E00462,2024-10-01,2024-10-01,421,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1841074277870944293,https://x.com/Un4v5s8bgsVk9Xp/status/1841074277870944293
-E00463,2024-10-02,2024-10-02,421,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1841427298068930625,https://x.com/Un4v5s8bgsVk9Xp/status/1841427298068930625
-E00464,2024-10-03,2024-10-03,421,page_completed,,,,7 8,2,,,,inferred,medium,chapter via enumerated,1841771494793216024,https://x.com/Un4v5s8bgsVk9Xp/status/1841771494793216024
-E00465,2024-10-04,2024-10-04,421,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1842182988823699493,https://x.com/Un4v5s8bgsVk9Xp/status/1842182988823699493
-E00466,2024-10-05,2024-10-05,421,page_completed,,,,11,1,,,,inferred,medium,chapter via enumerated,1842526216286572951,https://x.com/Un4v5s8bgsVk9Xp/status/1842526216286572951
-E00467,2024-10-06,2024-10-06,421,page_completed,,,,12 13,2,,,,inferred,medium,chapter via enumerated,1842846392790000107,https://x.com/Un4v5s8bgsVk9Xp/status/1842846392790000107
-E00468,2024-10-07,2024-10-07,421,page_completed,,,,14 15,2,,,,inferred,medium,chapter via enumerated,1843201422437028274,https://x.com/Un4v5s8bgsVk9Xp/status/1843201422437028274
-E00469,2024-10-08,2024-10-08,421,page_completed,,,,16 17,2,,,,inferred,medium,chapter via enumerated,1843568558225404363,https://x.com/Un4v5s8bgsVk9Xp/status/1843568558225404363
+E00463,2024-10-01,2024-10-01,421,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1841074277870944293,https://x.com/Un4v5s8bgsVk9Xp/status/1841074277870944293
+E00464,2024-10-02,2024-10-02,421,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1841427298068930625,https://x.com/Un4v5s8bgsVk9Xp/status/1841427298068930625
+E00465,2024-10-03,2024-10-03,421,page_completed,,,,7 8,2,,,,inferred,medium,chapter via enumerated,1841771494793216024,https://x.com/Un4v5s8bgsVk9Xp/status/1841771494793216024
+E00466,2024-10-04,2024-10-04,421,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1842182988823699493,https://x.com/Un4v5s8bgsVk9Xp/status/1842182988823699493
+E00467,2024-10-05,2024-10-05,421,page_completed,,,,11,1,,,,inferred,medium,chapter via enumerated,1842526216286572951,https://x.com/Un4v5s8bgsVk9Xp/status/1842526216286572951
+E00468,2024-10-06,2024-10-06,421,page_completed,,,,12 13,2,,,,inferred,medium,chapter via enumerated,1842846392790000107,https://x.com/Un4v5s8bgsVk9Xp/status/1842846392790000107
+E00469,2024-10-07,2024-10-07,421,page_completed,,,,14 15,2,,,,inferred,medium,chapter via enumerated,1843201422437028274,https://x.com/Un4v5s8bgsVk9Xp/status/1843201422437028274
+E00470,2024-10-08,2024-10-08,421,page_completed,,,,16 17,2,,,,inferred,medium,chapter via enumerated,1843568558225404363,https://x.com/Un4v5s8bgsVk9Xp/status/1843568558225404363
 E00181,2024-10-09,2024-10-09T09:48:23.991000+00:00,421,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1843951637456625696,https://x.com/Un4v5s8bgsVk9Xp/status/1843951637456625696
 E00182,2024-10-10,2024-10-10T11:14:08.899000+00:00,422,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始です。,text_explicit,high,,1844335604630495410,https://x.com/Un4v5s8bgsVk9Xp/status/1844335604630495410
-E00470,2024-10-10,2024-10-10,422,page_completed,,,,1 2,2,,,,inferred,medium,chapter via enumerated,1844302318327759090,https://x.com/Un4v5s8bgsVk9Xp/status/1844302318327759090
-E00471,2024-10-11,2024-10-11,422,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1844660092039569635,https://x.com/Un4v5s8bgsVk9Xp/status/1844660092039569635
-E00472,2024-10-12,2024-10-12,422,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1845098019890586057,https://x.com/Un4v5s8bgsVk9Xp/status/1845098019890586057
-E00473,2024-10-14,2024-10-14,422,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1845749854292840874,https://x.com/Un4v5s8bgsVk9Xp/status/1845749854292840874
-E00474,2024-10-15,2024-10-15,422,page_completed,,,,11 12,2,,,,inferred,medium,chapter via enumerated,1846118283449446869,https://x.com/Un4v5s8bgsVk9Xp/status/1846118283449446869
-E00475,2024-10-16,2024-10-16,422,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1846466366150529357,https://x.com/Un4v5s8bgsVk9Xp/status/1846466366150529357
-E00476,2024-10-17,2024-10-17,422,page_completed,,,,15 16,2,,,,inferred,medium,chapter via enumerated,1846836490732818622,https://x.com/Un4v5s8bgsVk9Xp/status/1846836490732818622
-E00477,2024-10-18,2024-10-18,422,page_completed,,,,17 18,2,,,,inferred,medium,chapter via enumerated,1847277399219802336,https://x.com/Un4v5s8bgsVk9Xp/status/1847277399219802336
+E00471,2024-10-10,2024-10-10,422,page_completed,,,,1 2,2,,,,inferred,medium,chapter via enumerated,1844302318327759090,https://x.com/Un4v5s8bgsVk9Xp/status/1844302318327759090
+E00472,2024-10-11,2024-10-11,422,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1844660092039569635,https://x.com/Un4v5s8bgsVk9Xp/status/1844660092039569635
+E00473,2024-10-12,2024-10-12,422,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1845098019890586057,https://x.com/Un4v5s8bgsVk9Xp/status/1845098019890586057
+E00474,2024-10-14,2024-10-14,422,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1845749854292840874,https://x.com/Un4v5s8bgsVk9Xp/status/1845749854292840874
+E00475,2024-10-15,2024-10-15,422,page_completed,,,,11 12,2,,,,inferred,medium,chapter via enumerated,1846118283449446869,https://x.com/Un4v5s8bgsVk9Xp/status/1846118283449446869
+E00476,2024-10-16,2024-10-16,422,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1846466366150529357,https://x.com/Un4v5s8bgsVk9Xp/status/1846466366150529357
+E00477,2024-10-17,2024-10-17,422,page_completed,,,,15 16,2,,,,inferred,medium,chapter via enumerated,1846836490732818622,https://x.com/Un4v5s8bgsVk9Xp/status/1846836490732818622
+E00478,2024-10-18,2024-10-18,422,page_completed,,,,17 18,2,,,,inferred,medium,chapter via enumerated,1847277399219802336,https://x.com/Un4v5s8bgsVk9Xp/status/1847277399219802336
 E00183,2024-10-19,2024-10-19T09:06:52.471000+00:00,422,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1847565065920434615,https://x.com/Un4v5s8bgsVk9Xp/status/1847565065920434615
 E00184,2024-10-19,2024-10-19T09:06:52.471000+00:00,423,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1847565065920434615,https://x.com/Un4v5s8bgsVk9Xp/status/1847565065920434615
-E00478,2024-10-20,2024-10-20,423,page_completed,,,,2 3,2,,,,inferred,medium,chapter via enumerated,1847921641529225252,https://x.com/Un4v5s8bgsVk9Xp/status/1847921641529225252
-E00479,2024-10-21,2024-10-21,423,page_completed,,,,4 5,2,,,,inferred,medium,chapter via enumerated,1848276953876631635,https://x.com/Un4v5s8bgsVk9Xp/status/1848276953876631635
-E00480,2024-10-23,2024-10-23,423,page_completed,,,,8 9,2,,,,inferred,medium,chapter via enumerated,1849027649039188449,https://x.com/Un4v5s8bgsVk9Xp/status/1849027649039188449
+E00479,2024-10-20,2024-10-20,423,page_completed,,,,2 3,2,,,,inferred,medium,chapter via enumerated,1847921641529225252,https://x.com/Un4v5s8bgsVk9Xp/status/1847921641529225252
+E00480,2024-10-21,2024-10-21,423,page_completed,,,,4 5,2,,,,inferred,medium,chapter via enumerated,1848276953876631635,https://x.com/Un4v5s8bgsVk9Xp/status/1848276953876631635
+E00481,2024-10-23,2024-10-23,423,page_completed,,,,8 9,2,,,,inferred,medium,chapter via enumerated,1849027649039188449,https://x.com/Un4v5s8bgsVk9Xp/status/1849027649039188449
 E00185,2024-10-24,2024-10-24T19:14:50.610000+00:00,406,chapter_stage,retouch,complete,,,,,,加筆終了。完成。,text_explicit,high,,1849530005652652319,https://x.com/Un4v5s8bgsVk9Xp/status/1849530005652652319
-E00481,2024-10-24,2024-10-24,423,page_completed,,,,10 11,2,,,,inferred,medium,chapter via enumerated,1849380852440215626,https://x.com/Un4v5s8bgsVk9Xp/status/1849380852440215626
+E00482,2024-10-24,2024-10-24,423,page_completed,,,,10 11,2,,,,inferred,medium,chapter via enumerated,1849380852440215626,https://x.com/Un4v5s8bgsVk9Xp/status/1849380852440215626
 E00186,2024-10-25,2024-10-25T00:35:29.330000+00:00,407,chapter_stage,retouch,complete,,,,,,加筆終了。完成。,text_explicit,high,,1849610698692886537,https://x.com/Un4v5s8bgsVk9Xp/status/1849610698692886537
-E00482,2024-10-25,2024-10-25,423,page_completed,,,,12 13,2,,,,inferred,medium,chapter via enumerated,1849740459159191597,https://x.com/Un4v5s8bgsVk9Xp/status/1849740459159191597
-E00483,2024-10-26,2024-10-26,423,page_completed,,,,14 15,2,,,,inferred,medium,chapter via enumerated,1850136722241425490,https://x.com/Un4v5s8bgsVk9Xp/status/1850136722241425490
-E00484,2024-10-27,2024-10-27,423,page_completed,,,,16 17,2,,,,inferred,medium,chapter via enumerated,1850465656988475814,https://x.com/Un4v5s8bgsVk9Xp/status/1850465656988475814
+E00483,2024-10-25,2024-10-25,423,page_completed,,,,12 13,2,,,,inferred,medium,chapter via enumerated,1849740459159191597,https://x.com/Un4v5s8bgsVk9Xp/status/1849740459159191597
+E00484,2024-10-26,2024-10-26,423,page_completed,,,,14 15,2,,,,inferred,medium,chapter via enumerated,1850136722241425490,https://x.com/Un4v5s8bgsVk9Xp/status/1850136722241425490
+E00485,2024-10-27,2024-10-27,423,page_completed,,,,16 17,2,,,,inferred,medium,chapter via enumerated,1850465656988475814,https://x.com/Un4v5s8bgsVk9Xp/status/1850465656988475814
 E00187,2024-10-28,2024-10-28T08:37:20.303000+00:00,423,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1850819123699401039,https://x.com/Un4v5s8bgsVk9Xp/status/1850819123699401039
 E00188,2024-10-29,2024-10-29T10:30:13.451000+00:00,424,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,1851209920206815281,https://x.com/Un4v5s8bgsVk9Xp/status/1851209920206815281
-E00485,2024-10-30,2024-10-30,424,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1851536123706941636,https://x.com/Un4v5s8bgsVk9Xp/status/1851536123706941636
-E00486,2024-10-31,2024-10-31,424,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1851926903923577299,https://x.com/Un4v5s8bgsVk9Xp/status/1851926903923577299
-E00487,2024-11-01,2024-11-01,424,page_completed,,,,7 8,2,,,,inferred,medium,chapter via enumerated,1852330736583692500,https://x.com/Un4v5s8bgsVk9Xp/status/1852330736583692500
-E00488,2024-11-02,2024-11-02,424,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1852646493074702518,https://x.com/Un4v5s8bgsVk9Xp/status/1852646493074702518
-E00489,2024-11-03,2024-11-03,424,page_completed,,,,11 12,2,,,,inferred,medium,chapter via enumerated,1853010843467960685,https://x.com/Un4v5s8bgsVk9Xp/status/1853010843467960685
-E00490,2024-11-04,2024-11-04,424,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1853392073246011796,https://x.com/Un4v5s8bgsVk9Xp/status/1853392073246011796
-E00491,2024-11-05,2024-11-05,424,page_completed,,,,15 16,2,,,,inferred,medium,chapter via enumerated,1853779871308411363,https://x.com/Un4v5s8bgsVk9Xp/status/1853779871308411363
+E00486,2024-10-30,2024-10-30,424,page_completed,,,,3 4,2,,,,inferred,medium,chapter via enumerated,1851536123706941636,https://x.com/Un4v5s8bgsVk9Xp/status/1851536123706941636
+E00487,2024-10-31,2024-10-31,424,page_completed,,,,5 6,2,,,,inferred,medium,chapter via enumerated,1851926903923577299,https://x.com/Un4v5s8bgsVk9Xp/status/1851926903923577299
+E00488,2024-11-01,2024-11-01,424,page_completed,,,,7 8,2,,,,inferred,medium,chapter via enumerated,1852330736583692500,https://x.com/Un4v5s8bgsVk9Xp/status/1852330736583692500
+E00489,2024-11-02,2024-11-02,424,page_completed,,,,9 10,2,,,,inferred,medium,chapter via enumerated,1852646493074702518,https://x.com/Un4v5s8bgsVk9Xp/status/1852646493074702518
+E00490,2024-11-03,2024-11-03,424,page_completed,,,,11 12,2,,,,inferred,medium,chapter via enumerated,1853010843467960685,https://x.com/Un4v5s8bgsVk9Xp/status/1853010843467960685
+E00491,2024-11-04,2024-11-04,424,page_completed,,,,13 14,2,,,,inferred,medium,chapter via enumerated,1853392073246011796,https://x.com/Un4v5s8bgsVk9Xp/status/1853392073246011796
+E00492,2024-11-05,2024-11-05,424,page_completed,,,,15 16,2,,,,inferred,medium,chapter via enumerated,1853779871308411363,https://x.com/Un4v5s8bgsVk9Xp/status/1853779871308411363
 E00189,2024-11-08,2024-11-08T20:47:23.712000+00:00,408,chapter_stage,retouch,complete,,,,,,加筆完了。修正指定書作成完了。,text_explicit,high,multi-stage phrase,1854989115034681390,https://x.com/Un4v5s8bgsVk9Xp/status/1854989115034681390
 E00190,2024-11-08,2024-11-08T20:47:23.712000+00:00,408,chapter_stage,bg_spec,complete,,,,,,加筆完了。修正指定書作成完了。,text_explicit,high,multi-stage phrase,1854989115034681390,https://x.com/Un4v5s8bgsVk9Xp/status/1854989115034681390
 E00191,2024-11-08,2024-11-08T20:47:23.712000+00:00,424,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1854989115034681390,https://x.com/Un4v5s8bgsVk9Xp/status/1854989115034681390
@@ -439,48 +439,48 @@ E00218,2025-09-02,2025-09-02T20:32:40.733000+00:00,417,chapter_stage,bg_spec,com
 E00219,2025-09-03,2025-09-03T22:37:47.926000+00:00,418,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,1963370870816346599,https://x.com/Un4v5s8bgsVk9Xp/status/1963370870816346599
 E00220,2025-09-10,2025-09-10T06:33:13.350000+00:00,419,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,1965664842309906743,https://x.com/Un4v5s8bgsVk9Xp/status/1965664842309906743
 E00221,2025-10-06,2025-10-06T12:36:56.937000+00:00,420,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,1975178461573718506,https://x.com/Un4v5s8bgsVk9Xp/status/1975178461573718506
-E00245,2025-10-07,2025-10-07,414,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1975659435868758215,https://x.com/Un4v5s8bgsVk9Xp/status/1975659435868758215
-E00246,2025-10-08,2025-10-08,415,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了,image_transcription,high,,1975887096029348124,https://x.com/Un4v5s8bgsVk9Xp/status/1975887096029348124
-E00247,2025-10-09,2025-10-09,417,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了,image_transcription,high,,1976303383805092095,https://x.com/Un4v5s8bgsVk9Xp/status/1976303383805092095
-E00248,2025-10-09,2025-10-09,416,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1976212321283485898,https://x.com/Un4v5s8bgsVk9Xp/status/1976212321283485898
-E00249,2025-10-10,2025-10-10,418,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1976594157939638610,https://x.com/Un4v5s8bgsVk9Xp/status/1976594157939638610
-E00250,2025-10-11,2025-10-11,420,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,image_transcription,high,,1977033686664331359,https://x.com/Un4v5s8bgsVk9Xp/status/1977033686664331359
-E00251,2025-10-11,2025-10-11,,batch_scope,dialogue,,,,,,10,台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,image_transcription,high,,1977033686664331359,https://x.com/Un4v5s8bgsVk9Xp/status/1977033686664331359
+E00246,2025-10-07,2025-10-07,414,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1975659435868758215,https://x.com/Un4v5s8bgsVk9Xp/status/1975659435868758215
+E00247,2025-10-08,2025-10-08,415,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了,image_transcription,high,,1975887096029348124,https://x.com/Un4v5s8bgsVk9Xp/status/1975887096029348124
+E00248,2025-10-09,2025-10-09,417,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了,image_transcription,high,,1976303383805092095,https://x.com/Un4v5s8bgsVk9Xp/status/1976303383805092095
+E00249,2025-10-09,2025-10-09,416,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1976212321283485898,https://x.com/Un4v5s8bgsVk9Xp/status/1976212321283485898
+E00250,2025-10-10,2025-10-10,418,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了!,image_transcription,high,,1976594157939638610,https://x.com/Un4v5s8bgsVk9Xp/status/1976594157939638610
+E00251,2025-10-11,2025-10-11,420,chapter_stage,dialogue,complete,,,,,,台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,image_transcription,high,,1977033686664331359,https://x.com/Un4v5s8bgsVk9Xp/status/1977033686664331359
+E00252,2025-10-11,2025-10-11,,batch_scope,dialogue,,,,,,10,台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,image_transcription,high,,1977033686664331359,https://x.com/Un4v5s8bgsVk9Xp/status/1977033686664331359
 E00222,2025-10-12,2025-10-12T09:52:22.885000+00:00,424,chapter_stage,chapter_level,in_progress,,,,,,の原稿捜索中。,text_explicit,high,"bare status, scoped to chapter",1977311373991522504,https://x.com/Un4v5s8bgsVk9Xp/status/1977311373991522504
 E00223,2025-10-12,2025-10-12T09:52:22.885000+00:00,,disruption,,,lost_manuscript,,,,,の原稿捜索中。,text_explicit,high,,1977311373991522504,https://x.com/Un4v5s8bgsVk9Xp/status/1977311373991522504
-E00492,2025-10-15,2025-10-15,425,page_completed,,,,2,1,,,,inferred,medium,chapter via enumerated,1978401791663390746,https://x.com/Un4v5s8bgsVk9Xp/status/1978401791663390746
-E00493,2025-10-16,2025-10-16,425,page_completed,,,,3,1,,,,inferred,medium,chapter via enumerated,1978697089862271029,https://x.com/Un4v5s8bgsVk9Xp/status/1978697089862271029
-E00494,2025-10-17,2025-10-17,425,page_completed,,,,4,1,,,,inferred,medium,chapter via enumerated,1979061149418057774,https://x.com/Un4v5s8bgsVk9Xp/status/1979061149418057774
-E00495,2025-10-19,2025-10-19,425,page_completed,,,,5,1,,,,inferred,medium,chapter via enumerated,1979771078940762586,https://x.com/Un4v5s8bgsVk9Xp/status/1979771078940762586
-E00496,2025-10-23,2025-10-23,425,page_completed,,,,6 7,2,,,,inferred,medium,chapter via enumerated,1981366885301309657,https://x.com/Un4v5s8bgsVk9Xp/status/1981366885301309657
+E00493,2025-10-15,2025-10-15,425,page_completed,,,,2,1,,,,inferred,medium,chapter via enumerated,1978401791663390746,https://x.com/Un4v5s8bgsVk9Xp/status/1978401791663390746
+E00494,2025-10-16,2025-10-16,425,page_completed,,,,3,1,,,,inferred,medium,chapter via enumerated,1978697089862271029,https://x.com/Un4v5s8bgsVk9Xp/status/1978697089862271029
+E00495,2025-10-17,2025-10-17,425,page_completed,,,,4,1,,,,inferred,medium,chapter via enumerated,1979061149418057774,https://x.com/Un4v5s8bgsVk9Xp/status/1979061149418057774
+E00496,2025-10-19,2025-10-19,425,page_completed,,,,5,1,,,,inferred,medium,chapter via enumerated,1979771078940762586,https://x.com/Un4v5s8bgsVk9Xp/status/1979771078940762586
+E00497,2025-10-23,2025-10-23,425,page_completed,,,,6 7,2,,,,inferred,medium,chapter via enumerated,1981366885301309657,https://x.com/Un4v5s8bgsVk9Xp/status/1981366885301309657
 E00224,2025-11-09,2025-11-09T05:07:00.134000+00:00,425,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,1987386416205328741,https://x.com/Un4v5s8bgsVk9Xp/status/1987386416205328741
-E00252,2025-11-10,2025-11-10,426,chapter_stage,character_inking,started,,,,,,ペン入れ 開始!,image_transcription,high,,1987834494318162019,https://x.com/Un4v5s8bgsVk9Xp/status/1987834494318162019
-E00497,2025-11-10,2025-11-10,426,page_completed,,,,1,1,,,No.426 ペン入れ 開始!,inferred,medium,chapter via enumerated,1987834494318162019,https://x.com/Un4v5s8bgsVk9Xp/status/1987834494318162019
+E00253,2025-11-10,2025-11-10,426,chapter_stage,character_inking,started,,,,,,ペン入れ 開始!,image_transcription,high,,1987834494318162019,https://x.com/Un4v5s8bgsVk9Xp/status/1987834494318162019
+E00498,2025-11-10,2025-11-10,426,page_completed,,,,1,1,,,No.426 ペン入れ 開始!,inferred,medium,chapter via enumerated,1987834494318162019,https://x.com/Un4v5s8bgsVk9Xp/status/1987834494318162019
 E00225,2025-11-27,2025-11-27T10:22:12.055000+00:00,,ancillary_work,,,cover,,,,,表紙用カラー完了。,text_explicit,high,,1993988720132018211,https://x.com/Un4v5s8bgsVk9Xp/status/1993988720132018211
 E00226,2025-12-14,2025-12-14T19:28:21.052000+00:00,411,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2000286756982423780,https://x.com/Un4v5s8bgsVk9Xp/status/2000286756982423780
-E00253,2025-12-16,2025-12-16,426,chapter_stage,character_inking,complete,,,,,,人物ペン入れ 完了,image_transcription,high,,2000981302913458294,https://x.com/Un4v5s8bgsVk9Xp/status/2000981302913458294
-E00254,2025-12-27,2025-12-27,412,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2004867336483078549,https://x.com/Un4v5s8bgsVk9Xp/status/2004867336483078549
-E00255,2026-01-13,2026-01-13,413,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2011143493742387642,https://x.com/Un4v5s8bgsVk9Xp/status/2011143493742387642
-E00256,2026-01-14,2026-01-14,414,chapter_stage,manuscript_complete,complete,,,,,,原稿完成!,image_transcription,high,,2011305545647735170,https://x.com/Un4v5s8bgsVk9Xp/status/2011305545647735170
-E00257,2026-01-20,2026-01-20,415,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2013553432829813035,https://x.com/Un4v5s8bgsVk9Xp/status/2013553432829813035
-E00258,2026-01-23,2026-01-23,416,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2014782311775236214,https://x.com/Un4v5s8bgsVk9Xp/status/2014782311775236214
-E00259,2026-01-23,2026-01-23,427,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,image_transcription,high,,2014789100658950178,https://x.com/Un4v5s8bgsVk9Xp/status/2014789100658950178
-E00260,2026-01-26,2026-01-26,421,chapter_stage,bg_spec,complete,,,,,,背景指定書 作成完了,image_transcription,high,,2015898522009403793,https://x.com/Un4v5s8bgsVk9Xp/status/2015898522009403793
-E00261,2026-01-28,2026-01-28,421,chapter_stage,dialogue,complete,,,,,,表紙用カラーと台詞入れ完了,image_transcription,high,,2016302995970076779,https://x.com/Un4v5s8bgsVk9Xp/status/2016302995970076779
-E00262,2026-01-28,2026-01-28,,ancillary_work,,,cover,,,,,表紙用カラーと台詞入れ完了,image_transcription,high,,2016302995970076779,https://x.com/Un4v5s8bgsVk9Xp/status/2016302995970076779
-E00263,2026-02-05,2026-02-05,417,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2019278910136193215,https://x.com/Un4v5s8bgsVk9Xp/status/2019278910136193215
+E00254,2025-12-16,2025-12-16,426,chapter_stage,character_inking,complete,,,,,,人物ペン入れ 完了,image_transcription,high,,2000981302913458294,https://x.com/Un4v5s8bgsVk9Xp/status/2000981302913458294
+E00255,2025-12-27,2025-12-27,412,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2004867336483078549,https://x.com/Un4v5s8bgsVk9Xp/status/2004867336483078549
+E00256,2026-01-13,2026-01-13,413,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2011143493742387642,https://x.com/Un4v5s8bgsVk9Xp/status/2011143493742387642
+E00257,2026-01-14,2026-01-14,414,chapter_stage,manuscript_complete,complete,,,,,,原稿完成!,image_transcription,high,,2011305545647735170,https://x.com/Un4v5s8bgsVk9Xp/status/2011305545647735170
+E00258,2026-01-20,2026-01-20,415,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2013553432829813035,https://x.com/Un4v5s8bgsVk9Xp/status/2013553432829813035
+E00259,2026-01-23,2026-01-23,416,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2014782311775236214,https://x.com/Un4v5s8bgsVk9Xp/status/2014782311775236214
+E00260,2026-01-23,2026-01-23,427,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,image_transcription,high,,2014789100658950178,https://x.com/Un4v5s8bgsVk9Xp/status/2014789100658950178
+E00261,2026-01-26,2026-01-26,421,chapter_stage,bg_spec,complete,,,,,,背景指定書 作成完了,image_transcription,high,,2015898522009403793,https://x.com/Un4v5s8bgsVk9Xp/status/2015898522009403793
+E00262,2026-01-28,2026-01-28,421,chapter_stage,dialogue,complete,,,,,,表紙用カラーと台詞入れ完了,image_transcription,high,,2016302995970076779,https://x.com/Un4v5s8bgsVk9Xp/status/2016302995970076779
+E00263,2026-01-28,2026-01-28,,ancillary_work,,,cover,,,,,表紙用カラーと台詞入れ完了,image_transcription,high,,2016302995970076779,https://x.com/Un4v5s8bgsVk9Xp/status/2016302995970076779
+E00264,2026-02-05,2026-02-05,417,chapter_stage,manuscript_complete,complete,,,,,,原稿完成,image_transcription,high,,2019278910136193215,https://x.com/Un4v5s8bgsVk9Xp/status/2019278910136193215
 E00227,2026-02-10,2026-02-10T07:35:29.189000+00:00,418,chapter_stage,manuscript_complete,complete,,,,,,話、原稿完成。,text_explicit,high,,2021125854991089993,https://x.com/Un4v5s8bgsVk9Xp/status/2021125854991089993
-E00264,2026-02-16,2026-02-16,428,chapter_stage,character_inking,complete,,,,,,人物ペン入れ 完了,image_transcription,high,,2023496133910425796,https://x.com/Un4v5s8bgsVk9Xp/status/2023496133910425796
+E00265,2026-02-16,2026-02-16,428,chapter_stage,character_inking,complete,,,,,,人物ペン入れ 完了,image_transcription,high,,2023496133910425796,https://x.com/Un4v5s8bgsVk9Xp/status/2023496133910425796
 E00228,2026-02-17,2026-02-17T15:06:24.689000+00:00,419,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2023776049042198535,https://x.com/Un4v5s8bgsVk9Xp/status/2023776049042198535
 E00229,2026-02-24,2026-02-24T09:43:44.972000+00:00,420,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2026231563562983740,https://x.com/Un4v5s8bgsVk9Xp/status/2026231563562983740
-E00265,2026-03-04,2026-03-04,422,chapter_stage,dialogue,complete,,,,,,台詞と背景指定書 作成完了,image_transcription,high,multi-stage phrase,2029207167656706336,https://x.com/Un4v5s8bgsVk9Xp/status/2029207167656706336
-E00266,2026-03-04,2026-03-04,422,chapter_stage,bg_spec,complete,,,,,,台詞と背景指定書 作成完了,image_transcription,high,multi-stage phrase,2029207167656706336,https://x.com/Un4v5s8bgsVk9Xp/status/2029207167656706336
-E00267,2026-03-06,2026-03-06,423,chapter_stage,bg_spec,complete,,,,,,背景指定 完成,image_transcription,high,,2030043233129226406,https://x.com/Un4v5s8bgsVk9Xp/status/2030043233129226406
+E00266,2026-03-04,2026-03-04,422,chapter_stage,dialogue,complete,,,,,,台詞と背景指定書 作成完了,image_transcription,high,multi-stage phrase,2029207167656706336,https://x.com/Un4v5s8bgsVk9Xp/status/2029207167656706336
+E00267,2026-03-04,2026-03-04,422,chapter_stage,bg_spec,complete,,,,,,台詞と背景指定書 作成完了,image_transcription,high,multi-stage phrase,2029207167656706336,https://x.com/Un4v5s8bgsVk9Xp/status/2029207167656706336
+E00268,2026-03-06,2026-03-06,423,chapter_stage,bg_spec,complete,,,,,,背景指定 完成,image_transcription,high,,2030043233129226406,https://x.com/Un4v5s8bgsVk9Xp/status/2030043233129226406
 E00230,2026-03-10,2026-03-10T23:19:34.668000+00:00,424,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,2031510303587053986,https://x.com/Un4v5s8bgsVk9Xp/status/2031510303587053986
-E00268,2026-03-12,2026-03-12,425,chapter_stage,bg_spec,complete,,,,,,背景指定書作成 完了,image_transcription,high,,2032117895745192356,https://x.com/Un4v5s8bgsVk9Xp/status/2032117895745192356
+E00269,2026-03-12,2026-03-12,425,chapter_stage,bg_spec,complete,,,,,,背景指定書作成 完了,image_transcription,high,,2032117895745192356,https://x.com/Un4v5s8bgsVk9Xp/status/2032117895745192356
 E00231,2026-03-13,2026-03-13T13:54:57.957000+00:00,426,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,2032455377959424439,https://x.com/Un4v5s8bgsVk9Xp/status/2032455377959424439
-E00269,2026-03-15,2026-03-15,427,chapter_stage,bg_spec,complete,,,,,,背景指定書 完了,image_transcription,high,,2033276639208153570,https://x.com/Un4v5s8bgsVk9Xp/status/2033276639208153570
-E00270,2026-03-17,2026-03-17,429,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了,image_transcription,high,,2033764977727967457,https://x.com/Un4v5s8bgsVk9Xp/status/2033764977727967457
+E00270,2026-03-15,2026-03-15,427,chapter_stage,bg_spec,complete,,,,,,背景指定書 完了,image_transcription,high,,2033276639208153570,https://x.com/Un4v5s8bgsVk9Xp/status/2033276639208153570
+E00271,2026-03-17,2026-03-17,429,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了,image_transcription,high,,2033764977727967457,https://x.com/Un4v5s8bgsVk9Xp/status/2033764977727967457
 E00232,2026-04-01,2026-04-01T08:22:09.833000+00:00,,ancillary_work,,,colour_illustration,,,,,カラー依頼の色紙完了。,text_explicit,high,,2039256995023479227,https://x.com/Un4v5s8bgsVk9Xp/status/2039256995023479227
 E00233,2026-04-08,2026-04-08T07:18:40.354000+00:00,430,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,2041777731969675643,https://x.com/Un4v5s8bgsVk9Xp/status/2041777731969675643
 E00234,2026-05-26,2026-05-26T15:43:11.713000+00:00,421,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2059299316800569524,https://x.com/Un4v5s8bgsVk9Xp/status/2059299316800569524
@@ -491,8 +491,9 @@ E00238,2026-07-03,2026-07-03T18:20:31.638000+00:00,428,chapter_stage,bg_spec,com
 E00239,2026-07-07,2026-07-07T16:56:50.885000+00:00,423,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2074538142506549407,https://x.com/Un4v5s8bgsVk9Xp/status/2074538142506549407
 E00240,2026-07-11,2026-07-11T00:01:58.294000+00:00,432,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,text_explicit,high,,2075732291931009110,https://x.com/Un4v5s8bgsVk9Xp/status/2075732291931009110
 E00241,2026-07-11,2026-07-11T00:01:58.294000+00:00,433,chapter_stage,character_inking,started,,,,,,人物ペン入れ開始。,text_explicit,high,,2075732291931009110,https://x.com/Un4v5s8bgsVk9Xp/status/2075732291931009110
-E00271,2026-08-03,2026-08-03,433,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,image_transcription,high,,2084155567363539307,https://x.com/Un4v5s8bgsVk9Xp/status/2084155567363539307
+E00272,2026-08-03,2026-08-03,433,chapter_stage,character_inking,complete,,,,,,人物ペン入れ完了。,image_transcription,high,,2084155567363539307,https://x.com/Un4v5s8bgsVk9Xp/status/2084155567363539307
 E00242,2026-08-08,2026-08-08T16:47:58.487000+00:00,424,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2086132321166794760,https://x.com/Un4v5s8bgsVk9Xp/status/2086132321166794760
 E00243,2026-08-11,2026-08-11T13:33:10.988000+00:00,425,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2087170463839682713,https://x.com/Un4v5s8bgsVk9Xp/status/2087170463839682713
 E00244,2026-08-25,2026-08-25T06:12:06.730000+00:00,426,chapter_stage,manuscript_complete,complete,,,,,,原稿完成。,text_explicit,high,,2092132894814998720,https://x.com/Un4v5s8bgsVk9Xp/status/2092132894814998720
-E00272,2026-08-27,2026-08-27,429,chapter_stage,bg_spec,complete,,,,,,背景指定書 完成,image_transcription,high,,2092902182790341023,https://x.com/Un4v5s8bgsVk9Xp/status/2092902182790341023
+E00273,2026-08-27,2026-08-27,429,chapter_stage,bg_spec,complete,,,,,,背景指定書 完成,image_transcription,high,,2092902182790341023,https://x.com/Un4v5s8bgsVk9Xp/status/2092902182790341023
+E00245,2026-08-30,2026-08-30T03:16:01.512000+00:00,430,chapter_stage,bg_spec,complete,,,,,,背景指定書作成完了。,text_explicit,high,,2093900520406855763,https://x.com/Un4v5s8bgsVk9Xp/status/2093900520406855763

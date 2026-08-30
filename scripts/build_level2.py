@@ -40,10 +40,28 @@ HALF_LIVES = [None]               # recency decay off (docs/backtest.md)
 QS = [0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95]
 
 
-def load():
+def load(asof=None):
+    """`asof` restricts evidence to what existed on that date (the replay path).
+
+    Chapters are filtered by publication date and events by event date. The
+    announcement file is NOT filtered: it carries the assumption that batch 49
+    runs 411-420, which follows from the 10-chapter convention (Agents.md §3) and
+    was as true in June as it is now. It is structure, not evidence.
+
+    Caveat, deliberately not engineered around: an event's date is when it
+    happened, not when we knew it. Some events come from image transcriptions
+    that were human-confirmed later, and some tweets were only discovered via
+    Wayback. A replay is therefore very slightly better informed than the live
+    run would have been. See docs/prediction_history.md.
+    """
     ch = list(csv.DictReader(open(D("data", "processed", "chapters.csv"), encoding="utf-8")))
     ann = list(csv.DictReader(open(D("data", "annotations", "announcements.csv"), encoding="utf-8")))
     ev = list(csv.DictReader(open(D("data", "processed", "production_events.csv"), encoding="utf-8")))
+    if asof:
+        ch = [r for r in ch if r["publication_date_jp"]
+              and date.fromisoformat(r["publication_date_jp"]) <= asof]
+        ev = [r for r in ev if r.get("event_date")
+              and date.fromisoformat(r["event_date"]) <= asof]
 
     batch, pos, start = {}, {}, {}
     for r in ch:
@@ -54,14 +72,34 @@ def load():
         if r["is_batch_start"] == "1":
             start[b] = date.fromisoformat(r["publication_date_jp"])
 
-    # announced-but-unpublished chapters extend the running batch
+    # The running batch runs to ten chapters (§3), whether or not they have been
+    # published yet.
+    #
+    # This used to walk announcements.csv forward from the last published
+    # chapter, which only reaches chapter 420 while that file happens to list
+    # every unpublished chapter of the batch contiguously. Replayed to
+    # 2026-06-29 — chapters published to 411, the file naming only 419 and 420 —
+    # the walk stopped at 411 and the model forecast ch 412 instead of ch 421.
+    # The whole replayed history was a SLIDING TARGET: 412, 413, ... 421. That is
+    # why the forecast appeared to widen as evidence accumulated; it was moving
+    # nine chapters further out, not losing confidence.
+    #
+    # The batch's extent is the convention, anchored on its observed start.
+    # Announcements can extend it beyond ten but never define it.
     cur = max(start)
+    first_of_cur = min(c for c in batch if batch[c] == cur)
     last = max(c for c in batch if batch[c] == cur)
-    for r in sorted(ann, key=lambda x: int(x["chapter"])):
-        c = int(r["chapter"])
-        if c == last + 1:
-            batch[c], pos[c] = cur, pos[last] + 1
-            last = c
+    # Announcements may extend the batch past ten (batch 43 ran to eleven), but
+    # only if they are plainly about THIS batch. Without the window an unrelated
+    # entry drags the running batch out to it: replayed to 2024-09-30 the file's
+    # ch 419/420 rows stretched batch 47 from 391-400 to 391-420, and the model
+    # reported "W_48 — publication of ch 421".
+    in_batch = [int(r["chapter"]) for r in ann
+                if first_of_cur <= int(r["chapter"]) <= first_of_cur + 14]
+    end_of_cur = max([last, first_of_cur + 9] + in_batch)
+    for c in range(last + 1, end_of_cur + 1):
+        batch[c], pos[c] = cur, c - first_of_cur + 1
+    last = end_of_cur
 
     # The batch being forecast has no rows in chapters.csv yet — its chapters are
     # only visible through production events — so give it membership explicitly.

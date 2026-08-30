@@ -118,14 +118,19 @@ def annotation_status():
     return "confirmed" if pending == 0 else "provisional:%d_unconfirmed" % pending
 
 
-def write(kind, batch, payload, summary=None):
+def write(kind, batch, payload, summary=None, rid=None, extra=None):
     """Write one snapshot. Never overwrites; appends a row to index.csv.
 
     kind     'prior_level1' | 'level2_analog' | 'posterior'
     batch    the batch being forecast, from the data — never hardcoded
     summary  optional dict of median / i50 / i80 / i90 for the index
+    rid      override the run_id. Only the replay harness passes this, so that a
+             reconstructed forecast is keyed by the date it is a forecast *for*
+             rather than by the wall clock at which it was computed.
+    extra    extra provenance merged into the snapshot's meta block (not the
+             index). `provenance: replay` rides here.
     """
-    rid = run_id()
+    rid = rid or run_id()
     os.makedirs(SNAP, exist_ok=True)
     path = os.path.join(SNAP, "%s_batch%d_%s.json" % (rid, batch, kind))
 
@@ -146,6 +151,7 @@ def write(kind, batch, payload, summary=None):
         "batch": batch,
         "input_sha256": input_digests(),
     }
+    meta.update(extra or {})
     # payload wins on key collisions: the model script is the authority on its
     # own fields, this only supplies provenance.
     out = dict(meta)
@@ -168,7 +174,9 @@ def write(kind, batch, payload, summary=None):
     }
     new = not os.path.exists(INDEX)
     with open(INDEX, "a", newline="", encoding="utf-8") as fh:
-        w = csv.DictWriter(fh, fieldnames=INDEX_COLS)
+        # The historical index uses CRLF, but emitted rows should not acquire a
+        # trailing carriage return in a Unix worktree.
+        w = csv.DictWriter(fh, fieldnames=INDEX_COLS, lineterminator="\n")
         if new:
             w.writeheader()
         w.writerow(row)

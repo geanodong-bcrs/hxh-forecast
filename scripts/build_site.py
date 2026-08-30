@@ -101,6 +101,15 @@ def stage_marks(stages):
 def latest_snapshot():
     files = sorted(glob.glob(D("data", "forecasts", "*_posterior.json")))
     files = [f for f in files if "T" in os.path.basename(f).split("_")[0]]
+
+    def is_live(f):
+        """The site reports the CURRENT forecast, never a reconstructed one."""
+        try:
+            with open(f, encoding="utf-8") as fh:
+                return json.load(fh).get("provenance") != "replay"
+        except Exception:
+            return False
+    files = [f for f in files if is_live(f)]
     if not files:
         raise SystemExit("no timestamped posterior snapshot yet — run run_update.py")
     with open(files[-1], encoding="utf-8") as fh:
@@ -113,16 +122,6 @@ def latest_snapshot():
                 return json.load(fh)
         return None
     return post, mate("level2_analog"), mate("prior_level1"), os.path.relpath(files[-1], D())
-
-
-def history():
-    path = D("data", "forecasts", "index.csv")
-    if not os.path.exists(path):
-        return []
-    with open(path, encoding="utf-8") as fh:
-        rows = [r for r in csv.DictReader(fh) if r["kind"] == "posterior" and r["median"]]
-    rows.sort(key=lambda r: r["run_id"])
-    return rows
 
 
 def production_status(first_ch, n=20):
@@ -242,9 +241,11 @@ def month_ticks(o0, o1):
 def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
     """Cumulative probability the batch has begun, by date.
 
-    Cumulative rather than a density: half the mass sits on a single issue, so a
-    density plot is one spike and a hundred invisible bars — the reader learns
-    nothing about the tail carrying the other half.
+    Cumulative, and paired with `pdf_chart` below. Per-issue a density really is
+    one spike and a hundred invisible bars — half the mass sits on a single
+    issue — but binned by month the spike is only ~8x its neighbour and the tail
+    reads fine, so both views are now shown. This one answers "have we got there
+    yet"; the density answers "where is the mass".
 
     The x-axis stops once the curve passes `clip`. Beyond that the answer is
     "almost certainly yes" and the extra years of flat line only shrink the part
@@ -315,36 +316,547 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
              "\n  ".join(g), area, line, X(med), pad_t, X(med), pad_t + H)
 
 
-def history_chart(rows, width=720, height=140):
+def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
+    """Probability density: where the mass actually sits, by month.
+
+    Same x-axis as `cdf_chart` — same source pmf, same 0.99 clip — so the two
+    charts stack and read as one picture. Binned by calendar month because the
+    raw pmf is per weekly issue, and per-issue bars are unreadable: the first
+    eligible issue alone carries ~50% while the other 115 issues average 0.4%,
+    a 126:1 range that leaves the tail at one pixel. Monthly bins bring that to
+    about 8:1, which a linear axis shows honestly.
+
+    The spike is still the story, so the month holding it is labelled with the
+    single-issue probability rather than letting the bin hide it.
+    """
+    if not pmf:
+        return ""
+    acc, cum = 0.0, []
+    for d, p in pmf:
+        acc += p
+        cum.append((d, p, acc))
+    cutoff = next((i for i, (_, _, c) in enumerate(cum) if c >= clip), len(cum) - 1)
+    cum = cum[:cutoff + 1]
+
+    bins = OrderedDict()
+    for d, p, _ in cum:
+        k = d[:7]
+        bins[k] = bins.get(k, 0.0) + p
+    if not bins:
+        return ""
+
+    pad_l, pad_r, pad_t, pad_b = 44, 16, 16, 40
+    W, H = width - pad_l - pad_r, height - pad_t - pad_b
+    x0 = date.fromisoformat(cum[0][0]).toordinal()
+    x1 = date.fromisoformat(cum[-1][0]).toordinal()
+    span = max(x1 - x0, 1)
+    X = lambda o: pad_l + W * (min(max(o, x0), x1) - x0) / span
+    top = max(bins.values())
+    Y = lambda p: pad_t + H * (1 - p / top)
+
+    g = []
+    step = .1 if top > .25 else .02
+    v = 0.0
+    while v <= top + 1e-9:
+        g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
+                 % (pad_l, Y(v), pad_l + W, Y(v), pad_l - 6, Y(v) + 4, round(v * 100)))
+        v += step
+    for d, label in month_ticks(x0, x1):
+        xx = X(d.toordinal())
+        g.append('<line class="grid%s" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                 % (" yr" if d.month == 1 else "", xx, pad_t, xx, pad_t + H))
+        if label:
+            g.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                     % (xx, height - 22, d.strftime("%b")))
+    for yr in range(date.fromordinal(x0).year, date.fromordinal(x1).year + 1):
+        lo, hi = max(x0, date(yr, 1, 1).toordinal()), min(x1, date(yr, 12, 31).toordinal())
+        if hi <= lo or X(hi) - X(lo) < 34:
+            continue
+        g.append('<text class="ax yr" x="%.1f" y="%d" text-anchor="middle">%d</text>'
+                 % ((X(lo) + X(hi)) / 2, height - 7, yr))
+
+    bars, spike_lbl = [], ""
+    for k, p in bins.items():
+        y, m = int(k[:4]), int(k[5:7])
+        b0 = max(x0, date(y, m, 1).toordinal())
+        b1 = min(x1, (date(y + (m == 12), (m % 12) + 1, 1) - timedelta(days=1)).toordinal())
+        xa, xb = X(b0), X(b1)
+        w = max(xb - xa - 1.5, 1)
+        bars.append('<rect class="bar" x="%.1f" y="%.1f" width="%.1f" height="%.1f">'
+                    '<title>%s — %s</title></rect>'
+                    % (xa + .75, Y(p), w, max(pad_t + H - Y(p), .5),
+                       date(y, m, 1).strftime("%B %Y"), pct(p)))
+        if spike and spike[0][:7] == k:
+            # The spike month is the tallest bar, so a label above it would sit
+            # outside the plot. Put it beside the bar instead, at the bar's top.
+            spike_lbl = ('<text class="ax spk" x="%.1f" y="%.1f">'
+                         '%s of it is %s alone</text>'
+                         % (xa + w + 7, max(Y(p) + 11, pad_t + 11),
+                            pct(spike[1]), fmt(spike[0], True)))
+
+    lo, hi = (date.fromisoformat(i80[0]).toordinal(),
+              date.fromisoformat(i80[1]).toordinal())
+    med = date.fromisoformat(median).toordinal()
+    return """<svg viewBox="0 0 %d %d" class="chart" role="img"
+   aria-label="Probability chapter is published in each month">
+  <rect class="band" x="%.1f" y="%d" width="%.1f" height="%d"/>
+  %s
+  %s
+  <line class="med" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>
+  %s
+</svg>""" % (width, height, X(lo), pad_t, max(X(hi) - X(lo), 1), H,
+             "\n  ".join(g), "".join(bars), X(med), pad_t, X(med), pad_t + H,
+             spike_lbl)
+
+
+def posterior_series(chapter):
+    """Every posterior snapshot's forecast FOR ONE CHAPTER, oldest first.
+
+    Not the batch-start forecast. Over a two-year replay chapter 421 sits first
+    in the batch after next, then in the next batch, and only lately IS the batch
+    start — so the series has to be pulled per chapter, from whichever
+    ten-chapter forecast contains it, and the probabilities from
+    `p_by_chapter`. Reading `median` / `p_started_by` off the snapshot instead
+    would silently switch to a different chapter partway along the axis.
+    """
+    out = []
+    for path in glob.glob(D("data", "forecasts", "*_posterior.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                d = json.load(fh)
+        except Exception:
+            continue
+        rid = d.get("run_id")
+        if not rid:
+            continue
+        t = None
+        for f in ("%Y%m%dT%H%M%SZ", "%Y-%m-%d"):
+            try:
+                t = datetime.strptime(rid, f)
+                break
+            except ValueError:
+                pass
+        if t is None:
+            continue
+        row = None
+        for src in ((d.get("ten_chapter_forecast") or []),
+                    ((d.get("next_batch") or {}).get("ten_chapter_forecast") or [])):
+            for r in src:
+                if r.get("chapter") == chapter:
+                    row = r
+        if not row:
+            continue
+        out.append({"t": t, "median": row["median"], "i80": row.get("i80"),
+                    "p_by": (d.get("p_by_chapter") or {}).get(str(chapter)) or {},
+                    "replay": d.get("provenance") == "replay",
+                    "model": d.get("level2_design") or "legacy_v1",
+                    "asof": d.get("replay_asof") or d.get("forecast_timestamp"),
+                    "target": d.get("target") or "",
+                    "exhausted": d.get("exhausted_analogs") or []})
+    # Revision snapshots are append-only, so preserve the old record on disk
+    # but do not draw two incompatible models as one apparent time series.
+    for model in ("readiness_coordinate_context_record_hiatus_v4",
+                  "readiness_coordinate_context_analog_v3",
+                  "readiness_coordinate_analog_v2"):
+        if any(r["model"] == model for r in out):
+            out = [r for r in out if r["model"] == model]
+            break
+    out.sort(key=lambda r: r["t"])
+    return out
+
+
+def history_changes(rows, threshold_days=45):
+    """Large median moves, labelled by the evidence available that day."""
+    events = {}
+    path = D("data", "processed", "production_events.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            for e in csv.DictReader(fh):
+                if e.get("event_class") in {"chapter_stage", "batch_scope", "disruption"}:
+                    events.setdefault(e.get("event_date"), []).append(e)
+    stage = {"character_inking": "inking", "panel_layout": "panel layout",
+             "bg_spec": "background specification", "bg_work": "background work",
+             "dialogue": "dialogue", "retouch": "retouch",
+             "manuscript_complete": "manuscript complete", "name": "name work"}
+    out = []
+    for before, after in zip(rows, rows[1:]):
+        delta = date.fromisoformat(after["median"]).toordinal() - date.fromisoformat(before["median"]).toordinal()
+        target_changed = before["target"] != after["target"]
+        exhausted_changed = before["exhausted"] != after["exhausted"]
+        if abs(delta) < threshold_days and not target_changed and not exhausted_changed:
+            continue
+        es = events.get(after.get("asof"), [])
+        if target_changed:
+            label, kind = "batch 49 begins", "publication"
+        elif es:
+            e = es[0]
+            if e.get("event_class") == "chapter_stage":
+                label = "ch. %s: %s %s" % (e.get("chapter"), stage.get(e.get("stage"), e.get("stage")), e.get("status") or "reported")
+            elif e.get("event_class") == "batch_scope":
+                label = "batch-level %s" % stage.get(e.get("stage"), "work")
+            else:
+                label = "production disruption"
+            kind = "tweet"
+        elif exhausted_changed:
+            label, kind = "no start: analog status changes", "conditioning"
+        else:
+            label, kind = "no start: floor advances", "conditioning"
+        out.append({"t": after["t"], "median": after["median"], "label": label,
+                    "kind": kind, "delta": delta})
+    return out
+
+
+def manuscript_completion_annotations(rows):
+    """Major, hoverable evidence marks for a prediction-history chart.
+
+    The line may move after any production report, and manuscript completion is
+    not irreversible (a retake can follow it).  To avoid pretending every move
+    has an obvious single cause, mark only this late, reader-legible milestone.
+    """
+    dates = {r.get("asof"): r for r in rows}
+    out, seen = [], set()
+    with open(D("data", "processed", "production_events.csv"), encoding="utf-8") as fh:
+        for e in csv.DictReader(fh):
+            if (e.get("event_class") != "chapter_stage" or
+                    e.get("stage") != "manuscript_complete" or
+                    e.get("status") != "complete" or
+                    not e.get("chapter") or e.get("event_date") not in dates):
+                continue
+            key = (e["event_date"], e["chapter"])
+            if key in seen:
+                continue
+            seen.add(key)
+            r = dates[e["event_date"]]
+            out.append({"t": r["t"], "median": r["median"],
+                        "label": "Chapter %s: manuscript complete" % e["chapter"]})
+    return out
+
+
+def event_only_series(rows):
+    """Freeze the series between public evidence updates as a visual check.
+
+    Under V4 this should overlay the real-time series: the model's own no-start
+    conditioning stops at the last public production signal.  Any separation is
+    therefore a diagnostic, not an intended source of gradual drift.
+    """
+    event_days = set()
+    path = D("data", "processed", "production_events.csv")
+    if os.path.exists(path):
+        with open(path, encoding="utf-8") as fh:
+            for e in csv.DictReader(fh):
+                if e.get("event_class") in {"chapter_stage", "page_completed", "batch_scope", "disruption"}:
+                    event_days.add(e.get("event_date"))
+    out, held, previous_target = [], None, None
+    for r in rows:
+        update = r.get("asof") in event_days or r.get("target") != previous_target
+        if held is None or update:
+            held = r
+        x = dict(r)
+        x["event_only_median"] = held["median"]
+        out.append(x)
+        previous_target = r.get("target")
+    return out
+
+
+def time_ticks(t0, t1):
+    """Ticks across a datetime span. Every label carries a four-digit year:
+    "Sep 26" reads as a day in September, which is exactly the ambiguity to
+    avoid on a chart whose other axis is also dates."""
+    days = (t1 - t0).total_seconds() / 86400.0
+    out = []
+    if days > 70:
+        every = 3 if days > 400 else (2 if days > 200 else 1)
+        d, n = date(t0.year, t0.month, 1), 0
+        while d <= t1.date():
+            if d >= t0.date() and n % every == 0:
+                out.append((d, d.strftime("%b %Y")))
+            d = date(d.year + (d.month == 12), (d.month % 12) + 1, 1)
+            n += 1
+    else:
+        d = t0.date()
+        d += timedelta(days=(7 - d.weekday()) % 7)
+        while d <= t1.date():
+            out.append((d, d.strftime("%-d %b %Y")))
+            d += timedelta(days=14 if days > 40 else 7)
+    return out
+
+
+def _frame(rows, width, height, pad):
+    pad_l, pad_r, pad_t, pad_b = pad
+    W, H = width - pad_l - pad_r, height - pad_t - pad_b
+    t0, t1 = rows[0]["t"], rows[-1]["t"]
+    span = max((t1 - t0).total_seconds(), 1.0)
+    X = lambda t: pad_l + W * (t - t0).total_seconds() / span
+    g = []
+    for d, label in time_ticks(t0, t1):
+        xx = X(datetime(d.year, d.month, d.day))
+        g.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                 % (xx, pad_t, xx, pad_t + H))
+        g.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                 % (xx, height - 8, label))
+    return (pad_l, pad_r, pad_t, pad_b, W, H, X, g)
+
+
+def fan_chart(rows, annotations=None, width=720, height=250):
+    """Predicted publication date for one chapter, as the forecast has moved.
+
+    One line: the median predicted date.  The y axis is inverted on purpose —
+    further into the future sits LOWER, so a line rising means the forecast
+    moved nearer, the same reading as a price chart.
+    """
+    rows = [r for r in rows if r.get("i80")]
     if len(rows) < 2:
         return ""
-    pad_l, pad_r, pad_t, pad_b = 44, 16, 14, 26
+    # Keep the plotting frame as wide as the other figures.  The one remaining
+    # series label sits inside the right edge rather than consuming a wide gutter.
+    pad = (62, 16, 14, 26)
+    pad_l, pad_r, pad_t, pad_b, W, H, X, g = _frame(rows, width, height, pad)
+
+    O = lambda ds: date.fromisoformat(ds).toordinal()
+    vals = [O(r["median"]) for r in rows]
+    y0, y1 = min(vals), max(vals)
+    pad_y = max((y1 - y0) * 0.07, 3)
+    y0, y1 = y0 - pad_y, y1 + pad_y
+    Y = lambda o: pad_t + H * (o - y0) / max(y1 - y0, 1)
+
+    for frac in (0, .25, .5, .75, 1):
+        o = y0 + (y1 - y0) * frac
+        g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%s</text>'
+                 % (pad_l, Y(o), pad_l + W, Y(o), pad_l - 6, Y(o) + 4,
+                    date.fromordinal(int(o)).strftime("%b %Y")))
+
+    body, labels = [], []
+    for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
+        pts = [(X(r["t"]), Y(O(key(r)))) for r in rows]
+        body.append('<path class="%s" d="M%s"/>'
+                    % (cls, " L".join("%.1f,%.1f" % p for p in pts)))
+        labels.append([pts[-1][1], "%s &middot; %s" % (name, fmt(key(rows[-1])))])
+
+    for a in annotations or []:
+        if not (rows[0]["t"] <= a["t"] <= rows[-1]["t"]):
+            continue
+        xx, yy = X(a["t"]), Y(O(a["median"]))
+        body.append('<circle cx="%.1f" cy="%.1f" r="6" fill="var(--pend)" '
+                    'stroke="var(--bg)" stroke-width="2"><title>%s</title></circle>'
+                    % (xx, yy, esc(a["label"])))
+
+    labels.sort()
+    if len(labels) > 1 and labels[1][0] - labels[0][0] < 13:
+        labels[1][0] = labels[0][0] + 13
+    for y, txt in labels:
+        body.append('<text class="ax lbl" x="%.1f" y="%.1f" text-anchor="end">%s</text>'
+                    % (pad_l + W - 6, y + 4, txt))
+
+    live = next((r for r in rows if not r["replay"]), None)
+    if live and live is not rows[0]:
+        xx = X(live["t"])
+        body.append('<line class="boundary" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                    '<text class="ax bd" x="%.1f" y="%d" text-anchor="end">'
+                    'live record &#8594;</text>'
+                    % (xx, pad_t, xx, pad_t + H, xx - 5, pad_t + H - 5))
+    return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
+            '"Median predicted publication date over time">'
+            '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
+
+
+def decomposition_chart(rows, width=720, height=230):
+    """Full median versus the same history frozen between evidence updates."""
+    if len(rows) < 2:
+        return ""
+    pad = (62, 132, 14, 26)
+    pad_l, pad_r, pad_t, pad_b, W, H, X, g = _frame(rows, width, height, pad)
+    O = lambda ds: date.fromisoformat(ds).toordinal()
+    vals = [O(r["median"]) for r in rows] + [O(r["event_only_median"]) for r in rows]
+    y0, y1 = min(vals), max(vals)
+    extra = max((y1 - y0) * .07, 3)
+    y0, y1 = y0 - extra, y1 + extra
+    Y = lambda o: pad_t + H * (o - y0) / max(y1 - y0, 1)
+    for frac in (0, .25, .5, .75, 1):
+        o = y0 + (y1 - y0) * frac
+        g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%s</text>'
+                 % (pad_l, Y(o), pad_l + W, Y(o), pad_l - 6, Y(o) + 4,
+                    date.fromordinal(int(o)).strftime("%b %Y")))
+    body = []
+    for n, (key, stroke, dash, label) in enumerate((("event_only_median", "var(--mut)", "4 3", "event-only"),
+                                                     ("median", "var(--accent)", "", "full real-time"))):
+        pts = [(X(r["t"]), Y(O(r[key]))) for r in rows]
+        dash_attr = ' stroke-dasharray="%s"' % dash if dash else ""
+        body.append('<path d="M%s" fill="none" stroke="%s" stroke-width="2"%s/>'
+                    % (" L".join("%.1f,%.1f" % p for p in pts), stroke, dash_attr))
+        body.append('<text class="ax lbl" x="%.1f" y="%.1f">%s</text>'
+                    % (pad_l + W + 6, pts[-1][1] + 4 + (12 if n else 0), label))
+    return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
+            '"Full real-time forecast compared with forecast frozen between public evidence updates">'
+            '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
+
+
+def prob_chart(rows, horizons, width=720, height=230):
+    """P(chapter published by <quarter end>), as it has moved over time.
+
+    The horizons are nested, so the series are ordered, not categorical: a
+    single-hue ramp, highest contrast against the surface for the nearest
+    horizon. The lines cannot cross, so position plus a direct label carries
+    identity without relying on colour.
+    """
+    rows = [r for r in rows if r.get("p_by")]
+    if len(rows) < 2:
+        return ""
+    pad = (44, 124, 14, 26)
+    pad_l, pad_r, pad_t, pad_b, W, H, X, g = _frame(rows, width, height, pad)
+    Y = lambda p: pad_t + H * (1 - p)
+
+    for p in (0, .25, .5, .75, 1):
+        g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
+                 % (pad_l, Y(p), pad_l + W, Y(p), pad_l - 6, Y(p) + 4, int(p * 100)))
+
+    body, labels = [], []
+    for i, hz in enumerate(horizons):
+        pts = [(X(r["t"]), Y(r["p_by"][hz])) for r in rows if hz in r["p_by"]]
+        if len(pts) < 2:
+            continue
+        body.append('<path class="qline q%d" d="M%s"/>'
+                    % (i + 1, " L".join("%.1f,%.1f" % p for p in pts)))
+        last = next(r for r in reversed(rows) if hz in r["p_by"])
+        labels.append([pts[-1][1], "by %s &middot; %s"
+                       % (date.fromisoformat(hz).strftime("%b %Y"),
+                          pct(last["p_by"][hz]))])
+    labels.sort()
+    for j in range(1, len(labels)):
+        if labels[j][0] - labels[j - 1][0] < 13:
+            labels[j][0] = labels[j - 1][0] + 13
+    for y, txt in labels:
+        body.append('<text class="ax lbl" x="%.1f" y="%.1f">%s</text>'
+                    % (pad_l + W + 6, min(y + 4, pad_t + H + 4), txt))
+
+    live = next((r for r in rows if not r["replay"]), None)
+    if live and live is not rows[0]:
+        xx = X(live["t"])
+        body.append('<line class="boundary" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                    % (xx, pad_t, xx, pad_t + H))
+    return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
+            '"Probability of publication by each quarter end, over time">'
+            '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
+
+
+def gap_prior_chart(pri, width=720, height=280, clip=200):
+    """The Level 1 prior in GAP space — the object the model constructs.
+
+    Not the same picture as the CDF/PDF on the front page: those are the prior
+    and posterior mapped onto calendar dates. This is P(gap = g issues) before
+    any of that, which is the view for reviewing the prior itself, because the
+    point mass and the smoothed component stay separable.
+
+    y is scaled to the smoothed component. The point mass is 22x the density
+    peak, so drawing both to scale would leave the curve at a few pixels; the
+    bar is clipped with a break and labelled instead. The rug underneath is the
+    sixteen observations, drawn at their cluster weight — the three zeros are
+    two effective observations, which is where pi0 comes from.
+    """
+    pmf = pri.get("gap_pmf") or []
+    obs = pri.get("gap_observations") or []
+    if not pmf:
+        return ""
+    pi0 = float(pri.get("pi0") or 0.0)
+    bw = pri.get("bandwidth_issues")
+    dens = [(g, p) for g, p in pmf if 1 <= g <= clip]
+    if not dens:
+        return ""
+
+    pad_l, pad_r, pad_t, pad_b = 52, 20, 22, 46
     W, H = width - pad_l - pad_r, height - pad_t - pad_b
-    t = [datetime.strptime(r["run_id"], "%Y%m%dT%H%M%SZ").timestamp() for r in rows]
-    m = [date.fromisoformat(r["median"]).toordinal() for r in rows]
-    t0, t1, m0, m1 = min(t), max(t), min(m), max(m)
-    X = lambda v: pad_l + W * (v - t0) / max(t1 - t0, 1)
-    Y = lambda v: (pad_t + H * (1 - (v - m0) / (m1 - m0))) if m1 > m0 else pad_t + H / 2
-    pts = ["%.1f,%.1f" % (X(a), Y(b)) for a, b in zip(t, m)]
-    dots = "".join('<circle class="pt %s" cx="%.1f" cy="%.1f" r="4"><title>%s · %s · '
-                   'median %s</title></circle>'
-                   % (esc(r["trigger"]), X(a), Y(b), esc(r["run_id"]),
-                      esc(r["trigger"]), esc(r["median"]))
-                   for r, a, b in zip(rows, t, m))
-    flat = "" if m1 > m0 else ('<text class="ax" x="%.1f" y="%.1f" text-anchor="middle">'
-                               'unchanged at %s across all %d forecasts</text>'
-                               % (pad_l + W / 2, pad_t + H / 2 - 12,
-                                  fmt(rows[-1]["median"], True), len(rows)))
-    return ('<svg viewBox="0 0 %d %d" class="chart"><path class="cdfline" d="M%s"/>%s%s</svg>'
-            % (width, height, " L".join(pts), dots, flat))
+    rug_h = 14
+    PH = H - rug_h                      # plot height above the rug strip
+    X = lambda g: pad_l + W * min(g, clip) / float(clip)
+    top = max(p for _, p in dens) * 1.15
+    Y = lambda p: pad_t + PH * (1 - p / top)
+
+    g = []
+    step = 0.002
+    v = 0.0
+    while v <= top:
+        g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%.1f%%</text>'
+                 % (pad_l, Y(v), pad_l + W, Y(v), pad_l - 6, Y(v) + 4, v * 100))
+        v += step
+    for gg in range(0, clip + 1, 25):
+        g.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%.1f"/>'
+                 '<text class="ax" x="%.1f" y="%d" text-anchor="middle">%d</text>'
+                 % (X(gg), pad_t, X(gg), pad_t + PH, X(gg), height - 26, gg))
+    g.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">'
+             'gap before the next batch, in Jump issues skipped</text>'
+             % (pad_l + W / 2, height - 8))
+
+    area = ["M%.1f,%.1f" % (X(dens[0][0]), Y(0))]
+    area += ["L%.1f,%.1f" % (X(gg), Y(p)) for gg, p in dens]
+    area.append("L%.1f,%.1f Z" % (X(dens[-1][0]), Y(0)))
+    body = ['<path class="area" d="%s"/>' % " ".join(area),
+            '<path class="cdfline" d="M%s"/>'
+            % " L".join("%.1f,%.1f" % (X(gg), Y(p)) for gg, p in dens)]
+
+    # the point mass, clipped with a break rather than drawn to scale
+    bx, bw_px = X(0), 13.0
+    body.append('<rect class="bar pi0" x="%.1f" y="%.1f" width="%.1f" height="%.1f"/>'
+                % (bx - bw_px / 2, pad_t + 8, bw_px, pad_t + PH - pad_t - 8))
+    body.append('<path class="brk" d="M%.1f,%.1f l%.1f,-4 l%.1f,8 l%.1f,-4"/>'
+                % (bx - bw_px / 2, pad_t + 14, bw_px / 3, bw_px / 3, bw_px / 3))
+    body.append('<text class="ax spk" x="%.1f" y="%d">'
+                '&#960;&#8320; = %s on gap 0 &mdash; the next batch follows with no '
+                'break at all</text>' % (bx + bw_px, pad_t + 10, pct(pi0)))
+
+    # rug: one tick per observation, height by cluster weight
+    ry = pad_t + PH
+    for b, gg, wgt in obs:
+        if gg > clip:
+            continue
+        h = 5 + 8 * float(wgt)
+        body.append('<line class="rug" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f">'
+                    '<title>batch %s &middot; gap %s issues &middot; weight %s</title>'
+                    '</line>' % (X(gg), ry + rug_h - h, X(gg), ry + rug_h, b, gg, wgt))
+    if bw:
+        body.append('<text class="ax" x="%.1f" y="%d" text-anchor="end">'
+                    'kernel bandwidth %g issues</text>'
+                    % (pad_l + W, pad_t - 8, bw))
+
+    return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
+            '"Level 1 prior over the gap in issues before the next batch">'
+            '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
+
+
+def zoomed(render, rows, weeks=4, name="z"):
+    """Two pre-rendered views of the same chart, toggled by a CSS radio.
+
+    No JavaScript: the site is static HTML regenerated every run and published
+    through an allowlist, and a chart toggle is not worth changing that.
+    """
+    cut = rows[-1]["t"] - timedelta(weeks=weeks)
+    recent = [r for r in rows if r["t"] >= cut]
+    full_svg = render(rows)
+    if not full_svg:
+        return ""
+    if len(recent) < 2:
+        return full_svg
+    return (
+        '<div class="zoom">'
+        '<input type="radio" name="%s" id="%s-a" checked><input type="radio" '
+        'name="%s" id="%s-b">'
+        '<div class="zt"><label for="%s-a">whole run</label>'
+        '<label for="%s-b">last %d weeks</label></div>'
+        '<div class="za">%s</div><div class="zb">%s</div></div>'
+        % (name, name, name, name, name, name, weeks, full_svg, render(recent)))
 
 
 CSS = """
 :root{--bg:#fff;--fg:#14161a;--mut:#697079;--line:#e4e7ec;--card:#f7f8fa;
- --accent:#2f6fd0;--band:#2f6fd01f;--ok:#1f7a4d;--pend:#c8901a;--soft:#e9edf3}
+ --accent:#2f6fd0;--band:#2f6fd01f;--ok:#1f7a4d;--pend:#c8901a;--soft:#e9edf3;
+ --q1:#12408f;--q2:#2f6fd0;--q3:#6b9ce0;--q4:#8fb4e8}
 @media(prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e8eaed;--mut:#98a1ac;
  --line:#272b33;--card:#161920;--accent:#6fa8ff;--band:#6fa8ff26;--ok:#5fd39a;
- --pend:#e0b44a;--soft:#1d222b}}
+ --pend:#e0b44a;--soft:#1d222b;
+ --q1:#cfe0ff;--q2:#6fa8ff;--q3:#4b7fd0;--q4:#35598f}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);
  font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
@@ -370,6 +882,28 @@ p{margin:10px 0} a{color:var(--accent)}
 .area{fill:var(--band);stroke:none}
 .cdfline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
 .band{fill:var(--band)}
+.bar{fill:var(--accent);opacity:.82}
+.bar.pi0{opacity:.5}
+.brk{fill:none;stroke:var(--bg);stroke-width:3}
+.rug{stroke:var(--fg);stroke-width:2;opacity:.55}
+.fan80{fill:var(--accent);opacity:.13;stroke:none}
+.fan50{fill:var(--accent);opacity:.16;stroke:none}
+.boundary{stroke:var(--mut);stroke-width:1;stroke-dasharray:2 3;opacity:.65}
+.ax.bd{font-size:10px}
+.ax.lbl{font-size:10.5px}
+.qline{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.q1{stroke:var(--q1)}.q2{stroke:var(--q2)}.q3{stroke:var(--q3)}.q4{stroke:var(--q4)}
+.zoom input{position:absolute;opacity:0;pointer-events:none}
+.zoom .zt{display:flex;gap:6px;margin:12px 0 -4px}
+.zoom .zt label{font-size:11.5px;padding:3px 10px;border-radius:99px;
+ background:var(--soft);color:var(--mut);cursor:pointer;-webkit-user-select:none;user-select:none}
+.zoom .zb{display:none}
+.zoom input:nth-of-type(1):checked~.zt label[for$="-a"],
+.zoom input:nth-of-type(2):checked~.zt label[for$="-b"]{
+ background:var(--band);color:var(--accent);font-weight:600}
+.zoom input:nth-of-type(2):checked~.za{display:none}
+.zoom input:nth-of-type(2):checked~.zb{display:block}
+.ax.spk{fill:var(--accent);font-weight:600}
 .med{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
 .pt{fill:var(--accent);stroke:var(--bg);stroke-width:1.5}
 .pt.tweet{fill:var(--pend)} .pt.annotation{fill:var(--ok)}
@@ -439,6 +973,140 @@ def chapter_table(rows, highlight=None):
     return "\n".join(h)
 
 
+def history_charts(first, post, primary=True, secondary=True, probabilities=True,
+                   companion=None):
+    """The preserved prediction history for one chapter.
+
+    Completion markers are deliberately evidence markers, not causal labels:
+    production can be revised or retaken, so more reported completion does not
+    logically guarantee an earlier publication forecast.
+    """
+    ser = posterior_series(first)
+    if len(ser) < 2:
+        return []
+    h = []
+    complete = manuscript_completion_annotations(ser)
+    if primary:
+        h.append('<h2>How the forecast for chapter %d has moved</h2>' % first)
+        h.append('<h3>Predicted publication date over time</h3>')
+        h.append(zoomed(lambda rr: fan_chart(rr, complete), ser, name="hf%d" % first))
+        h.append('<p class=note>The predicted publication date for chapter %d. '
+                 'Later dates sit <em>lower</em>, so a line rising means a shorter '
+                 'expected wait. Amber dots are manuscript-completion reports; '
+                 'hover them for the chapter. They are evidence, not guarantees: '
+                 'production can be revisited or retaken, and scheduling remains '
+                 'an editorial decision.</p>' % first)
+    if secondary:
+        decomp = event_only_series(ser)
+        h.append('<h3>Forecast revisions by public evidence</h3>')
+        h.append(zoomed(decomposition_chart, decomp, name="hd%d" % first))
+        h.append('<p class=note>The solid line is the full real-time median. The '
+                 'dashed line holds it fixed between public production or '
+                 'publication events. They should overlap between those updates: '
+                 'ordinary silence no longer makes the model move its prediction.</p>')
+        hz = [q for q in sorted((post.get("p_by_chapter") or {}).get(str(first)) or {})][:4]
+        if probabilities and hz:
+            h.append('<h3>Chance of publication by each quarter-end</h3>')
+            h.append(zoomed(lambda rr: prob_chart(rr, hz), ser, name="hp%d" % first))
+            h.append('<p class=note>The same history as probabilities: the chance '
+                     'chapter %d has been published by each quarter-end.</p>' % first)
+    n_rep = sum(1 for r in ser if r["replay"])
+    if n_rep:
+        h.append('<p class=note>The first %d points are reconstructed from the '
+                 'information public on each date; the dashed boundary marks the '
+                 'live record. See <a href="method.html">method</a>.</p>' % n_rep)
+    if companion:
+        href, chapter = companion
+        h.append('<p class=note>Also see the preserved prediction history for '
+                 '<a href="%s">chapter %d &rarr;</a></p>' % (href, chapter))
+    return h
+
+
+def forecast_tables(post, first, nfirst, current=True, following=True):
+    """Repeat the two forecast tables on both reader-facing forecast pages."""
+    h = []
+    if current:
+        h += ['<h2>Chapters %s</h2>' % rng(first),
+              '<p class=note>These are not ten separate predictions. Once the run '
+              'starts, chapters usually come out one per week, so nearly all the '
+              'uncertainty is the start date.</p>',
+              chapter_table(post["ten_chapter_forecast"], highlight=first)]
+    nb = post.get("next_batch") or {}
+    if following and nb:
+        h += ['<h2>Chapters %s</h2>' % rng(nfirst),
+              '<p class=note>This is the following run. Its timing is a rough '
+              'horizon based mostly on publication history.</p>',
+              chapter_table(nb["ten_chapter_forecast"], highlight=nfirst)]
+    return h
+
+
+def distribution_charts(chapter, pmf, median, i80):
+    """Current release-date distribution, reused on the two chapter pages."""
+    spike = max(pmf, key=lambda x: x[1]) if pmf else None
+    h = ['<h3>Chance chapter %d has been published by a given date</h3>' % chapter,
+         cdf_chart(pmf, median, i80),
+         '<p class=note>Each step is one weekly Jump issue; the shaded band is the '
+         '80%% range.</p>',
+         '<h3>Probability distribution by month</h3>',
+         pdf_chart(pmf, median, i80, spike),
+         '<p class=note>The same distribution as monthly probability mass, which '
+         'makes the likely dates and the long tail easier to compare.</p>']
+    return h
+
+
+def togashi_drawn_section(first, nfirst):
+    """Shared current-production section for both reader-facing pages."""
+    grid = production_status(first, 20)
+    h = ['<h2>What Togashi has drawn</h2>',
+         '<p class=note>Togashi posts his own progress on X. Each chapter below '
+         'sits at the furthest point he has actually reported.</p>',
+         '<div class=strip>']
+    for c, stages in grid.items():
+        t = tier_of(stages)
+        cls = dict((n, k) for n, k, _, _ in TIERS)[t]
+        newest = max(stages.values(), key=lambda r: r["event_date"]) if stages else None
+        tip = ("%s — %s" % (fmt(newest["event_date"], True),
+                            esc(newest["source_text_ja"])) if newest
+               else "nothing reported yet")
+        h.append('<span class="chip %s" title="%s">%d</span>' % (cls, tip, c))
+    h.append('</div><div class=legend>')
+    for _, k, en, ja in TIERS:
+        h.append('<span><i class="dot %s"></i>%s <span class=jp>%s</span></span>' % (k, en, ja))
+    h.append('</div>')
+    counts_t = {}
+    for stages in grid.values():
+        counts_t[tier_of(stages)] = counts_t.get(tier_of(stages), 0) + 1
+    h.append('<p class=note><strong>%d finished manuscripts are waiting.</strong> '
+             'Drawing is not what holds the series up &mdash; Togashi has said the '
+             'publication pace is the editors&rsquo; decision. What he posts tells '
+             'us a run is <em>possible</em>, not that it is imminent.</p>'
+             % counts_t.get(3, 0))
+    h.append('<h3>Stage by stage</h3><div class=tblwrap><table><tr><th>Ch.</th>')
+    for _, en, ja, _ in STAGES:
+        h.append('<th class=stg><span class=jp>%s</span><br>%s</th>' % (ja, en))
+    h.append('<th>Latest post</th></tr>')
+    for c, stages in grid.items():
+        h.append('<tr%s><td>%d</td>' % (" class=sep" if c == nfirst else "", c))
+        for cls, tip in stage_marks(stages):
+            h.append('<td><span class="st %s" title="%s"></span></td>' % (cls, tip))
+        newest = max(stages.values(), key=lambda r: r["event_date"]) if stages else None
+        h.append('<td class=note>%s</td></tr>'
+                 % (("%s &middot; %s" % (fmt(newest["event_date"], True),
+                                          esc(newest["source_text_ja"][:26])))
+                    if newest else "&mdash;"))
+    h.append('</table></div><div class=legend>'
+             '<span><i class="dot done"></i>reported by Togashi</span>'
+             '<span><i class="dot assumed"></i>assumed done</span>'
+             '<span><i class=dot></i>no information</span></div>')
+    h.append('<h3>What the stages mean</h3><div class=tblwrap><table><tr><th>Stage</th>'
+             '<th>Japanese</th><th>What happens</th></tr>')
+    for _, en, ja, desc in STAGES:
+        h.append('<tr><td>%s</td><td class=jp>%s</td><td class=note>%s</td></tr>'
+                 % (en, ja, desc))
+    h.append('</table></div>')
+    return h
+
+
 def build_index(post, l2, pri, snap_path):
     first = int(post["target"].split("ch ")[-1])
     nb = post.get("next_batch") or {}
@@ -446,8 +1114,7 @@ def build_index(post, l2, pri, snap_path):
     pmf = post.get("posterior_pmf") or []
     spike = max(pmf, key=lambda x: x[1]) if pmf else None
     i = post["intervals"]
-    hist, anns, counts = history(), announcements(), corpus_counts()
-    grid = production_status(first, 20)
+    anns, counts = announcements(), corpus_counts()
 
     h = ['<div class=wrap>',
          '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>']
@@ -464,19 +1131,13 @@ def build_index(post, l2, pri, snap_path):
                  % (spike[1] * 100, fmt(spike[0], True), first - 1))
     h.append('</div>')
 
-    h.append(cdf_chart(pmf, post["median"], i["80"]))
-    h.append('<p class=note>The chance chapter %d has been published by a given '
-             'date. Each step is one weekly Jump issue. The big jump is the first '
-             'eligible issue &mdash; either the series resumes straight away, or '
-             'it waits, and the slow climb after is that wait. Shaded band is the '
-             '80%% range.</p>' % first)
+    # This is the most useful view of the model: it shows what the forecast
+    # actually believed at every earlier point, before the outcome was known.
+    h += history_charts(first, post, primary=True, secondary=False,
+                        companion=("chapter-431.html", nfirst))
+    h += distribution_charts(first, pmf, post["median"], i["80"])
 
-    h.append('<h2>Chapters %s</h2>' % rng(first))
-    h.append('<p class=note>These are not ten separate predictions. Once the run '
-             'starts, chapters come out one per week almost without exception '
-             '(143 of the last 145), so nearly all the uncertainty below is just '
-             'the start date above.</p>')
-    h.append(chapter_table(post["ten_chapter_forecast"], highlight=first))
+    h += forecast_tables(post, first, nfirst, current=True, following=False)
 
     if post.get("p_started_by"):
         h.append('<h3>Chance it has started by</h3><table>')
@@ -484,86 +1145,7 @@ def build_index(post, l2, pri, snap_path):
             h.append('<tr><td>%s</td><td class=num>%s</td></tr>' % (fmt(d), pct(p)))
         h.append('</table>')
 
-    # second batch
-    if nb:
-        h.append('<h2>Chapters %s</h2>' % rng(nfirst))
-        h.append('<p class=note>Togashi has already inked the first few of these, '
-                 'but that says nothing about scheduling &mdash; every reported '
-                 'event for them is at the earliest stage of the pipeline. So this '
-                 'one rests on publication history alone: how long the series has '
-                 'typically waited between runs. Treat it as a rough horizon, not '
-                 'a date.</p>')
-        h.append(cdf_chart(nb["pmf"], nb["median"], nb["intervals"]["80"]))
-        h.append('<p><span class="pill plain">most likely %s</span> &nbsp;'
-                 '<span class=note>80%% chance between %s and %s</span></p>'
-                 % (fmt(nb["median"]), fmt(nb["intervals"]["80"][0], True),
-                    fmt(nb["intervals"]["80"][1], True)))
-        h.append(chapter_table(nb["ten_chapter_forecast"]))
-
-    # production
-    h.append('<h2>What Togashi has drawn</h2>')
-    h.append('<p class=note>Togashi posts his own progress on X. Each chapter '
-             'below sits at the furthest point he has actually reported.</p>')
-    h.append('<div class=strip>')
-    for c, stages in grid.items():
-        t = tier_of(stages)
-        cls = dict((n, k) for n, k, _, _ in TIERS)[t]
-        newest = max(stages.values(), key=lambda r: r["event_date"]) if stages else None
-        tip = ("%s — %s" % (fmt(newest["event_date"], True),
-                            esc(newest["source_text_ja"])) if newest
-               else "nothing reported yet")
-        h.append('<span class="chip %s" title="%s">%d</span>' % (cls, tip, c))
-    h.append('</div>')
-    h.append('<div class=legend>')
-    for n, k, en, ja in TIERS:
-        h.append('<span><i class="dot %s"></i>%s <span class=jp>%s</span></span>' % (k, en, ja))
-    h.append('</div>')
-    counts_t = {}
-    for stages in grid.values():
-        counts_t[tier_of(stages)] = counts_t.get(tier_of(stages), 0) + 1
-    h.append('<p class=note><strong>%d finished manuscripts are waiting.</strong> '
-             'Drawing is not what holds the series up &mdash; Togashi has said the '
-             'publication pace is the editors&rsquo; decision. What he posts tells '
-             'us a run is <em>possible</em>, not that it is imminent.</p>'
-             % counts_t.get(3, 0))
-
-    # detail matrix
-    h.append('<h3>Stage by stage</h3>')
-    h.append('<p class=note>He does not post every stage of every chapter, so this '
-             'grid would otherwise be full of holes that look like skipped work. '
-             'Where a <em>later</em> stage has been reported, the earlier ones must '
-             'be done &mdash; those are marked as assumed rather than reported, and '
-             'drawn hollow.</p>')
-    h.append('<div class=tblwrap><table><tr><th>Ch.</th>')
-    for _, en, ja, _ in STAGES:
-        h.append('<th class=stg><span class=jp>%s</span><br>%s</th>' % (ja, en))
-    h.append('<th>Latest post</th></tr>')
-    for c, stages in grid.items():
-        h.append('<tr%s><td>%d</td>' % (" class=sep" if c == nfirst else "", c))
-        for cls, tip in stage_marks(stages):
-            h.append('<td><span class="st %s" title="%s"></span></td>' % (cls, tip))
-        newest = max(stages.values(), key=lambda r: r["event_date"]) if stages else None
-        h.append('<td class=note>%s</td></tr>'
-                 % (("%s &middot; %s" % (fmt(newest["event_date"], True),
-                                         esc(newest["source_text_ja"][:26])))
-                    if newest else "&mdash;"))
-    h.append('</table></div>')
-    h.append('<div class=legend>'
-             '<span><i class="dot done"></i>reported by Togashi</span>'
-             '<span><i class="dot assumed"></i>assumed done</span>'
-             '<span><i class=dot></i>no information</span></div>')
-
-    h.append('<h3>What the stages mean</h3>')
-    h.append('<div class=tblwrap><table><tr><th>Stage</th><th>Japanese</th>'
-             '<th>What happens</th></tr>')
-    for key, en, ja, desc in STAGES:
-        h.append('<tr><td>%s</td><td class=jp>%s</td><td class=note>%s</td></tr>'
-                 % (en, ja, desc))
-    h.append('</table></div>')
-    h.append('<p class=note>The four colours above match the chart the fandom '
-             'already uses. This one is built independently, from Togashi&rsquo;s '
-             'posts up, and lands on the same answer for every chapter &mdash; '
-             'which is a reassuring sign that both are reading him correctly.</p>')
+    h += togashi_drawn_section(first, nfirst)
 
     # announced
     if anns:
@@ -580,19 +1162,12 @@ def build_index(post, l2, pri, snap_path):
                  'moved before, so this is &ldquo;scheduled&rdquo;, not '
                  '&ldquo;certain&rdquo;.</p>')
 
-    # history
-    h.append('<h2>How this forecast has moved</h2>')
-    h.append(history_chart(hist))
-    h.append('<div class=legend>'
-             '<span><i class="dot" style="background:var(--accent);border-color:transparent">'
-             '</i>scheduled update</span>'
-             '<span><i class="dot" style="background:var(--pend);border-color:transparent">'
-             '</i>new post from Togashi</span></div>')
-    h.append('<p class=note>%d forecast%s since %s, updated daily and again '
+    ser = posterior_series(first)
+
+    h.append('<p class=note>%d forecast%s in the record, updated daily and again '
              'whenever Togashi posts. Nothing here is ever edited or deleted after '
              'the fact &mdash; including when it turns out wrong.</p>'
-             % (len(hist), "" if len(hist) == 1 else "s",
-                fmt(hist[0]["written_utc"][:10]) if hist else "&mdash;"))
+             % (len(ser), "" if len(ser) == 1 else "s"))
 
     y0, y1 = data_span()
     h.append('<footer>')
@@ -609,6 +1184,39 @@ def build_index(post, l2, pri, snap_path):
     title = "Hunter × Hunter — when is chapter %d out?" % first
     desc = ("Forecast for Hunter x Hunter chapter %d: most likely %s. Updated daily."
             % (first, fmt(post["median"])))
+    return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
+
+
+def build_chapter_431(post, l2, pri, snap_path):
+    """A dedicated history page for the first chapter of the following run."""
+    first = int(post["target"].split("ch ")[-1])
+    nb = post.get("next_batch") or {}
+    nfirst = nb.get("first_chapter", first + 10)
+    counts = corpus_counts()
+    h = ['<div class=wrap>',
+         '<h1><a href="index.html">&larr; Hunter &times; Hunter forecast</a></h1>',
+         '<div class=hero><div class=ch>Following run &mdash; chapter %d</div>' % nfirst,
+         '<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
+         '<div class=sub>forecast history and current probability distribution</div></div>']
+
+    h += history_charts(nfirst, post, primary=True, secondary=True, probabilities=False,
+                        companion=("index.html", first))
+    if nb:
+        h += distribution_charts(nfirst, nb.get("pmf") or [],
+                                 nb.get("median", post["median"]),
+                                 nb.get("intervals", {}).get("80", post["intervals"]["80"]))
+    h += forecast_tables(post, first, nfirst, current=False, following=True)
+    h += togashi_drawn_section(first, nfirst)
+
+    h.append('<footer><p>Built from %d chapters, %d posts by Togashi and %d '
+             'production events. <a href="method.html">Method and limitations '
+             '&rarr;</a></p>'
+             % (counts["chapters"], counts["tweets"], counts["events"]))
+    h.append('<p><a href="index.html">&larr; Back to the chapter %d forecast</a></p>'
+             % first)
+    h.append('</footer></div>')
+    title = "Hunter × Hunter — chapter %d prediction history" % nfirst
+    desc = "Historical forecast evolution and current forecast for Hunter x Hunter chapter %d." % nfirst
     return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
 
 
@@ -649,6 +1257,21 @@ def build_method(post, l2, pri, snap_path):
              'the rest after waits of 9 to 184 issues. A single smooth curve would '
              'describe neither case, so the model uses a mixture.</p></div>'
              % ((pri or {}).get("n_observations") or 16))
+    if pri and pri.get("gap_pmf"):
+        h.append(gap_prior_chart(pri))
+        h.append('<p class=note>That mixture, drawn. The tick marks along the '
+                 'bottom are the %d observations the whole prior is built from, '
+                 'at the weight each carries &mdash; the three zeros count as two, '
+                 'because two of them are the same run continuing rather than two '
+                 'separate decisions to carry straight on. The bar at gap 0 is '
+                 'clipped: it is about twenty times the height of the curve, and '
+                 'drawing it to scale would flatten everything else to nothing. '
+                 'The curve itself is close to flat from 1 to 100 &mdash; with a '
+                 '60-issue kernel over sixteen points, the prior says little about '
+                 '<em>how long</em> a wait will be once there is a wait at all. '
+                 'That is the honest state of it, and it is why the production '
+                 'evidence below does so much of the work.</p>'
+                 % ((pri or {}).get("n_observations") or 16))
     if l2:
         h.append('<div class=card><h3>2 &mdash; what Togashi&rsquo;s posts add</h3>'
                  '<p class=note>Production data covers only %d past runs. That is '
@@ -663,18 +1286,51 @@ def build_method(post, l2, pri, snap_path):
             label = ("the run starting at chapter %d" % bfc[int(k)]) \
                 if int(k) in bfc else ("run %s" % esc(k))
             h.append('<tr><td>%s</td><td>%s</td></tr>' % (label, fmt(v)))
-        h.append('</table><p class=note>Two of the three point at a date that has '
-                 'already passed. That is informative &mdash; it means this run is '
-                 '<em>not</em> behaving like them.</p></div>')
+        exhausted = post.get("exhausted_analogs") or []
+        if exhausted:
+            note = ('%d analog%s already implied a start inconsistent with the '
+                    'observed non-start. They are neutral rather than being '
+                    'allowed to create a false next-issue spike.'
+                    % (len(exhausted), "s" if len(exhausted) != 1 else ""))
+        else:
+            note = ('The table is based on one readiness summary per chapter, not '
+                    'on treating every tweet as a separate timing signal.')
+        h.append('</table><p class=note>%s</p></div>' % note)
+    n_ready = post.get("n_chapters_with_current_readiness") or 0
     h.append('<div class=card><h3>Putting them together</h3><p class=note>'
-             'Togashi has posted %d production updates about this run. Those are '
+             'The current run has readiness evidence for %d chapters. Those are '
              '<strong>not</strong> %d independent pieces of evidence &mdash; they '
-             'are one person&rsquo;s working process observed %d times. Treating '
-             'them as independent would produce a forecast about a week wide: very '
-             'impressive, and wrong. So each <em>past run</em> counts once, and the '
-             'confidence scales with how many comparable runs exist (three), not '
-             'how many posts there are.</p></div>'
-             % ((post.get("n_events_current_batch") or 0,) * 3))
+             'are one person&rsquo;s working process observed across a batch. Treating '
+             'every tweet as independent would produce a forecast about a week '
+             'wide: very impressive, and wrong. So each <em>past run</em> counts '
+             'once, and the confidence scales with how many comparable runs exist, '
+             'not how many posts there are.</p></div>' % (n_ready, n_ready))
+
+    first_ch_m = int(post["target"].split("ch ")[-1])
+    ser = posterior_series(first_ch_m)
+    n_rep = sum(1 for r in ser if r["replay"])
+    if n_rep:
+        h.append('<h2>The forecast history, and which of it is reconstructed</h2>')
+        h.append('<div class=card><h3>%d of %d points were re-run afterwards</h3>'
+                 '<p class=note>The model started producing forecasts on %s, but '
+                 'the interesting stretch is the whole of the run that produced '
+                 'the evidence it uses. So it was replayed: for each earlier date '
+                 'it was re-run seeing only the chapters published, the issues on '
+                 'sale and the production posts made <em>by that date</em>. Those '
+                 'points are marked <code>provenance: replay</code> in the stored '
+                 'snapshot and the charts rule off where the live record '
+                 'begins.</p>'
+                 '<p class=note>One honest caveat. An event enters the replay on '
+                 'the day it happened, not the day it was known &mdash; some '
+                 'readings come from images transcribed and human-checked later, '
+                 'and some posts were only found through the Wayback Machine. The '
+                 'replay is therefore very slightly better informed than a live '
+                 'run would have been. The batch&rsquo;s length is treated the '
+                 'same way throughout, as an assumption rather than as evidence '
+                 'that arrived on some date.</p></div>'
+                 % (n_rep, len(ser),
+                    fmt(next((r["t"].date().isoformat() for r in ser
+                              if not r["replay"]), ""))))
 
     h.append('<h2>Where it is weakest</h2>')
     h.append('<div class=card><h3>The headline number is the least defensible part</h3>'
@@ -732,6 +1388,7 @@ def main():
     post, l2, pri, snap_path = latest_snapshot()
     os.makedirs(SITE, exist_ok=True)
     for name, doc in (("index.html", build_index(post, l2, pri, snap_path)),
+                      ("chapter-431.html", build_chapter_431(post, l2, pri, snap_path)),
                       ("method.html", build_method(post, l2, pri, snap_path))):
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as fh:
             fh.write(doc)
