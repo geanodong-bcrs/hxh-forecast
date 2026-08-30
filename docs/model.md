@@ -179,3 +179,199 @@ about two weeks.
 6. **Announcement lead time is only 7–13 days**, so announcements close the
    forecast only at the very end. Good for the model's usefulness, but it means
    there is no early-warning signal to exploit.
+
+---
+
+## Level 2 revision — readiness-coordinate analog model (2026-08-30)
+
+This section **supersedes the live Level 2 implementation above**.  The prior
+description and the original exact-stage analog model are retained above as a
+reproducible record of the first design and of every forecast already written.
+The historical Level-1 prior is unchanged.
+
+### Why revise Level 2
+
+The replay revealed a specific failure.  When an analog implied a start well
+before the observed non-start floor, its Gaussian tail declined over every
+remaining candidate issue.  Truncation then put almost all mass on the first
+eligible issue: “this analog failed months ago” was misread as “the batch is
+almost certain next week.”  This produced the mechanically declining forecast
+before batch 49 began in June 2026.  It is a model error, not a chart effect.
+
+The corpus also contains substantially more information than an exact
+`(position_in_batch, stage)` match.  It has page logs, statuses, blocked waits,
+retakes, and batch-level name reports.  The revision uses a simple, auditable
+coordinate so this information can be compared without fitting a high-
+dimensional model to three resolved tweet-era batches.
+
+### Derived chapter coordinate
+
+The immutable event table remains the source of truth.  `build_readiness.py`
+derives, rather than writes back, a chapter progress coordinate:
+
+    C(c, t) = (c - 1) + p(c, t),       0 <= p < 1
+
+`c` is the chapter number.  `p` is the furthest observed within-chapter
+production progress.  The initial endpoints follow the observed page-log
+behaviour and the corpus taxonomy; they are a transparent first specification,
+not estimated units of labour.
+
+| observation | p value or interval |
+|---|---:|
+| manuscript page log | `0.01 × largest observed page`, capped at `0.19` |
+| panel borders / speech balloons | 0.30 |
+| character inking | 0.50 |
+| background specification | 0.60 |
+| background work | 0.70 |
+| dialogue | 0.80 |
+| manuscript complete | 0.90 |
+| retouch | 0.99 |
+
+An explicit `complete` report fixes its endpoint.  `started`, `in_progress`,
+waiting, and no-status reports create an interval over that stage; the midpoint
+is only used to compare analogs.  For example, a page-6 log supplies `p=0.06`,
+not an assertion that the preceding production stages were separately reported
+complete.
+
+The coordinate is deliberately **not** the whole state.  The snapshot keeps
+`awaiting_return`, `under_review`, and `retake` as flags with their latest
+dates.  Work can overlap or be revisited: chapter 411 has dialogue complete on
+2024-11-17 and background specification complete on 2024-11-18; chapter 398
+has retouch in progress before a later dialogue-complete report.  Therefore
+the coordinate means “furthest observed progress,” not “a strictly serial,
+irreversible workflow.”
+
+### Revised analog calculation
+
+For the target batch, retain one readiness state for each of its ten chapter
+positions.  For each historical analog batch `h`, reconstruct its states using
+only events dated on or before that batch's actual start.  At the same chapter
+position, compare current and historical progress coordinates.  Matches whose
+progress differs by more than 0.35 are excluded; closer matches receive a
+diagnostic compatibility weight.
+
+For every retained position `r`:
+
+    implied_start(h, r)
+        = current_attained_date(r)
+        + [ actual_start(h) - historical_attained_date(h, r) ]
+
+The analog's centre is the median of its implied starts and its spread is the
+MAD-derived scale across positions.  One analog remains one likelihood
+component: ten chapter states are not treated as ten independent observations.
+
+This still does not fit a regression of publication time on progress.  With
+three resolved batches, an apparently precise fitted relationship would mostly
+be its assumed functional form.
+
+### Falsified analogs are neutral
+
+Let `F` be the first issue the batch can still start in, and let a Normal analog
+have centre `mu_h` and scale `sigma_h`.  Its probability of surviving continued
+non-publication is:
+
+    S_h(F) = P_h(W >= F)
+
+When `S_h(F) < 0.05`, the analog is exhausted.  Its likelihood is replaced by a
+flat factor over candidate future issues:
+
+    L_h(W) = 1
+
+rather than its decreasing Gaussian tail.  It then contributes no timing
+preference.  This fixes the invalid inference that an overdue analog makes the
+next issue near-certain.  If every analog is exhausted, Level 2 is neutral and
+the posterior is the truncated Level-1 prior.
+
+The 5% threshold is a declared provisional robustness setting.  It must be
+varied in future leakage-free replays and selected only if outcomes justify it.
+
+### Data retained for the next revision
+
+The posterior now records readiness states for both the target batch and the
+following ten chapters, plus unassigned batch-level `name` reports.  The latter
+are not forced into chapter-specific coordinates because Togashi does not name
+their chapter numbers.  They represent pipeline depth:
+
+    N(t) = number of chapters reported at the name/storyboard level
+
+Likewise, later-batch states can be useful evidence of available production
+buffer even though WSJ does not require all ten current-batch chapters to be
+finished before starting publication.
+
+Neither `N(t)` nor following-batch readiness yet changes the timing likelihood.
+There are not enough resolved historical batches to calibrate their effect
+without manufacturing certainty.  They are saved at every forecast timestamp
+so that the next outcome can test whether they improve analog similarity or
+predict batch feasibility.
+
+### Operational status
+
+`scripts/build_posterior.py` is the live implementation of this revision.
+`scripts/build_level2.py` is preserved unchanged as the original v1 exact-stage
+analog implementation for reproducing historical artifacts; the automated live
+update no longer runs it.  Forecast snapshots declare their Level-2 design,
+readiness states, progress mapping, analog diagnostics, and any exhausted
+analogs so the transition remains auditable.
+
+### Preceding-batch context extension (2026-08-30)
+
+The target batch's own readiness remains the primary Level-2 signal.  Production
+in its preceding batch is now added as a weak contextual signal, not treated as
+an equal direct timing analog.  Historical comparison pairs source batch `h`
+with the observed start of `h+1`; this estimates how a preceding batch's state
+related to the next batch beginning.
+
+    L_total(W) = L_same_batch(W)^0.75 * L_preceding_batch(W)^0.25
+
+The 0.25 context weight is provisional and deliberately conservative.  It has
+physical meaning: preceding-batch work can reveal capacity and production
+buffer, but cannot establish that the next batch is ready.  The original hard
+5% exhaustion switch has also become a smooth fade from an analog likelihood
+to a flat likelihood as continued non-publication makes that analog stale.
+
+### Event-conditioned no-start update and record-hiatus regime (2026-08-30)
+
+This is the current live refinement.  The preceding-batch term is reduced to
+10%, so the timing likelihood is now:
+
+    L_total(W) = L_same_batch(W)^0.90 * L_preceding_batch(W)^0.10
+
+The difference is intentional rather than cosmetic.  The target batch's own
+work is evidence about whether that batch can be scheduled; the preceding
+batch is only indirect evidence about capacity or buffer.  A later backtest can
+change this coefficient, but it must do so through out-of-sample performance,
+not because a particular historical chart looks smoother.
+
+The second change fixes a separate meaning problem in the historical graph.
+Let `E(t)` be the timestamp of the last public production event at a forecast
+time `t`.  The normal non-publication floor is now evaluated only through the
+last issue on sale at or before `E(t)`, not through every intervening calendar
+week.  Thus, in the absence of a new public production event (or a publication
+that advances the prediction target), the distribution is unchanged:
+
+    P(W | evidence at t + silence) = P(W | evidence at t)
+
+The fact that an issue did not contain Hunter × Hunter is known to readers, but
+using each additional silent week as a fresh likelihood update made the model
+revise its view without a corresponding production observation.  This is
+especially misleading while the model is still within the range of historically
+observed hiatuses.  The site retains a dashed *event-only* trace as a diagnostic;
+for this revision it should coincide with the full trace between public updates.
+
+There is one explicit exception.  If the gap since the preceding batch exceeds
+the largest positive inter-batch gap in the 2007-onward training data, the model
+enters a **record-hiatus regime**.  It assigns 20% probability to the next
+eligible issue and 80% to the ordinary truncated Level-1 long-tail prior:
+
+    P_record(W) = 0.20 * I(W = next eligible issue)
+                + 0.80 * P_Level1(W | W >= next eligible issue)
+
+This is not applied during an ordinary silence and it does not replace the long
+tail.  It makes the "perhaps next week" intuition explicit only after a delay
+outside the observed regime, while still admitting that an unprecedented hiatus
+cannot be extrapolated reliably from the three tweet-era analog batches.
+
+Snapshots using this design declare
+`readiness_coordinate_context_record_hiatus_v4`, their
+`conditioning_through` date, `record_hiatus` flag, and the 0.10 context weight.
+Earlier V1–V3 snapshots and documentation remain unchanged.

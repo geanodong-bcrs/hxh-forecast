@@ -41,6 +41,14 @@ that caused it — so the record survives being wrong.
    from the page log (~1.16 pages/posting-day in 2022 vs ~2.07 in 2024). Targets
    the causal variable instead of using time as a proxy. Better than the recency
    weighting the backtest rejected.
+2a. **Level 2 spikes on the truncation floor when its analogs are overdue.**
+   The highest-value finding from the replay: in 175 of 187 reconstructed
+   forecasts the median sat exactly on the first eligible issue, with up to
+   **1.0000** of the mass on it (2025-07-28; §3 forbids a literal 100%). Cause:
+   an analog implying a date already in the past produces a likelihood that
+   decreases monotonically across the whole candidate grid, so everything piles
+   on the boundary. An exhausted analog should flatten the likelihood, not
+   sharpen it. See `docs/prediction_history.md`.
 3. **π₀ rests on two clustered observations from 2010–2012** and drives the
    headline 50.6%. Anything bearing on whether back-to-back batches are still
    possible would be the highest-value new information available.
@@ -52,6 +60,9 @@ that caused it — so the record survives being wrong.
    already hold everything it needs, and it would *show* why the gap prior is
    bimodal — which the site currently only asserts in prose. See
    `docs/resources/other sites.md`.
+5a. **Replay batches 47 and 48** as separate targets — *deferred on purpose*.
+   Batch 49's own replayed history comes first, as the check on whether the
+   model behaves sensibly. See `docs/prediction_history.md`.
 6. **173 image posts carrying text are untranscribed** (README limitation 7).
    `vision_pass.py --include-text-posts` is the backfill, ~173 vision calls.
 

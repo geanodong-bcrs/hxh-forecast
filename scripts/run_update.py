@@ -228,8 +228,10 @@ def main():
 
     # ---------- 3. forecast ----------
     print("\nforecast:")
+    # build_level2.py is retained as the reproducible v1 analog implementation
+    # for historical snapshots.  The live Level 2 calculation is now the
+    # readiness-coordinate model inside build_posterior.py.
     ok = (run("build_batch_prior.py")
-          and run("build_level2.py")
           and run("build_posterior.py"))
     if ok:
         # the page reads the snapshot just written, so it is never staler than

@@ -43,7 +43,7 @@ HALF_LIVES = [HALF_LIFE]          # grid kept for the backtest script
 QUANTILES = [0.05, 0.10, 0.25, 0.50, 0.75, 0.90, 0.95]
 
 
-def load_gaps(with_cluster_weights=False):
+def load_gaps(with_cluster_weights=False, asof=None):
     """(batch_id, gap_in_issues) for the modeling era, in order.
 
     with_cluster_weights also returns a per-observation weight that de-duplicates
@@ -56,6 +56,9 @@ def load_gaps(with_cluster_weights=False):
     rows, runs = [], []
     with open(D("data", "processed", "chapters.csv"), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
+            if asof and (not r["publication_date_jp"]
+                         or date.fromisoformat(r["publication_date_jp"]) > asof):
+                continue          # not yet published as of the replay date
             if r["modeling_era"] == "1" and r["is_batch_start"] == "1" \
                     and r["issues_gap_before_batch"] != "":
                 g = int(float(r["issues_gap_before_batch"]))
@@ -72,10 +75,12 @@ def load_gaps(with_cluster_weights=False):
     return rows, cw
 
 
-def load_calendar():
+def load_calendar(asof=None):
     cal = []
     with open(D("data", "processed", "wsj_issues.csv"), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
+            if asof and date.fromisoformat(r["on_sale_date"]) > asof:
+                continue          # issue had not gone on sale as of the replay date
             cal.append({"seq": int(r["seq"]), "label": r["issue_label"],
                         "year": int(r["issue_year"]),
                         "on_sale": date.fromisoformat(r["on_sale_date"]),
@@ -241,6 +246,18 @@ def main():
         "level": "1 — historical publication data only, no production evidence",
         "n_observations": len(gaps),
         "gaps_issues": [g for _, g in gaps],
+        # The prior in GAP space — the object the model actually constructs,
+        # before it is mapped onto calendar issues. `prior_pmf` on the posterior
+        # snapshot is this same distribution in date space; reviewing the prior
+        # itself wants the version with the point mass still separable from the
+        # smoothed positive component.
+        "pi0": float(results[str(HALF_LIVES[0])]["p_gap_zero"]),
+        "bandwidth_issues": BANDWIDTH,
+        "gap_pmf": [[g, round(float(pv), 8)]
+                    for g, pv in enumerate(results[str(HALF_LIVES[0])]["pmf"])
+                    if pv > 1e-7],
+        "gap_observations": [[b, g, round(float(cwi), 4)]
+                             for (b, g), cwi in zip(gaps, cluster_w)],
         "batch_end_seq": batch_end_seq,
         "batch_end_on_sale": end["on_sale"].isoformat(),
         "batch_end_projected": end["projected"],
