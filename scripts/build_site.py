@@ -1199,7 +1199,7 @@ def build_chapter_431(post, l2, pri, snap_path):
          '<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
          '<div class=sub>forecast history and current probability distribution</div></div>']
 
-    h += history_charts(nfirst, post, primary=True, secondary=True, probabilities=False,
+    h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
     if nb:
         h += distribution_charts(nfirst, nb.get("pmf") or [],
@@ -1272,13 +1272,14 @@ def build_method(post, l2, pri, snap_path):
                  'That is the honest state of it, and it is why the production '
                  'evidence below does so much of the work.</p>'
                  % ((pri or {}).get("n_observations") or 16))
-    if l2:
+    if post.get("analogs"):
         h.append('<div class=card><h3>2 &mdash; what Togashi&rsquo;s posts add</h3>'
                  '<p class=note>Production data covers only %d past runs. That is '
-                 'far too few to fit a curve to, but enough to ask a different '
-                 'question: <em>if this run behaves like that one, when would it '
-                 'start?</em> Each past run is replayed onto the current production '
-                 'dates.</p><table><tr><th>If it behaves like&hellip;</th>'
+                 'far too few to fit a curve to, but enough to compare the current '
+                 'batch&rsquo;s chapter-readiness states with what was publicly '
+                 'reported before each past run began. The model asks: <em>if this '
+                 'batch behaves like that one, when would it start?</em></p>'
+                 '<table><tr><th>If it behaves like&hellip;</th>'
                  '<th>&hellip;chapter %d comes out</th></tr>'
                  % (len(post.get("analogs") or []), first))
         bfc = batch_first_chapter()
@@ -1305,6 +1306,16 @@ def build_method(post, l2, pri, snap_path):
              'wide: very impressive, and wrong. So each <em>past run</em> counts '
              'once, and the confidence scales with how many comparable runs exist, '
              'not how many posts there are.</p></div>' % (n_ready, n_ready))
+    ctx = (post.get("preceding_batch_context") or {}).get("weight")
+    h.append('<div class=card><h3>How silence is handled</h3><p class=note>'
+             'The batch being forecast supplies the direct production evidence. '
+             'The preceding batch is only a weak context signal%s. Ordinary '
+             'calendar time with no new public production report does not move the '
+             'forecast. Only after a gap exceeds every observed modern hiatus does '
+             'the model enter a record-hiatus rule: 20%% on the next eligible issue '
+             'and 80%% on the historical long tail.</p></div>'
+             % ((" (%.0f%% of the timing likelihood)" % (100 * ctx))
+                if ctx is not None else ""))
 
     first_ch_m = int(post["target"].split("ch ")[-1])
     ser = posterior_series(first_ch_m)
@@ -1353,10 +1364,11 @@ def build_method(post, l2, pri, snap_path):
              'built yet. Without the split the numbers would measure how early '
              'Shueisha announces things, not whether this model knows anything. '
              'They are left out rather than estimated.</li>')
-    h.append('<li><strong>The date slides later every week nothing happens.</strong> '
-             'Once an issue passes without a chapter, that possibility is removed '
-             'and the rest rescales. This is correct, but it will look like the '
-             'model changing its mind.</li>')
+    h.append('<li><strong>Silence is deliberately mostly neutral.</strong> The '
+             'forecast holds between public production or publication updates. '
+             'That avoids arbitrary date drift, but it also means an ordinary long '
+             'silence contributes little information until it becomes a record '
+             'hiatus.</li>')
     h.append('<li><strong>Chapters %s rest on history alone.</strong> The only '
              'production events reported for them are at the earliest stage, which '
              'says nothing about scheduling.</li>'
@@ -1375,8 +1387,10 @@ def build_method(post, l2, pri, snap_path):
                 esc((post.get("evidence_asof") or "")[:16]), esc(snap_path)))
     h.append('<p>Every forecast this model has ever made is kept unedited, '
              'including the wrong ones. Built from %d chapters, %d posts and %d '
-             'production events. <a href="index.html">Back to the forecast</a></p>'
-             % (counts["chapters"], counts["tweets"], counts["events"]))
+             'production events. <a href="index.html">Chapter %d forecast</a> '
+             '&middot; <a href="chapter-431.html">chapter %d forecast history</a></p>'
+             % (counts["chapters"], counts["tweets"], counts["events"], first,
+                nb.get("first_chapter", first + 10)))
     h.append('</footer></div>')
 
     return (HEAD % ("How the Hunter × Hunter forecast works",
