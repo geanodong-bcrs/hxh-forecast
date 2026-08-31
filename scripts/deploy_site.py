@@ -43,6 +43,7 @@ GIT_EMAIL = "geanodong-bcrs@users.noreply.github.com"   # never a real inbox
 # ROOT so Pages serves them at /hxh-forecast/ rather than /hxh-forecast/site/.
 ALLOW = [
     ("site/index.html", "index.html"),
+    ("site/chapter-431.html", "chapter-431.html"),
     ("site/method.html", "method.html"),
     ("scripts", "scripts"),
     ("data/processed", "data/processed"),
