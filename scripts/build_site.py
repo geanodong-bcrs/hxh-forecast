@@ -779,6 +779,7 @@ def resolved_batch_runs():
 def readiness_comparison_chart(post):
     """Public progress paths, aligned at each run's first observed event."""
     first = int(post["target"].split("ch ")[-1])
+    nfirst = (post.get("next_batch") or {}).get("first_chapter", first + 10)
     asof = date.fromisoformat(post["forecast_timestamp"])
     runs = resolved_batch_runs()
     series = []
@@ -801,6 +802,11 @@ def readiness_comparison_chart(post):
     series.append({"label": "ch. %d–%d" % (first, first + 9),
                    "css": "rlive", "path": live, "publication": [],
                    "legend_suffix": " (working)"})
+    following = readiness_path(nfirst, asof)
+    if following:
+        series.append({"label": "ch. %d–%d" % (nfirst, nfirst + 9),
+                       "css": "rnext", "path": following, "publication": [],
+                       "legend_suffix": " (working)"})
     xmax = max(
         [s["path"]["path"][-1][0] for s in series] +
         [(when - s["path"]["origin"]).days for s in series for _, when in s["publication"]]
