@@ -148,14 +148,146 @@ The 50% over-coverage is a genuine defect. It was left alone deliberately: with
 better spent as evidence than as a hyperparameter search space. The sharpening
 should come from Level 2, not from squeezing Level 1.
 
-## What this backtest cannot tell you
+## What the Level-1 backtest cannot tell you
 
-**Level 2 is untested.** Production evidence exists for three batch starts;
-leave-one-out over three analogs would score a model against itself. So §29
-step 16 — baseline versus production-informed — is **not answerable yet**. The
-posterior's shape rests on the correlation argument in `model.md` and on the
-truncation being valid, neither of which this backtest validates.
+## Level 2 — leakage-free coordinate diagnostic (2026-08-31)
 
-That is the honest headline: the historical prior is calibrated in the tails,
-timid in the middle, and weak as a point forecast — and the component doing most
-of the work in the live forecast has never been scored against an outcome.
+`scripts/backtest_level2_coordinates.py` is a separate, leakage-free test of
+the V5 all-pairs coordinate likelihood.  It calls the same posterior builder as
+the site, but intercepts snapshot writes in memory.  It therefore cannot alter
+the append-only public forecast record.
+
+For each resolved tweet-era target, the cutoff is the **last usable production
+event before its batch start**.  At that cutoff the replay sees only production
+events and publication starts already public then.  The resolved starts are not
+made available to the fitted side of the forecast.
+
+| target batch | historical cutoff | resolved WSJ issue sequence |
+|---|---:|---:|
+| 48 | 2024-10-06 | 1336 |
+| 49 | 2026-06-14 | 1419 |
+
+There are only two independent targets.  Earlier time points within either gap
+can be useful for plotting forecast evolution, but are correlated forecasts of
+the same outcome and must not be treated as additional independent tests.
+
+### Result — evidence helps, but remains too late
+
+At the fixed live V5 settings (coordinate bandwidth 1 chapter, window
+−20 to +35 chapters, 21-day robust-spread floor), the average scores are:
+
+| forecast | CRPS ↓ | log score ↓ | 50% coverage | 80% coverage |
+|---|---:|---:|---:|---:|
+| Level 1 only | 26.26 | 4.25 | 0% | 0% |
+| V5 all-pairs coordinate evidence | **22.84** | **3.89** | 0% | 0% |
+
+For batch 48, V5 assigned the realized issue probability 3.16% (Level 1:
+1.53%) and had median issue 1359 versus the realized 1336.  For batch 49, it
+assigned 1.61% (Level 1: 1.33%) and had median 1453 versus 1419.  Thus the
+production evidence moved probability in the right direction relative to the
+prior, but both return batches happened sooner than even the V5 80% interval.
+
+A small exploratory grid found a lowest two-target CRPS of 19.94 at bandwidth
+2, window −20 to +35, and 14-day floor.  It is **not adopted**: selecting those
+settings after looking at two outcomes would be parameter fitting, not
+validation.  The documented live settings remain unchanged until more resolved
+production-era targets exist.
+
+The honest headline is now narrower than before: Level 2 has a positive,
+leakage-free two-target signal versus its own Level-1 baseline, but it is not
+yet calibrated and has far too little independent history to establish a
+production-to-publication relationship reliably.
+
+---
+
+## The backtest that was missing (2026-08-31)
+
+Both backtests above score the model **once per batch**: `backtest_prior.py` at
+the moment the previous run ends, `backtest_level2_coordinates.py` at the last
+production event before the next one begins. Neither can see the defect the
+history chart shows, because that defect is a property of the *sequence* of
+forecasts rather than of any one of them:
+
+1. the first forecast of a hiatus is far too early;
+2. the forecast then recedes roughly one day per day until the run starts;
+3. production reports barely move it, and when they do they move it later.
+
+What the site displays every day is not `P(G)`. It is the conditional family
+
+    P(G | G >= a),   a = eligible issues already known not to carry the run,
+
+so that is what `scripts/backtest_conditional_prior.py` scores. Rolling origin
+over the same 16 modeling-era gaps, the same `gaps[:i]` training slice and the
+same assertion against leakage — but every batch contributes its whole
+trajectory, `a = 0, 5, 10, ...` up to its outcome, instead of a single point.
+
+Two extra diagnostics accompany CRPS and log score:
+
+| metric | meaning |
+|---|---|
+| **drift** | `d(median)/d(issues waited)`. 1.0 is "recedes one day per day". |
+| **drift10** | the same slope refitted from `a >= 10`, which separates the one-off loss of the zero mode at `a = 1` from a sustained recession. |
+| **early%** | share of displayed forecasts whose median is *before* the outcome — the "not conservative enough" defect, measured. |
+| **med@0** | the day-one median, in issues. |
+
+Trajectory points share one outcome, so these are display-quality diagnostics
+over 11 batches, not 100 independent tests. The ranking is still meaningful:
+every setting is scored on exactly the same points.
+
+### Result 6 — the V8 parametric Level 1 is the cause of both complaints
+
+| family | bw | CRPS ↓ | log ↓ | cov 50/80/90 | drift | drift10 | early% | med@0 |
+|---|---|---|---|---|---|---|---|---|
+| kde-smooth | 60 | **24.04** | 4.95 | 50/75/85 | 0.61 | 0.65 | 42% | 65 |
+| **mixture (point mass + KDE)** | **60** | **24.27** | **4.92** | 51/75/87 | 0.81 | **0.61** | 40% | 53 |
+| mixture | 40 | 24.90 | 5.03 | 47/70/78 | 0.74 | 0.60 | 52% | 46 |
+| mixture, no cluster weights | 60 | 24.33 | 4.93 | 52/75/87 | 0.92 | 0.61 | 40% | 46 |
+| gamma on positives + π₀ | — | 26.98 | 5.18 | 43/65/74 | 0.73 | 0.72 | 65% | 35 |
+| Weibull on positives + π₀ | — | 27.56 | 5.34 | 43/62/70 | 0.72 | 0.70 | 65% | 36 |
+| **shifted lognormal (V8 live)** | — | **29.44** | 5.16 | 59/88/96 | **1.73** | **1.56** | 45% | **15** |
+
+The V8 shifted lognormal is last on CRPS, and it is not close on the two
+diagnostics that matter here. Its day-one median is **15 issues** against an
+empirical median near 50, and it recedes **1.56 issues for every issue waited**
+against 0.61 for the kernel mixture.
+
+The mechanism is not mysterious. Conditioning a distribution on `G >= a` moves
+its median at a rate set by the hazard:
+
+    d(median)/da = h(a) / h(median)
+
+A falling hazard means `h(a) > h(median)` and the median must recede *faster*
+than the calendar advances. Fitting `log(G + 0.5)` to a sample containing three
+zeros drags `mu` down to 3.20 and pushes `sigma` up to 1.76 — a distribution
+with a median of 20 issues and a very heavy tail, so its hazard falls
+throughout the range where the forecast actually lives. The two complaints —
+"the first prediction is not conservative enough" and "it declines
+monotonically" — are the same defect seen at two moments.
+
+The hazard-shaped families (gamma, Weibull with shape > 1) were tested for
+exactly this reason and do not win: their rising hazard does hold drift near
+0.7, but a two-parameter fit to thirteen positive gaps loses more in CRPS and
+coverage than it recovers.
+
+**Selected: revert to the mixture at bandwidth 60 with cluster weights** — the
+setting Result 4 already chose. This is a revert, not a new tuning.
+
+### Result 7 — recency weighting, again, and the same answer
+
+Adding decay to the conditional backtest reproduces Result 1: CRPS degrades
+monotonically (60/none 24.27, hl 8 25.15, hl 5 25.77, hl 3 26.92). It does move
+`early%` in the intuitively right direction — 40% → 36% → 36% → 35% — because
+recent gaps are longer, so decay makes the prior more conservative. That is a
+real effect and it is why the intuition keeps recurring, but it is bought with
+sharpness, and 16 observations cannot pay for it. **Still off.**
+
+### Result 8 — the point mass at zero is a day-one effect only
+
+`drift` and `drift10` disagree for the mixture (0.81 vs 0.61) and agree for the
+smooth kernel (0.61 vs 0.65). The mixture's extra apparent recession is one
+step: the whole zero mode dies the first time an issue passes without the run
+starting. Beyond `a >= 10` the two constructions are within a couple of issues
+of each other at every elapsed value. So the choice between them is a choice
+about the **day-one headline** (`P(gap = 0)` of 13.3% against 0.6%), not about
+the shape of the hiatus trajectory, and Result 4's decision to keep the point
+mass stands.

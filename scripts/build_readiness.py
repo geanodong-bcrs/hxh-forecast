@@ -22,7 +22,6 @@ STAGE_END = {
     "bg_work": 0.70,
     "dialogue": 0.80,
     "manuscript_complete": 0.90,
-    "retouch": 0.99,
 }
 BLOCKING = {"awaiting_return", "under_review", "retake"}
 
@@ -64,6 +63,39 @@ def progress_of(row):
     # Waiting and unlabelled reports establish that this part of the pipeline
     # exists, but not where inside it the chapter currently lies.
     return (start + end) / 2.0, start, end
+
+
+def coordinate_events(events, asof=None):
+    """Event-level observations ``(chapter - 1 + progress, date)``.
+
+    Unlike :func:`states`, this intentionally retains every usable event.  It is
+    the input to the all-pairs coordinate likelihood: repeated page logs and
+    milestones are observations of the path, not candidates for a single
+    chapter's furthest state.  Low-confidence extractions and non-production
+    classes stay out.
+    """
+    out = []
+    for r in events:
+        if r.get("event_class") not in {"chapter_stage", "page_completed"}:
+            continue
+        if r.get("confidence") == "low" or not r.get("chapter") or not r.get("event_date"):
+            continue
+        if asof and date.fromisoformat(r["event_date"]) > asof:
+            continue
+        try:
+            ch = int(float(r["chapter"]))
+        except ValueError:
+            continue
+        p = progress_of(r)
+        if p is None:
+            continue
+        out.append({"event_id": r.get("event_id"), "chapter": ch,
+                    "coordinate": round((ch - 1) + p[0], 4),
+                    "progress": round(p[0], 4),
+                    "date": date.fromisoformat(r["event_date"]),
+                    "event_class": r.get("event_class"), "stage": r.get("stage"),
+                    "status": r.get("status"), "tweet_id": r.get("tweet_id")})
+    return out
 
 
 def states(events, chapters, asof=None):
@@ -112,6 +144,87 @@ def states(events, chapters, asof=None):
                    "source_event": {k: r.get(k) for k in
                                     ("event_id", "event_class", "stage", "status", "tweet_id")},
                    "flags": flags, "latest_flag_date": latest_flag}
+    return out
+
+
+def ordered_trace(events, chapters, upto):
+    """Return the ordered batch-readiness path ``[(date, B, detail), ...]``.
+
+    ``B`` is a 0--N sum of chapter-equivalent readiness, not an average.  The
+    direct coordinate remains the furthest non-retouch observation for each
+    chapter.  Two conservative order constraints then supply inferred floors:
+
+    * any production report for a later chapter puts every earlier chapter at
+      least at character-inking complete (0.50);
+    * a later chapter's explicit manuscript completion puts every earlier
+      chapter at 1.00.  Manuscript completion of the final chapter also sets
+      that final chapter to 1.00.
+
+    Retouch is absent from ``STAGE_END`` and therefore cannot move either the
+    direct or inferred coordinate.  Re-completions after retouch consequently
+    do not manufacture a new stage in this simplified first-pass ordering.
+    """
+    chapters = sorted(chapters)
+    if not chapters:
+        return []
+    wanted, final_chapter = set(chapters), chapters[-1]
+    rows = []
+    for row in events:
+        if row.get("event_class") not in {"chapter_stage", "page_completed"}:
+            continue
+        if not row.get("chapter") or not row.get("event_date"):
+            continue
+        try:
+            chapter = int(float(row["chapter"]))
+            when = date.fromisoformat(row["event_date"])
+        except (ValueError, TypeError):
+            continue
+        if chapter not in wanted or when > upto:
+            continue
+        progress = progress_of(row)
+        if progress is None:
+            continue
+        rows.append((when, chapter, progress[0],
+                     row.get("stage") == "manuscript_complete" and
+                     row.get("status") == "complete"))
+
+    rows.sort()
+    direct = {chapter: 0.0 for chapter in chapters}
+    reported, manuscripts, out = set(), set(), []
+    i = 0
+    while i < len(rows):
+        when = rows[i][0]
+        while i < len(rows) and rows[i][0] == when:
+            _, chapter, progress, manuscript_complete = rows[i]
+            direct[chapter] = max(direct[chapter], progress)
+            reported.add(chapter)
+            if manuscript_complete:
+                manuscripts.add(chapter)
+            i += 1
+
+        inferred_floor = {chapter: 0.0 for chapter in chapters}
+        for later in reported:
+            for earlier in chapters:
+                if earlier < later:
+                    inferred_floor[earlier] = max(inferred_floor[earlier], 0.50)
+        for later in manuscripts:
+            for earlier in chapters:
+                if earlier < later:
+                    inferred_floor[earlier] = 1.0
+        if final_chapter in manuscripts:
+            inferred_floor[final_chapter] = 1.0
+
+        ordered = {chapter: min(1.0, max(direct[chapter], inferred_floor[chapter]))
+                   for chapter in chapters}
+        detail = {
+            "direct": dict(direct),
+            "inferred_floor": inferred_floor,
+            "ordered": ordered,
+        }
+        value = sum(ordered.values())
+        if out and abs(out[-1][1] - value) < 1e-12:
+            continue
+        out.append((when, value, detail))
     return out
 
 

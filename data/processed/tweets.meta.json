@@ -1,17 +1,17 @@
 {
-  "built_utc": "2026-08-30T06:00:14.151193+00:00",
+  "built_utc": "2026-09-01T07:00:16.479225+00:00",
   "handle": "Un4v5s8bgsVk9Xp",
-  "row_count": 493,
-  "by_togashi": 491,
+  "row_count": 494,
+  "by_togashi": 492,
   "span": [
     "2022-05-24",
-    "2026-08-30"
+    "2026-09-01"
   ],
-  "with_text": 192,
+  "with_text": 193,
   "image_only": 299,
-  "image_only_pct": 60.9,
-  "mentioning_chapter_number": 121,
-  "active_months": 30,
+  "image_only_pct": 60.8,
+  "mentioning_chapter_number": 122,
+  "active_months": 31,
   "discovery": "Wayback CDX enumeration of status URLs",
   "hydration": "cdn.syndication.twimg.com (unauthenticated)",
   "completeness": "UNKNOWN - discovery is limited to tweets the Wayback Machine captured. Deleted tweets and never-archived tweets are invisible. Treat counts as a lower bound."

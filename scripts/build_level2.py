@@ -44,9 +44,11 @@ def load(asof=None):
     """`asof` restricts evidence to what existed on that date (the replay path).
 
     Chapters are filtered by publication date and events by event date. The
-    announcement file is NOT filtered: it carries the assumption that batch 49
-    runs 411-420, which follows from the 10-chapter convention (Agents.md §3) and
-    was as true in June as it is now. It is structure, not evidence.
+    Announcements are filtered by the date they became public.  A 10-chapter
+    extent comes from the batch convention, not from an announcement, so this
+    cannot make a replayed target slide merely because a later schedule is now
+    in the annotations file.  Rows without a verified public date remain a
+    live-only convenience and are excluded from historical replay.
 
     Caveat, deliberately not engineered around: an event's date is when it
     happened, not when we knew it. Some events come from image transcriptions
@@ -62,6 +64,8 @@ def load(asof=None):
               and date.fromisoformat(r["publication_date_jp"]) <= asof]
         ev = [r for r in ev if r.get("event_date")
               and date.fromisoformat(r["event_date"]) <= asof]
+        ann = [r for r in ann if r.get("announcement_date")
+               and date.fromisoformat(r["announcement_date"]) <= asof]
 
     batch, pos, start = {}, {}, {}
     for r in ch:

@@ -24,6 +24,7 @@ has its own git history containing only these files — the vault's 51 commits o
 image data are never pushed anywhere.
 """
 import argparse
+import json
 import os
 import re
 import shutil
@@ -82,8 +83,9 @@ built from the historical publication record and from Togashi's own production
 posts on X. It updates itself: once a day, and again whenever he posts.
 
 This repository is the published output and the code that produces it. Every
-forecast the model has ever made is in `data/forecasts/`, append-only — including
-the wrong ones.
+forecast the model has issued live is in `data/forecasts/`, append-only — including
+the wrong ones. Replayed snapshots, re-run at past dates to score candidate model
+revisions, stay in the private working vault.
 
 ## What is here
 
@@ -93,7 +95,7 @@ method.html         how it works, and where it is weakest
 scripts/            the whole pipeline: fetch -> build -> forecast -> render
 docs/               data dictionary, model, backtest, event taxonomy, automation
 data/processed/     chapters, WSJ issue calendar, tweets, production events
-data/forecasts/     every forecast snapshot, never overwritten
+data/forecasts/     every live forecast snapshot, never overwritten
 data/annotations/   image transcriptions and the announcement record
 Agents.md           the project specification the whole thing follows
 ```
@@ -134,6 +136,15 @@ def run(cmd, cwd=DEPLOY, check=True):
     return p
 
 
+def _is_replay(path):
+    """True for a snapshot re-run at a past date rather than emitted live."""
+    try:
+        with open(path, encoding="utf-8") as fh:
+            return json.load(fh).get("provenance") == "replay"
+    except Exception:
+        return False
+
+
 def stage():
     """Rebuild the deploy tree from scratch, keeping its .git."""
     keep_git = os.path.join(DEPLOY, ".git")
@@ -148,8 +159,17 @@ def stage():
         os.makedirs(DEPLOY)
 
     def ignore(_d, names):
-        return [n for n in names
+        drop = [n for n in names
                 if n in ("__pycache__", ".DS_Store", "resources") or n.endswith(".pyc")]
+        # Replay snapshots are backtest output for superseded model revisions,
+        # re-run in bulk whenever a candidate Level 2 is scored. They are not the
+        # append-only prediction record, and publishing every re-run of V4-V11
+        # would add ~230 MB of permanent history to a 12 MB public repo. The
+        # live forecasts - what the model actually said on a given day - all go.
+        if os.path.basename(_d) == "forecasts":
+            drop += [n for n in names
+                     if n.endswith(".json") and _is_replay(os.path.join(_d, n))]
+        return drop
 
     for src, dst in ALLOW:
         s, d = os.path.join(REPO, src), os.path.join(DEPLOY, dst)
