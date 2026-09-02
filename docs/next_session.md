@@ -13,13 +13,20 @@ Everything built so far runs unattended. This is what is left.
 
 ## Immediate resolution
 
-Batch 49 ends with ch. 420 on **2026-09-07** (assumed, not confirmed). The model
-says **50.6%** that ch. 421 follows immediately on **2026-09-14**. That resolves
-within about two weeks and is the sharpest falsifiable claim the model has made.
+Batch 49 ends with ch. 420 on **2026-09-07** (assumed, not confirmed). Whether
+ch. 421 follows immediately on **2026-09-14** resolves within about two weeks,
+and the model has changed its mind about it twice:
 
-It is also the first real test Level 2 has ever had. Whatever happens, every
-snapshot between now and then is already on disk, append-only, with the trigger
-that caused it — so the record survives being wrong.
+| model | P(ch. 421 on 2026-09-14) | median |
+|---|---|---|
+| the original zero-gap mixture | 50.6% | 2026-09-14 |
+| V8 (live until 2026-08-31) | 4.4% | 2026-12-07 |
+| **V9** | **0.9%** | **2028-04-18** |
+
+V9's near-zero comes from the readiness floor: batch 50 stands at `B = 0.78`, and
+no observed run has begun from that level without another 47 to 261 days. Every
+snapshot behind all three answers is on disk, append-only, with the trigger that
+caused it — so the record survives whichever is wrong.
 
 ## Before the bot posts
 
@@ -34,6 +41,21 @@ that caused it — so the record survives being wrong.
 
 ## Open work, roughly in value order
 
+0. **A two-sided readiness term (V9's own next step).** V9 uses readiness as a
+   *floor* — how much work is still required — so once a run is demonstrably
+   ready the term goes inert and the forecast reverts to the historical gap
+   prior and keeps receding. But the three resolved runs started 6, 13 and 125
+   days after reaching `B = 0.90`, all far shorter than the prior's remaining
+   median at that point. Turning that into a hazard multiplier is what would fix
+   V9's late-hiatus overshoot (batch 49 ends the trajectory ~10 months late).
+   It rests on three observations; it needs a fourth resolved run or an
+   explicitly declared prior. See `docs/model.md`.
+0a. **Decide whether to ship V9's headline.** It moves ch. 421 from a 2026-12-07
+   median with 4.4% on the next issue to **2028-04-18 with 0.9%**. The model
+   change is documented and backtested, but this is a large public reversal and
+   it is a call to make deliberately, not a side effect. `site/` has been rebuilt
+   locally; nothing has been pushed.
+
 1. **Chapters 431–440 — the model.** Currently the Level 1 gap prior carried
    forward from the first posterior, giving a median of May 2028 and an 80% range
    spanning three years. Honest, but it is the piece most worth revisiting.
@@ -41,14 +63,9 @@ that caused it — so the record survives being wrong.
    from the page log (~1.16 pages/posting-day in 2022 vs ~2.07 in 2024). Targets
    the causal variable instead of using time as a proxy. Better than the recency
    weighting the backtest rejected.
-2a. **Level 2 spikes on the truncation floor when its analogs are overdue.**
-   The highest-value finding from the replay: in 175 of 187 reconstructed
-   forecasts the median sat exactly on the first eligible issue, with up to
-   **1.0000** of the mass on it (2025-07-28; §3 forbids a literal 100%). Cause:
-   an analog implying a date already in the past produces a likelihood that
-   decreases monotonically across the whole candidate grid, so everything piles
-   on the boundary. An exhausted analog should flatten the likelihood, not
-   sharpen it. See `docs/prediction_history.md`.
+2a. ~~**Level 2 spikes on the truncation floor when its analogs are overdue.**~~
+   Fixed by the V4 fade, then made moot by V9, which abandons the analog
+   date-translation altogether. See `docs/model.md`.
 3. **π₀ rests on two clustered observations from 2010–2012** and drives the
    headline 50.6%. Anything bearing on whether back-to-back batches are still
    possible would be the highest-value new information available.

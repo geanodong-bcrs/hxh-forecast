@@ -24,6 +24,8 @@ import os
 from collections import OrderedDict
 from datetime import date, datetime, timedelta, timezone
 
+from build_readiness import progress_of, ordered_trace
+
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda *p: os.path.join(HERE, "..", *p)
 SITE = D("site")
@@ -410,7 +412,7 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
              spike_lbl)
 
 
-def posterior_series(chapter):
+def posterior_series(chapter, direct_only=False):
     """Every posterior snapshot's forecast FOR ONE CHAPTER, oldest first.
 
     Not the batch-start forecast. Over a two-year replay chapter 421 sits first
@@ -447,16 +449,31 @@ def posterior_series(chapter):
                     row = r
         if not row:
             continue
+        direct = ("publication of ch %d" % chapter) in (d.get("target") or "")
         out.append({"t": t, "median": row["median"], "i80": row.get("i80"),
                     "p_by": (d.get("p_by_chapter") or {}).get(str(chapter)) or {},
                     "replay": d.get("provenance") == "replay",
                     "model": d.get("level2_design") or "legacy_v1",
                     "asof": d.get("replay_asof") or d.get("forecast_timestamp"),
-                    "target": d.get("target") or "",
+                    "target": d.get("target") or "", "direct": direct,
                     "exhausted": d.get("exhausted_analogs") or []})
+    if direct_only:
+        out = [r for r in out if r["direct"]]
     # Revision snapshots are append-only, so preserve the old record on disk
     # but do not draw two incompatible models as one apparent time series.
-    for model in ("readiness_coordinate_context_record_hiatus_v4",
+    for model in ("ordered_readiness_two_sided_mixture_v11",
+                  "ordered_readiness_feasibility_floor_v10",
+                  "readiness_feasibility_floor_v9",
+                  "all_pairs_coordinate_likelihood_v9_mixture_level1",
+                  "all_pairs_coordinate_likelihood_v8_parametric_level1_frozen_fade",
+                  "all_pairs_coordinate_likelihood_v7_smooth_zero_gaps_censored",
+                  "all_pairs_coordinate_likelihood_v7_direct_two_gap_censored",
+                  "all_pairs_coordinate_likelihood_v7_direct_two_gap",
+                  "all_pairs_coordinate_likelihood_v6_buffer_mixture",
+                  "all_pairs_coordinate_likelihood_v6_predecessor_gated",
+                  "all_pairs_coordinate_likelihood_v6_continuous_no_start",
+                  "all_pairs_coordinate_likelihood_v5",
+                  "readiness_coordinate_context_record_hiatus_v4",
                   "readiness_coordinate_context_analog_v3",
                   "readiness_coordinate_analog_v2"):
         if any(r["model"] == model for r in out):
@@ -464,6 +481,127 @@ def posterior_series(chapter):
             break
     out.sort(key=lambda r: r["t"])
     return out
+
+
+def _pmf_quantile(pmf, q):
+    """Return a date quantile from a (date-string, probability) PMF."""
+    total = sum(p for _, p in pmf)
+    if total <= 0:
+        return None
+    running = 0.0
+    for d, p in pmf:
+        running += p / total
+        if running >= q:
+            return d
+    return pmf[-1][0]
+
+
+def level1_prior_series():
+    """Historical Level-1-only forecast, with already-passed issues censored.
+
+    This deliberately reads `prior_pmf`, before the production-event likelihood
+    is applied.  The truncation is not Level 2: an issue before the replay date
+    cannot still be the next publication, so its mass is removed and the
+    remaining Level-1 distribution is renormalized.
+    """
+    out = []
+    for path in glob.glob(D("data", "forecasts", "*_posterior.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                d = json.load(fh)
+        except Exception:
+            continue
+        rid = d.get("run_id")
+        if not rid:
+            continue
+        try:
+            t = datetime.strptime(rid, "%Y%m%dT%H%M%SZ")
+        except ValueError:
+            continue
+        pmf = d.get("prior_pmf") or []
+        floor = d.get("truncation_floor")
+        if not pmf or not floor:
+            continue
+        # Saved priors are over candidate publication dates.  Dropping past
+        # dates produces the usable prior at that moment, without consulting
+        # any Togashi production event or the Level-2 posterior.
+        usable = [(dte, float(p)) for dte, p in pmf if dte >= floor]
+        median = _pmf_quantile(usable, .5)
+        if not median:
+            continue
+        out.append({"t": t, "median": median,
+                    "i80": [_pmf_quantile(usable, .1), _pmf_quantile(usable, .9)],
+                    "replay": d.get("provenance") == "replay",
+                    "model": d.get("level2_design") or "legacy_v1",
+                    "target": d.get("target") or ""})
+    # These diagnostics deliberately replay the currently published model
+    # (V4), not an experimental local revision.  The 20:55 IDs are append-only
+    # diagnostic replays of that exact public code and public input state.
+    out = [r for r in out if r["model"] == "readiness_coordinate_context_record_hiatus_v4"
+           and r["t"].strftime("%H%M%S") == "205500"]
+    out.sort(key=lambda r: r["t"])
+    return out
+
+
+def level1_prior_chart():
+    rows = level1_prior_series()
+    if len(rows) < 2:
+        return []
+    return [
+        '<h2>Level 1 in isolation</h2>',
+        '<h3>Prior median over time — no production evidence</h3>',
+        '<p class=note>This is the median of the historical publication prior '
+        'alone. Already-passed issues are removed, but no Togashi update, chapter '
+        'coordinate, or other Level 2 likelihood is used. The target is whichever '
+        'next batch was being forecast on that date.</p>',
+        zoomed(lambda rr: fan_chart(rr, annotations=None), rows, name="level1-prior"),
+    ]
+
+
+def level2_likelihood_series():
+    """Exact Level-2 likelihood from the published-model diagnostic replay."""
+    out = []
+    for path in glob.glob(D("data", "forecasts", "*_posterior.json")):
+        try:
+            with open(path, encoding="utf-8") as fh:
+                d = json.load(fh)
+        except Exception:
+            continue
+        try:
+            t = datetime.strptime(d.get("run_id", ""), "%Y%m%dT%H%M%SZ")
+        except ValueError:
+            continue
+        floor = d.get("truncation_floor")
+        candidates = [(dte, float(p)) for dte, p in (d.get("level2_likelihood_pmf") or [])
+                      if dte >= (floor or "9999-12-31")]
+        if not candidates:
+            continue
+        median = _pmf_quantile(candidates, .5)
+        if not median:
+            continue
+        out.append({"t": t, "median": median,
+                    "i80": [_pmf_quantile(candidates, .1), _pmf_quantile(candidates, .9)],
+                    "replay": d.get("provenance") == "replay",
+                    "model": d.get("level2_design") or "legacy_v1"})
+    out = [r for r in out if r["model"] == "readiness_coordinate_context_record_hiatus_v4"
+           and r["t"].strftime("%H%M%S") == "205500"]
+    out.sort(key=lambda r: r["t"])
+    return out
+
+
+def level2_likelihood_chart():
+    rows = level2_likelihood_series()
+    if len(rows) < 2:
+        return []
+    return [
+        '<h2>Level 2 in isolation</h2>',
+        '<h3>Production-likelihood median over time — no publication prior</h3>',
+        '<p class=note>This normalizes the production-evidence likelihood by '
+        'itself after removing already-passed issues; it does not multiply in '
+        'the Level 1 publication prior. It is an exact replay of the current '
+        'published model, rather than a reconstructed approximation.</p>',
+        zoomed(lambda rr: fan_chart(rr, annotations=None), rows, name="level2-likelihood"),
+    ]
 
 
 def history_changes(rows, threshold_days=45):
@@ -534,11 +672,11 @@ def manuscript_completion_annotations(rows):
 
 
 def event_only_series(rows):
-    """Freeze the series between public evidence updates as a visual check.
+    """Hold production evidence fixed between events for a decomposition chart.
 
-    Under V4 this should overlay the real-time series: the model's own no-start
-    conditioning stops at the last public production signal.  Any separation is
-    therefore a diagnostic, not an intended source of gradual drift.
+    The full series still conditions on every issue known not to contain the
+    batch.  The dashed line instead holds the last event-time posterior, making
+    the remaining movement attributable to that factual no-start update.
     """
     event_days = set()
     path = D("data", "processed", "production_events.csv")
@@ -580,6 +718,181 @@ def time_ticks(t0, t1):
             out.append((d, d.strftime("%-d %b %Y")))
             d += timedelta(days=14 if days > 40 else 7)
     return out
+
+
+def readiness_path(first_chapter, end_date, extend_to_end=False):
+    """Ordered, reported batch progress for the factual comparison chart.
+
+    This is intentionally separate from the forecasting model's readiness
+    coordinate. It encodes the user-facing observation that chapters overlap,
+    but the same stage moves forward in chapter order.
+    """
+    events = []
+    with open(D("data", "processed", "production_events.csv"), encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            if not row.get("chapter") or not row.get("event_date"):
+                continue
+            try:
+                chapter = int(float(row["chapter"]))
+            except ValueError:
+                continue
+            if not first_chapter <= chapter < first_chapter + 10:
+                continue
+            when = date.fromisoformat(row["event_date"])
+            if when > end_date:
+                continue
+            events.append(row)
+    if not events:
+        return None
+    traced = ordered_trace(events, range(first_chapter, first_chapter + 10), end_date)
+    if not traced:
+        return None
+    origin = traced[0][0]
+    path = [((when - origin).days, total / 10.0) for when, total, _ in traced]
+    end_elapsed = (end_date - origin).days
+    if extend_to_end and path[-1][0] != end_elapsed:
+        path.append((end_elapsed, path[-1][1]))
+    return {"origin": origin, "end": end_date, "path": path}
+
+
+def resolved_batch_runs():
+    """Publication dates for each 2007-onward, numbered batch."""
+    batches = {}
+    with open(D("data", "processed", "chapters.csv"), encoding="utf-8") as fh:
+        for row in csv.DictReader(fh):
+            if not row.get("batch_id") or not row.get("publication_date_jp"):
+                continue
+            batch = int(row["batch_id"])
+            chapter = int(row["chapter"])
+            when = date.fromisoformat(row["publication_date_jp"])
+            position = int(row.get("position_in_batch") or 1)
+            batches.setdefault(batch, []).append((chapter, position, when))
+    out = {}
+    for batch, rows in batches.items():
+        rows.sort(key=lambda r: r[1])
+        out[batch] = {"first": min(r[0] for r in rows),
+                      "publication": [(r[1], r[2]) for r in rows],
+                      "end": max(r[2] for r in rows)}
+    return out
+
+
+def readiness_comparison_chart(post):
+    """Public progress paths, aligned at each run's first observed event."""
+    first = int(post["target"].split("ch ")[-1])
+    asof = date.fromisoformat(post["forecast_timestamp"])
+    runs = resolved_batch_runs()
+    series = []
+    for batch, css in ((47, "r47"), (48, "r48"), (49, "r49")):
+        if batch not in runs:
+            continue
+        run = runs[batch]
+        # Batch 49 is still publishing. Extend its production trace through
+        # the current date, while its publication trace uses only issues that
+        # have actually appeared.
+        end = asof if batch == 49 else run["end"]
+        path = readiness_path(run["first"], end)
+        if path:
+            series.append({"label": "ch. %d–%d" % (run["first"], run["first"] + 9),
+                           "css": css, "path": path, "publication": run["publication"],
+                           "legend_suffix": " · publishing now" if batch == 49 else " · published"})
+    live = readiness_path(first, asof)
+    if not live:
+        return []
+    series.append({"label": "ch. %d–%d" % (first, first + 9),
+                   "css": "rlive", "path": live, "publication": [],
+                   "legend_suffix": " (working)"})
+    xmax = max(
+        [s["path"]["path"][-1][0] for s in series] +
+        [(when - s["path"]["origin"]).days for s in series for _, when in s["publication"]]
+    )
+    xmax = max(180, int((xmax + 89) // 90) * 90)
+
+    width, height = 720, 300
+    pad_l, pad_r, pad_t, pad_b = 52, 16, 30, 54
+    W, H = width - pad_l - pad_r, height - pad_t - pad_b
+    X = lambda day: pad_l + W * day / xmax
+    # This is a display scale, not a replacement for the model's coordinate.
+    # Manuscript-complete is 0.90 in the source coordinate, so map it to the
+    # visible upper edge of the Togashi-work phase (1.00). The publication
+    # process occupies the separate 1.00–1.10 band.
+    Y = lambda value: pad_t + H * (1 - value / 1.10)
+    grid = []
+    # The 1.00-1.10 band is WSJ publication, a separate phase rather than
+    # progress past 100%. Shade it, and draw it first so the rules sit on top.
+    grid.append('<rect class="pubband" x="%d" y="%.1f" width="%d" height="%.1f"/>'
+                % (pad_l, Y(1.10), W, Y(1.00) - Y(1.10)))
+    grid.append('<text class="ax" x="%.1f" y="%.1f">publishing phase</text>'
+                % (pad_l + 8, (Y(1.00) + Y(1.10)) / 2 + 4))
+    for value in (0, .25, .5, .75):
+        grid.append('<line class="grid" x1="%d" y1="%.1f" x2="%d" y2="%.1f"/>'
+                    '<text class="ax" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
+                    % (pad_l, Y(value), pad_l + W, Y(value), pad_l - 6,
+                       Y(value) + 4, round(value * 100)))
+    # 100% is labelled but deliberately not ruled: a full-width line at 1.00 ran
+    # along the ch. 391-400 plateau, and the shaded band's edge already marks it.
+    grid.append('<text class="ax" x="%d" y="%.1f" text-anchor="end">100%%</text>'
+                % (pad_l - 6, Y(1.00) + 4))
+    tick = 0
+    while tick <= xmax:
+        grid.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                    '<text class="ax" x="%.1f" y="%d" text-anchor="middle">%d</text>'
+                    % (X(tick), pad_t, X(tick), pad_t + H, X(tick), height - 27, tick))
+        tick += 180
+    if xmax % 180:
+        grid.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                    '<text class="ax" x="%.1f" y="%d" text-anchor="middle">%d</text>'
+                    % (X(xmax), pad_t, X(xmax), pad_t + H, X(xmax), height - 27, xmax))
+
+    paths, publication_paths, legend = [], [], []
+    for s in series:
+        points = [(day, min(value / .90, 1.0)) for day, value in s["path"]["path"]]
+        d = ["M%.1f,%.1f" % (X(points[0][0]), Y(points[0][1]))]
+        previous_day, previous_value = points[0]
+        for day, value in points[1:]:
+            d.append("L%.1f,%.1f L%.1f,%.1f" %
+                     (X(day), Y(previous_value), X(day), Y(value)))
+            previous_day, previous_value = day, value
+        paths.append('<path class="rline %s" d="%s"/>' % (s["css"], " ".join(d)))
+        publication = [(position, (when - s["path"]["origin"]).days)
+                       for position, when in s["publication"]]
+        if publication:
+            pub_points = [(day, 1.00 + .10 * (position - 1) / 9.0)
+                          for position, day in publication]
+            d = ["M%.1f,%.1f" % (X(pub_points[0][0]), Y(pub_points[0][1]))]
+            prev_day, prev_value = pub_points[0]
+            for day, value in pub_points[1:]:
+                d.append("L%.1f,%.1f L%.1f,%.1f" %
+                         (X(day), Y(prev_value), X(day), Y(value)))
+                prev_day, prev_value = day, value
+            publication_paths.append('<path class="pline %s" d="%s"/>' % (s["css"], " ".join(d)))
+        legend.append('<span><i class="dot %s"></i>%s%s</span>' %
+                      (s["css"], s["label"], s["legend_suffix"]))
+
+    chart = '''<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label="Observed production and publication progress of Hunter x Hunter batches">
+%s
+%s%s
+<text class="ax" x="%d" y="%d" text-anchor="middle">days since the first production tweet of a batch</text>
+<text class="ax" x="14" y="%d" transform="rotate(-90 14 %d)" text-anchor="middle">Togashi&rsquo;s working progress</text>
+</svg>''' % (width, height, "\n".join(grid), "".join(paths), "".join(publication_paths),
+              pad_l + W / 2, height - 7, pad_t + H / 2, pad_t + H / 2)
+    return [
+        '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}'
+        '.pubband{fill:var(--soft)}'
+        '.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.r47,.pline.r47{stroke:#8a5a44}.rline.r48,.pline.r48{stroke:#775b9c}'
+        '.rline.r49,.pline.r49{stroke:#2c7a7b}.rline.rlive{stroke:var(--accent);stroke-width:3}'
+        '.rline.rnext{stroke:#c05c22}'
+        '.dot.r47{background:#8a5a44;border-color:#8a5a44}'
+        '.dot.r48{background:#775b9c;border-color:#775b9c}.dot.r49{background:#2c7a7b;border-color:#2c7a7b}'
+        '.dot.rlive{background:var(--accent);border-color:var(--accent)}.dot.rnext{background:#c05c22;border-color:#c05c22}.dot.pub{background:#b34070;border-color:#b34070}'
+        '</style>',
+        '<h2>Production progress compared with earlier batches</h2>',
+        '<h3>Publicly reported production and publication progress</h3>',
+        chart,
+        '<div class=legend>%s</div>' % "".join(legend),
+        '<p class=note><strong>Ch. 391&ndash;400 is incomplete:</strong> Togashi began '
+        'posting after production of that batch had already started, so its '
+        'displayed duration is a lower bound.</p>',
+    ]
 
 
 def _frame(rows, width, height, pad):
@@ -974,14 +1287,14 @@ def chapter_table(rows, highlight=None):
 
 
 def history_charts(first, post, primary=True, secondary=True, probabilities=True,
-                   companion=None):
+                   companion=None, direct_only=False):
     """The preserved prediction history for one chapter.
 
     Completion markers are deliberately evidence markers, not causal labels:
     production can be revised or retaken, so more reported completion does not
     logically guarantee an earlier publication forecast.
     """
-    ser = posterior_series(first)
+    ser = posterior_series(first, direct_only=direct_only)
     if len(ser) < 2:
         return []
     h = []
@@ -1000,10 +1313,11 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
         decomp = event_only_series(ser)
         h.append('<h3>Forecast revisions by public evidence</h3>')
         h.append(zoomed(decomposition_chart, decomp, name="hd%d" % first))
-        h.append('<p class=note>The solid line is the full real-time median. The '
-                 'dashed line holds it fixed between public production or '
-                 'publication events. They should overlap between those updates: '
-                 'ordinary silence no longer makes the model move its prediction.</p>')
+        h.append('<p class=note>The solid line conditions on every issue publicly '
+                 'known not to contain the batch. The dashed line holds the '
+                 'production evidence fixed at its last update. Their separation '
+                 'is the necessary effect of continued non-publication, not a '
+                 'new claim that production has slowed.</p>')
         hz = [q for q in sorted((post.get("p_by_chapter") or {}).get(str(first)) or {})][:4]
         if probabilities and hz:
             h.append('<h3>Chance of publication by each quarter-end</h3>')
@@ -1012,9 +1326,11 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
                      'chapter %d has been published by each quarter-end.</p>' % first)
     n_rep = sum(1 for r in ser if r["replay"])
     if n_rep:
-        h.append('<p class=note>The first %d points are reconstructed from the '
+        prefix = ('The history begins once this batch became the direct next-run '
+                  'forecast. ' if direct_only else '')
+        h.append('<p class=note>%sThe first %d points are reconstructed from the '
                  'information public on each date; the dashed boundary marks the '
-                 'live record. See <a href="method.html">method</a>.</p>' % n_rep)
+                 'live record. See <a href="method.html">method</a>.</p>' % (prefix, n_rep))
     if companion:
         href, chapter = companion
         h.append('<p class=note>Also see the preserved prediction history for '
@@ -1131,9 +1447,9 @@ def build_index(post, l2, pri, snap_path):
                  % (spike[1] * 100, fmt(spike[0], True), first - 1))
     h.append('</div>')
 
-    # This is the most useful view of the model: it shows what the forecast
-    # actually believed at every earlier point, before the outcome was known.
+    h += readiness_comparison_chart(post)
     h += history_charts(first, post, primary=True, secondary=False,
+                        probabilities=False,
                         companion=("chapter-431.html", nfirst))
     h += distribution_charts(first, pmf, post["median"], i["80"])
 
@@ -1195,10 +1511,9 @@ def build_chapter_431(post, l2, pri, snap_path):
     counts = corpus_counts()
     h = ['<div class=wrap>',
          '<h1><a href="index.html">&larr; Hunter &times; Hunter forecast</a></h1>',
-         '<div class=hero><div class=ch>Following run &mdash; chapter %d</div>' % nfirst,
-         '<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
-         '<div class=sub>forecast history and current probability distribution</div></div>']
-
+         '<div class=hero><div class=ch>Following run &mdash; chapter %d</div>' % nfirst]
+    h += ['<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
+          '<div class=sub>forecast history and current probability distribution</div></div>']
     h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
     if nb:
@@ -1249,29 +1564,51 @@ def build_method(post, l2, pri, snap_path):
     h.append('<div class=card><h3>0 &mdash; already announced</h3><p class=note>'
              'If Shueisha has named the issue, there is nothing to predict. That '
              'chapter is recorded as scheduled and drops out of the model.</p></div>')
+    smooth_zero = post.get("level2_design") in {
+        "all_pairs_coordinate_likelihood_v7_smooth_zero_gaps_censored",
+        "all_pairs_coordinate_likelihood_v8_parametric_level1_frozen_fade",
+    }
+    if smooth_zero:
+        prior_note = ('There are %d gaps between runs since 2007, including three '
+                      'zero-gap continuations and positive waits of 9 to 184 issues. '
+                      'This sensitivity version smooths them as <em>one</em> broad '
+                      'distribution, so it does not retain an immediate-continuation '
+                      'point mass.')
+    else:
+        prior_note = ('There are %d gaps between runs since 2007, and they are '
+                      '<em>bimodal</em>: three times the next run began with no wait at all, '
+                      'the rest after waits of 9 to 184 issues. A single smooth curve would '
+                      'describe neither case, so the model uses a mixture.')
     h.append('<div class=card><h3>1 &mdash; what history alone suggests</h3>'
              '<p class=note>Built from publication records only, never from '
              'Togashi&rsquo;s posts &mdash; otherwise the next step would not be an '
-             'update. There are %d gaps between runs since 2007, and they are '
-             '<em>bimodal</em>: three times the next run began with no wait at all, '
-             'the rest after waits of 9 to 184 issues. A single smooth curve would '
-             'describe neither case, so the model uses a mixture.</p></div>'
-             % ((pri or {}).get("n_observations") or 16))
-    if pri and pri.get("gap_pmf"):
+             'update. %s <a href="research-methods.html">See the full '
+             'statistical-methods paper and its plot &rarr;</a></p></div>'
+             % (prior_note % ((pri or {}).get("n_observations") or 16)))
+    if pri and pri.get("gap_pmf") and not smooth_zero:
         h.append(gap_prior_chart(pri))
-        h.append('<p class=note>That mixture, drawn. The tick marks along the '
-                 'bottom are the %d observations the whole prior is built from, '
-                 'at the weight each carries &mdash; the three zeros count as two, '
-                 'because two of them are the same run continuing rather than two '
-                 'separate decisions to carry straight on. The bar at gap 0 is '
-                 'clipped: it is about twenty times the height of the curve, and '
-                 'drawing it to scale would flatten everything else to nothing. '
-                 'The curve itself is close to flat from 1 to 100 &mdash; with a '
-                 '60-issue kernel over sixteen points, the prior says little about '
-                 '<em>how long</em> a wait will be once there is a wait at all. '
-                 'That is the honest state of it, and it is why the production '
-                 'evidence below does so much of the work.</p>'
-                 % ((pri or {}).get("n_observations") or 16))
+        chart_note = ('That single-process prior, drawn. The tick marks along the '
+                      'bottom are the %d observations it is built from; zero gaps '
+                      'are smoothed into the same curve as positive gaps. With a '
+                      '60-issue kernel over this small record, the prior says little '
+                      'about <em>how long</em> a wait will be.' if smooth_zero else
+                      'That mixture, drawn. The tick marks along the bottom are the '
+                      '%d observations the whole prior is built from, at the weight '
+                      'each carries &mdash; the three zeros count as two, because two '
+                      'of them are the same run continuing rather than two separate '
+                      'decisions to carry straight on. The bar at gap 0 is clipped: '
+                      'it is about twenty times the height of the curve, and drawing '
+                      'it to scale would flatten everything else to nothing. The curve '
+                      'itself is close to flat from 1 to 100 &mdash; with a 60-issue '
+                      'kernel over sixteen points, the prior says little about '
+                      '<em>how long</em> a wait will be once there is a wait at all.')
+        h.append('<p class=note>%s</p>' %
+                 (chart_note % ((pri or {}).get("n_observations") or 16)))
+    elif smooth_zero:
+        h.append('<p class=note>The full fitted shifted-lognormal prior is plotted '
+                 'on the <a href="research-methods.html">statistical-methods page</a>. '
+                 'It is kept separate here because this page&rsquo;s older gap chart '
+                 'is designed for a point-mass mixture.</p>')
     if post.get("analogs"):
         h.append('<div class=card><h3>2 &mdash; what Togashi&rsquo;s posts add</h3>'
                  '<p class=note>Production data covers only %d past runs. That is '
@@ -1306,16 +1643,109 @@ def build_method(post, l2, pri, snap_path):
              'wide: very impressive, and wrong. So each <em>past run</em> counts '
              'once, and the confidence scales with how many comparable runs exist, '
              'not how many posts there are.</p></div>' % (n_ready, n_ready))
-    ctx = (post.get("preceding_batch_context") or {}).get("weight")
-    h.append('<div class=card><h3>How silence is handled</h3><p class=note>'
-             'The batch being forecast supplies the direct production evidence. '
-             'The preceding batch is only a weak context signal%s. Ordinary '
-             'calendar time with no new public production report does not move the '
-             'forecast. Only after a gap exceeds every observed modern hiatus does '
-             'the model enter a record-hiatus rule: 20%% on the next eligible issue '
-             'and 80%% on the historical long tail.</p></div>'
-             % ((" (%.0f%% of the timing likelihood)" % (100 * ctx))
-                if ctx is not None else ""))
+    feas = post.get("feasibility") or {}
+    if post.get("level2_design") in {"ordered_readiness_two_sided_mixture_v11",
+                                     "ordered_readiness_feasibility_floor_v10",
+                                     "readiness_feasibility_floor_v9"}:
+        lvl = feas.get("level")
+        if post.get("level2_design") == "ordered_readiness_two_sided_mixture_v11":
+            centres = (post.get("readiness_mixture") or {}).get("centres") or {}
+            centre_text = ", ".join(centres[k] for k in sorted(centres))
+            h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
+                     'The run is at %.2f of 10.00 ordered chapter-equivalents. '
+                     'At that same readiness, the three resolved production-era '
+                     'runs imply start dates of %s. Each supplies one broad '
+                     '120-day component; the components are averaged, not '
+                     'multiplied. This makes dates far beyond every comparable '
+                     'readiness trajectory less likely while preserving a wide '
+                     'tail for Shueisha&rsquo;s independent scheduling decision.</p></div>'
+                     % (lvl or 0.0, centre_text or 'unavailable'))
+        else:
+            h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
+                 'The run is summarised by one number: the summed ordered readiness '
+                 'across its ten chapters. Later-chapter reports provide conservative '
+                 'floors for earlier chapters, while retouch is excluded. Direct and '
+                 'inferred progress remain separately recorded. That number can only go '
+                 'up, so a new post can only move '
+                 'the forecast earlier or leave it alone &mdash; it can never make a '
+                 'finished page into bad news.%s The three resolved runs began at '
+                 '9.1, 9.5, and 10.0 chapter-equivalents, so '
+                 'the model uses production as a <em>floor</em> &mdash; how much work '
+                 'is still required &mdash; and lets the publication history say how '
+                 'long the wait above that floor is likely to be. When the required '
+                 'work is already done, production stops constraining the date and '
+                 'says so, rather than inventing a start date from three past runs.'
+                 '</p></div>'
+                 % ('' if lvl is None else ' It currently stands at %.2f of 10.00.' % lvl))
+        h.append('<div class=card><h3>How continued non-publication is handled</h3><p class=note>'
+                 'Each forecast rules out issues already known not to contain '
+                 'the batch. This is a factual update, applied continuously. '
+                 'It can gradually move the forecast later during a hiatus, '
+                 'but does not treat silence as a new production milestone.</p></div>')
+    if post.get("level2_design") in {"all_pairs_coordinate_likelihood_v5",
+                                     "all_pairs_coordinate_likelihood_v9_mixture_level1",
+                                     "all_pairs_coordinate_likelihood_v8_parametric_level1_frozen_fade",
+                                     "all_pairs_coordinate_likelihood_v6_continuous_no_start",
+                                     "all_pairs_coordinate_likelihood_v6_predecessor_gated",
+                                     "all_pairs_coordinate_likelihood_v6_buffer_mixture",
+                                     "all_pairs_coordinate_likelihood_v7_direct_two_gap",
+                                     "all_pairs_coordinate_likelihood_v7_direct_two_gap_censored",
+                                     "all_pairs_coordinate_likelihood_v7_smooth_zero_gaps_censored"}:
+        h.append('<div class=card><h3>How production evidence is combined</h3><p class=note>'
+                 'Every usable page-log or stage event is represented by its '
+                 'chapter-progress coordinate and date. The model compares its '
+                 'distance from the target chapter with all comparable historical '
+                 'event-to-batch-start pairs. This admits evidence from preceding, '
+                 'target, and following chapters, but still averages at the '
+                 'historical-batch level so thousands of pairs do not pretend to be '
+                 'thousands of independent scheduling decisions.</p></div>')
+        if post.get("level2_design") in {"all_pairs_coordinate_likelihood_v9_mixture_level1",
+                                         "all_pairs_coordinate_likelihood_v8_parametric_level1_frozen_fade",
+                                         "all_pairs_coordinate_likelihood_v6_continuous_no_start",
+                                         "all_pairs_coordinate_likelihood_v6_predecessor_gated",
+                                         "all_pairs_coordinate_likelihood_v6_buffer_mixture",
+                                         "all_pairs_coordinate_likelihood_v7_direct_two_gap",
+                                         "all_pairs_coordinate_likelihood_v7_direct_two_gap_censored",
+                                         "all_pairs_coordinate_likelihood_v7_smooth_zero_gaps_censored"}:
+            h.append('<div class=card><h3>How continued non-publication is handled</h3><p class=note>'
+                     'Each forecast rules out issues already known not to contain '
+                     'the batch. This is a factual update, applied continuously. '
+                     'It can gradually move the forecast later during a hiatus, '
+                     'but does not treat silence as a new production milestone.</p></div>')
+        buf = ((post.get("next_batch") or {}).get("continuation_buffer") or {})
+        if buf:
+            h.append('<div class=card><h3>Why production can move the following run</h3><p class=note>'
+                     'The following-run prior is a mixture of an immediate '
+                     'continuation and a later hiatus. Public work on those '
+                     'chapters changes the continuation weight from %.0f%% to %.0f%%. '
+                     'That is evidence of a production buffer, not a claim that '
+                     'Weekly Shonen Jump has committed to a schedule.</p></div>'
+                     % (100 * buf.get("baseline_continuation_weight", 0),
+                        100 * buf.get("continuation_weight", 0)))
+        hprior = ((post.get("next_batch") or {}).get("two_gap_prior") or {})
+        if hprior:
+            h.append('<div class=card><h3>How the following run is forecast</h3><p class=note>'
+                     'Before its predecessor starts, the following run uses the '
+                     'historical distribution of <em>two adjacent gaps together</em>, '
+                     'rather than multiplying two independent one-gap forecasts. '
+                     'The current forecast is conditioned on the first gap already '
+                     'lasting at least %d issue%s; %d of %d historical two-gap '
+                     'pairs remain comparable.</p></div>'
+                     % (hprior.get("elapsed_first_gap", 0),
+                        "" if hprior.get("elapsed_first_gap", 0) == 1 else "s",
+                        hprior.get("n_eligible_pairs", 0), hprior.get("n_pairs", 0)))
+    elif post.get("level2_design") not in {"ordered_readiness_two_sided_mixture_v11",
+                                           "ordered_readiness_feasibility_floor_v10"}:
+        ctx = (post.get("preceding_batch_context") or {}).get("weight")
+        h.append('<div class=card><h3>How silence is handled</h3><p class=note>'
+                 'The batch being forecast supplies the direct production evidence. '
+                 'The preceding batch is only a weak context signal%s. Ordinary '
+                 'calendar time with no new public production report does not move the '
+                 'forecast. Only after a gap exceeds every observed modern hiatus does '
+                 'the model enter a record-hiatus rule: 20%% on the next eligible issue '
+                 'and 80%% on the historical long tail.</p></div>'
+                 % ((" (%.0f%% of the timing likelihood)" % (100 * ctx))
+                    if ctx is not None else ""))
 
     first_ch_m = int(post["target"].split("ch ")[-1])
     ser = posterior_series(first_ch_m)
@@ -1344,15 +1774,23 @@ def build_method(post, l2, pri, snap_path):
                               if not r["replay"]), ""))))
 
     h.append('<h2>Where it is weakest</h2>')
-    h.append('<div class=card><h3>The headline number is the least defensible part</h3>'
-             '<p class=note>The %s%% on %s comes from a point mass estimated from '
-             '<strong>two clustered observations from 2010&ndash;2012</strong>. It '
-             'says there is roughly an even chance the series rolls straight from '
-             'this run into the next with no break &mdash; which has not actually '
-             'happened since 2012. It survived every check I ran, and it is still '
-             'the claim I would least want to defend.</p></div>'
-             % (("%.1f" % (spike[1] * 100)) if spike else "?",
-                fmt(spike[0], True) if spike else "?"))
+    if smooth_zero:
+        h.append('<div class=card><h3>The parametric tail is the least defensible part</h3>'
+                 '<p class=note>The shifted-lognormal prior is fitted to only a '
+                 'handful of heterogeneous publication gaps. Its long tail is a '
+                 'deliberate conservative extrapolation, not a measured biological '
+                 'or editorial process. It must be judged by leakage-free scoring '
+                 'once more resolved batches exist.</p></div>')
+    else:
+        h.append('<div class=card><h3>The headline number is the least defensible part</h3>'
+                 '<p class=note>The %s%% on %s comes from a point mass estimated from '
+                 '<strong>two clustered observations from 2010&ndash;2012</strong>. It '
+                 'says there is roughly an even chance the series rolls straight from '
+                 'this run into the next with no break &mdash; which has not actually '
+                 'happened since 2012. It survived every check I ran, and it is still '
+                 'the claim I would least want to defend.</p></div>'
+                 % (("%.1f" % (spike[1] * 100)) if spike else "?",
+                    fmt(spike[0], True) if spike else "?"))
     h.append('<ol class=caveats>')
     h.append('<li><strong>The production side has never been scored against a real '
              'outcome.</strong> Three comparable runs, and none has started since '
@@ -1407,6 +1845,13 @@ def main():
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as fh:
             fh.write(doc)
         print("site: site/%-12s %.1f KB" % (name, len(doc) / 1024.0))
+    from build_chapter421_workings import build as build_chapter421_workings
+    steps, pmf, _readme, n = build_chapter421_workings()
+    print("working: %s (%d forecast dates)" % (os.path.relpath(steps, D()), n))
+    print("working: %s" % os.path.relpath(pmf, D()))
+    from build_prior_explainer import build as build_prior_explainer
+    prior_path = build_prior_explainer()
+    print("site: %s" % os.path.relpath(prior_path, D()))
 
 
 if __name__ == "__main__":

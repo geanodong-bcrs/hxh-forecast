@@ -1,5 +1,11 @@
 # How the Prediction Is Made
 
+> **The live model is V11** — see "Two-sided ordered readiness (V11)" at the end
+> of this file. Everything from here to that section is the historical record of
+> V1–V8 and is kept unchanged so every forecast already written stays
+> reproducible. In particular the "Current output (2026-08-28)" block below, with
+> its 50.6% on 2026-09-14, is what an earlier model said, not what the site says.
+
 State as of 2026-08-28. Target: **W_b**, the on-sale date of a batch's *first*
 chapter (Agents.md §3). Everything else is derived from it.
 
@@ -264,6 +270,75 @@ This still does not fit a regression of publication time on progress.  With
 three resolved batches, an apparently precise fitted relationship would mostly
 be its assumed functional form.
 
+#### Worked example (illustrative dates)
+
+Suppose the forecast target is the start of batch `B`.  Three positions in `B`
+have usable current reports, and historical batch `h` has reports at matching
+positions and sufficiently similar progress coordinates:
+
+| position | current report attained | historical matching report attained | historical batch `h` actually started | implied start from this position |
+|---:|---|---|---|---|
+| 1 | 1 Aug | 12 May | 1 Jun | 21 Aug |
+| 4 | 4 Aug | 4 May | 1 Jun | 1 Sep |
+| 7 | 7 Aug | 11 May | 1 Jun | 28 Aug |
+
+For position 1, the historical report preceded `h`'s start by 20 days.  The
+translation says: if the current position has the same remaining lag, its 1 Aug
+report implies a 21 Aug start:
+
+    1 Aug + (1 Jun - 12 May) = 21 Aug
+
+The three translated dates are **not** three independent forecasts.  They are
+three views of one analog batch.  The analog centre is their median, 28 Aug.
+Its internal scale is the robust MAD-derived quantity, not the ordinary sample
+standard deviation:
+
+    mu_h = median_r implied_start(h, r)
+
+    sigma_h = max(
+        1.4826 * median_r | implied_start(h, r) - mu_h |,
+        14 days
+    )
+
+The factor 1.4826 puts a median absolute deviation on the standard-deviation
+scale for a Normal distribution; the 14-day floor prevents a small collection
+of unusually similar translated dates from creating a spuriously narrow
+component.  Thus this one historical batch contributes a broad component
+centred near 28 Aug; it does not multiply three sharp likelihoods together.
+
+At a candidate start date `W`, that component is approximately:
+
+    L_h(W) = exp[-0.5 * ((W - 28 Aug) / sigma_h)^2]
+
+after the stale-analog fade described below.  The direct readiness likelihood
+is the average of the components from **all usable historical analog batches**.
+Only then is it combined with the historical batch-gap prior.
+
+Batch position and the chapter-progress coordinate are different quantities.
+Position `r` is simply the slot within a ten-chapter batch and resets for every
+batch (`r = 1, ..., 10`; for batch 49 these are chapters 411–420).  The chapter
+coordinate is `C(c,t) = (c - 1) + p(c,t)`, where `p` is the reported
+within-chapter progress.  The analog calculation first holds `r` fixed — for
+example, position 4 against position 4 — then tests whether the fractional
+progress values `p` are close enough to compare.  It does not compare the
+absolute values of `C` across different chapter numbers.
+
+Two details are important when interpreting a new production post.  First,
+the progress coordinate decides whether a current and historical report are
+comparable; it is not itself converted to a number of days remaining.  Second,
+a new report can replace the matched state, add or remove a position, and use a
+later attained date.  Therefore this analog construction has **no mathematical
+guarantee** that a reported completion shifts the analogue centre earlier.  A
+completion is favourable feasibility evidence in a physical sense, but this
+small-sample date-translation procedure does not yet encode that monotonicity.
+
+This example is the **direct target-batch** term.  The later preceding-batch
+extension uses the same calculation with the preceding batch as the current
+source and pairs historical batch `h` with the observed start of `h+1`; it is
+the weak 10% context term.  It is not a likelihood built from the following
+batch's chapters.  Following-batch readiness is preserved in snapshots but,
+at this revision, is not yet part of the timing likelihood.
+
 ### Falsified analogs are neutral
 
 Let `F` be the first issue the batch can still start in, and let a Normal analog
@@ -375,3 +450,576 @@ Snapshots using this design declare
 `readiness_coordinate_context_record_hiatus_v4`, their
 `conditioning_through` date, `record_hiatus` flag, and the 0.10 context weight.
 Earlier V1–V3 snapshots and documentation remain unchanged.
+
+### All-pairs coordinate likelihood (2026-08-31)
+
+This revision retains the coordinate mapping above but replaces the
+same-position-only Level-2 likelihood.  Every usable chapter-stage or page-log
+event is an observed point:
+
+    (C_j, t_j),   C_j = chapter_j - 1 + p_j
+
+For each resolved historical batch start `h`, with first published chapter
+coordinate `C_h` and publication date `T_h`, construct all forward pairs from
+events publicly observed at or before `T_h`:
+
+    delta_C(h,j) = C_h - C_j
+    lag(h,j)     = T_h - t_j
+
+Pairs are retained when `-20 <= delta_C <= 35`.  Negative coordinate distance
+is intentional: it represents reported work on later chapters that was already
+available before a batch began, i.e. production buffer.
+
+For the current target coordinate `C*`, every current event `e` has
+`delta_C* = C* - C_e`.  It is compared to every historical pair from each
+historical start with a Gaussian coordinate kernel:
+
+    w(e,h,j) = exp[-0.5 * ((delta_C* - delta_C(h,j)) / 1.0)^2]
+
+The pair implies a candidate target-start date:
+
+    T* = t_e + lag(h,j)
+
+Within each current event, the compatible historical pairs are kernel-weighted.
+Current events are then averaged, so a tweet with many extracted rows does not
+receive extra total influence.  The resulting mixture is one broad likelihood
+component for historical start `h`; its scale is the MAD-derived spread of the
+translated pair dates, floored at 21 days.  Finally, the historical-start
+components—not individual pairs—are averaged:
+
+    L_all-pairs(W) = mean_h L_h(W)
+
+This makes explicit use of all coordinate pairs while preserving the central
+small-sample constraint: many pairs do not create many independent editorial
+scheduling decisions.  The usual stale-component fade still makes an overdue
+historical component neutral rather than producing a false next-issue spike.
+
+Unlike V4, this likelihood directly admits current evidence from chapters in
+the target, preceding, **and following** batches whenever its coordinate
+distance lies in the observed support.  The old 90% direct / 10% preceding
+blend is retained in the snapshot only as a V4 diagnostic and is not used by
+this revision's likelihood.
+
+The coordinate bandwidth (1 chapter), retained distance range, and 21-day
+scale floor are provisional design choices.  They must be selected by
+leakage-free replay and calibration, not tuned to make one historical curve
+look intuitive.
+
+### Initial leakage-free check
+
+`scripts/backtest_level2_coordinates.py` now runs the actual V5 posterior
+builder at the final public event before each resolved tweet-era start, while
+intercepting its snapshot write in memory.  That is a real leakage-free
+comparison against the same builder with the all-pairs likelihood disabled
+(Level 1 only); it is not a retrospective fit of the likelihood to the known
+start date.
+
+The two currently independent targets are batch 48 (cutoff 2024-10-06) and
+batch 49 (cutoff 2026-06-14).  At the fixed live settings V5 improves the mean
+CRPS from 26.26 to 22.84 and mean log score from 4.25 to 3.89 relative to that
+baseline.  Both observed starts nevertheless fell before V5's 80% interval.
+Consequently the test is evidence that the coordinate information helps in
+these two cases, **not** evidence that its width or calibration is established.
+The defaults remain un-tuned; see `docs/backtest.md` for the full result.
+
+### Continuous no-start conditioning (V6, 2026-08-31)
+
+V5 made an invalid distinction between a day with a new tweet and a day with no
+tweet: on the latter it could retain probability on WSJ issues already known to
+have passed.  When the next tweet arrived, all of that overdue mass was removed
+at once.  The dramatic August 2025 change in the historical figure was the
+result — it was not evidence that `No.413 背景指定完了` delayed publication.
+
+V6 separates the two updates.  At every forecast timestamp `t`, the posterior
+is restricted to issues after the last issue publicly known not to contain the
+batch:
+
+    P(W | E_t, W > F_t) ∝ P(W | E_t) · I(W > F_t)
+
+where `F_t` is the last observed eligible WSJ issue.  This is a factual
+publication update, so it occurs even during silence.  The all-pairs production
+evidence remains derived from the tweets themselves; no silence is reclassified
+as a production-stage event.  The stale-analog robustness fade uses this same
+continuously advancing no-start floor, causing an overdue analog to become
+neutral gradually rather than only when a later tweet happens to arrive.
+
+The historical chart's solid line is therefore now expected to move gradually
+between tweets.  Its dashed comparison line holds the last event-time posterior
+fixed; the separation represents continued non-publication, not a new judgment
+that Togashi's production slowed.  Snapshots declare
+`all_pairs_coordinate_likelihood_v6_continuous_no_start`, the date through
+which no-start conditioning was applied, and the last production-event date.
+
+### Predecessor gate for the following batch (current V6 work)
+
+The forecast for the batch after the direct target has a different information
+state. If batch `X` has not started publishing, batch `X+1` is conditional on
+both the unknown start of `X` and on WSJ deciding that `X` is a continuing run,
+not a one-batch return. Treating it as an ordinary convolution with the full
+historical gap prior quietly grants the historical immediate-continuation mode
+before there is any public evidence of that commitment.
+
+Let `G` be the issue gap after batch `X` ends. The secondary forecast remains:
+
+    S_(X+1) = S_X + 9 issues + G,
+
+but, while `X` has not publicly started, its gap prior is conditioned on a
+positive gap:
+
+    P_pre(G=g) = P(G=g | G>0).
+
+This removes only the data-derived `G=0` back-to-back mode (currently 13.3% of
+the cluster-weighted modern-era prior); it does not choose or invent a longer
+hiatus length. Once `X` begins, `X+1` becomes the direct next-batch target and
+uses the ordinary Level 1 + Level 2 model. The resulting jump is intentional:
+uncertainty about the predecessor and its publication commitment has resolved.
+
+This gate applies only to the following-run distribution. It does not alter the
+primary batch-start posterior or reinterpret production events. It is a
+conservative structural prior, pending backtests with more independently
+resolved publication runs.
+
+### Conditional following-run display (current V6 work)
+
+The predecessor gate alone still leaves a moving marginal date for `X+1`,
+because any movement in the unresolved start of `X` propagates through
+
+    S_(X+1) = S_X + 9 issues + G.
+
+That marginal is mathematically valid but not a useful standalone promise to a
+reader. While `X` has not started, the site therefore does **not** display a
+publication-date history, density, or headline median for `X+1`. It instead
+shows three conditional scenarios: if `X` begins at the 10th, 50th, or 90th
+percentile of its direct forecast, the implied median and 80% interval for
+`X+1` are shown using the positive-gap distribution.
+
+When `X` starts publishing, `X+1` becomes the direct target. Only then does the
+site begin its ordinary probability history and headline forecast. This changes
+the display and scope of the secondary forecast; it does not change the primary
+posterior for `X`.
+
+### Buffer-mixture following-run model (current V6 work)
+
+The conditional-display experiment above is retained as an earlier design. The
+current working model restores the full following-run history, but changes its
+prior from a fixed gap distribution to a conservative two-mode mixture:
+
+    P(G) = q(t) I(G=0) + [1-q(t)] P(G | G>0).
+
+The first term is the historical back-to-back-continuation mode; the second is
+the historical positive-gap (hiatus) mode. `q(t)` is **not** interpreted as a
+publisher promise. It is the model's weight on a continuation-ready production
+buffer:
+
+    q(t) = pi_0 + (0.45 - pi_0) * B(t),
+
+where `pi_0 = 0.133` is the cluster-weighted historical immediate-continuation
+frequency, and `B(t)` is the mean readiness coordinate across the ten chapters
+of the following batch (zero for no public work; approaching one only for a
+visible late-stage buffer). The 45% cap leaves the long-gap mode dominant even
+when all ten chapters appear advanced, because Togashi's posts do not reveal
+WSJ editorial scheduling intent.
+
+The expected history is therefore event-responsive rather than merely
+translated: following-batch production reports raise the early-mode weight and
+can move probability earlier; ordinary silence does not raise that weight. The
+unresolved predecessor start still propagates through the timing calculation,
+so this is not a claim that all gradual movement disappears. The model records
+`B(t)`, the baseline and current continuation weights, and the chapter count
+behind them in every snapshot. This is an explicitly provisional structural
+assumption, not a fitted publisher-behavior model.
+
+### Direct two-gap following-run prior (current V7 work)
+
+The buffer-mixture design is retained above as the prior V6 design. V7 replaces
+it for a batch that is still two publication runs away. Rather than convolving
+two independently fitted one-gap variables, it models their observed adjacent
+sum directly:
+
+    H_i = G_i + G_(i+1).
+
+The modern-era data currently supplies the 15 chronological two-gap outcomes:
+
+    88, 28, 69, 50, 56, 56, 0, 105, 185, 126, 64, 40, 206, 268, 157.
+
+These pairs overlap and are consequently not fifteen independent experiments;
+they are nevertheless the directly relevant empirical trajectories for the
+question "when does the batch after next begin?". V7 smooths this empirical
+distribution with the same 60-issue discrete Gaussian kernel used by the
+one-gap positive component, on `H = 0..280`. The bound 280 is deliberately
+pragmatic: it is just above the largest observed two-gap value, 268. It is not
+backtest-selected.
+
+Before predecessor batch `X` begins, let `a` be the number of known eligible
+issues after the preceding batch's end that did not carry `X`. The two-gap
+prior is conditioned on historical pairs whose first component can have
+survived that long:
+
+    P(H=h | G_1 >= a).
+
+If no historical pair survives this conditioning, the broad unconditional
+two-gap prior is truncated to `H >= a`. The snapshot explicitly records that
+fallback; it is an extrapolation rather than an inferred speed change.
+
+For ten-chapter batches, the start of the following batch is then:
+
+    S_(X+1) = E + H + O_9 + 2,
+
+where `E` is the issue of the earlier batch's end and `O_9` is the empirical
+within-batch offset from its first to tenth chapter. Consequently, as long as
+`X` has not begun, `X+1` cannot begin for at least another ten eligible issue
+slots. Removing dates that violate this constraint is a factual publication
+update, not an inference from silence.
+
+V7 deliberately does not use the following batch's production events a second
+time in this secondary calculation. The previous all-pairs target likelihood
+can admit those events when forecasting `X`; using them again to modify a
+separate `G_2` mixture double-counted the same public evidence. A future
+production-informed two-gap likelihood must be trained directly on historical
+two-gap outcomes and used once.
+
+### Smooth-zero-gap sensitivity variant (current V7 experiment)
+
+This retained V7 variant removes the special point mass at zero. The one-gap
+prior is a single kernel-smoothed distribution over `G = 0..200`:
+
+    P(G=g) proportional to sum_i w_i exp[-0.5 ((g - G_i) / 60)^2].
+
+The direct two-gap prior applies the same construction to `H = G_1 + G_2` on
+`0..280`. Thus zero is still present in the data but is no longer a distinct
+continuation regime; its kernel spreads some mass to nearby short positive
+gaps. With the current data, the one-gap probability at exactly zero falls from
+the separated-mode 13.3% to about 0.6%.
+
+This is intentionally a sensitivity experiment, not a claim that short
+unobserved hiatuses have occurred. It lets the historical prediction figure
+show how strongly the sharp continuation mode is driving the forecast. The
+same censoring rule `G_1 >= a` and the ten-issue physical floor still apply to
+the direct two-gap forecast.
+
+### Parametric Level-1, event-anchored analog fade (V8 experiment)
+
+V8 returns to the V6-style following-batch convolution but changes only Level
+1. A single shifted-lognormal latent gap is fitted at every forecast cutoff:
+
+    log(G + 0.5) ~ Normal(mu, sigma^2).
+
+The fitted continuous distribution is discretized into issue bins. Zero is the
+first bin, not a separate point mass. Only gaps whose publication outcomes were
+known by that cutoff enter the fit; rolling-origin replay therefore does not
+use later gaps.
+
+The direct production likelihood remains the all-pairs coordinate likelihood.
+V8 separates its two uses of passing time: every observed WSJ issue still
+removes impossible start dates from posterior support, but the stale-analog
+fade is anchored at the last public production event and held fixed until the
+next such event. Once the elapsed gap exceeds the historical maximum, the
+record-hiatus rule resumes the continuously advancing fade and its explicit
+next-issue component.
+
+This is intentionally an event-responsive display/robustness choice. It does
+not claim that a missed issue is uninformative; it prevents the analog
+likelihood from being repeatedly weakened by the same kind of non-start
+observation between production reports. The following-batch forecast is the
+convolution of the predecessor posterior, the within-batch schedule, and the
+same parametric one-gap prior. No following-batch production event is reused.
+
+### Readiness-feasibility Level 2 (V9, 2026-08-31)
+
+V9 replaces both halves of the model that produced the shape the history chart
+kept showing: a first forecast far too early, then a median receding about one
+day per day until the run finally began, with production reports barely moving
+it — and moving it *later* when they did.
+
+#### Level 1: the parametric prior is off
+
+The V8 shifted-lognormal is reverted to the kernel mixture (point mass at gap 0
+plus a 60-issue KDE on `g >= 1`, cluster-weighted) that Result 4 of the
+backtest had already selected.
+
+The reason is a hazard argument. What the site displays during a hiatus is not
+`P(G)` but `P(G | G >= a)`, and conditioning moves the median at a rate
+
+    d(median)/da = h(a) / h(median).
+
+A distribution whose hazard *falls* has `h(a) > h(median)` and must therefore
+recede faster than the calendar advances. Fitting `log(G + 0.5)` to a sample
+containing three zeros put `mu` at 3.20 and `sigma` at 1.76 — median 20 issues,
+very heavy tail, falling hazard across the whole range the forecast lives in.
+`scripts/backtest_conditional_prior.py` scores that conditional family
+leakage-free over 11 rolling-origin batches and measures the consequence
+directly: **1.56 issues of recession per issue waited, against 0.61 for the
+mixture, with a day-one median of 15 issues against 53** (docs/backtest.md,
+Result 6). The two complaints are one defect seen at two moments.
+
+Rising-hazard families (gamma, Weibull with shape > 1) were fitted for exactly
+this reason and rejected: they hold drift near 0.7 but lose more in CRPS and
+coverage than they recover. Recency weighting was retested on the conditional
+family and again loses on CRPS, though it does move the forecast in the
+conservative direction. Both are recorded rather than adopted.
+
+#### Level 2: one monotone state, used as a floor
+
+The all-pairs coordinate likelihood (V5–V8) turns each production event into an
+implied start date by adding a historical event-to-start lag. Two consequences
+follow from that form:
+
+* a report arriving later than the analog expected pushes the forecast **later**,
+  so a finished page — physically always progress — usually reads as bad news;
+* components were averaged after being rescaled to peak height 1, so an
+  analog's weight was proportional to its own vagueness. In the batch-49 replay
+  the batch-47 component (centre 2024-11-25, sigma 53 d) and the batch-48
+  component (centre 2026-06-22, sigma 250 d) entered the average at a 1:4.7
+  mass ratio purely because one was sharper than the other — and the batch-48
+  component was sitting within a week of the eventual outcome for eighteen
+  months while the average ignored it.
+
+V9 summarises the target run by a single **monotone** state instead:
+
+    B(t) = mean over the run's ten chapters of the furthest observed
+           within-chapter progress, zero where nothing has been reported.
+
+`B` cannot decrease, so at equal calendar time more production always implies
+an earlier forecast. That is what "a production report can only move the date
+earlier" has to mean once the calendar is held fixed; a strictly flat trajectory
+between reports is not available, because a report that arrives late genuinely
+*is* evidence of slowness.
+
+Measured at the three resolved tweet-era starts, `B` is remarkably stable:
+
+| run | B at its start | reached B = 0.90 | lead before starting |
+|---|---:|---|---:|
+| 47 | 0.902 | 2022-10-18 | 6 days |
+| 48 | 0.902 | 2024-09-24 | 13 days |
+| 49 | 0.900 | 2026-02-24 | 125 days |
+
+so "essentially every manuscript finished" is close to the go condition, and
+the 6-to-125-day spread above it is the editorial decision the model cannot
+see. Production is therefore used as a **floor**, not as a date. For each
+analog `h`, `scripts/build_feasibility.py` builds the empirical remaining-time
+curve from events public before `h` started,
+
+    R_h(b) = start[h] - (first date at which B_h reached b),
+
+and at forecast time, with the run at level `b` first attained on a known date,
+
+    still_required_h = max(0, R_h(b) - days already spent at level b)
+    floor_h          = today + still_required_h
+    L(W)             = mean_h  Phi( (W - floor_h) / 30 days ).
+
+One analog is one component, per the correlation rule. The ramps are averaged,
+not multiplied, so three analogs cannot compound into a hard wall. When the
+required work is already done the term is inert and says so, rather than
+inventing a start date from three past runs — which is the honest description
+of most of batch 49's hiatus, and matches the project's own finding that
+production is not the bottleneck.
+
+#### What it does to the trajectory
+
+`scripts/backtest_trajectory.py` replays the real posterior builder across the
+whole gap preceding each resolved start. For batch 49 (outcome 2026-06-29):
+
+| model | first forecast | drift | median moved per quiet day | mean \|error\| |
+|---|---|---:|---:|---:|
+| V8 (live until now) | 2025-03-10 | 1.28 | 1.8 d | 121 d |
+| V9 | **2026-07-20** | **0.54** | **0.3 d** | 180 d |
+
+The first forecast of the hiatus moves from sixteen months early to three weeks
+late; the recession halves; and the trajectory now has flat stretches — it holds
+at 2026-12-12 through all of October 2025, and steps *earlier* at reports on
+2025-10-08 and 2026-02-17. Batch 48 behaves the same way (first forecast
+2023-03-08 → 2024-06-14, drift 0.94 → 0.62).
+
+**The cost is stated plainly: mean absolute error gets worse, and CRPS with it**
+(13.69 → 17.98 on batch 49). V9 starts near the truth and then recedes past it,
+so it is late for most of the hiatus; V8 started far too early and crossed the
+truth in the middle, which flatters an error averaged over the trajectory. The
+remaining recession of about 0.55 issues per issue waited is what sixteen
+observed gaps support; it is not removable by choosing a different family.
+
+#### Consequence for the live number
+
+The change is large and public. For ch. 421, at the same evidence:
+
+| model | median | 80% interval | P(next issue, 2026-09-14) |
+|---|---|---|---|
+| V8 | 2026-12-07 | 2026-09-21 .. 2027-12-10 | 4.4% |
+| Level 1 fix only | 2027-04-30 | 2026-09-14 .. 2028-11-21 | 23.9% |
+| Level 1 fix, no Level 2 | 2027-12-14 | 2026-09-14 .. 2029-08-18 | 13.3% |
+| **V9** | **2028-04-18** | 2027-03-19 .. 2029-10-06 | **0.9%** |
+
+A 2028-04 median is a gap of about 82 issues on a run ending 2026-09-07, which
+sits between the two most recent observed gaps (84 and 73). The V8 answer
+required a 13-issue gap, shorter than anything since 2018. The feasibility floor
+supplies the last four months and nearly removes the immediate-continuation
+mode, because batch 50 stands at `B = 0.78` and no observed run has begun from
+that level without another 47 to 261 days.
+
+#### Known weakness of B
+
+`B` counts a chapter Togashi has not posted about as zero, so it is a **lower
+bound** on true readiness, and the feasibility floor is correspondingly
+pessimistic whenever he posts less. The bias partly cancels — analogs are
+measured on the same lower-bound scale — but it does not cancel if his posting
+behaviour changes. The level is recorded in every snapshot and shown on the
+method page so the assumption is visible rather than buried.
+
+#### Not done, and the highest-value next step
+
+Once `B` reaches the go level the term goes inert and the forecast reverts to
+the historical gap prior, which is why V9 still recedes to ten months late by
+the end of a long hiatus. The three resolved runs started 6, 13 and 125 days
+after reaching `B = 0.90` — all far shorter than the prior's remaining median at
+that point. Turning that into a **two-sided** readiness term (a hazard
+multiplier once the run is demonstrably ready, rather than a floor) is the
+obvious next improvement, and the one most likely to fix the late-hiatus
+overshoot. It rests on three observations, so it needs a fourth resolved run,
+or an explicitly stated prior, before it can be shipped.
+
+### Ordered readiness and shared cadence (V10, 2026-09-01)
+
+V10 keeps V9's central decision: production is a one-sided feasibility signal,
+not a translation from tweet dates to publication dates. It changes the state
+used by that signal and the conditional within-batch schedule.
+
+#### Ordered, retouch-free batch readiness
+
+The reader-facing progress chart and the statistical model now use the same
+derived state. For chapter `c`, `p_c(t)` is the furthest explicit production
+coordinate at time `t`, with retouch excluded. Let `A_c(t)` indicate any usable
+production report and `M_c(t)` an explicit manuscript-complete report. Define
+
+    q_c(t) = min(1, max(
+        p_c(t),
+        0.5 * I(any later chapter has a production report),
+        1.0 * I(any later chapter is manuscript-complete),
+        1.0 * I(c is the tenth chapter and it is manuscript-complete)
+    ))
+
+and
+
+    B(t) = sum_c q_c(t),       0 <= B(t) <= 10.
+
+`B` is measured in chapter-equivalents. Dividing it by ten would change only
+the units, not the information or posterior, provided every historical curve
+were rescaled consistently.
+
+The order constraints are lower-bound imputations, not new observations. Every
+forecast snapshot records the direct coordinate, inferred floor, and resulting
+ordered coordinate separately. A later-chapter report establishes that earlier
+chapters have at least completed character inking; a later manuscript completion
+establishes that earlier chapters have completed the simplified first-pass
+pipeline.
+
+Retouch is omitted from this coordinate. It can occur at many points after
+inking and can cause a stage to be reported complete a second time. Those later
+re-completions do not refute the first-pass chapter ordering and must not create
+a later attainment date for readiness.
+
+At the three resolved starts, the ordered sum is 9.1 for batch 47, 9.5 for batch
+48, and 10.0 for batch 49. The current ch. 421–430 run is 8.7 as of 2026-09-01.
+These values replace V9's old 0–1 mean-readiness figures; old forecast snapshots
+remain unchanged and reproducible.
+
+#### Threshold-crossing feasibility
+
+For historical analog `h`, readiness is replayed using only reports public by
+its start date. The relevant attainment time is a threshold crossing:
+
+    T_h(b) = inf {t : B_h(t) >= b}
+    R_h(b) = S_h - T_h(b).
+
+At forecast time the current run's own `T_now(b)` determines how long it has
+already spent at or above `b`. Each analog supplies one soft feasibility ramp;
+the three ramps are averaged rather than multiplied. Thus the independent
+evidence count remains three production regimes, not ten chapters or hundreds
+of posts.
+
+#### One cadence regime per batch
+
+The old Level 3 schedule assigned an independent 1.4% extra-issue probability
+to each chapter transition. That independence assumption is contradicted by the
+record: both non-consecutive modern intervals occurred in the same completed
+batch. V10 instead draws one shared schedule regime:
+
+    P(regular batch)   = 14/15
+    P(disrupted batch) =  1/15.
+
+The regular regime advances one eligible WSJ issue per chapter. The disrupted
+regime replays the only observed pattern: one extra issue before position 6 and
+another before position 9. This is intentionally empirical. One disrupted run
+cannot support a fitted distribution over the number or placement of delays.
+
+Uncertainty in the batch start remains shared by all ten chapters, and schedule
+uncertainty is now shared as well. The chapters are conditional marginals of one
+batch process, never ten independent release forecasts.
+
+#### Validation status
+
+V10 is a structural revision motivated by the corpus and by the known missing-
+report bias in V9. Its Level 2 component still has only three resolved analog
+starts. Historical readiness paths and the full forecast trajectory must be
+rebuilt and compared with V9 without treating multiple dates from one hiatus as
+independent outcomes. Until another run resolves, any apparent score improvement
+is weak evidence and the feasibility ramps must remain broad.
+
+A 21-day trajectory replay gives the following diagnostic results:
+
+| target | first median | drift | mean absolute error | mean CRPS |
+|---|---|---:|---:|---:|
+| batch 48 | 2024-07-19 | 0.55 | 233 days | 20.72 issues |
+| batch 49 | 2026-07-27 | 0.52 | 183 days | 18.21 issues |
+
+These are correlated trajectory diagnostics for two outcomes, not independent
+validation cases. Compared with documented V9, ordered readiness changes the
+path modestly but does not establish an accuracy improvement. V10 is adopted
+for state validity and interpretability, not because two historical trajectories
+prove superior predictive performance.
+
+### Two-sided ordered readiness (V11, 2026-09-02)
+
+V10 corrected the readiness state but used it only as a lower feasibility
+boundary. Once all three ramps became flat, Level 2 assigned the same relative
+compatibility to a date six months away and a date three years away. The broad
+Level-1 hiatus prior therefore produced a 2028 median even though no resolved
+batch had remained at comparable readiness for more than 160 days.
+
+V11 retains V10's ordered, retouch-free `B(t)` and shared within-batch cadence.
+It replaces the one-sided ramp with a two-sided analog mixture. At readiness
+`b`, historical batch `h` supplies
+
+    T_h(b) = first date B_h reached b
+    R_h(b) = S_h - T_h(b)
+    m_h(t) = T_now(b) + R_h(b).
+
+The readiness likelihood is
+
+    L_ready(s) = mean_h NormalKernel(s; m_h(t), 120 days).
+
+The 120-day component scale is a declared conservative setting, not an
+estimated standard error. Three historical starts cannot identify a precise
+tail or justify narrow components. Components are averaged rather than
+multiplied, so the evidence count remains three batch regimes.
+
+At `B=8.7` on 2026-09-02, the analog centres are 2026-09-13, 2026-12-03,
+and 2027-02-08. Combining their broad mixture with Level 1 gives a median of
+2026-11-09 and an 80% interval of 2026-09-14 through 2027-05-14. The long
+historical hiatus tail remains possible but no longer controls the median after
+the production state has become highly advanced.
+
+#### Replay result and limitation
+
+A 21-day trajectory replay gives:
+
+| target | first median | drift | early share | mean absolute error | mean CRPS |
+|---|---|---:|---:|---:|---:|
+| batch 48 | 2023-02-01 | 1.44 | 37% | 180 days | 17.25 issues |
+| batch 49 | 2025-01-27 | 1.55 | 73% | 198 days | 18.52 issues |
+
+This does not establish an accuracy improvement over V10. In particular, a
+newly attained readiness level can move an implied centre later if the report
+arrives much later than the historical analog reached it. The current forecast
+is much more consistent with the cross-sectional readiness evidence, but the
+trajectory results show that the dynamic update rule remains provisional. With
+only two resolved replay targets, selecting the 120-day width or adding a
+monotonicity correction based on these scores would be overfitting.

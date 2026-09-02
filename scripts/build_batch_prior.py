@@ -23,6 +23,7 @@ import json
 import os
 import sys
 from datetime import date, timedelta
+from math import erf, sqrt
 
 import numpy as np
 
@@ -125,7 +126,7 @@ def ess(w):
     return float(w.sum() ** 2 / (w ** 2).sum())
 
 
-def build_prior(gaps, w, max_gap):
+def build_prior(gaps, w, max_gap, separate_zero=True):
     """Mixture over gap in issues: point mass at 0 + weighted empirical on g>0.
 
     The positive component is smoothed with a small discrete kernel so the prior
@@ -134,6 +135,17 @@ def build_prior(gaps, w, max_gap):
     """
     g = np.array([x[1] for x in gaps], float)
     pi0 = float(w[g == 0].sum() / w.sum())
+
+    if not separate_zero:
+        # Experimental single-process prior: zeros are smoothed together with
+        # positive gaps. This deliberately removes the separate immediate-
+        # continuation mode, while retaining `pi0` as a descriptive statistic.
+        grid = np.arange(0, max_gap + 1)
+        pmf = np.zeros(len(grid), float)
+        for gi, wi in zip(g, w):
+            pmf += wi * np.exp(-0.5 * ((grid - gi) / BANDWIDTH) ** 2)
+        pmf /= pmf.sum()
+        return pmf, pi0
 
     pos_g, pos_w = g[g > 0], w[g > 0]
     grid = np.arange(1, max_gap + 1)
@@ -147,6 +159,33 @@ def build_prior(gaps, w, max_gap):
     pmf[0] = pi0
     pmf[1:] = (1 - pi0) * dens
     return pmf, pi0
+
+
+def build_shifted_lognormal_prior(gaps, w, max_gap):
+    """Discrete prior from a log-normal latent issue gap, with no zero mode.
+
+    Fit log(G + 0.5) by weighted maximum likelihood, then give integer gap g
+    the latent interval [g, g + 1).  The half-issue offset makes zero a normal
+    part of the same distribution rather than a separate hurdle probability.
+    """
+    g = np.array([x[1] for x in gaps], float)
+    y = np.log(g + 0.5)
+    w = np.asarray(w, float)
+    mu = float(np.sum(w * y) / np.sum(w))
+    sigma = max(float(np.sqrt(np.sum(w * (y - mu) ** 2) / np.sum(w))), 0.25)
+    grid = np.arange(max_gap + 1, dtype=float)
+    hi = np.log(grid + 1.0)
+    lo = np.full(len(grid), -np.inf)
+    lo[1:] = np.log(grid[1:])
+    cdf = lambda z: 0.5 * (1.0 + np.vectorize(erf)(z / sqrt(2.0)))
+    p = cdf((hi - mu) / sigma)
+    p[1:] -= cdf((lo[1:] - mu) / sigma)
+    p = np.maximum(p, 0.0)
+    p /= p.sum()
+    raw_pi0 = float(w[g == 0].sum() / w.sum())
+    return p, {"family": "shifted_lognormal", "mu": mu, "sigma": sigma,
+               "offset": 0.5, "raw_zero_frequency": raw_pi0,
+               "max_gap": max_gap}
 
 
 def quantile_from_pmf(pmf, q):

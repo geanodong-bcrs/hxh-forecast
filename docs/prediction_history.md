@@ -238,3 +238,95 @@ The revised median for chapter 411 was 2026-09-12, rather than a near-certain
 2025-06-16 next-issue prediction.  This does not prove accuracy — the model is
 still unscored — but it removes the mechanical error that generated the
 pre-June-2026 declining curve.
+
+## Revision replay — continuous no-start conditioning (2026-08-31)
+
+The event-only V4/V5 rule created a different problem: during a long quiet
+stretch, a reconstructed forecast could retain probability on issues already in
+the past.  At the first later production post it then discarded the entire
+accumulated interval in one step.  For example, the batch-49 median changed
+from 2025-08-18 to 2026-09-05 on 2025-08-19, mostly because the no-start floor
+jumped from January to late August—not because chapter 413's background
+specification completion was negative evidence.
+
+V6 conditions on the fact of non-publication through every observed issue while
+keeping production reports distinct from that fact.  The resulting line may
+move gradually during silence, but it cannot report a predicted publication
+date already past or turn several months of known non-publication into a single
+tweet-driven cliff.  These snapshots use a distinct 23:00 UTC replay id and
+are displayed separately from V1–V5.
+
+## Revision replay — readiness-feasibility Level 2 (V9, 2026-08-31)
+
+The V6 note above fixed *where* the no-start conditioning was applied. It did
+not fix the two things this chart had shown from the beginning: the first
+forecast of a hiatus was far too early, and the median then receded about one
+day per day for as long as the hiatus lasted. V9 addresses both, and the
+diagnosis turned out to be a single mechanism seen twice.
+
+### The mechanism
+
+Conditioning on continued non-publication moves the median at a rate set by the
+hazard, `d(median)/da = h(a)/h(median)`. A distribution whose hazard falls must
+therefore recede *faster* than the calendar advances. V8's shifted-lognormal
+Level 1 — `log(G + 0.5)` fitted to a sample containing three zeros — has
+`mu = 3.20`, `sigma = 1.76`: a median of 20 issues and a very heavy tail. Its
+hazard falls across the whole range where a forecast lives, so its day-one
+answer was too early *and* it had to recede at more than one day per day. The
+same parameter did both.
+
+`scripts/backtest_conditional_prior.py` was written to measure exactly this,
+leakage-free, over the 11 rolling-origin batches: 1.56 issues of recession per
+issue waited for the lognormal, 0.61 for the kernel mixture, with day-one
+medians of 15 and 53 issues. See `docs/backtest.md`, Result 6.
+
+### What the replay shows
+
+187 V9 snapshots were written alongside the earlier series, at run id 23:55 UTC.
+No earlier snapshot was overwritten. For batch 49 (outcome 2026-06-29):
+
+| as of | V8 median | V9 median |
+|---|---|---|
+| 2024-12-21 | 2025-03-10 | **2026-07-20** |
+| 2025-06-02 | 2025-12-01 | 2026-09-05 |
+| 2025-10-08 | 2026-05-30 | 2026-12-12 |
+| 2025-11-10 | 2026-06-27 | 2026-12-12 |
+| 2026-02-17 | 2026-10-26 | 2027-02-05 |
+| 2026-06-14 | 2027-02-19 | 2027-04-23 |
+
+The first forecast moves from sixteen months early to three weeks late. The line
+holds flat at 2026-12-12 through the whole of October 2025 — a stretch the V8
+line spent receding — and steps *earlier* at the reports of 2025-10-08 and
+2026-02-17. Overall recession falls from 1.28 to 0.54, and movement during
+silence from 1.8 days per day to 0.3.
+
+### What it costs, said plainly
+
+V9's mean absolute error over the batch-49 trajectory is **worse**: 180 days
+against V8's 121, and CRPS 17.98 against 13.69. The reason is visible in the
+table. V9 starts near the truth and recedes past it, so it is late for most of
+the hiatus. V8 started sixteen months early and crossed the truth somewhere in
+the middle, which flatters any error averaged over a trajectory. A model that is
+right on day one and drifts late is not obviously worse than one that is wrong
+on day one and passes through the answer on its way to being wrong again — but
+the scores prefer the second, and that should be recorded rather than hidden.
+
+The residual recession of ~0.55 issues per issue waited is what sixteen observed
+gaps support. Rising-hazard families were fitted to try to remove it and were
+rejected on CRPS; it is not a bug left in.
+
+### Where the signal actually was
+
+The most uncomfortable finding of the replay. Through the whole batch-49
+hiatus, V8's batch-48 all-pairs component sat within about a week of the correct
+answer — centre 2026-06-01 to 2026-07-01 against an outcome of 2026-06-29 — for
+eighteen consecutive months. It was averaged away, because components were
+rescaled to peak height 1 before averaging, so the sharp and wrong batch-47
+component (centre 2024-11-25, sigma 53 days) dominated the vague and right one
+(sigma 250 days) wherever the two disagreed. The model had the answer and its
+combination rule discarded it.
+
+V9 does not recover that by fixing the weighting. It abandons the
+date-translation form entirely, because the same form is what makes a
+production report read as bad news when it arrives later than an analog
+expected. See `docs/model.md`, "Readiness-feasibility Level 2".

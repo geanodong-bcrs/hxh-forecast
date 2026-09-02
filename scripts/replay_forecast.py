@@ -37,7 +37,7 @@ steps in the history charts.
     python3 scripts/replay_forecast.py            # replay, skipping what exists
     python3 scripts/replay_forecast.py --dry-run  # list the dates, write nothing
 
-Use `--revision-v2`, `--revision-v3`, or `--revision-v4` to reconstruct an
+Use `--revision-v2`, `--revision-v3`, `--revision-v4`, `--revision-v5`, `--revision-v6`, `--revision-v6-gated`, `--revision-v6-buffer`, `--revision-v7-two-gap`, `--revision-v8-parametric`, `--revision-v9`, `--revision-v10`, or `--revision-v11` to reconstruct an
 append-only series for a later model revision.
 """
 import csv
@@ -130,6 +130,15 @@ def main():
     revision_v2 = "--revision-v2" in sys.argv
     revision_v3 = "--revision-v3" in sys.argv
     revision_v4 = "--revision-v4" in sys.argv
+    revision_v5 = "--revision-v5" in sys.argv
+    revision_v6 = "--revision-v6" in sys.argv
+    revision_v6_gated = "--revision-v6-gated" in sys.argv
+    revision_v6_buffer = "--revision-v6-buffer" in sys.argv
+    revision_v7_two_gap = "--revision-v7-two-gap" in sys.argv
+    revision_v8_parametric = "--revision-v8-parametric" in sys.argv
+    revision_v9 = "--revision-v9" in sys.argv
+    revision_v10 = "--revision-v10" in sys.argv
+    revision_v11 = "--revision-v11" in sys.argv
     hi = live_from()
     ch = target_chapter()
     start = first_event(ch) or date(2026, 6, 29)
@@ -147,7 +156,16 @@ def main():
         # Keep reconstructed v2 forecasts alongside, rather than overwriting,
         # the original v1 replay.  Noon UTC makes the run id parse as a normal
         # timestamp in the site history while staying distinct from v1 midnight.
-        rid = (d.strftime("%Y%m%dT210000Z") if revision_v4 else
+        rid = (d.strftime("%Y%m%dT235800Z") if revision_v11 else
+               d.strftime("%Y%m%dT235900Z") if revision_v10 else
+               d.strftime("%Y%m%dT235500Z") if revision_v9 else
+               d.strftime("%Y%m%dT234500Z") if revision_v8_parametric else
+               d.strftime("%Y%m%dT235000Z") if revision_v7_two_gap else
+               d.strftime("%Y%m%dT232000Z") if revision_v6_buffer else
+               d.strftime("%Y%m%dT231000Z") if revision_v6_gated else
+               d.strftime("%Y%m%dT230000Z") if revision_v6 else
+               d.strftime("%Y%m%dT220000Z") if revision_v5 else
+               d.strftime("%Y%m%dT210000Z") if revision_v4 else
                d.strftime("%Y%m%dT180000Z") if revision_v3 else
                d.strftime("%Y%m%dT120000Z") if revision_v2 else
                d.strftime("%Y%m%dT000000Z"))

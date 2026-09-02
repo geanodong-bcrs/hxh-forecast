@@ -8,8 +8,9 @@ built from the historical publication record and from Togashi's own production
 posts on X. It updates itself: once a day, and again whenever he posts.
 
 This repository is the published output and the code that produces it. Every
-forecast the model has ever made is in `data/forecasts/`, append-only — including
-the wrong ones.
+forecast the model has issued live is in `data/forecasts/`, append-only — including
+the wrong ones. Replayed snapshots, re-run at past dates to score candidate model
+revisions, stay in the private working vault.
 
 ## What is here
 
@@ -19,7 +20,7 @@ method.html         how it works, and where it is weakest
 scripts/            the whole pipeline: fetch -> build -> forecast -> render
 docs/               data dictionary, model, backtest, event taxonomy, automation
 data/processed/     chapters, WSJ issue calendar, tweets, production events
-data/forecasts/     every forecast snapshot, never overwritten
+data/forecasts/     every live forecast snapshot, never overwritten
 data/annotations/   image transcriptions and the announcement record
 Agents.md           the project specification the whole thing follows
 ```

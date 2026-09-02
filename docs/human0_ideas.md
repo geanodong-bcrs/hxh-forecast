@@ -1,10 +1,10 @@
-## human0 profile
+## 1. human0 profile
 This section is for AI agents better knowing the human collaborator. This may help agents decide how to communicate and document more efficiently.
 1. human0 is a phd in a small area within earth sciences. She has the basic training in mathematics and statistics. 
 2. human0 has some experience with coding and a lot of experience with scientific research.
 3. human0 hasn't been trained in a software production environment.
 
-## ideas on the forecast model
+## 2. ideas on the forecast model
 1. Level 1 model is to estimate a prior. I wonder if it's fair to compare different estimation methods by using the final outcomes. My understanding is that prior distribution is usually arbitrary or comes from something outside statistics, like the background knowledge. 
 2. I feel recency weighting is a must for Level 1, although the data seems not speak for it. The dataset is very small.
 3. Level 2 model is crucial for the final predictions. I have an idea for defining the random variables.
@@ -32,3 +32,4 @@ Here, since we are only interested in the first chapter of the next (or a furthe
 	*t_ij = t_i - t_j*
 
 The goal is to estimate the probabilities of the publication date for the 1st chapter of a future batch by analyzing the statistical relationship between *d_ij* and the *t_ij*. 
+4. I want to expand the definition of d_ij and t_ij above. C_i and C_j are now interchangeable. They can be any chapter coordinates. So do t_i and t_j, they can be any chapter coordinates. For example, C_i = 415.9, C_j = 407.18, and the distance between them is d_ij = 8.62. This distance can be between a page log event (407.18) and a manuscript completion (415.9) of different chapters in different batch. So this approach is like plotting a variogram cloud and maybe fit with a variogram model. We will have a lot more data points for the predictions instead of 3 batches for analog.

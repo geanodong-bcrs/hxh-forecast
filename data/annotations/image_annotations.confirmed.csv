@@ -1,300 +1,300 @@
 tweet_id,date,image_type,pages_shown,transcribed_text,chapters,stage_raw,confidence,notes,status,source_of_truth,verdict,reviewer_note,model_image_type,model_pages_shown,model_transcribed_text,confirmed_at
-1529260655236091904,2022-05-25,page_log,,,,,high,blurred close-up of inked foliage; no page number visible,confirmed,human_corrected,fix,Ch 397 p. 6 artwork,unclear,,,2026-08-30T06:00:17.009316+00:00
-1529663083605397504,2022-05-26,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1530022135413952512,2022-05-27,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 8 sketch,page_log,8,,2026-08-30T06:00:17.009316+00:00
-1530401076385525761,2022-05-28,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 9 sketch,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1530748357731225600,2022-05-29,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 10 sketch,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1531112345321078784,2022-05-30,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 11 sketch,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1531471347540295680,2022-05-31,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 12 sketch,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1531834543920951296,2022-06-01,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1532195450983313408,2022-06-02,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 14 sketch,page_log,14,,2026-08-30T06:00:17.009316+00:00
-1532558267385188352,2022-06-03,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 15 16 sketch,page_log,15 16,,2026-08-30T06:00:17.009316+00:00
-1532920523406995456,2022-06-04,page_log,17 18,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 17 18 sketch,page_log,17 18,,2026-08-30T06:00:17.009316+00:00
-1533283644227260416,2022-06-05,page_log,19,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 19 sketch,page_log,19,,2026-08-30T06:00:17.009316+00:00
-1534007690053099520,2022-06-07,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,Ch 398 p. 2 sketch,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1534370156809310210,2022-06-08,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-08-30T06:00:17.009316+00:00
-1534732400604745733,2022-06-09,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 5 sketch,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1535094793100857345,2022-06-10,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1535457193008320513,2022-06-11,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 7 sketch,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1535820071188082688,2022-06-12,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 9 sketch,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1536181741542526976,2022-06-13,page_log,10,,,,high,,confirmed,human_confirmed,ok,,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1536544533474791424,2022-06-14,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 11 sketch,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1536906649612750848,2022-06-15,page_log,12 13 14 15,,,,high,four sheets fanned out,confirmed,human_confirmed,ok,,page_log,12 13 14 15,,2026-08-30T06:00:17.009316+00:00
-1537269290688122881,2022-06-16,page_log,16,,,,high,,confirmed,human_confirmed,ok,,page_log,16,,2026-08-30T06:00:17.009316+00:00
-1537632258311323648,2022-06-17,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 17 sketch,page_log,17,,2026-08-30T06:00:17.009316+00:00
-1537993636297658369,2022-06-18,page_log,18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,18 19,,2026-08-30T06:00:17.009316+00:00
-1538794911759077378,2022-06-20,page_log,3,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1539081629632630784,2022-06-21,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1539443851487694848,2022-06-22,page_log,5,,,,high,page number not visible in frame,confirmed,human_corrected,fix,"Page number is 5, visible but in a special font",page_log,,,2026-08-30T06:00:17.009316+00:00
-1539806147745484800,2022-06-23,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1540177798618263552,2022-06-24,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1540530537512611841,2022-06-25,page_log,8,,,,high,,confirmed,human_confirmed,ok,,page_log,8,,2026-08-30T06:00:17.009316+00:00
-1540895966798028801,2022-06-26,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.9 sketch,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1541255538029125633,2022-06-27,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.10 sketch,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1541676030489833472,2022-06-28,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.11 sketch,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1541980381552922624,2022-06-29,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.12 sketch,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1542343325021196291,2022-06-30,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1542705613519523840,2022-07-01,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.14 sketch,page_log,14,,2026-08-30T06:00:17.009316+00:00
-1543068288862760960,2022-07-02,page_log,15,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.15 sketch,page_log,15,,2026-08-30T06:00:17.009316+00:00
-1543431031293767680,2022-07-03,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.16 sketch,page_log,16,,2026-08-30T06:00:17.009316+00:00
-1543792686947110912,2022-07-04,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.17 sketch,page_log,17,,2026-08-30T06:00:17.009316+00:00
-1544155535347290113,2022-07-05,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.18 sketch,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1544517962953920513,2022-07-06,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,Ch 399 p.19 sketch,page_log,19,,2026-08-30T06:00:17.009316+00:00
-1545242707840225281,2022-07-08,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,Ch 400 p. 2 sketch,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1545606271935533059,2022-07-09,page_log,3,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 3 sketch,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1545966491199188993,2022-07-10,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 4 sketch,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1546329266433826816,2022-07-11,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 5 sketch,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1546691419129098245,2022-07-12,page_log,6,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 6 sketch,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1547054032136863744,2022-07-13,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1547423498426978304,2022-07-14,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 8 sketch,page_log,8,,2026-08-30T06:00:17.009316+00:00
-1547778808207380485,2022-07-15,page_log,9,,,,high,,confirmed,human_confirmed,ok,,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1548141221406642177,2022-07-16,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 10 sketch,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1548503498697760768,2022-07-17,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1548865803268734976,2022-07-18,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 12 sketch,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1549228293349466112,2022-07-19,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1549591364169437184,2022-07-20,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 14 sketch,page_log,14,,2026-08-30T06:00:17.009316+00:00
-1549952765966725120,2022-07-21,page_log,15,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 15 sketch,page_log,15,,2026-08-30T06:00:17.009316+00:00
-1550315226242764802,2022-07-22,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 16 sketch,page_log,16,,2026-08-30T06:00:17.009316+00:00
-1550677625844027392,2022-07-23,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 17 sketch,page_log,17,,2026-08-30T06:00:17.009316+00:00
-1551045024028143616,2022-07-24,page_log,18,,,,high,,confirmed,human_confirmed,ok,,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1551402850256707586,2022-07-25,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,Ch 400 p. 19 sketch Kurapika,page_log,19,,2026-08-30T06:00:17.009316+00:00
-1553257639051546625,2022-07-30,page_log,5,,,,high,RESET; 07-26..29 gap - he switches to chapter-number text posts here,confirmed,human_confirmed,ok,,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1553943032554106882,2022-08-01,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 8 sketch,page_log,8,,2026-08-30T06:00:17.009316+00:00
-1554301262388084736,2022-08-02,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 9 sketch,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1555389385784274946,2022-08-05,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 12 sketch,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1555751795451777026,2022-08-06,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1556114159313379328,2022-08-07,page_log,14,,,,high,,confirmed,human_confirmed,ok,,page_log,14,,2026-08-30T06:00:17.009316+00:00
-1556478800333905920,2022-08-08,page_log,15,,,,high,number on a different form-like sheet,confirmed,human_confirmed,ok,,page_log,15,,2026-08-30T06:00:17.009316+00:00
-1556839262779088896,2022-08-09,page_log,16,,,,high,,confirmed,human_confirmed,ok,,page_log,16,,2026-08-30T06:00:17.009316+00:00
-1557202514189045760,2022-08-10,page_log,17,,,,high,,confirmed,human_confirmed,ok,,page_log,17,,2026-08-30T06:00:17.009316+00:00
-1557572968888164352,2022-08-11,page_log,18,,,,high,,confirmed,human_confirmed,ok,,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1565901913752686592,2022-09-03,page_log,3,,,,high,number rotated at frame edge,confirmed,human_confirmed,ok,Ch 402 p. 3 sketch,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1566280525488148480,2022-09-04,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 402 p. 4 sketch,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1568203247898460161,2022-09-09,page_log,9,,,,high,,confirmed,human_confirmed,ok,,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1568856569747755009,2022-09-11,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1569235741808664576,2022-09-12,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1571060822352494592,2022-09-17,page_log,17,,,,high,digit ambiguous (reads 21 rotated; 21 implausible for a ~19pp chapter),confirmed,human_corrected,fix,Page number is 17,page_log,,,2026-08-30T06:00:17.009316+00:00
-1571408244450684931,2022-09-18,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 402 p. 18 sketch,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1571722358100234240,2022-09-19,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,19,,2026-08-30T06:00:17.009316+00:00
-1572428421187371008,2022-09-21,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1572812396757852160,2022-09-22,page_log,3,,,,high,,confirmed,human_confirmed,ok,,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1573236757432336384,2022-09-23,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 4 sketch,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1573549188888993792,2022-09-24,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 5 sketch,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1574001223505567744,2022-09-25,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1574326539394592768,2022-09-26,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 7 sketch,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1575098686904111104,2022-09-28,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1576177741103124481,2022-10-01,page_log,10 11 12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,10 11 12 13,,2026-08-30T06:00:17.009316+00:00
-1579463294104240129,2022-10-10,page_log,3 4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 404 p. 6 sketch,page_log,3 4 5 6,,2026-08-30T06:00:17.009316+00:00
-1580904454253002753,2022-10-14,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 404 p. 10 sketch,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1581202157696475136,2022-10-15,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1785895428573319488,2024-05-02,page_log,6 7,,,,high,2024 era begins; multiple pages per post,confirmed,human_confirmed,ok,Ch 405 p. 7 sketch,page_log,6 7,,2026-08-30T06:00:17.009316+00:00
-1786271534228951329,2024-05-03,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 8 sketch,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1786653489306972278,2024-05-04,page_log,10 11,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 11 sketch,page_log,10 11,,2026-08-30T06:00:17.009316+00:00
-1786998395732988294,2024-05-05,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 14 sketch,page_log,12 13 14,,2026-08-30T06:00:17.009316+00:00
-1787384568330301456,2024-05-06,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 16 sketch,page_log,15 16 17,,2026-08-30T06:00:17.009316+00:00
-1788466465072640148,2024-05-09,page_log,4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 406 p. 4 sketch,page_log,4 5 6,,2026-08-30T06:00:17.009316+00:00
-1788817836695331294,2024-05-10,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 406 p. 9 sketch,page_log,7 8 9,,2026-08-30T06:00:17.009316+00:00
-1789536557353087288,2024-05-12,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 406 p. 14 sketch,page_log,13 14 15,,2026-08-30T06:00:17.009316+00:00
-1790651329960087686,2024-05-15,page_log,4 5 7,,,,high,p6 likely hidden under the stack,confirmed,human_confirmed,ok,,page_log,4 5 7,,2026-08-30T06:00:17.009316+00:00
-1790999903046599157,2024-05-16,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,Ch 407 p. 7 matches p. 8 sketch,page_log,8 9 10,,2026-08-30T06:00:17.009316+00:00
-1791354446531695090,2024-05-17,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,Ch 407 p. 10 & 11 matches p. 11 & 12 sketch,page_log,11 12 13,,2026-08-30T06:00:17.009316+00:00
-1792827789370110105,2024-05-21,page_log,4 6,,,,high,RESET; middle sheet obscured,confirmed,human_confirmed,ok,,page_log,4 6,,2026-08-30T06:00:17.009316+00:00
-1793190105412153752,2024-05-22,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 7 sketch,page_log,7 8 9,,2026-08-30T06:00:17.009316+00:00
-1793249714126897478,2024-05-22,other,,,,,high,box of discs labelled あとで見る系 円盤BOX 2024.1月〜4月 - not production,confirmed,human_confirmed,ok,,other,,,2026-08-30T06:00:17.009316+00:00
-1793552523011469780,2024-05-23,page_log,10 11 12,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 12 sketch,page_log,10 11 12,,2026-08-30T06:00:17.009316+00:00
-1793914960952861172,2024-05-24,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 13 sketch,page_log,13 14 15,,2026-08-30T06:00:17.009316+00:00
-1794277256837374185,2024-05-25,page_log,16 17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17 18,,2026-08-30T06:00:17.009316+00:00
-1795015895884193978,2024-05-27,artwork,,,,,high,"finished inked group illustration, signed",confirmed,human_confirmed,ok,Irrelevant to HxH,artwork,,,2026-08-30T06:00:17.009316+00:00
-1795364445029597344,2024-05-28,page_log,6 7 8,,,,high,RESET,confirmed,human_confirmed,ok,Ch 409 p. 6 & 7 sketch,page_log,6 7 8,,2026-08-30T06:00:17.009316+00:00
-1795726834904289495,2024-05-29,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10 11,,2026-08-30T06:00:17.009316+00:00
-1795737253144379689,2024-05-29,artwork,,,,,high,colour Jump-mascot astronaut,confirmed,human_confirmed,ok,Gon,artwork,,,2026-08-30T06:00:17.009316+00:00
-1796089191438447033,2024-05-30,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,Ch 409 p. 12 sketch,page_log,12 13 14,,2026-08-30T06:00:17.009316+00:00
-1796126794719895863,2024-05-30,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1796452021056545038,2024-05-31,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,Ch 409 p. 15 & 16 sketch,page_log,15 16 17,,2026-08-30T06:00:17.009316+00:00
-1796517064666137032,2024-05-31,artwork,,,,,high,colour Gon + mascot,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1796824355005206711,2024-06-01,artwork,,,,,high,colour Gon with staff,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1797197820585497053,2024-06-02,page_log,2 3 4,,,,high,third sheet partly obscured,confirmed,human_corrected,fix,Ch 410 p. 4 sketch,page_log,2 3,,2026-08-30T06:00:17.009316+00:00
-1797235656940540335,2024-06-02,artwork,,,,,high,colour illustration beside the 2008 WSJ #14 revival cover,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1797538778439090611,2024-06-03,page_log,5 6 7,,,,high,,confirmed,human_confirmed,ok,Ch 410 p. 6 sketch; Killua sketch showing “p. 5” is just for numbering the page not actually appears on the published version,page_log,5 6 7,,2026-08-30T06:00:17.009316+00:00
-1797558564116165098,2024-06-03,artwork,,,,,high,colour Killua beside the same WSJ cover,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1797901236098023911,2024-06-04,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,Ch 410 p. 8 sketch,page_log,8 9 10,,2026-08-30T06:00:17.009316+00:00
-1797930703407263899,2024-06-04,artwork,,,,,high,"colour illustration, cat-like character",confirmed,human_confirmed,ok,The character is Pitou,artwork,,,2026-08-30T06:00:17.009316+00:00
-1798263559031501158,2024-06-05,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,11 12 13,,2026-08-30T06:00:17.009316+00:00
-1798281414670250400,2024-06-05,artwork,,,,,high,"colour painting, Biscuit and others",confirmed,human_confirmed,ok,The characters are chimera ant arc characters,artwork,,,2026-08-30T06:00:17.009316+00:00
-1798626376557498622,2024-06-06,page_log,14 15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15 16,,2026-08-30T06:00:17.009316+00:00
-1798661926345637997,2024-06-06,artwork,,,,,high,colour Gon/Killua/Biscuit,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1798988560256864617,2024-06-07,page_log,17 18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,17 18 19,,2026-08-30T06:00:17.009316+00:00
-1799350843986350568,2024-06-08,page_log,1 2 3,,,,high,"RESET - includes p1, unusual",confirmed,human_confirmed,ok,Ch 411 p. 1 sketch,page_log,1 2 3,,2026-08-30T06:00:17.009316+00:00
-1799770247752503341,2024-06-09,page_log,4 5 6,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 5 sketch,page_log,4 5 6,,2026-08-30T06:00:17.009316+00:00
-1800075528600428979,2024-06-10,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 8 & 9 sketch,page_log,7 8 9,,2026-08-30T06:00:17.009316+00:00
-1800497805502620009,2024-06-11,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1800800295573971089,2024-06-12,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 14 sketch,page_log,13 14 15,,2026-08-30T06:00:17.009316+00:00
-1800837214533996652,2024-06-12,artwork,,,,,high,colour chibi with fish,confirmed,human_confirmed,ok,Gon,artwork,,,2026-08-30T06:00:17.009316+00:00
-1801162627944722613,2024-06-13,page_log,16 17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17 18,,2026-08-30T06:00:17.009316+00:00
-1801239618127647228,2024-06-13,artwork,,,,,high,colour portrait,confirmed,human_confirmed,ok,Genthru,artwork,,,2026-08-30T06:00:17.009316+00:00
-1802612319396168016,2024-06-17,page_log,3 4 5,,,,high,RESET,confirmed,human_confirmed,ok,Ch 412 p. 2 & 3 match 3 & 4,page_log,3 4 5,,2026-08-30T06:00:17.009316+00:00
-1802665606199803994,2024-06-17,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1802985026558320957,2024-06-18,page_log,6,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 5 matches 6,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1803337143743664338,2024-06-19,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 9 & 10 match 10 & 11,page_log,7 8 9,,2026-08-30T06:00:17.009316+00:00
-1803394314233663704,2024-06-19,artwork,,,,,high,two colour Gon cuts,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1803699785347768718,2024-06-20,page_log,10 11 12,,,,high,,confirmed,human_confirmed,ok,,page_log,10 11 12,,2026-08-30T06:00:17.009316+00:00
-1803755471377219814,2024-06-20,artwork,,,,,high,colour chibi cuts,confirmed,human_confirmed,ok,Both are Gon,artwork,,,2026-08-30T06:00:17.009316+00:00
-1804061999074284017,2024-06-21,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 12 matches 13,page_log,13 14,,2026-08-30T06:00:17.009316+00:00
-1804110838887850221,2024-06-21,artwork,,,,,high,four marker portraits,confirmed,human_confirmed,ok,Gon/Killua/Leorio/Kurapika,artwork,,,2026-08-30T06:00:17.009316+00:00
-1804424248049700901,2024-06-22,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16 17,,2026-08-30T06:00:17.009316+00:00
-1804449791382020492,2024-06-22,artwork,,,,,high,"colour Gon on skateboard, vol.36",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1805149366791049565,2024-06-24,page_log,2 3 4,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,2 3 4,,2026-08-30T06:00:17.009316+00:00
-1805517941452292310,2024-06-25,page_log,5 6 7,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6 7,,2026-08-30T06:00:17.009316+00:00
-1805557906429165596,2024-06-25,artwork,,,,,high,colour Gon face,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1805873828775817614,2024-06-26,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9 10,,2026-08-30T06:00:17.009316+00:00
-1805941576918819074,2024-06-26,artwork,,,,,high,colour Gon with can,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1806236277743976470,2024-06-27,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,Ch 413 p. 11 sketch,page_log,11 12 13,,2026-08-30T06:00:17.009316+00:00
-1806282788271952085,2024-06-27,artwork,,,,,high,colour Gon cutout,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1806598842818970067,2024-06-28,page_log,14 15 16,,,,high,,confirmed,human_confirmed,ok,Ch 413 p. 14 sketch,page_log,14 15 16,,2026-08-30T06:00:17.009316+00:00
-1806670555355189615,2024-06-28,artwork,,,,,high,colour Gon jumping,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1807352100143473112,2024-06-30,artwork,,,,,high,"archival YuYu Hakusho WSJ cover art, 11月19日号",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1807686257998438618,2024-07-01,page_log,4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 414 p. 4 sketch,page_log,4 5 6,,2026-08-30T06:00:17.009316+00:00
-1808101122328219828,2024-07-02,artwork,,,,,high,archival YuYu Hakusho No.13 表紙カット,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1808412582673543479,2024-07-03,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1808470754931171460,2024-07-03,artwork,,,,,high,colour Gon riding a lizard,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1808824172191363436,2024-07-04,artwork,,,,,high,"ink drawing, witch figure",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1809146020481372306,2024-07-05,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1809200403084677200,2024-07-05,artwork,,,,,high,colour beach illustration,confirmed,human_confirmed,ok,Gon/Killua/Leorio/Kurapika,artwork,,,2026-08-30T06:00:17.009316+00:00
-1809551429457310084,2024-07-06,artwork,,,,,high,archival YuYu Hakusho cut,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1809902608343286011,2024-07-07,page_log,13,,,,high,,confirmed,human_confirmed,ok,,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1809919979640483905,2024-07-07,artwork,,,,,high,birthday illustration dated 2024.7.7,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1810270404361195758,2024-07-08,artwork,,,,,high,archival YuYu Hakusho カットD,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1810586451555287478,2024-07-09,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 414 p. 16 sketch,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1810635015652610210,2024-07-09,artwork,,,,,high,"colour Gon, calendar cut",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1810947358655705229,2024-07-10,page_log,18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,18 19,,2026-08-30T06:00:17.009316+00:00
-1810995321079472380,2024-07-10,artwork,,,,,high,"watercolour, birthday present piece",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1811402349354856520,2024-07-11,artwork,,,,,high,archival YuYu Hakusho cuts B/C,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1811672073313607994,2024-07-12,page_log,3 4 5,,,,high,RESET; a third sheet is partly hidden,confirmed,human_corrected,fix,Ch 415 p. 4 sketch,page_log,3 5,,2026-08-30T06:00:17.009316+00:00
-1811723086066323863,2024-07-12,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1812039691157324227,2024-07-13,page_log,6 7 8,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 6 sketch,page_log,6 7 8,,2026-08-30T06:00:17.009316+00:00
-1812094156149494211,2024-07-13,artwork,,,,,high,colour Kurapika and Gon,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1812419869390029241,2024-07-14,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 10 sketch,page_log,9 10 11,,2026-08-30T06:00:17.009316+00:00
-1812421516320977273,2024-07-14,artwork,,,,,high,archival colour cuts,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1812759219067818266,2024-07-15,page_log,12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13,,2026-08-30T06:00:17.009316+00:00
-1812815567503647036,2024-07-15,artwork,,,,,high,colour Leorio,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1813121614911009153,2024-07-16,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 14 & 15 sketch,page_log,14 15,,2026-08-30T06:00:17.009316+00:00
-1813159799070335298,2024-07-16,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1813485171863351313,2024-07-17,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1813543475453075530,2024-07-17,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1813899259953172729,2024-07-18,artwork,,,,,high,inked group illustration,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1814274778473373700,2024-07-19,artwork,,,,,high,"archival colour piece, オカルト特捜団",confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1814572154119463163,2024-07-20,page_log,3,,,,high,RESET,confirmed,human_confirmed,ok,Ch 416 p. 3 sketch,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1814619700581834851,2024-07-20,artwork,,,,,high,archival YuYu Hakusho colour cuts,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1814934744771272834,2024-07-21,page_log,4,,,,high,a second sheet is stacked but obscured,confirmed,human_confirmed,ok,both pages are 4,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1815296394288357729,2024-07-22,page_log,5,,,,high,,confirmed,human_confirmed,ok,,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1815665065259114815,2024-07-23,page_log,6 7,,,,high,,confirmed,human_confirmed,ok,,page_log,6 7,,2026-08-30T06:00:17.009316+00:00
-1816102624497725593,2024-07-24,artwork,,,,,high,green-toned figure painting,confirmed,human_confirmed,ok,Meruem,artwork,,,2026-08-30T06:00:17.009316+00:00
-1816383027968405535,2024-07-25,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 9 sketch,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1816443366999285898,2024-07-25,artwork,,,,,high,colour Gon and Killua,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1816745938922405924,2024-07-26,page_log,10 11,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 10 sketch,page_log,10 11,,2026-08-30T06:00:17.009316+00:00
-1817170859867652406,2024-07-27,artwork,,,,,high,airbrush-style colour group piece,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1817474591658586607,2024-07-28,page_log,13,,,,high,,confirmed,human_confirmed,ok,,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1817534075084865875,2024-07-28,artwork,,,,,high,archival YuYu Hakusho colour カットC,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1817833700547273164,2024-07-29,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-08-30T06:00:17.009316+00:00
-1818196050169217461,2024-07-30,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 17 sketch,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1818263260392808635,2024-07-30,artwork,,,,,high,archival YuYu Hakusho cuts 68-71,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1818610833964056593,2024-07-31,artwork,,,,,high,colour Gon with stick,confirmed,human_confirmed,ok,,artwork,,,2026-08-30T06:00:17.009316+00:00
-1819282115009380402,2024-08-02,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,Ch 417 p. 2 sketch,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1819645880905224671,2024-08-03,page_log,3,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 3 sketch,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1820007259818352688,2024-08-04,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1820380125768331689,2024-08-05,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 5 sketch,page_log,5 6,,2026-08-30T06:00:17.009316+00:00
-1820754308746600934,2024-08-06,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 7 sketch,page_log,7 8,,2026-08-30T06:00:17.009316+00:00
-1821094894129307742,2024-08-07,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-08-30T06:00:17.009316+00:00
-1821474816077254935,2024-08-08,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1821819211624391128,2024-08-09,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1822190708452893045,2024-08-10,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1822565040462942210,2024-08-11,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 14 sketch,page_log,14,,2026-08-30T06:00:17.009316+00:00
-1823271123489812566,2024-08-13,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 16 sketch,page_log,16,,2026-08-30T06:00:17.009316+00:00
-1823645373308535190,2024-08-14,page_log,17,,,,high,,confirmed,human_confirmed,ok,,page_log,17,,2026-08-30T06:00:17.009316+00:00
-1823994863806828636,2024-08-15,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 18 sketch,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1825081134868283791,2024-08-18,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,Ch 418 p. 2 sketch,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1825492550997934220,2024-08-19,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-08-30T06:00:17.009316+00:00
-1825809560046809595,2024-08-20,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 5 sketch,page_log,5 6,,2026-08-30T06:00:17.009316+00:00
-1826169801531863275,2024-08-21,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 7 sketch,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1826540225738539468,2024-08-22,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 8 sketch,page_log,8,,2026-08-30T06:00:17.009316+00:00
-1826892826421989629,2024-08-23,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 9 sketch,page_log,9,,2026-08-30T06:00:17.009316+00:00
-1827297359690395824,2024-08-24,page_log,10,,,,high,,confirmed,human_confirmed,ok,,page_log,10,,2026-08-30T06:00:17.009316+00:00
-1827619471848304826,2024-08-25,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 11 sketch,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1827981905326977056,2024-08-26,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 12 sketch,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1828342600266649952,2024-08-27,page_log,13,,,,high,blue ink spill on the desk,confirmed,human_confirmed,ok,Ch 418 p. 13 sketch,page_log,13,,2026-08-30T06:00:17.009316+00:00
-1831648845610283430,2024-09-05,page_log,15,,,,high,,confirmed,human_confirmed,ok,,page_log,15,,2026-08-30T06:00:17.009316+00:00
-1831980618533732490,2024-09-06,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 16 sketch,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1832380555985646004,2024-09-07,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 18 sketch,page_log,18,,2026-08-30T06:00:17.009316+00:00
-1833426874980306991,2024-09-10,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1834174699338858589,2024-09-12,page_log,4,,,,high,pencil figure sketch on the sheet,confirmed,human_confirmed,ok,,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1834532700780429764,2024-09-13,page_log,5,,,,high,,confirmed,human_confirmed,ok,,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1834886992758555072,2024-09-14,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1835237596362060120,2024-09-15,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-08-30T06:00:17.009316+00:00
-1835590695081427080,2024-09-16,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1836344533979926813,2024-09-18,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-08-30T06:00:17.009316+00:00
-1836677429173325882,2024-09-19,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-08-30T06:00:17.009316+00:00
-1838851210801246321,2024-09-25,page_log,6 7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,6 7 8,,2026-08-30T06:00:17.009316+00:00
-1839217283606131150,2024-09-26,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10 11,,2026-08-30T06:00:17.009316+00:00
-1839602562120712194,2024-09-27,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13 14,,2026-08-30T06:00:17.009316+00:00
-1839938838791368773,2024-09-28,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16 17,,2026-08-30T06:00:17.009316+00:00
-1841074277870944293,2024-10-01,page_log,3 4,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,3 4,,2026-08-30T06:00:17.009316+00:00
-1841427298068930625,2024-10-02,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-08-30T06:00:17.009316+00:00
-1841771494793216024,2024-10-03,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,7 8,,2026-08-30T06:00:17.009316+00:00
-1842182988823699493,2024-10-04,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-08-30T06:00:17.009316+00:00
-1842526216286572951,2024-10-05,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-08-30T06:00:17.009316+00:00
-1842846392790000107,2024-10-06,page_log,12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13,,2026-08-30T06:00:17.009316+00:00
-1843201422437028274,2024-10-07,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-08-30T06:00:17.009316+00:00
-1843568558225404363,2024-10-08,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1844302318327759090,2024-10-10,page_log,1 2,,,,high,,confirmed,human_confirmed,ok,,page_log,1 2,,2026-08-30T06:00:17.009316+00:00
-1844660092039569635,2024-10-11,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-08-30T06:00:17.009316+00:00
-1845098019890586057,2024-10-12,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-08-30T06:00:17.009316+00:00
-1845749854292840874,2024-10-14,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-08-30T06:00:17.009316+00:00
-1846118283449446869,2024-10-15,page_log,11 12,,,,high,,confirmed,human_confirmed,ok,,page_log,11 12,,2026-08-30T06:00:17.009316+00:00
-1846466366150529357,2024-10-16,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-08-30T06:00:17.009316+00:00
-1846836490732818622,2024-10-17,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16,,2026-08-30T06:00:17.009316+00:00
-1847277399219802336,2024-10-18,page_log,17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,17 18,,2026-08-30T06:00:17.009316+00:00
-1847921641529225252,2024-10-20,page_log,2 3,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,2 3,,2026-08-30T06:00:17.009316+00:00
-1848276953876631635,2024-10-21,page_log,4 5,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,4 5,,2026-08-30T06:00:17.009316+00:00
-1849027649039188449,2024-10-23,page_log,8 9,,,,high,partly covered by a plush toy,confirmed,human_confirmed,ok,,page_log,8 9,,2026-08-30T06:00:17.009316+00:00
-1849380852440215626,2024-10-24,page_log,10 11,,,,high,Shueisha envelope on the desk,confirmed,human_confirmed,ok,,page_log,10 11,,2026-08-30T06:00:17.009316+00:00
-1849740459159191597,2024-10-25,page_log,12 13,,,,high,pencil Gon sketch resting on the stack,confirmed,human_confirmed,ok,,page_log,12 13,,2026-08-30T06:00:17.009316+00:00
-1850136722241425490,2024-10-26,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-08-30T06:00:17.009316+00:00
-1850465656988475814,2024-10-27,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-08-30T06:00:17.009316+00:00
-1851536123706941636,2024-10-30,page_log,3 4,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,3 4,,2026-08-30T06:00:17.009316+00:00
-1851926903923577299,2024-10-31,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-08-30T06:00:17.009316+00:00
-1852330736583692500,2024-11-01,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,7 8,,2026-08-30T06:00:17.009316+00:00
-1852646493074702518,2024-11-02,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-08-30T06:00:17.009316+00:00
-1853010843467960685,2024-11-03,page_log,11 12,,,,high,group illustration resting on the stack,confirmed,human_confirmed,ok,,page_log,11 12,,2026-08-30T06:00:17.009316+00:00
-1853392073246011796,2024-11-04,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-08-30T06:00:17.009316+00:00
-1853779871308411363,2024-11-05,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16,,2026-08-30T06:00:17.009316+00:00
-1975659435868758215,2025-10-07,milestone_text,,No.414 台詞入れ 完了!,414,台詞入れ完了,high,2025-10 era: milestone written on the sheet,confirmed,human_confirmed,ok,,milestone_text,,No.414 台詞入れ 完了!,2026-08-30T06:00:17.009316+00:00
-1975887096029348124,2025-10-08,milestone_text,,No.415 台詞入れ 完了,415,台詞入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.415 台詞入れ 完了,2026-08-30T06:00:17.009316+00:00
-1976303383805092095,2025-10-09,milestone_text,,No.417 台詞入れ 完了,417,台詞入れ完了,high,reads 417; sequence would suggest 416 - verify,confirmed,human_confirmed,ok,,milestone_text,,No.417 台詞入れ 完了,2026-08-30T06:00:17.009316+00:00
-1976212321283485898,2025-10-09,milestone_text,,No.416 台詞入れ 完了!,416,台詞入れ完了,high,small handwriting in a bubble beside a pencil portrait; second post that day,confirmed,human_confirmed,ok,,milestone_text,,No.416 台詞入れ 完了!,2026-08-30T06:00:17.009316+00:00
-1976594157939638610,2025-10-10,milestone_text,,No.418 台詞入れ 完了!,418,台詞入れ完了,high,"digits read as ""48""; 418 inferred from sequence",confirmed,human_confirmed,ok,,milestone_text,,No.418 台詞入れ 完了!,2026-08-30T06:00:17.009316+00:00
-1977033686664331359,2025-10-11,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,420,台詞入れ完了,high,ALSO states specifications for 10 chapters are complete,confirmed,human_confirmed,ok,,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,2026-08-30T06:00:17.009316+00:00
-1978401791663390746,2025-10-15,page_log,2,,,,high,,confirmed,human_confirmed,ok,,page_log,2,,2026-08-30T06:00:17.009316+00:00
-1978697089862271029,2025-10-16,page_log,3,,,,high,,confirmed,human_confirmed,ok,,page_log,3,,2026-08-30T06:00:17.009316+00:00
-1979061149418057774,2025-10-17,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-08-30T06:00:17.009316+00:00
-1979771078940762586,2025-10-19,page_log,5,,,,high,a second sheet partly hidden,confirmed,human_confirmed,ok,,page_log,5,,2026-08-30T06:00:17.009316+00:00
-1981366885301309657,2025-10-23,page_log,6 7,,,,high,,confirmed,human_corrected,fix,,page_log,6,,2026-08-30T06:00:17.009316+00:00
-1987834494318162019,2025-11-10,milestone_text,1,No.426 ペン入れ 開始!,426,ペン入れ開始,high,"start event, not a completion",confirmed,human_corrected,fix,This is also a page log,milestone_text,,No.426 ペン入れ 開始!,2026-08-30T06:00:17.009316+00:00
-2000981302913458294,2025-12-16,milestone_text,,No.426 人物ペン入れ 完了,426,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.426 人物ペン入れ 完了,2026-08-30T06:00:17.009316+00:00
-2004867336483078549,2025-12-27,milestone_text,,No.412 原稿完成,412,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.412 原稿完成,2026-08-30T06:00:17.009316+00:00
-2011143493742387642,2026-01-13,milestone_text,,No.413 原稿完成,413,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.413 原稿完成,2026-08-30T06:00:17.009316+00:00
-2011145474154381687,2026-01-13,unclear,,,,,high,"monthly schedule board, two date cells scribbled out, no readable chapter",confirmed,human_confirmed,ok,There is no handwriting in this photo. Those two dots are not scribbled dates. They are eyes of an unfinished sketch.,unclear,,,2026-08-30T06:00:17.009316+00:00
-2011305545647735170,2026-01-14,milestone_text,,No.414 原稿完成!,414,原稿完成,high,written on a chocolate carton,confirmed,human_confirmed,ok,,milestone_text,,No.414 原稿完成!,2026-08-30T06:00:17.009316+00:00
-2013553432829813035,2026-01-20,milestone_text,,No.415 原稿完成,415,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.415 原稿完成,2026-08-30T06:00:17.009316+00:00
-2014782311775236214,2026-01-23,milestone_text,,No.416 原稿完成,416,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.416 原稿完成,2026-08-30T06:00:17.009316+00:00
-2014789100658950178,2026-01-23,milestone_text,,No.427 人物ペン入れ完了。,427,人物ペン入れ完了,high,written on a Shueisha envelope; numbered page stack beneath,confirmed,human_confirmed,ok,,milestone_text,,No.427 人物ペン入れ完了。,2026-08-30T06:00:17.009316+00:00
-2015898522009403793,2026-01-26,milestone_text,,No.421 背景指定書 作成完了,421,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.421 背景指定書 作成完了,2026-08-30T06:00:17.009316+00:00
-2016302995970076779,2026-01-28,milestone_text,,No.421 表紙用カラーと台詞入れ完了,421,台詞入れ完了,high,also cover colour complete,confirmed,human_confirmed,ok,,milestone_text,,No.421 表紙用カラーと台詞入れ完了,2026-08-30T06:00:17.009316+00:00
-2019278910136193215,2026-02-05,milestone_text,,No.417 原稿完成,417,原稿完成,high,fills the gap: ch417 had no manuscript_complete event before this,confirmed,human_confirmed,ok,,milestone_text,,No.417 原稿完成,2026-08-30T06:00:17.009316+00:00
-2023496133910425796,2026-02-16,milestone_text,,No.428 人物ペン入れ 完了,428,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.428 人物ペン入れ 完了,2026-08-30T06:00:17.009316+00:00
-2029207167656706336,2026-03-04,milestone_text,,No.422 台詞と背景指定書 作成完了,422,台詞入れ完了;背景指定書作成完了,high,two stages in one post,confirmed,human_confirmed,ok,,milestone_text,,No.422 台詞と背景指定書 作成完了,2026-08-30T06:00:17.009316+00:00
-2030043233129226406,2026-03-06,milestone_text,,No.423 背景指定 完成,423,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.423 背景指定 完成,2026-08-30T06:00:17.009316+00:00
-2032117895745192356,2026-03-12,milestone_text,,No.425 背景指定書作成 完了…,425,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.425 背景指定書作成 完了…,2026-08-30T06:00:17.009316+00:00
-2033276639208153570,2026-03-15,milestone_text,,No.427 背景指定書 完了,427,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.427 背景指定書 完了,2026-08-30T06:00:17.009316+00:00
-2033764977727967457,2026-03-17,milestone_text,,No.429 人物ペン入れ完了…,429,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.429 人物ペン入れ完了…,2026-08-30T06:00:17.009316+00:00
-2084155567363539307,2026-08-03,milestone_text,,No.433 人物ペン入れ完了。,433,人物ペン入れ完了,high,photographed against roses,confirmed,human_confirmed,ok,,milestone_text,,No.433 人物ペン入れ完了。,2026-08-30T06:00:17.009316+00:00
-2092902182790341023,2026-08-27,milestone_text,,No.429 背景指定書 完成,429,背景指定書作成完了,high,"user-supplied tweet, 2026-08-27",confirmed,human_confirmed,ok,,milestone_text,,No.429 背景指定書 完成,2026-08-30T06:00:17.009316+00:00
+1529260655236091904,2022-05-25,page_log,,,,,high,blurred close-up of inked foliage; no page number visible,confirmed,human_corrected,fix,Ch 397 p. 6 artwork,unclear,,,2026-09-01T07:00:21.620701+00:00
+1529663083605397504,2022-05-26,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1530022135413952512,2022-05-27,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 8 sketch,page_log,8,,2026-09-01T07:00:21.620701+00:00
+1530401076385525761,2022-05-28,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 9 sketch,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1530748357731225600,2022-05-29,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 10 sketch,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1531112345321078784,2022-05-30,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 11 sketch,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1531471347540295680,2022-05-31,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 12 sketch,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1531834543920951296,2022-06-01,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1532195450983313408,2022-06-02,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 14 sketch,page_log,14,,2026-09-01T07:00:21.620701+00:00
+1532558267385188352,2022-06-03,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 15 16 sketch,page_log,15 16,,2026-09-01T07:00:21.620701+00:00
+1532920523406995456,2022-06-04,page_log,17 18,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 17 18 sketch,page_log,17 18,,2026-09-01T07:00:21.620701+00:00
+1533283644227260416,2022-06-05,page_log,19,,,,high,,confirmed,human_confirmed,ok,Ch 397 p. 19 sketch,page_log,19,,2026-09-01T07:00:21.620701+00:00
+1534007690053099520,2022-06-07,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,Ch 398 p. 2 sketch,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1534370156809310210,2022-06-08,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-09-01T07:00:21.620701+00:00
+1534732400604745733,2022-06-09,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 5 sketch,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1535094793100857345,2022-06-10,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1535457193008320513,2022-06-11,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 7 sketch,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1535820071188082688,2022-06-12,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 9 sketch,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1536181741542526976,2022-06-13,page_log,10,,,,high,,confirmed,human_confirmed,ok,,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1536544533474791424,2022-06-14,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 11 sketch,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1536906649612750848,2022-06-15,page_log,12 13 14 15,,,,high,four sheets fanned out,confirmed,human_confirmed,ok,,page_log,12 13 14 15,,2026-09-01T07:00:21.620701+00:00
+1537269290688122881,2022-06-16,page_log,16,,,,high,,confirmed,human_confirmed,ok,,page_log,16,,2026-09-01T07:00:21.620701+00:00
+1537632258311323648,2022-06-17,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 398 p. 17 sketch,page_log,17,,2026-09-01T07:00:21.620701+00:00
+1537993636297658369,2022-06-18,page_log,18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,18 19,,2026-09-01T07:00:21.620701+00:00
+1538794911759077378,2022-06-20,page_log,3,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1539081629632630784,2022-06-21,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1539443851487694848,2022-06-22,page_log,5,,,,high,page number not visible in frame,confirmed,human_corrected,fix,"Page number is 5, visible but in a special font",page_log,,,2026-09-01T07:00:21.620701+00:00
+1539806147745484800,2022-06-23,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1540177798618263552,2022-06-24,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1540530537512611841,2022-06-25,page_log,8,,,,high,,confirmed,human_confirmed,ok,,page_log,8,,2026-09-01T07:00:21.620701+00:00
+1540895966798028801,2022-06-26,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.9 sketch,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1541255538029125633,2022-06-27,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.10 sketch,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1541676030489833472,2022-06-28,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.11 sketch,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1541980381552922624,2022-06-29,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.12 sketch,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1542343325021196291,2022-06-30,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1542705613519523840,2022-07-01,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.14 sketch,page_log,14,,2026-09-01T07:00:21.620701+00:00
+1543068288862760960,2022-07-02,page_log,15,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.15 sketch,page_log,15,,2026-09-01T07:00:21.620701+00:00
+1543431031293767680,2022-07-03,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.16 sketch,page_log,16,,2026-09-01T07:00:21.620701+00:00
+1543792686947110912,2022-07-04,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.17 sketch,page_log,17,,2026-09-01T07:00:21.620701+00:00
+1544155535347290113,2022-07-05,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 399 p.18 sketch,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1544517962953920513,2022-07-06,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,Ch 399 p.19 sketch,page_log,19,,2026-09-01T07:00:21.620701+00:00
+1545242707840225281,2022-07-08,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,Ch 400 p. 2 sketch,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1545606271935533059,2022-07-09,page_log,3,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 3 sketch,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1545966491199188993,2022-07-10,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 4 sketch,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1546329266433826816,2022-07-11,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 5 sketch,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1546691419129098245,2022-07-12,page_log,6,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 6 sketch,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1547054032136863744,2022-07-13,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1547423498426978304,2022-07-14,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 8 sketch,page_log,8,,2026-09-01T07:00:21.620701+00:00
+1547778808207380485,2022-07-15,page_log,9,,,,high,,confirmed,human_confirmed,ok,,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1548141221406642177,2022-07-16,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 10 sketch,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1548503498697760768,2022-07-17,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1548865803268734976,2022-07-18,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 12 sketch,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1549228293349466112,2022-07-19,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1549591364169437184,2022-07-20,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 14 sketch,page_log,14,,2026-09-01T07:00:21.620701+00:00
+1549952765966725120,2022-07-21,page_log,15,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 15 sketch,page_log,15,,2026-09-01T07:00:21.620701+00:00
+1550315226242764802,2022-07-22,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 16 sketch,page_log,16,,2026-09-01T07:00:21.620701+00:00
+1550677625844027392,2022-07-23,page_log,17,,,,high,,confirmed,human_confirmed,ok,Ch 400 p. 17 sketch,page_log,17,,2026-09-01T07:00:21.620701+00:00
+1551045024028143616,2022-07-24,page_log,18,,,,high,,confirmed,human_confirmed,ok,,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1551402850256707586,2022-07-25,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,Ch 400 p. 19 sketch Kurapika,page_log,19,,2026-09-01T07:00:21.620701+00:00
+1553257639051546625,2022-07-30,page_log,5,,,,high,RESET; 07-26..29 gap - he switches to chapter-number text posts here,confirmed,human_confirmed,ok,,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1553943032554106882,2022-08-01,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 8 sketch,page_log,8,,2026-09-01T07:00:21.620701+00:00
+1554301262388084736,2022-08-02,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 9 sketch,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1555389385784274946,2022-08-05,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 12 sketch,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1555751795451777026,2022-08-06,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 401 p. 13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1556114159313379328,2022-08-07,page_log,14,,,,high,,confirmed,human_confirmed,ok,,page_log,14,,2026-09-01T07:00:21.620701+00:00
+1556478800333905920,2022-08-08,page_log,15,,,,high,number on a different form-like sheet,confirmed,human_confirmed,ok,,page_log,15,,2026-09-01T07:00:21.620701+00:00
+1556839262779088896,2022-08-09,page_log,16,,,,high,,confirmed,human_confirmed,ok,,page_log,16,,2026-09-01T07:00:21.620701+00:00
+1557202514189045760,2022-08-10,page_log,17,,,,high,,confirmed,human_confirmed,ok,,page_log,17,,2026-09-01T07:00:21.620701+00:00
+1557572968888164352,2022-08-11,page_log,18,,,,high,,confirmed,human_confirmed,ok,,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1565901913752686592,2022-09-03,page_log,3,,,,high,number rotated at frame edge,confirmed,human_confirmed,ok,Ch 402 p. 3 sketch,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1566280525488148480,2022-09-04,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 402 p. 4 sketch,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1568203247898460161,2022-09-09,page_log,9,,,,high,,confirmed,human_confirmed,ok,,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1568856569747755009,2022-09-11,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1569235741808664576,2022-09-12,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1571060822352494592,2022-09-17,page_log,17,,,,high,digit ambiguous (reads 21 rotated; 21 implausible for a ~19pp chapter),confirmed,human_corrected,fix,Page number is 17,page_log,,,2026-09-01T07:00:21.620701+00:00
+1571408244450684931,2022-09-18,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 402 p. 18 sketch,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1571722358100234240,2022-09-19,page_log,19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,19,,2026-09-01T07:00:21.620701+00:00
+1572428421187371008,2022-09-21,page_log,2,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1572812396757852160,2022-09-22,page_log,3,,,,high,,confirmed,human_confirmed,ok,,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1573236757432336384,2022-09-23,page_log,4,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 4 sketch,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1573549188888993792,2022-09-24,page_log,5,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 5 sketch,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1574001223505567744,2022-09-25,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1574326539394592768,2022-09-26,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 403 p. 7 sketch,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1575098686904111104,2022-09-28,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1576177741103124481,2022-10-01,page_log,10 11 12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,10 11 12 13,,2026-09-01T07:00:21.620701+00:00
+1579463294104240129,2022-10-10,page_log,3 4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 404 p. 6 sketch,page_log,3 4 5 6,,2026-09-01T07:00:21.620701+00:00
+1580904454253002753,2022-10-14,page_log,10,,,,high,,confirmed,human_confirmed,ok,Ch 404 p. 10 sketch,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1581202157696475136,2022-10-15,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1785895428573319488,2024-05-02,page_log,6 7,,,,high,2024 era begins; multiple pages per post,confirmed,human_confirmed,ok,Ch 405 p. 7 sketch,page_log,6 7,,2026-09-01T07:00:21.620701+00:00
+1786271534228951329,2024-05-03,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 8 sketch,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1786653489306972278,2024-05-04,page_log,10 11,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 11 sketch,page_log,10 11,,2026-09-01T07:00:21.620701+00:00
+1786998395732988294,2024-05-05,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 14 sketch,page_log,12 13 14,,2026-09-01T07:00:21.620701+00:00
+1787384568330301456,2024-05-06,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,Ch 405 p. 16 sketch,page_log,15 16 17,,2026-09-01T07:00:21.620701+00:00
+1788466465072640148,2024-05-09,page_log,4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 406 p. 4 sketch,page_log,4 5 6,,2026-09-01T07:00:21.620701+00:00
+1788817836695331294,2024-05-10,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 406 p. 9 sketch,page_log,7 8 9,,2026-09-01T07:00:21.620701+00:00
+1789536557353087288,2024-05-12,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 406 p. 14 sketch,page_log,13 14 15,,2026-09-01T07:00:21.620701+00:00
+1790651329960087686,2024-05-15,page_log,4 5 7,,,,high,p6 likely hidden under the stack,confirmed,human_confirmed,ok,,page_log,4 5 7,,2026-09-01T07:00:21.620701+00:00
+1790999903046599157,2024-05-16,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,Ch 407 p. 7 matches p. 8 sketch,page_log,8 9 10,,2026-09-01T07:00:21.620701+00:00
+1791354446531695090,2024-05-17,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,Ch 407 p. 10 & 11 matches p. 11 & 12 sketch,page_log,11 12 13,,2026-09-01T07:00:21.620701+00:00
+1792827789370110105,2024-05-21,page_log,4 6,,,,high,RESET; middle sheet obscured,confirmed,human_confirmed,ok,,page_log,4 6,,2026-09-01T07:00:21.620701+00:00
+1793190105412153752,2024-05-22,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 7 sketch,page_log,7 8 9,,2026-09-01T07:00:21.620701+00:00
+1793249714126897478,2024-05-22,other,,,,,high,box of discs labelled あとで見る系 円盤BOX 2024.1月〜4月 - not production,confirmed,human_confirmed,ok,,other,,,2026-09-01T07:00:21.620701+00:00
+1793552523011469780,2024-05-23,page_log,10 11 12,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 12 sketch,page_log,10 11 12,,2026-09-01T07:00:21.620701+00:00
+1793914960952861172,2024-05-24,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 408 p. 13 sketch,page_log,13 14 15,,2026-09-01T07:00:21.620701+00:00
+1794277256837374185,2024-05-25,page_log,16 17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17 18,,2026-09-01T07:00:21.620701+00:00
+1795015895884193978,2024-05-27,artwork,,,,,high,"finished inked group illustration, signed",confirmed,human_confirmed,ok,Irrelevant to HxH,artwork,,,2026-09-01T07:00:21.620701+00:00
+1795364445029597344,2024-05-28,page_log,6 7 8,,,,high,RESET,confirmed,human_confirmed,ok,Ch 409 p. 6 & 7 sketch,page_log,6 7 8,,2026-09-01T07:00:21.620701+00:00
+1795726834904289495,2024-05-29,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10 11,,2026-09-01T07:00:21.620701+00:00
+1795737253144379689,2024-05-29,artwork,,,,,high,colour Jump-mascot astronaut,confirmed,human_confirmed,ok,Gon,artwork,,,2026-09-01T07:00:21.620701+00:00
+1796089191438447033,2024-05-30,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,Ch 409 p. 12 sketch,page_log,12 13 14,,2026-09-01T07:00:21.620701+00:00
+1796126794719895863,2024-05-30,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1796452021056545038,2024-05-31,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,Ch 409 p. 15 & 16 sketch,page_log,15 16 17,,2026-09-01T07:00:21.620701+00:00
+1796517064666137032,2024-05-31,artwork,,,,,high,colour Gon + mascot,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1796824355005206711,2024-06-01,artwork,,,,,high,colour Gon with staff,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1797197820585497053,2024-06-02,page_log,2 3 4,,,,high,third sheet partly obscured,confirmed,human_corrected,fix,Ch 410 p. 4 sketch,page_log,2 3,,2026-09-01T07:00:21.620701+00:00
+1797235656940540335,2024-06-02,artwork,,,,,high,colour illustration beside the 2008 WSJ #14 revival cover,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1797538778439090611,2024-06-03,page_log,5 6 7,,,,high,,confirmed,human_confirmed,ok,Ch 410 p. 6 sketch; Killua sketch showing “p. 5” is just for numbering the page not actually appears on the published version,page_log,5 6 7,,2026-09-01T07:00:21.620701+00:00
+1797558564116165098,2024-06-03,artwork,,,,,high,colour Killua beside the same WSJ cover,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1797901236098023911,2024-06-04,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,Ch 410 p. 8 sketch,page_log,8 9 10,,2026-09-01T07:00:21.620701+00:00
+1797930703407263899,2024-06-04,artwork,,,,,high,"colour illustration, cat-like character",confirmed,human_confirmed,ok,The character is Pitou,artwork,,,2026-09-01T07:00:21.620701+00:00
+1798263559031501158,2024-06-05,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,11 12 13,,2026-09-01T07:00:21.620701+00:00
+1798281414670250400,2024-06-05,artwork,,,,,high,"colour painting, Biscuit and others",confirmed,human_confirmed,ok,The characters are chimera ant arc characters,artwork,,,2026-09-01T07:00:21.620701+00:00
+1798626376557498622,2024-06-06,page_log,14 15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15 16,,2026-09-01T07:00:21.620701+00:00
+1798661926345637997,2024-06-06,artwork,,,,,high,colour Gon/Killua/Biscuit,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1798988560256864617,2024-06-07,page_log,17 18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,17 18 19,,2026-09-01T07:00:21.620701+00:00
+1799350843986350568,2024-06-08,page_log,1 2 3,,,,high,"RESET - includes p1, unusual",confirmed,human_confirmed,ok,Ch 411 p. 1 sketch,page_log,1 2 3,,2026-09-01T07:00:21.620701+00:00
+1799770247752503341,2024-06-09,page_log,4 5 6,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 5 sketch,page_log,4 5 6,,2026-09-01T07:00:21.620701+00:00
+1800075528600428979,2024-06-10,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 8 & 9 sketch,page_log,7 8 9,,2026-09-01T07:00:21.620701+00:00
+1800497805502620009,2024-06-11,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1800800295573971089,2024-06-12,page_log,13 14 15,,,,high,,confirmed,human_confirmed,ok,Ch 411 p. 14 sketch,page_log,13 14 15,,2026-09-01T07:00:21.620701+00:00
+1800837214533996652,2024-06-12,artwork,,,,,high,colour chibi with fish,confirmed,human_confirmed,ok,Gon,artwork,,,2026-09-01T07:00:21.620701+00:00
+1801162627944722613,2024-06-13,page_log,16 17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17 18,,2026-09-01T07:00:21.620701+00:00
+1801239618127647228,2024-06-13,artwork,,,,,high,colour portrait,confirmed,human_confirmed,ok,Genthru,artwork,,,2026-09-01T07:00:21.620701+00:00
+1802612319396168016,2024-06-17,page_log,3 4 5,,,,high,RESET,confirmed,human_confirmed,ok,Ch 412 p. 2 & 3 match 3 & 4,page_log,3 4 5,,2026-09-01T07:00:21.620701+00:00
+1802665606199803994,2024-06-17,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1802985026558320957,2024-06-18,page_log,6,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 5 matches 6,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1803337143743664338,2024-06-19,page_log,7 8 9,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 9 & 10 match 10 & 11,page_log,7 8 9,,2026-09-01T07:00:21.620701+00:00
+1803394314233663704,2024-06-19,artwork,,,,,high,two colour Gon cuts,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1803699785347768718,2024-06-20,page_log,10 11 12,,,,high,,confirmed,human_confirmed,ok,,page_log,10 11 12,,2026-09-01T07:00:21.620701+00:00
+1803755471377219814,2024-06-20,artwork,,,,,high,colour chibi cuts,confirmed,human_confirmed,ok,Both are Gon,artwork,,,2026-09-01T07:00:21.620701+00:00
+1804061999074284017,2024-06-21,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,Ch 412 p. 12 matches 13,page_log,13 14,,2026-09-01T07:00:21.620701+00:00
+1804110838887850221,2024-06-21,artwork,,,,,high,four marker portraits,confirmed,human_confirmed,ok,Gon/Killua/Leorio/Kurapika,artwork,,,2026-09-01T07:00:21.620701+00:00
+1804424248049700901,2024-06-22,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16 17,,2026-09-01T07:00:21.620701+00:00
+1804449791382020492,2024-06-22,artwork,,,,,high,"colour Gon on skateboard, vol.36",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1805149366791049565,2024-06-24,page_log,2 3 4,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,2 3 4,,2026-09-01T07:00:21.620701+00:00
+1805517941452292310,2024-06-25,page_log,5 6 7,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6 7,,2026-09-01T07:00:21.620701+00:00
+1805557906429165596,2024-06-25,artwork,,,,,high,colour Gon face,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1805873828775817614,2024-06-26,page_log,8 9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9 10,,2026-09-01T07:00:21.620701+00:00
+1805941576918819074,2024-06-26,artwork,,,,,high,colour Gon with can,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1806236277743976470,2024-06-27,page_log,11 12 13,,,,high,,confirmed,human_confirmed,ok,Ch 413 p. 11 sketch,page_log,11 12 13,,2026-09-01T07:00:21.620701+00:00
+1806282788271952085,2024-06-27,artwork,,,,,high,colour Gon cutout,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1806598842818970067,2024-06-28,page_log,14 15 16,,,,high,,confirmed,human_confirmed,ok,Ch 413 p. 14 sketch,page_log,14 15 16,,2026-09-01T07:00:21.620701+00:00
+1806670555355189615,2024-06-28,artwork,,,,,high,colour Gon jumping,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1807352100143473112,2024-06-30,artwork,,,,,high,"archival YuYu Hakusho WSJ cover art, 11月19日号",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1807686257998438618,2024-07-01,page_log,4 5 6,,,,high,RESET,confirmed,human_confirmed,ok,Ch 414 p. 4 sketch,page_log,4 5 6,,2026-09-01T07:00:21.620701+00:00
+1808101122328219828,2024-07-02,artwork,,,,,high,archival YuYu Hakusho No.13 表紙カット,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1808412582673543479,2024-07-03,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1808470754931171460,2024-07-03,artwork,,,,,high,colour Gon riding a lizard,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1808824172191363436,2024-07-04,artwork,,,,,high,"ink drawing, witch figure",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1809146020481372306,2024-07-05,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1809200403084677200,2024-07-05,artwork,,,,,high,colour beach illustration,confirmed,human_confirmed,ok,Gon/Killua/Leorio/Kurapika,artwork,,,2026-09-01T07:00:21.620701+00:00
+1809551429457310084,2024-07-06,artwork,,,,,high,archival YuYu Hakusho cut,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1809902608343286011,2024-07-07,page_log,13,,,,high,,confirmed,human_confirmed,ok,,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1809919979640483905,2024-07-07,artwork,,,,,high,birthday illustration dated 2024.7.7,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1810270404361195758,2024-07-08,artwork,,,,,high,archival YuYu Hakusho カットD,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1810586451555287478,2024-07-09,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 414 p. 16 sketch,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1810635015652610210,2024-07-09,artwork,,,,,high,"colour Gon, calendar cut",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1810947358655705229,2024-07-10,page_log,18 19,,,,high,chapter ends at p19,confirmed,human_confirmed,ok,,page_log,18 19,,2026-09-01T07:00:21.620701+00:00
+1810995321079472380,2024-07-10,artwork,,,,,high,"watercolour, birthday present piece",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1811402349354856520,2024-07-11,artwork,,,,,high,archival YuYu Hakusho cuts B/C,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1811672073313607994,2024-07-12,page_log,3 4 5,,,,high,RESET; a third sheet is partly hidden,confirmed,human_corrected,fix,Ch 415 p. 4 sketch,page_log,3 5,,2026-09-01T07:00:21.620701+00:00
+1811723086066323863,2024-07-12,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1812039691157324227,2024-07-13,page_log,6 7 8,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 6 sketch,page_log,6 7 8,,2026-09-01T07:00:21.620701+00:00
+1812094156149494211,2024-07-13,artwork,,,,,high,colour Kurapika and Gon,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1812419869390029241,2024-07-14,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 10 sketch,page_log,9 10 11,,2026-09-01T07:00:21.620701+00:00
+1812421516320977273,2024-07-14,artwork,,,,,high,archival colour cuts,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1812759219067818266,2024-07-15,page_log,12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13,,2026-09-01T07:00:21.620701+00:00
+1812815567503647036,2024-07-15,artwork,,,,,high,colour Leorio,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1813121614911009153,2024-07-16,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,Ch 415 p. 14 & 15 sketch,page_log,14 15,,2026-09-01T07:00:21.620701+00:00
+1813159799070335298,2024-07-16,artwork,,,,,high,colour Gon,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1813485171863351313,2024-07-17,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1813543475453075530,2024-07-17,artwork,,,,,high,colour Killua,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1813899259953172729,2024-07-18,artwork,,,,,high,inked group illustration,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1814274778473373700,2024-07-19,artwork,,,,,high,"archival colour piece, オカルト特捜団",confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1814572154119463163,2024-07-20,page_log,3,,,,high,RESET,confirmed,human_confirmed,ok,Ch 416 p. 3 sketch,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1814619700581834851,2024-07-20,artwork,,,,,high,archival YuYu Hakusho colour cuts,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1814934744771272834,2024-07-21,page_log,4,,,,high,a second sheet is stacked but obscured,confirmed,human_confirmed,ok,both pages are 4,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1815296394288357729,2024-07-22,page_log,5,,,,high,,confirmed,human_confirmed,ok,,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1815665065259114815,2024-07-23,page_log,6 7,,,,high,,confirmed,human_confirmed,ok,,page_log,6 7,,2026-09-01T07:00:21.620701+00:00
+1816102624497725593,2024-07-24,artwork,,,,,high,green-toned figure painting,confirmed,human_confirmed,ok,Meruem,artwork,,,2026-09-01T07:00:21.620701+00:00
+1816383027968405535,2024-07-25,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 9 sketch,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1816443366999285898,2024-07-25,artwork,,,,,high,colour Gon and Killua,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1816745938922405924,2024-07-26,page_log,10 11,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 10 sketch,page_log,10 11,,2026-09-01T07:00:21.620701+00:00
+1817170859867652406,2024-07-27,artwork,,,,,high,airbrush-style colour group piece,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1817474591658586607,2024-07-28,page_log,13,,,,high,,confirmed,human_confirmed,ok,,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1817534075084865875,2024-07-28,artwork,,,,,high,archival YuYu Hakusho colour カットC,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1817833700547273164,2024-07-29,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-09-01T07:00:21.620701+00:00
+1818196050169217461,2024-07-30,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 416 p. 17 sketch,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1818263260392808635,2024-07-30,artwork,,,,,high,archival YuYu Hakusho cuts 68-71,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1818610833964056593,2024-07-31,artwork,,,,,high,colour Gon with stick,confirmed,human_confirmed,ok,,artwork,,,2026-09-01T07:00:21.620701+00:00
+1819282115009380402,2024-08-02,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,Ch 417 p. 2 sketch,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1819645880905224671,2024-08-03,page_log,3,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 3 sketch,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1820007259818352688,2024-08-04,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1820380125768331689,2024-08-05,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 5 sketch,page_log,5 6,,2026-09-01T07:00:21.620701+00:00
+1820754308746600934,2024-08-06,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 7 sketch,page_log,7 8,,2026-09-01T07:00:21.620701+00:00
+1821094894129307742,2024-08-07,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-09-01T07:00:21.620701+00:00
+1821474816077254935,2024-08-08,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1821819211624391128,2024-08-09,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1822190708452893045,2024-08-10,page_log,13,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1822565040462942210,2024-08-11,page_log,14,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 14 sketch,page_log,14,,2026-09-01T07:00:21.620701+00:00
+1823271123489812566,2024-08-13,page_log,16,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 16 sketch,page_log,16,,2026-09-01T07:00:21.620701+00:00
+1823645373308535190,2024-08-14,page_log,17,,,,high,,confirmed,human_confirmed,ok,,page_log,17,,2026-09-01T07:00:21.620701+00:00
+1823994863806828636,2024-08-15,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 417 p. 18 sketch,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1825081134868283791,2024-08-18,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,Ch 418 p. 2 sketch,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1825492550997934220,2024-08-19,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-09-01T07:00:21.620701+00:00
+1825809560046809595,2024-08-20,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 5 sketch,page_log,5 6,,2026-09-01T07:00:21.620701+00:00
+1826169801531863275,2024-08-21,page_log,7,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 7 sketch,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1826540225738539468,2024-08-22,page_log,8,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 8 sketch,page_log,8,,2026-09-01T07:00:21.620701+00:00
+1826892826421989629,2024-08-23,page_log,9,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 9 sketch,page_log,9,,2026-09-01T07:00:21.620701+00:00
+1827297359690395824,2024-08-24,page_log,10,,,,high,,confirmed,human_confirmed,ok,,page_log,10,,2026-09-01T07:00:21.620701+00:00
+1827619471848304826,2024-08-25,page_log,11,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 11 sketch,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1827981905326977056,2024-08-26,page_log,12,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 12 sketch,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1828342600266649952,2024-08-27,page_log,13,,,,high,blue ink spill on the desk,confirmed,human_confirmed,ok,Ch 418 p. 13 sketch,page_log,13,,2026-09-01T07:00:21.620701+00:00
+1831648845610283430,2024-09-05,page_log,15,,,,high,,confirmed,human_confirmed,ok,,page_log,15,,2026-09-01T07:00:21.620701+00:00
+1831980618533732490,2024-09-06,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 16 sketch,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1832380555985646004,2024-09-07,page_log,18,,,,high,,confirmed,human_confirmed,ok,Ch 418 p. 18 sketch,page_log,18,,2026-09-01T07:00:21.620701+00:00
+1833426874980306991,2024-09-10,page_log,2,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1834174699338858589,2024-09-12,page_log,4,,,,high,pencil figure sketch on the sheet,confirmed,human_confirmed,ok,,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1834532700780429764,2024-09-13,page_log,5,,,,high,,confirmed,human_confirmed,ok,,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1834886992758555072,2024-09-14,page_log,6,,,,high,,confirmed,human_confirmed,ok,,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1835237596362060120,2024-09-15,page_log,7,,,,high,,confirmed,human_confirmed,ok,,page_log,7,,2026-09-01T07:00:21.620701+00:00
+1835590695081427080,2024-09-16,page_log,8 9,,,,high,,confirmed,human_confirmed,ok,,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1836344533979926813,2024-09-18,page_log,12,,,,high,,confirmed,human_confirmed,ok,,page_log,12,,2026-09-01T07:00:21.620701+00:00
+1836677429173325882,2024-09-19,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-09-01T07:00:21.620701+00:00
+1838851210801246321,2024-09-25,page_log,6 7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,6 7 8,,2026-09-01T07:00:21.620701+00:00
+1839217283606131150,2024-09-26,page_log,9 10 11,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10 11,,2026-09-01T07:00:21.620701+00:00
+1839602562120712194,2024-09-27,page_log,12 13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13 14,,2026-09-01T07:00:21.620701+00:00
+1839938838791368773,2024-09-28,page_log,15 16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16 17,,2026-09-01T07:00:21.620701+00:00
+1841074277870944293,2024-10-01,page_log,3 4,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,3 4,,2026-09-01T07:00:21.620701+00:00
+1841427298068930625,2024-10-02,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-09-01T07:00:21.620701+00:00
+1841771494793216024,2024-10-03,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,7 8,,2026-09-01T07:00:21.620701+00:00
+1842182988823699493,2024-10-04,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-09-01T07:00:21.620701+00:00
+1842526216286572951,2024-10-05,page_log,11,,,,high,,confirmed,human_confirmed,ok,,page_log,11,,2026-09-01T07:00:21.620701+00:00
+1842846392790000107,2024-10-06,page_log,12 13,,,,high,,confirmed,human_confirmed,ok,,page_log,12 13,,2026-09-01T07:00:21.620701+00:00
+1843201422437028274,2024-10-07,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-09-01T07:00:21.620701+00:00
+1843568558225404363,2024-10-08,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1844302318327759090,2024-10-10,page_log,1 2,,,,high,,confirmed,human_confirmed,ok,,page_log,1 2,,2026-09-01T07:00:21.620701+00:00
+1844660092039569635,2024-10-11,page_log,3 4,,,,high,,confirmed,human_confirmed,ok,,page_log,3 4,,2026-09-01T07:00:21.620701+00:00
+1845098019890586057,2024-10-12,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-09-01T07:00:21.620701+00:00
+1845749854292840874,2024-10-14,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-09-01T07:00:21.620701+00:00
+1846118283449446869,2024-10-15,page_log,11 12,,,,high,,confirmed,human_confirmed,ok,,page_log,11 12,,2026-09-01T07:00:21.620701+00:00
+1846466366150529357,2024-10-16,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-09-01T07:00:21.620701+00:00
+1846836490732818622,2024-10-17,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16,,2026-09-01T07:00:21.620701+00:00
+1847277399219802336,2024-10-18,page_log,17 18,,,,high,,confirmed,human_confirmed,ok,,page_log,17 18,,2026-09-01T07:00:21.620701+00:00
+1847921641529225252,2024-10-20,page_log,2 3,,,,high,page count RESETS -> new chapter,confirmed,human_confirmed,ok,,page_log,2 3,,2026-09-01T07:00:21.620701+00:00
+1848276953876631635,2024-10-21,page_log,4 5,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,4 5,,2026-09-01T07:00:21.620701+00:00
+1849027649039188449,2024-10-23,page_log,8 9,,,,high,partly covered by a plush toy,confirmed,human_confirmed,ok,,page_log,8 9,,2026-09-01T07:00:21.620701+00:00
+1849380852440215626,2024-10-24,page_log,10 11,,,,high,Shueisha envelope on the desk,confirmed,human_confirmed,ok,,page_log,10 11,,2026-09-01T07:00:21.620701+00:00
+1849740459159191597,2024-10-25,page_log,12 13,,,,high,pencil Gon sketch resting on the stack,confirmed,human_confirmed,ok,,page_log,12 13,,2026-09-01T07:00:21.620701+00:00
+1850136722241425490,2024-10-26,page_log,14 15,,,,high,,confirmed,human_confirmed,ok,,page_log,14 15,,2026-09-01T07:00:21.620701+00:00
+1850465656988475814,2024-10-27,page_log,16 17,,,,high,,confirmed,human_confirmed,ok,,page_log,16 17,,2026-09-01T07:00:21.620701+00:00
+1851536123706941636,2024-10-30,page_log,3 4,,,,high,RESET,confirmed,human_confirmed,ok,,page_log,3 4,,2026-09-01T07:00:21.620701+00:00
+1851926903923577299,2024-10-31,page_log,5 6,,,,high,,confirmed,human_confirmed,ok,,page_log,5 6,,2026-09-01T07:00:21.620701+00:00
+1852330736583692500,2024-11-01,page_log,7 8,,,,high,,confirmed,human_confirmed,ok,,page_log,7 8,,2026-09-01T07:00:21.620701+00:00
+1852646493074702518,2024-11-02,page_log,9 10,,,,high,,confirmed,human_confirmed,ok,,page_log,9 10,,2026-09-01T07:00:21.620701+00:00
+1853010843467960685,2024-11-03,page_log,11 12,,,,high,group illustration resting on the stack,confirmed,human_confirmed,ok,,page_log,11 12,,2026-09-01T07:00:21.620701+00:00
+1853392073246011796,2024-11-04,page_log,13 14,,,,high,,confirmed,human_confirmed,ok,,page_log,13 14,,2026-09-01T07:00:21.620701+00:00
+1853779871308411363,2024-11-05,page_log,15 16,,,,high,,confirmed,human_confirmed,ok,,page_log,15 16,,2026-09-01T07:00:21.620701+00:00
+1975659435868758215,2025-10-07,milestone_text,,No.414 台詞入れ 完了!,414,台詞入れ完了,high,2025-10 era: milestone written on the sheet,confirmed,human_confirmed,ok,,milestone_text,,No.414 台詞入れ 完了!,2026-09-01T07:00:21.620701+00:00
+1975887096029348124,2025-10-08,milestone_text,,No.415 台詞入れ 完了,415,台詞入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.415 台詞入れ 完了,2026-09-01T07:00:21.620701+00:00
+1976303383805092095,2025-10-09,milestone_text,,No.417 台詞入れ 完了,417,台詞入れ完了,high,reads 417; sequence would suggest 416 - verify,confirmed,human_confirmed,ok,,milestone_text,,No.417 台詞入れ 完了,2026-09-01T07:00:21.620701+00:00
+1976212321283485898,2025-10-09,milestone_text,,No.416 台詞入れ 完了!,416,台詞入れ完了,high,small handwriting in a bubble beside a pencil portrait; second post that day,confirmed,human_confirmed,ok,,milestone_text,,No.416 台詞入れ 完了!,2026-09-01T07:00:21.620701+00:00
+1976594157939638610,2025-10-10,milestone_text,,No.418 台詞入れ 完了!,418,台詞入れ完了,high,"digits read as ""48""; 418 inferred from sequence",confirmed,human_confirmed,ok,,milestone_text,,No.418 台詞入れ 完了!,2026-09-01T07:00:21.620701+00:00
+1977033686664331359,2025-10-11,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,420,台詞入れ完了,high,ALSO states specifications for 10 chapters are complete,confirmed,human_confirmed,ok,,milestone_text,,No.420 台詞入れ 完了! / 10話分の指定が完了しました。引き続き原稿を進めて行きます。,2026-09-01T07:00:21.620701+00:00
+1978401791663390746,2025-10-15,page_log,2,,,,high,,confirmed,human_confirmed,ok,,page_log,2,,2026-09-01T07:00:21.620701+00:00
+1978697089862271029,2025-10-16,page_log,3,,,,high,,confirmed,human_confirmed,ok,,page_log,3,,2026-09-01T07:00:21.620701+00:00
+1979061149418057774,2025-10-17,page_log,4,,,,high,,confirmed,human_confirmed,ok,,page_log,4,,2026-09-01T07:00:21.620701+00:00
+1979771078940762586,2025-10-19,page_log,5,,,,high,a second sheet partly hidden,confirmed,human_confirmed,ok,,page_log,5,,2026-09-01T07:00:21.620701+00:00
+1981366885301309657,2025-10-23,page_log,6 7,,,,high,,confirmed,human_corrected,fix,,page_log,6,,2026-09-01T07:00:21.620701+00:00
+1987834494318162019,2025-11-10,milestone_text,1,No.426 ペン入れ 開始!,426,ペン入れ開始,high,"start event, not a completion",confirmed,human_corrected,fix,This is also a page log,milestone_text,,No.426 ペン入れ 開始!,2026-09-01T07:00:21.620701+00:00
+2000981302913458294,2025-12-16,milestone_text,,No.426 人物ペン入れ 完了,426,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.426 人物ペン入れ 完了,2026-09-01T07:00:21.620701+00:00
+2004867336483078549,2025-12-27,milestone_text,,No.412 原稿完成,412,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.412 原稿完成,2026-09-01T07:00:21.620701+00:00
+2011143493742387642,2026-01-13,milestone_text,,No.413 原稿完成,413,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.413 原稿完成,2026-09-01T07:00:21.620701+00:00
+2011145474154381687,2026-01-13,unclear,,,,,high,"monthly schedule board, two date cells scribbled out, no readable chapter",confirmed,human_confirmed,ok,There is no handwriting in this photo. Those two dots are not scribbled dates. They are eyes of an unfinished sketch.,unclear,,,2026-09-01T07:00:21.620701+00:00
+2011305545647735170,2026-01-14,milestone_text,,No.414 原稿完成!,414,原稿完成,high,written on a chocolate carton,confirmed,human_confirmed,ok,,milestone_text,,No.414 原稿完成!,2026-09-01T07:00:21.620701+00:00
+2013553432829813035,2026-01-20,milestone_text,,No.415 原稿完成,415,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.415 原稿完成,2026-09-01T07:00:21.620701+00:00
+2014782311775236214,2026-01-23,milestone_text,,No.416 原稿完成,416,原稿完成,high,,confirmed,human_confirmed,ok,,milestone_text,,No.416 原稿完成,2026-09-01T07:00:21.620701+00:00
+2014789100658950178,2026-01-23,milestone_text,,No.427 人物ペン入れ完了。,427,人物ペン入れ完了,high,written on a Shueisha envelope; numbered page stack beneath,confirmed,human_confirmed,ok,,milestone_text,,No.427 人物ペン入れ完了。,2026-09-01T07:00:21.620701+00:00
+2015898522009403793,2026-01-26,milestone_text,,No.421 背景指定書 作成完了,421,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.421 背景指定書 作成完了,2026-09-01T07:00:21.620701+00:00
+2016302995970076779,2026-01-28,milestone_text,,No.421 表紙用カラーと台詞入れ完了,421,台詞入れ完了,high,also cover colour complete,confirmed,human_confirmed,ok,,milestone_text,,No.421 表紙用カラーと台詞入れ完了,2026-09-01T07:00:21.620701+00:00
+2019278910136193215,2026-02-05,milestone_text,,No.417 原稿完成,417,原稿完成,high,fills the gap: ch417 had no manuscript_complete event before this,confirmed,human_confirmed,ok,,milestone_text,,No.417 原稿完成,2026-09-01T07:00:21.620701+00:00
+2023496133910425796,2026-02-16,milestone_text,,No.428 人物ペン入れ 完了,428,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.428 人物ペン入れ 完了,2026-09-01T07:00:21.620701+00:00
+2029207167656706336,2026-03-04,milestone_text,,No.422 台詞と背景指定書 作成完了,422,台詞入れ完了;背景指定書作成完了,high,two stages in one post,confirmed,human_confirmed,ok,,milestone_text,,No.422 台詞と背景指定書 作成完了,2026-09-01T07:00:21.620701+00:00
+2030043233129226406,2026-03-06,milestone_text,,No.423 背景指定 完成,423,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.423 背景指定 完成,2026-09-01T07:00:21.620701+00:00
+2032117895745192356,2026-03-12,milestone_text,,No.425 背景指定書作成 完了…,425,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.425 背景指定書作成 完了…,2026-09-01T07:00:21.620701+00:00
+2033276639208153570,2026-03-15,milestone_text,,No.427 背景指定書 完了,427,背景指定書作成完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.427 背景指定書 完了,2026-09-01T07:00:21.620701+00:00
+2033764977727967457,2026-03-17,milestone_text,,No.429 人物ペン入れ完了…,429,人物ペン入れ完了,high,,confirmed,human_confirmed,ok,,milestone_text,,No.429 人物ペン入れ完了…,2026-09-01T07:00:21.620701+00:00
+2084155567363539307,2026-08-03,milestone_text,,No.433 人物ペン入れ完了。,433,人物ペン入れ完了,high,photographed against roses,confirmed,human_confirmed,ok,,milestone_text,,No.433 人物ペン入れ完了。,2026-09-01T07:00:21.620701+00:00
+2092902182790341023,2026-08-27,milestone_text,,No.429 背景指定書 完成,429,背景指定書作成完了,high,"user-supplied tweet, 2026-08-27",confirmed,human_confirmed,ok,,milestone_text,,No.429 背景指定書 完成,2026-09-01T07:00:21.620701+00:00

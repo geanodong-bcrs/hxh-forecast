@@ -88,6 +88,11 @@ neighbours. What catches it is publication: **ch 388 had been in print since
 `retouch` is exempt from that rule, because Togashi genuinely does rework
 published chapters for the tankobon.
 
+For the derived ordered-readiness coordinate, retouch is excluded entirely.
+It can send work backward and lead to a second report that the same stage is
+complete; neither event supplies a stable forward position in the simplified
+first-pass pipeline. The immutable event rows remain in this dataset.
+
 **Multi-stage phrases need positional pairing.** 「背景効果原稿返却。オレの加筆中。」
 carries two stages with two different statuses. Each stage is paired with the
 next status to its right, falling back to the last status in the phrase.
