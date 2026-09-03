@@ -1446,11 +1446,32 @@ def build_index(post, l2, pri, snap_path):
           '<div class=ch>Chapters %s &mdash; next up, chapter %d</div>' % (rng(first), first),
           '<div class=date>%s</div>' % fmt(post["median"]),
           '<div class=sub>most likely date &middot; 80%% chance between %s and %s</div>'
-          % (fmt(i["80"][0], True), fmt(i["80"][1], True))]
+          % (fmt(i["80"][0], True), fmt(i["80"][1], True)),
+          '<div class=sub>forecast made %s</div>' % fmt(post["forecast_timestamp"])]
     if spike:
+        # Zero-mass issues are dropped from posterior_pmf, so pmf[0] is the
+        # earliest issue the batch could still start on. While a zero-gap point
+        # mass dominated, that was also the spike and the two labels agreed.
+        # Once it does not - a flat front, or an issue ruled out - calling the
+        # highest-mass issue "the very next issue" is simply false.
+        first_iso, first_p = pmf[0]
+        if spike[1] < 1.5 * first_p:
+            # Nothing stands out. Show the question readers actually ask -
+            # the odds on the next issue - rather than crowning a 2% winner.
+            pill_iso, pill_p = first_iso, first_p
+        else:
+            pill_iso, pill_p = spike
+        if pill_iso != first_iso:
+            note = 'the single most likely issue'
+        elif any(a["on_sale"] < first_iso for a in (post.get("known_absent_issues") or [])):
+            # An issue between chapter N-1 and here has been ruled out, so this
+            # is NOT the next issue - it is the next one still possible.
+            note = 'the earliest issue it could still appear in'
+        else:
+            note = 'the very next issue after chapter %d' % (first - 1)
         h.append('<p><span class=pill>%.0f%% chance it is %s</span> &nbsp;'
-                 '<span class=note>the very next issue after chapter %d</span></p>'
-                 % (spike[1] * 100, fmt(spike[0], True), first - 1))
+                 '<span class=note>%s</span></p>'
+                 % (pill_p * 100, fmt(pill_iso, True), note))
     h.append('</div>')
 
     h += readiness_comparison_chart(post)
@@ -1519,7 +1540,8 @@ def build_chapter_431(post, l2, pri, snap_path):
          '<h1><a href="index.html">&larr; Hunter &times; Hunter forecast</a></h1>',
          '<div class=hero><div class=ch>Following run &mdash; chapter %d</div>' % nfirst]
     h += ['<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
-          '<div class=sub>forecast history and current probability distribution</div></div>']
+          '<div class=sub>forecast history and current probability distribution</div>',
+          '<div class=sub>forecast made %s</div></div>' % fmt(post["forecast_timestamp"])]
     h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
     if nb:
@@ -1570,6 +1592,31 @@ def build_method(post, l2, pri, snap_path):
     h.append('<div class=card><h3>0 &mdash; already announced</h3><p class=note>'
              'If Shueisha has named the issue, there is nothing to predict. That '
              'chapter is recorded as scheduled and drops out of the model.</p></div>')
+    absent = post.get("known_absent_issues") or []
+    if absent:
+        # An issue ruled out moves the forecast as much as an announcement does,
+        # so the sourcing behind it has to be as visible as the result.
+        rows = "".join(
+            '<tr><td>%s</td><td>%s</td><td>%s</td><td>%s</td></tr>'
+            % (esc(a.get("issue", "")), fmt(a["on_sale"], True),
+               esc(a.get("source", "")), esc(a.get("confidence", "")))
+            for a in absent)
+        reported = [a for a in absent if a.get("confidence") == "reported"]
+        h.append('<div class=card><h3>0 &mdash; issues ruled out</h3><p class=note>'
+                 'Issues publicly reported not to carry the series are removed '
+                 'from the candidate set. This is a factual exclusion, not '
+                 'evidence about Togashi&rsquo;s pace &mdash; nothing else in the '
+                 'model changes.</p>'
+                 '<table><tr><th>Issue</th><th>On sale</th><th>Source</th>'
+                 '<th>Confidence</th></tr>%s</table>%s</div>'
+                 % (rows,
+                    ('<p class=note><strong>Marked &ldquo;reported&rdquo; means no '
+                     'primary source has been seen.</strong> The forecast has '
+                     'been moved on secondhand reports, which is a judgement '
+                     'call and is recorded here rather than buried. If they turn '
+                     'out to be wrong the row is deleted and the forecast '
+                     'returns &mdash; the snapshot for every run in between stays '
+                     'on the record either way.</p>') if reported else ''))
     smooth_zero = post.get("level2_design") in {
         "all_pairs_coordinate_likelihood_v7_smooth_zero_gaps_censored",
         "all_pairs_coordinate_likelihood_v8_parametric_level1_frozen_fade",

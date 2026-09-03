@@ -210,6 +210,27 @@ def main():
     env["TOGASHI_TRIGGER_DETAIL"] = detail
     run = Runner(run_id, env, args.dry_run)
 
+    # ---------- 1b. refresh the publication record ----------
+    # Once a day only: this is the network side of the publication data, and it
+    # does not change between hourly polls. Without it `chapters.csv` freezes at
+    # whatever was last fetched by hand, so the loop cannot see a chapter
+    # actually appearing -- which is the single most informative thing that can
+    # happen to this forecast. A failure here is not fatal: the forecast is
+    # still better rebuilt on stale publication data than not rebuilt at all.
+    #
+    # NOTE: this refreshes Hunterpedia (chapters) only. `wsj_issues.csv`, which
+    # supplies `last_obs` and therefore the continuous no-start conditioning,
+    # comes from jajanken and has no fetch script -- the raw HTML was collected
+    # by hand. Until one exists, issues ruled out ahead of the calendar have to
+    # be recorded in data/annotations/known_absent_issues.csv.
+    if daily_due or trigger == "daily":
+        print("\npublication record:")
+        if run("fetch_hunterpedia_chapters.py"):
+            run("build_chapter_dataset.py")
+            run("validate_chapters.py")
+        else:
+            print("  publication fetch failed — continuing on the existing data")
+
     # ---------- 2. rebuild only what the change touches ----------
     if new_ids:
         print("\ningest:")

@@ -133,6 +133,12 @@ def main():
         return 0
 
     d = fd.compute()
+    if d is None:
+        # No honest baseline: either the first snapshot, or the model or target
+        # changed since the last one. --force does not override this, because
+        # there is no delta to report, only an incomparable pair.
+        print("no comparable baseline (%s) — staying quiet" % fd.pick_pair()[2])
+        return 0
     ok, kind = fd.newsworthy(d)
     if not ok and not args.force:
         print("forecast did not move materially (%s) — staying quiet"

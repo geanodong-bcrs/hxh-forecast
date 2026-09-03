@@ -1,0 +1,2 @@
+on_sale_date,wsj_issue_year,wsj_issue_no,source,confidence,recorded_by,recorded_on,notes
+2026-09-14,2026,42,"X reports; primary source not located",reported,reviewer,2026-09-02,"Multiple X accounts report HxH is on hiatus from issue 42. No 次号予告 scan, table of contents, or Shueisha notice has been located. The 次号予告 for issue 42 runs in issue 41 (on sale 2026-09-07), which is when a primary source should become checkable — upgrade confidence to confirmed then, or delete this row if it does not hold."

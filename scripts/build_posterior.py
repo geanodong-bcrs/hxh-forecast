@@ -76,6 +76,12 @@ NORMALISE_ANALOG_COMPONENTS = False
 # "feasibility" retains V10's one-sided floor for comparison/replay.
 LEVEL2_MODE = "readiness_mixture"
 FEASIBILITY_SIGMA = 30.0    # days of softness on the one-sided ramp
+# Which confidence levels in data/annotations/known_absent_issues.csv are allowed
+# to remove an issue from the candidate set.  Absence is a Level 0 fact, not
+# likelihood evidence, so this is a statement about sourcing, not about the
+# model.  Drop "reported" to require a primary source before the public forecast
+# moves.
+ADMISSIBLE_ABSENCE = {"confirmed", "reported"}
 READINESS_MIXTURE_SIGMA = 120.0  # broad by design: only three resolved analogs
 # V9: reweight analogs by their own survival under continued non-publication.
 # An analog whose implied start has already passed is not merely uninformative
@@ -204,6 +210,22 @@ def main(asof=None, quiet=False, rid=None):
     ann = {int(r["chapter"]): date.fromisoformat(r["publication_date"])
            for r in announcement_rows}
 
+    # Issues publicly known NOT to carry this batch.  These are removed
+    # individually rather than used to raise the floor: knowing that some later
+    # issue is skipped says nothing about the issues before it, and a max() over
+    # them would wrongly exclude the gap in between.
+    absent_path = D("data", "annotations", "known_absent_issues.csv")
+    absent_rows = []
+    if os.path.exists(absent_path):
+        with open(absent_path, encoding="utf-8") as fh:
+            absent_rows = list(csv.DictReader(fh))
+    absent_rows = [r for r in absent_rows
+                   if (r.get("confidence") or "").strip() in ADMISSIBLE_ABSENCE]
+    if asof:
+        absent_rows = [r for r in absent_rows
+                       if r.get("recorded_on")
+                       and date.fromisoformat(r["recorded_on"]) <= asof]
+
     # ---------- Level 2: analog likelihood ----------
     ev, batch, pos, start, cur_batch, last_ch = load_l2(asof=asof)
     rows = events_with_lag(ev, batch, pos, start)
@@ -223,6 +245,9 @@ def main(asof=None, quiet=False, rid=None):
     if cur_start_seq is None:
         cur_start_seq = min((c["seq"] for c in cal if c["on_sale"] >= start[cur_batch]),
                             default=last_obs)
+    excluded_seqs = {by_date[date.fromisoformat(r["on_sale_date"])]
+                     for r in absent_rows
+                     if date.fromisoformat(r["on_sale_date"]) in by_date}
     end_seq = cur_start_seq + 9
     for c, d in ann.items():
         if last_ch - 9 <= c <= last_ch and d in by_date:
@@ -236,6 +261,7 @@ def main(asof=None, quiet=False, rid=None):
     latest_event = max((date.fromisoformat(r["event_date"]) for r in ev
                         if r.get("event_date")), default=today)
     floor_seq = max(end_seq + 1, last_obs + 1)
+    eligible = lambda s: s >= floor_seq and s not in excluded_seqs
     elapsed_gap = floor_seq - end_seq - 1
     record_hiatus = elapsed_gap > max(g for _, g in gaps)
     # V8 keeps the analog-fade likelihood fixed between public production
@@ -585,7 +611,7 @@ def main(asof=None, quiet=False, rid=None):
         lik = lik / lik.max()
     post = prior * lik
     for i, (s, _, _) in enumerate(cand):
-        if s < floor_seq:                    # the batch has not started
+        if not eligible(s):                  # not started, or issue ruled out
             post[i] = 0.0
     if post.sum() <= 0:
         # Nothing survived: the production evidence and the "it has not started
@@ -594,7 +620,7 @@ def main(asof=None, quiet=False, rid=None):
         say("  likelihood vanishes under truncation — falling back to Level 1")
         post = prior.copy()
         for i, (s, _, _) in enumerate(cand):
-            if s < floor_seq:
+            if not eligible(s):
                 post[i] = 0.0
     # Beyond every observed historical gap we deliberately enter a separate
     # record-hiatus regime: modest mass on the next issue, with the remaining
@@ -603,11 +629,11 @@ def main(asof=None, quiet=False, rid=None):
     if record_hiatus:
         tail = prior.copy()
         for i, (s, _, _) in enumerate(cand):
-            if s < floor_seq:
+            if not eligible(s):
                 tail[i] = 0.0
         tail /= tail.sum()
         post = 0.80 * tail
-        floor_i = next(i for i, (s, _, _) in enumerate(cand) if s == floor_seq)
+        floor_i = next(i for i, (s, _, _) in enumerate(cand) if eligible(s))
         post[floor_i] += 0.20
     post /= post.sum()
 
@@ -621,8 +647,14 @@ def main(asof=None, quiet=False, rid=None):
         say("  batch %d -> %s  (sigma %.0f d, weight %.2f)"
               % (h, date.fromordinal(int(implied[h])), sigma[h],
                  1.0 / max(len(implied), 1)))
-    say("\nbatch %d ends %s; earliest eligible start %s"
-          % (cur_batch, by_seq[end_seq]["on_sale"], by_seq[floor_seq]["on_sale"]))
+    first_eligible = next(s for s, _, _ in cand if eligible(s))
+    say("\nbatch %d ends %s; earliest eligible start %s%s"
+          % (cur_batch, by_seq[end_seq]["on_sale"], by_seq[first_eligible]["on_sale"],
+             ("  (%d issue(s) ruled out: %s)"
+              % (len(excluded_seqs),
+                 ", ".join(by_seq[x]["on_sale"].isoformat()
+                           for x in sorted(excluded_seqs) if x in by_seq)))
+             if excluded_seqs else ""))
 
     say("\n%-10s %12s %12s %12s %12s %12s"
           % ("", "p10", "p25", "p50", "p75", "p90"))
@@ -793,9 +825,15 @@ def main(asof=None, quiet=False, rid=None):
         "exhausted_analogs": exhausted,
         "implied_by_analog": {str(h): date.fromordinal(int(v)).isoformat()
                               for h, v in implied.items()},
-        "truncation_floor": by_seq[floor_seq]["on_sale"].isoformat(),
+        "truncation_floor": by_seq[first_eligible]["on_sale"].isoformat(),
+        "known_absent_issues": [
+            {"on_sale": r["on_sale_date"],
+             "issue": "%s no.%s" % (r.get("wsj_issue_year", ""), r.get("wsj_issue_no", "")),
+             "source": r.get("source", ""), "confidence": r.get("confidence", ""),
+             "recorded_on": r.get("recorded_on", "")}
+            for r in absent_rows],
         "analog_fade_floor": by_seq[fade_floor_seq]["on_sale"].isoformat(),
-        "conditioning_through": by_seq[floor_seq]["on_sale"].isoformat(),
+        "conditioning_through": by_seq[first_eligible]["on_sale"].isoformat(),
         "last_production_event": latest_event.isoformat(),
         "level1_prior": prior_parameters,
         "level2_mode": LEVEL2_MODE,
