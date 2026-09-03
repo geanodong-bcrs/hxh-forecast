@@ -1367,8 +1367,9 @@ def distribution_charts(chapter, pmf, median, i80):
     spike = max(pmf, key=lambda x: x[1]) if pmf else None
     h = ['<h3>Chance chapter %d has been published by a given date</h3>' % chapter,
          cdf_chart(pmf, median, i80),
-         '<p class=note>Each step is one weekly Jump issue; the shaded band is the '
-         '80%% range.</p>',
+         # Plain literal, not a format string: %% would render as two signs.
+         '<p class=note>Each step is one Weekly Sh&#333;nen Jump issue; the '
+         'shaded band is the 80% range.</p>',
          '<h3>Probability distribution by month</h3>',
          pdf_chart(pmf, median, i80, spike),
          '<p class=note>The same distribution as monthly probability mass, which '
@@ -1772,7 +1773,7 @@ def build_method(post, l2, pri, snap_path):
                      'continuation and a later hiatus. Public work on those '
                      'chapters changes the continuation weight from %.0f%% to %.0f%%. '
                      'That is evidence of a production buffer, not a claim that '
-                     'Weekly Shonen Jump has committed to a schedule.</p></div>'
+                     'Weekly Sh&#333;nen Jump has committed to a schedule.</p></div>'
                      % (100 * buf.get("baseline_continuation_weight", 0),
                         100 * buf.get("continuation_weight", 0)))
         hprior = ((post.get("next_batch") or {}).get("two_gap_prior") or {})
