@@ -50,8 +50,8 @@ echo
   exit 1
 }
 echo
-echo "poll  : hourly 02:00-09:00 local (8 runs/day, polls the X API)"
-echo "daily : 09:30 local, right after the last poll. No API call."
+echo "poll  : every hour on the hour (24 runs/day, polls the X API)"
+echo "daily : 09:30 local. Runs on the date, not on evidence. No API call."
 echo
 echo "Run one now:  python3 scripts/run_update.py --no-poll --force"
 echo "Tail logs:    tail -f data/automation/launchd.poll.err.log"

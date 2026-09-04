@@ -1,13 +1,13 @@
 {
-  "built_utc": "2026-08-28T17:10:12.818935Z",
-  "raw_snapshot": "hunterpedia_chapters_20260827T031413Z.json",
-  "raw_retrieved_utc": "2026-08-27T03:14:23.361570Z",
+  "built_utc": "2026-09-03T13:36:33.067981Z",
+  "raw_snapshot": "hunterpedia_chapters_20260903T133614Z.json",
+  "raw_retrieved_utc": "2026-09-03T13:36:30.267070Z",
   "source": "hunterxhunter.fandom.com (Hunterpedia)",
   "source_type": "community_wiki_secondary",
-  "row_count": 418,
+  "row_count": 419,
   "chapter_range": [
     1,
-    418
+    419
   ],
   "batch_gap_issues_threshold": 4,
   "split_run_above": 15,

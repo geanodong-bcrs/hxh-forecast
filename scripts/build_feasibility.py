@@ -75,13 +75,30 @@ def attained_date(path, b):
     return path[-1][0] if path else None
 
 
+# A run whose FIRST public report already places it above this level was not
+# observed from the beginning, so the date it crossed any lower level is
+# unknown. Batch 47 opens at B=3.00 because Togashi's account did not exist
+# earlier; batches 48 and 49 open at 0.05 and 0.03, which is genuinely the
+# start. One chapter-equivalent separates the two cases cleanly.
+OBSERVED_FROM_START = 1.0
+
+
 def remaining(path, outcome, b):
     """R(b): days from first reaching level `b` to the batch actually starting.
 
-    A level higher than the analog ever reached before starting is not
-    extrapolated; the analog simply cannot speak to it and returns None.
+    Returns None when the analog cannot speak to this level, in either
+    direction:
+
+    * `b` above anything it reached before starting -- not extrapolated;
+    * `b` at or below its first observed reading, when that reading is itself
+      well above zero -- LEFT-CENSORED. `attained_date` would otherwise hand
+      back the day the first post was made, which is when the archive begins,
+      not when the run reached that level. That silently turned "we have no
+      idea" into "152 days" for batch 47 at B=1.5.
     """
     if not path or b > path[-1][1] + 1e-9:
+        return None
+    if path[0][1] > OBSERVED_FROM_START and b <= path[0][1] + 1e-9:
         return None
     d = attained_date(path, b)
     return None if d is None else (outcome - d).days
