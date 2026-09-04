@@ -258,11 +258,14 @@ def main():
         # the page reads the snapshot just written, so it is never staler than
         # the forecast; if the forecast failed there is nothing new to render.
         run("build_site.py")
-        # Reply consideration runs only for a tweet-triggered update, and only
-        # ever in dry-run from here — posting stays an explicit act until the
-        # credentials exist and the output has been watched for a while.
+        # Reply consideration runs only for a tweet-triggered update. Live from
+        # 2026-09-03: the credentials are authorised as @HxHforecast and the
+        # dry-run output has been watched. Five gates still stand in front of
+        # every post (production event, forecast moved, not already replied,
+        # daily cap of 2, PAUSE file), and `touch data/automation/PAUSE` stops
+        # it without touching code.
         if new_ids and not args.no_reply:
-            run("reply_bot.py")
+            run("reply_bot.py", "--post")
 
     if args.dry_run:
         print("\n(dry run — nothing written)")

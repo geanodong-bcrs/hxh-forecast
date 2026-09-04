@@ -9,7 +9,7 @@ Everything built so far runs unattended. This is what is left.
 | forecast | updates daily 09:30 ET + on every Togashi post |
 | site | <https://geanodong-bcrs.github.io/hxh-forecast/> |
 | public repo | `geanodong-bcrs/hxh-forecast` (1.5 MB; vault stays private) |
-| X account | [@GDforecast](https://x.com/GDforecast) — authorised, **not yet posting** |
+| X account | [@HxHforecast](https://x.com/HxHforecast) — authorised, **not yet posting** |
 
 ## Immediate resolution
 

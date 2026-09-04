@@ -2,7 +2,7 @@
 
 The forecast updates itself: once a day, and again whenever Togashi posts.
 
-    launchd ──┬── poll   hourly 02:00-09:00 ET   run_update.py --poll
+    launchd ──┬── poll   every hour, 24×/day     run_update.py --poll
               └── daily  09:30 ET                run_update.py --no-poll --daily
                              |
                     scripts/run_update.py
@@ -22,13 +22,15 @@ needs doing rather than running thirteen scripts unconditionally.
 
 | job | when | what |
 |---|---|---|
-| `com.togashi.forecast.poll` | hourly 02:00–09:00 **Eastern**, 8×/day | polls X; reruns the model if anything arrived |
-| `com.togashi.forecast.daily` | 09:30 **Eastern** | the daily rerun, half an hour after the last poll |
+| `com.togashi.forecast.poll` | every hour on the hour, 24×/day | polls X; reruns the model if anything arrived |
+| `com.togashi.forecast.daily` | 09:30 **Eastern** | the daily rerun, on the date rather than on evidence |
 
-**Why that poll window.** It is the window the reviewer is asleep and cannot
-trigger a run by hand; outside it, a manual run is one command. It is not chosen
-from Togashi's posting distribution — see "Posting times" below, which argues
-against optimising for that at all.
+**Why every hour.** The poll was originally an eight-hour overnight window,
+on the reasoning that the reviewer could trigger a run by hand the rest of the
+day. Now that replies post automatically, latency is a property of the product
+rather than of the reviewer's convenience, and "Posting times" below already
+argued that evenly-spaced polls beat any window. An empty poll is not billed and
+usage stands at 492 of 3,000,000 posts a month, so the even spacing is free.
 
 **Why 09:30 and not a Tokyo hour.** Half an hour after the last poll, so the
 last thing that happened before the daily snapshot was a fresh look at X.
@@ -39,7 +41,7 @@ It passes `--no-poll`, so it costs nothing at the API: it re-forecasts on
 evidence already on disk, which is what moves when a chapter ships and the
 truncation floor advances.
 
-The 8 polls never trigger on the date — only on evidence. `--daily` is what
+The polls never trigger on the date — only on evidence. `--daily` is what
 guarantees the snapshot, and it is guarded on the local date so that a run
 launchd replays after the Mac slept still produces one snapshot, not two.
 
@@ -84,7 +86,7 @@ upgrading anaconda.
 
 These are **LaunchAgents**, so they run only while you are logged in and the Mac
 is awake. launchd fires a missed run once on wake rather than replaying each one.
-Given the forecast resolves in weeks, a slept-through window costs nothing.
+Given the forecast resolves in weeks, a slept-through hour costs nothing.
 
 ## Running it by hand
 
@@ -169,8 +171,8 @@ number, stage phrase and page numbers all matched.
 **An empty `since_id` poll is not billed.** Measured, not assumed: the
 `/2/usage/tweets` counter held at 490 across a zero-result poll. Check it with
 `python3 scripts/x_usage.py`. The cap on this tier is 3,000,000 posts/month, so
-polling frequency is bounded by rate limits and reviewer preference, not cost —
-the 8-poll window could be widened for free if that ever seemed worthwhile.
+polling frequency is bounded by rate limits, not cost — which is why the
+window was widened to every hour rather than left at eight overnight polls.
 
 The `claude` vision calls are the only real per-post cost, and only for
 image-only posts (~5.5 posts/month at his current rate).
@@ -185,9 +187,10 @@ he now posts about 5.5 times a month spread across the clock:
 | 2022-01 → 2024-12 | 424 | 55% |
 | 2025-01 → 2026-08 | 66 | 41% |
 
-Which is the argument for *not* tuning the poll window to his habits. If latency
-ever does matter, evenly-spaced 3-hourly polls beat any evening window on every
-metric (mean 1.5 h vs 5.6 h, worst case 3 h vs 16 h) — and cost nothing extra.
+Which is the argument for *not* tuning the poll window to his habits. Latency
+started mattering once replies went out automatically, so the schedule is now
+evenly spaced at one poll an hour: mean wait 0.5 h and worst case 1 h, against
+5.6 h and 16 h for the old overnight window.
 
 ## Where it writes
 
@@ -355,7 +358,7 @@ python3 scripts/build_card.py --demo -21     # pretend the median moved 21 days 
 
 Posting uses **OAuth 2.0 user context** — a different credential from the
 app-only bearer token in `.env`, which can read but cannot post. Authorised as
-**@GDforecast**.
+**@HxHforecast**.
 
     python3 scripts/x_auth.py          # one-time browser flow -> X_REFRESH_TOKEN
     python3 scripts/x_post.py --whoami # verify; performs a real refresh

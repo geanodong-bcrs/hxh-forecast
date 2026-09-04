@@ -97,25 +97,44 @@ def pmf_at(snap, iso):
     return 0.0
 
 
-def compute(cur=None, prev=None):
+def view(snap, target="current"):
+    """The forecast for one run inside a snapshot.
+
+    A snapshot carries two: the batch being forecast, and the one after it
+    (`next_batch`, whose evidence line states that following-batch production
+    events are deliberately not reused). Both are read the same way here so a
+    card can be built for either.
+    """
+    if target == "next":
+        nb = snap.get("next_batch") or {}
+        return (nb.get("median"), nb.get("intervals"), nb.get("pmf") or [],
+                nb.get("first_chapter"))
+    return (snap.get("median"), snap.get("intervals"),
+            snap.get("posterior_pmf") or [],
+            int((snap.get("target") or "ch 0").split("ch ")[-1]))
+
+
+def compute(cur=None, prev=None, target="current"):
     """Delta between two snapshots. Defaults to the newest pair."""
     if cur is None:
         cur, prev, _reason = pick_pair()
         if prev is None:
             return None
 
-    new_med = date.fromisoformat(cur["median"])
-    old_med = date.fromisoformat(prev["median"])
+    cur_med, cur_i, pmf, first_ch = view(cur, target)
+    prev_med, prev_i, prev_pmf_, _ = view(prev, target)
+    if not cur_med or not prev_med or not cur_i:
+        return None
+    new_med = date.fromisoformat(cur_med)
+    old_med = date.fromisoformat(prev_med)
     shift = (new_med - old_med).days          # negative = moved earlier
-
-    # the single issue carrying most mass — the number people quote
-    pmf = cur.get("posterior_pmf") or []
     spike_iso, spike_p = (max(pmf, key=lambda x: x[1]) if pmf else (None, 0.0))
-    spike_prev = pmf_at(prev, spike_iso) if spike_iso else 0.0
+    spike_prev = next((p for i, p in prev_pmf_ if i == spike_iso), 0.0) \
+        if spike_iso else 0.0
     pp = (spike_p - spike_prev) * 100
 
-    first_ch = int(cur["target"].split("ch ")[-1])
     return {
+        "target_view": target,
         "chapter": first_ch,
         "batch": cur.get("batch"),
         "design": _design(cur),
@@ -123,17 +142,32 @@ def compute(cur=None, prev=None):
         "prev_run_id": prev["run_id"],
         "trigger": cur.get("trigger", ""),
         "trigger_detail": cur.get("trigger_detail", ""),
-        "median": cur["median"],
-        "prev_median": prev["median"],
+        "median": cur_med,
+        "prev_median": prev_med,
         "shift_days": shift,
         "spike_date": spike_iso,
         "spike_p": spike_p,
         "spike_prev_p": spike_prev,
         "spike_pp": pp,
-        "i80": cur["intervals"]["80"],
-        "prev_i80": prev["intervals"]["80"],
+        "i80": cur_i["80"],
+        # Production state, for the card. V10/V11 measure readiness in
+        # chapter-equivalents out of ten; `analog_remaining` is how long each
+        # resolved run took to START once it stood at this same readiness.
+        # Only the run the snapshot actually forecasts has its readiness
+        # recorded. For the following run the card derives it from the event
+        # table instead; handing over batch 50's 8.7 would label batch 51 with
+        # a number belonging to a different set of chapters.
+        "readiness_level": None if target == "next" else
+                           (cur.get("readiness_mixture") or cur.get("feasibility")
+                            or {}).get("level"),
+        "analog_remaining": {} if target == "next" else {
+            h: v.get("remaining_days_at_this_level")
+            for h, v in ((cur.get("readiness_mixture") or cur.get("feasibility")
+                          or {}).get("analogs") or {}).items()
+            if v.get("usable") and v.get("remaining_days_at_this_level") is not None},
+        "prev_i80": (prev_i or {}).get("80"),
         "pmf": pmf,
-        "prev_pmf": prev.get("posterior_pmf") or [],
+        "prev_pmf": prev_pmf_,
         "evidence_asof": cur.get("evidence_asof", ""),
     }
 
