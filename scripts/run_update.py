@@ -177,7 +177,7 @@ def main():
     # schedule is expressed in — one 09:30 run a day. The guard exists only for
     # idempotency: if launchd replays a run missed while the Mac slept, or the
     # job is kicked by hand, today still gets one daily snapshot rather than two.
-    # The 8 polls never trigger on the date; they trigger on evidence.
+    # The hourly polls never trigger on the date; they trigger on evidence.
     local_today = t0.astimezone().strftime("%Y-%m-%d")
     daily_due = args.daily and local_today != state.get("last_daily_local", "")
 
@@ -258,6 +258,18 @@ def main():
         # the page reads the snapshot just written, so it is never staler than
         # the forecast; if the forecast failed there is nothing new to render.
         run("build_site.py")
+        # Publish. Until now the loop rebuilt site/ locally and stopped there,
+        # so the public page only moved when someone ran the deploy by hand --
+        # it sat 1.5 days behind the model. Ordered BEFORE the reply because the
+        # reply text points readers at the site, and a link that lands on an
+        # older forecast than the card is worse than a slow one.
+        #
+        # Not gated on: a push can fail on a network blip or an expired
+        # credential, and that must not cost us the snapshot or the reply. The
+        # deploy is a no-op when nothing changed, and its own denylist still
+        # aborts before committing if anything unpublishable slipped in.
+        if not run("deploy_site.py", "--push"):
+            print("  deploy failed — the forecast is still written; publish by hand")
         # Reply consideration runs only for a tweet-triggered update. Live from
         # 2026-09-03: the credentials are authorised as @HxHforecast and the
         # dry-run output has been watched. Five gates still stand in front of
