@@ -88,6 +88,20 @@ These are **LaunchAgents**, so they run only while you are logged in and the Mac
 is awake. launchd fires a missed run once on wake rather than replaying each one.
 Given the forecast resolves in weeks, a slept-through hour costs nothing.
 
+Sleep and logout are not the same failure, though. A LaunchAgent does not exist
+while logged out, and loading it at login does **not** replay the
+`StartCalendarInterval` occurrences that passed in the meantime — so a day spent
+logged out or powered off would silently lose its snapshot. The daily job
+therefore carries `RunAtLoad`, and catches up at the next login. It is safe to
+fire on every load because `run_update.py` guards the daily on the local date:
+a run on a day already covered writes nothing and logs `no_change`.
+
+| the Mac was… | what covers the missed daily |
+|---|---|
+| asleep at 09:30, still logged in | launchd replays it on wake |
+| logged out, or rebooted | `RunAtLoad` fires it at the next login |
+| off for a whole day | that day is lost; the next login writes only its own |
+
 ## Running it by hand
 
 ```bash

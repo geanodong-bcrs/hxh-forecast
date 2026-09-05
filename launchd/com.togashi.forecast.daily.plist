@@ -13,9 +13,9 @@
        run exists to guarantee one snapshot a day, not to land on a Tokyo
        instant. Nothing in the model is a function of the hour it runs at.
 
-       Placing it right after the 09:00 poll means the last thing that happened
-       before it was a fresh look at X, so the daily snapshot is built on the
-       most recent evidence the night's polling found.
+       Polling is hourly, so whatever the clock says, the poll immediately
+       before this run is at most an hour old and the daily snapshot is built on
+       the most recent evidence X has given up.
 
        --daily guarantees the snapshot; the guard in run_update.py keeps it to
        one a day if launchd replays a run missed while the Mac slept.
@@ -49,8 +49,17 @@
   <key>StandardErrorPath</key>
   <string>__REPO__/data/automation/launchd.daily.err.log</string>
 
+  <!-- Fire on load as well as on the clock. launchd already replays a
+       StartCalendarInterval missed while the Mac SLEPT, but a LaunchAgent does
+       not exist at all while logged out, and loading it at login does not
+       replay occurrences that passed in the meantime. Without this, a day spent
+       logged out or powered off silently loses its snapshot.
+
+       Safe to fire on every load, including each install.sh: run_update.py
+       guards the daily on the local date, so a second run on a day already
+       covered writes nothing. -->
   <key>RunAtLoad</key>
-  <false/>
+  <true/>
   <key>ProcessType</key>
   <string>Background</string>
 </dict>
