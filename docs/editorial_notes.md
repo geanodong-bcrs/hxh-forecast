@@ -2,7 +2,7 @@
 
 This is a private working notebook for the human–AI editorial process behind
 @HxHforecast. Notes here can be incomplete, uncertain, personal, or exploratory.
-They are raw material for future posts, not claims ready for publication. I may use simplified Chinese in this 
+They are raw material for future posts, not claims ready for publication. I may use simplified Chinese in this document but please generate tweets using English unless you think it is better in Chinese.
 
 ## Things I noticed
 
@@ -17,14 +17,13 @@ Thoughts that may influence the account's voice or editorial direction. These do
 not need to be supported by the model, but should be identified as opinion when
 used publicly.
 
-- 
 
 ## Questions I want to explore
 
 Questions that might become a data analysis, historical investigation, visual
 explanation, or post.
 
-- 
+- Laplace's Demon. 能克制 4th Prince的念能力是否有可能是推翻拉普拉斯妖的相关概念/理念呢？届时，Togashi 可能用它来命名那个念能力吗？
 
 ## Topics and moments from Hunter × Hunter
 
@@ -33,7 +32,8 @@ provide a useful frame for discussing statistics, uncertainty, prediction, or
 waiting. Record the connection in your own words; exact quotations are not
 necessary.
 
-- 
+- 这个可能不相关。 Hisoka 的念能力叫伸缩自如的爱 —— 如gum和rubber的结合体可以将人/物拉近或弹开。然而Hisoka称之为“爱”，所以反过来可以推断Hiskoka 对于“爱”的定义。爱，就是拉近距离，就是让你靠近我。而伸缩自如的爱，则是由我来自由掌控你与我之间的距离。
+- If Hisoka and the 4th Prince is going to collaborate, Chrollo and Kurapika may collaborate in some way in the future. The community has a unrealistically strong intuition for Chrollo and Kurapika. Traumatized childhoods have made them somewhat similar in personality. 
 
 ## Voice and personality
 
@@ -42,8 +42,6 @@ feel right for the account.
 
 - 
 
-
-- 
 
 ## Draft fragments
 
