@@ -102,6 +102,15 @@ a run on a day already covered writes nothing and logs `no_change`.
 | logged out, or rebooted | `RunAtLoad` fires it at the next login |
 | off for a whole day | that day is lost; the next login writes only its own |
 
+**Publishing is part of the loop.** Every run that writes a snapshot rebuilds
+`site/` and then runs `deploy_site.py --push`. Until 2026-09-05 it stopped at
+the local rebuild, so the public page only moved when someone deployed by hand
+and had drifted a day and a half behind the model. The push is deliberately not
+gated on: a network blip or an expired credential must not cost the snapshot or
+the reply. It runs *before* the reply bot, because the reply points readers at
+the site and a link landing on an older forecast than the card is worse than a
+slow one.
+
 ## Running it by hand
 
 ```bash
