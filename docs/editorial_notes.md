@@ -17,7 +17,7 @@ Thoughts that may influence the account's voice or editorial direction. These do
 not need to be supported by the model, but should be identified as opinion when
 used publicly.
 
-
+- One thing I always wanted to predict is the current arc progress. like this tweet - https://x.com/cuesloppy/status/2096615496380719377?s=12 I would like to make analogies here. One comment did this too. Like the Knuckle/Shoot vs Gon/Killua of the chimera ant arc, the cooking test of the hunter exam arc, or Gon and Killua making their way to Masadora with a straight line route of the Greed Island arc. This type of the analogies can be paired with certain manga screenshots. I wonder if this is possible to make a forecast.
 ## Questions I want to explore
 
 Questions that might become a data analysis, historical investigation, visual
