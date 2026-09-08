@@ -37,7 +37,7 @@ REDIRECT = "http://localhost:8080/callback"
 # media.write is REQUIRED for POST /2/media/upload and is NOT implied by
 # tweet.write — without it the upload returns a bare 403 Forbidden with no
 # explanation of which permission is missing.
-SCOPES = "tweet.read tweet.write users.read media.write offline.access"
+SCOPES = "tweet.read tweet.write users.read bookmark.read media.write offline.access"
 AUTHORIZE = "https://x.com/i/oauth2/authorize"
 TOKEN = "https://api.x.com/2/oauth2/token"
 
