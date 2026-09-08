@@ -18,6 +18,12 @@ not need to be supported by the model, but should be identified as opinion when
 used publicly.
 
 - One thing I always wanted to predict is the current arc progress. like this tweet - https://x.com/cuesloppy/status/2096615496380719377?s=12 I would like to make analogies here. One comment did this too. Like the Knuckle/Shoot vs Gon/Killua of the chimera ant arc, the cooking test of the hunter exam arc, or Gon and Killua making their way to Masadora with a straight line route of the Greed Island arc. This type of the analogies can be paired with certain manga screenshots. I wonder if this is possible to make a forecast.
+- I noticed this tweet: 
+		https://x.com/omochi_hx/status/2096801932560175283?s=12 content: 調べたところ、ハンターで一番休載期間が短かったのは3か月らしい
+		maybe we should do some simple step-by-step stats to show HxH fans how we got the forecasts. A simple list/table showing the hiatus stats would be nice and of course add the final forecast to this table as well
+- I noticed this tweet:
+		https://x.com/ryohiseisan/status/2096838346832290239?s=12 content: HUNTER×HUNTER良いところで休載になってしまった、、 次の再会はいつか分からないけど昔に比べたら再会早いし楽しみにしてる それにしても沼男は草
+		Here "沼男" "swamp baller/ swamp guy" is how 4th prince named Hisoka in ch. 420.
 ## Questions I want to explore
 
 Questions that might become a data analysis, historical investigation, visual
