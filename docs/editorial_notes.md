@@ -40,6 +40,7 @@ necessary.
 
 - 这个可能不相关。 Hisoka 的念能力叫伸缩自如的爱 —— 如gum和rubber的结合体可以将人/物拉近或弹开。然而Hisoka称之为“爱”，所以反过来可以推断Hiskoka 对于“爱”的定义。爱，就是拉近距离，就是让你靠近我。而伸缩自如的爱，则是由我来自由掌控你与我之间的距离。
 - If Hisoka and the 4th Prince is going to collaborate, Chrollo and Kurapika may collaborate in some way in the future. The community has a unrealistically strong intuition for Chrollo and Kurapika. Traumatized childhoods have made them somewhat similar in personality. 
+- predictions for the story (succession arc) - 全特质系对决，因为狗男的出现，以及莫莲娜对于特质系的追求，故事正逐渐让更多特质系浮出水面并进入画面中心。除了酷拉皮卡和库洛洛这两个我们早已熟悉的人之外，新晋特质系念能力者还有四王子和小博。
 
 ## Voice and personality
 
