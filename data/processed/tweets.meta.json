@@ -1,15 +1,15 @@
 {
-  "built_utc": "2026-09-01T07:00:16.479225+00:00",
+  "built_utc": "2026-09-15T10:00:10.746953+00:00",
   "handle": "Un4v5s8bgsVk9Xp",
-  "row_count": 494,
-  "by_togashi": 492,
+  "row_count": 495,
+  "by_togashi": 493,
   "span": [
     "2022-05-24",
-    "2026-09-01"
+    "2026-09-15"
   ],
-  "with_text": 193,
+  "with_text": 194,
   "image_only": 299,
-  "image_only_pct": 60.8,
+  "image_only_pct": 60.6,
   "mentioning_chapter_number": 122,
   "active_months": 31,
   "discovery": "Wayback CDX enumeration of status URLs",

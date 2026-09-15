@@ -1,0 +1,76 @@
+schema_version: 1
+
+# These vocabularies are deliberately small. Add a value only after repeated
+# annotations cannot be expressed clearly with the existing set.
+narrative_function:
+  - setup
+  - expansion
+  - complication
+  - preparation
+  - confrontation
+  - convergence
+  - revelation
+  - resolution
+  - aftermath
+  - transition
+
+thread_type:
+  - objective
+  - conflict
+  - mystery
+  - threat
+  - relationship
+  - promised_event
+  - journey
+  - institutional_process
+
+thread_status:
+  - open
+  - active
+  - blocked
+  - converging
+  - transformed
+  - resolved
+  - abandoned
+  - uncertain
+
+thread_event_type:
+  - introduced
+  - mentioned
+  - advanced
+  - complicated
+  - connected
+  - converged
+  - escalated
+  - partially_resolved
+  - resolved
+  - deferred
+  - transformed
+
+centrality:
+  - core
+  - major
+  - supporting
+  - minor
+  - uncertain
+
+importance:
+  - major
+  - moderate
+  - minor
+
+confidence:
+  - high
+  - medium
+  - low
+
+review_status:
+  - ai_proposed
+  - human_reviewed
+  - disputed
+
+prediction_status:
+  - open
+  - resolved
+  - withdrawn
+  - superseded
