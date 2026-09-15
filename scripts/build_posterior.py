@@ -35,6 +35,7 @@ from build_level2 import load as load_l2, events_with_lag
 from build_readiness import (states as readiness_states, batch_scope as name_scope,
                              coordinate_events)
 import build_feasibility
+import build_v13
 import snapshot
 
 HALF_LIFE = None       # backtest-selected: no recency decay (docs/backtest.md)
@@ -74,7 +75,7 @@ NORMALISE_ANALOG_COMPONENTS = False
 # Which Level 2 to run.  "all_pairs" is the V5-V8 coordinate date-translation;
 # "readiness_mixture" is V12's monotone two-sided readiness likelihood.
 # "feasibility" retains V10's one-sided floor for comparison/replay.
-LEVEL2_MODE = "readiness_mixture"
+LEVEL2_MODE = "worst_case_countdown"
 ENFORCE_READINESS_MONOTONICITY = True  # V12; False reproduces V11
 FEASIBILITY_SIGMA = 30.0    # days of softness on the one-sided ramp
 # Which confidence levels in data/annotations/known_absent_issues.csv are allowed
@@ -517,6 +518,19 @@ def main(asof=None, quiet=False, rid=None):
         ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today,
         previous=True)
     previous_lik = None
+    v13_deadline, v13 = build_v13.build(
+        ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today)
+    historical_worst_gap = max(g for _, g in gaps)
+    historical_worst_seq = end_seq + historical_worst_gap + 1
+    historical_worst_deadline = by_seq[historical_worst_seq]["on_sale"] \
+        if historical_worst_seq in by_seq else cand[-1][1]
+    v13_active_deadline = min(v13_deadline, historical_worst_deadline) \
+        if v13_deadline else historical_worst_deadline
+    v13.update({"historical_worst_gap_issues": historical_worst_gap,
+                "historical_worst_deadline": historical_worst_deadline.isoformat(),
+                "active_deadline": v13_active_deadline.isoformat(),
+                "combination": "earlier of historical worst-gap and production countdown"})
+    v13_pmf = None
     if LEVEL2_MODE == "none":
         lik = np.ones(len(cand), float)
     elif LEVEL2_MODE == "feasibility":
@@ -562,6 +576,10 @@ def main(asof=None, quiet=False, rid=None):
             for h, v in readiness_centres.items()
         }
         readiness_mixture["monotonic_reference"] = previous_readiness
+    elif LEVEL2_MODE == "worst_case_countdown":
+        lik = np.ones(len(cand), float)
+        v13_pmf = build_v13.distribution([d for _, d, _ in cand],
+                                         v13_active_deadline)
 
     '''
     Legacy exact-stage implementation retained below in git history; the
@@ -641,6 +659,8 @@ def main(asof=None, quiet=False, rid=None):
     if lik.max() > 0:
         lik = lik / lik.max()
     post = prior * lik
+    if LEVEL2_MODE == "worst_case_countdown" and v13_pmf is not None:
+        post = v13_pmf.copy()
     for i, (s, _, _) in enumerate(cand):
         if not eligible(s):                  # not started, or issue ruled out
             post[i] = 0.0
@@ -836,7 +856,8 @@ def main(asof=None, quiet=False, rid=None):
         "level": "1+2 combined posterior",
         "half_life_batches": HALF_LIFE,
         "analogs": analogs,
-        "level2_design": ("monotone_ordered_readiness_mixture_v12" if LEVEL2_MODE == "readiness_mixture"
+        "level2_design": ("slowest_observed_countdown_v13" if LEVEL2_MODE == "worst_case_countdown"
+                          else "monotone_ordered_readiness_mixture_v12" if LEVEL2_MODE == "readiness_mixture"
                           else "ordered_readiness_feasibility_floor_v10" if LEVEL2_MODE == "feasibility"
                           else "all_pairs_coordinate_likelihood_v9_mixture_level1"),
         "n_chapters_with_current_readiness": sum(r["p_hat"] is not None
@@ -887,6 +908,7 @@ def main(asof=None, quiet=False, rid=None):
         "feasibility": feasibility,
         "readiness_mixture": readiness_mixture,
         "readiness_monotonicity": monotonicity,
+        "slowest_observed_countdown": v13,
         "no_start_update": "The posterior support is conditioned through each issue publicly known not to contain the batch. The analog-fade likelihood is held at the latest production-event issue until a record hiatus.",
         "record_hiatus": record_hiatus,
         "median": med[1].isoformat(),

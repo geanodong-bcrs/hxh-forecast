@@ -1,6 +1,6 @@
 # How the Prediction Is Made
 
-> **The live model is V12** — see "Monotone readiness updates (V12)" at the end
+> **The live model is V13** — see "Slowest-observed countdown (V13)" at the end
 > of this file. Everything from here to that section is the historical record of
 > V1–V8 and is kept unchanged so every forecast already written stays
 > reproducible. In particular the "Current output (2026-08-28)" block below, with
@@ -1065,3 +1065,39 @@ The same 21-day trajectory diagnostic used for V11 gives:
 V12 is therefore adopted as a structural consistency constraint, not as a
 claimed accuracy improvement. With only two resolved replay targets, the small
 score difference is not useful evidence for model selection.
+
+### Slowest-observed countdown (V13, 2026-09-15)
+
+V13 replaces V11/V12's threshold re-anchoring with a pessimistic countdown.
+On a fixed 0--10 ordered-readiness grid, each half-chapter transition receives
+the longest duration observed among batches 47--49. These maxima are summed
+over the unfinished transitions, then the longest delay from the final public
+readiness observation to batch publication (125 days) is added.
+
+Each readiness observation produces a candidate production deadline. The live
+deadline is the earliest candidate observed so far. Silence therefore consumes
+the existing time budget rather than resetting it, while progress can only
+move the deadline earlier or leave it unchanged. A retake remains a separate
+regressive event and is not subject to this guarantee.
+
+The historical side begins from the longest observed modern hiatus. The active
+deadline is the earlier of that historical worst-gap date and the production
+countdown date. V13 places a broad Gaussian forecast with a declared 120-day
+scale around that deadline. It does not multiply by the ordinary Level-1 gap
+PMF, because doing so silently restored the earlier, less-conservative median.
+
+"Worst" here always means *slowest observed*, not a physical upper bound. The
+three paths are irregularly reported, maxima from different batches are added
+together, and a future transition may exceed every observation. The construction
+is deliberately pessimistic and auditable rather than statistically efficient.
+
+At `B=9.1` on 2026-09-15, the production deadline is 2027-02-09 and the live
+median is 2027-02-19. In the September 20 counterfactual, chapter 429 completion
+raises readiness to 9.5, moves the deadline to 2027-01-30, the median to
+2027-02-12, and the 80% interval from 2026-11-02..2027-07-16 to
+2026-10-26..2027-07-09.
+
+A 21-day trajectory diagnostic gives mean absolute errors of 92 and 34 days
+for batches 48 and 49, with CRPS 9.46 and 3.78 issues. These are better than V12
+on the same two outcomes, but they are only two correlated trajectories. The
+model is selected for its monotone countdown semantics, not on those scores.
