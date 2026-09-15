@@ -481,8 +481,20 @@ def posterior_series(chapter, direct_only=False):
         if any(r["model"] == model for r in out):
             out = [r for r in out if r["model"] == model]
             break
-    out.sort(key=lambda r: r["t"])
-    return out
+
+    # Snapshots are append-only, and model-development runs can create more
+    # than one live snapshot on the same forecast date. Drawing all of them
+    # produces a misleading vertical jump at one x-coordinate. Keep one
+    # canonical observation per effective as-of day: prefer a live snapshot
+    # over a replay, then the newest run from that day.
+    by_day = {}
+    for row in out:
+        day = (row.get("asof") or row["t"].date().isoformat())[:10]
+        old = by_day.get(day)
+        rank = (not row["replay"], row["t"])
+        if old is None or rank > (not old["replay"], old["t"]):
+            by_day[day] = row
+    return sorted(by_day.values(), key=lambda r: r["t"])
 
 
 def _pmf_quantile(pmf, q):
@@ -654,21 +666,32 @@ def manuscript_completion_annotations(rows):
     not irreversible (a retake can follow it).  To avoid pretending every move
     has an obvious single cause, mark only this late, reader-legible milestone.
     """
-    dates = {r.get("asof"): r for r in rows}
+    dated_rows = sorted(
+        ((date.fromisoformat((r.get("asof") or r["t"].date().isoformat())[:10]), r)
+         for r in rows),
+        key=lambda item: item[0],
+    )
     out, seen = [], set()
     with open(D("data", "processed", "production_events.csv"), encoding="utf-8") as fh:
         for e in csv.DictReader(fh):
             if (e.get("event_class") != "chapter_stage" or
                     e.get("stage") != "manuscript_complete" or
                     e.get("status") != "complete" or
-                    not e.get("chapter") or e.get("event_date") not in dates):
+                    not e.get("chapter") or not e.get("event_date")):
                 continue
             key = (e["event_date"], e["chapter"])
             if key in seen:
                 continue
             seen.add(key)
-            r = dates[e["event_date"]]
-            out.append({"t": r["t"], "median": r["median"],
+            event_day = date.fromisoformat(e["event_date"][:10])
+            # A model replay is not necessarily saved on every tweet day.
+            # Plot the marker on the real event date, using the first posterior
+            # whose as-of date includes that evidence.
+            r = next((row for asof, row in dated_rows if asof >= event_day), None)
+            if r is None or not (dated_rows[0][0] <= event_day <= dated_rows[-1][0]):
+                continue
+            out.append({"t": datetime.combine(event_day, datetime.min.time()),
+                        "median": r["median"],
                         "label": "Chapter %s: manuscript complete" % e["chapter"]})
     return out
 
