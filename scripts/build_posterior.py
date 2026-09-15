@@ -72,9 +72,10 @@ FREEZE_ANALOG_FADE_UNTIL_RECORD = True
 # average peak-height-1 curves with equal weight.  See `all_pairs_likelihood`.
 NORMALISE_ANALOG_COMPONENTS = False
 # Which Level 2 to run.  "all_pairs" is the V5-V8 coordinate date-translation;
-# "readiness_mixture" is V11's two-sided ordered-readiness likelihood.
+# "readiness_mixture" is V12's monotone two-sided readiness likelihood.
 # "feasibility" retains V10's one-sided floor for comparison/replay.
 LEVEL2_MODE = "readiness_mixture"
+ENFORCE_READINESS_MONOTONICITY = True  # V12; False reproduces V11
 FEASIBILITY_SIGMA = 30.0    # days of softness on the one-sided ramp
 # Which confidence levels in data/annotations/known_absent_issues.csv are allowed
 # to remove an issue from the candidate set.  Absence is a Level 0 fact, not
@@ -88,6 +89,25 @@ READINESS_MIXTURE_SIGMA = 120.0  # broad by design: only three resolved analogs
 # about *when* the batch starts; it is evidence that this batch is not being
 # scheduled like that one.  Averaging with equal weight throws that away.
 WEIGHT_ANALOGS_BY_SURVIVAL = True
+
+
+def project_not_later(candidate, baseline):
+    """Return the smallest CDF correction no later than ``baseline``.
+
+    At one fixed forecast timestamp, a non-regressive production update may
+    not lower cumulative publication probability at any candidate issue.
+    """
+    a = np.asarray(candidate, float)
+    b = np.asarray(baseline, float)
+    if a.shape != b.shape or a.ndim != 1:
+        raise ValueError("candidate and baseline must be equal-length PMFs")
+    if a.sum() <= 0 or b.sum() <= 0:
+        raise ValueError("PMFs must have positive mass")
+    c = np.maximum(np.cumsum(a / a.sum()), np.cumsum(b / b.sum()))
+    c[-1] = 1.0
+    out = np.diff(np.concatenate(([0.0], c)))
+    out[out < 0] = 0.0
+    return out / out.sum()
 
 
 def within_batch_offsets(k):
@@ -493,6 +513,10 @@ def main(asof=None, quiet=False, rid=None):
         ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today)
     readiness_centres, _readiness_sigma, readiness_mixture = build_feasibility.components(
         ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today)
+    previous_centres, _, previous_readiness = build_feasibility.components(
+        ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today,
+        previous=True)
+    previous_lik = None
     if LEVEL2_MODE == "none":
         lik = np.ones(len(cand), float)
     elif LEVEL2_MODE == "feasibility":
@@ -511,17 +535,23 @@ def main(asof=None, quiet=False, rid=None):
             lik = np.ones(len(cand), float)
         feasibility["applied"] = bool(feas_floors)
     elif LEVEL2_MODE == "readiness_mixture":
-        if readiness_centres:
+        def readiness_likelihood(centres):
+            if not centres:
+                return np.ones(len(cand), float)
             xs = np.array([d.toordinal() for _, d, _ in cand], float)
             kernels = [np.exp(-0.5 * ((xs - centre) /
                                       READINESS_MIXTURE_SIGMA) ** 2)
-                       for centre in readiness_centres.values()]
+                       for centre in centres.values()]
+            out = np.mean(kernels, axis=0)
+            out = np.maximum(out, 1e-12)
+            return out / out.max()
+        if readiness_centres:
             # One component per resolved historical batch. Averaging preserves
             # the independent evidence count; multiplying would falsely turn
             # three analogs into a narrow consensus estimate.
-            lik = np.mean(kernels, axis=0)
-            lik = np.maximum(lik, 1e-12)
-            lik /= lik.max()
+            lik = readiness_likelihood(readiness_centres)
+            previous_lik = readiness_likelihood(previous_centres) \
+                if previous_centres else None
         else:
             lik = np.ones(len(cand), float)
         readiness_mixture["applied"] = bool(readiness_centres)
@@ -531,6 +561,7 @@ def main(asof=None, quiet=False, rid=None):
             str(h): date.fromordinal(int(v)).isoformat()
             for h, v in readiness_centres.items()
         }
+        readiness_mixture["monotonic_reference"] = previous_readiness
 
     '''
     Legacy exact-stage implementation retained below in git history; the
@@ -622,6 +653,22 @@ def main(asof=None, quiet=False, rid=None):
         for i, (s, _, _) in enumerate(cand):
             if not eligible(s):
                 post[i] = 0.0
+    monotonicity = {"applied": False, "rule": "first_order_stochastic_dominance"}
+    if (LEVEL2_MODE == "readiness_mixture" and ENFORCE_READINESS_MONOTONICITY
+            and previous_lik is not None and not record_hiatus):
+        reference = prior * previous_lik
+        for i, (s, _, _) in enumerate(cand):
+            if not eligible(s):
+                reference[i] = 0.0
+        if reference.sum() > 0 and post.sum() > 0:
+            raw = post / post.sum()
+            reference /= reference.sum()
+            violation = float(np.max(np.cumsum(reference) - np.cumsum(raw)))
+            post = project_not_later(raw, reference)
+            monotonicity.update({"applied": violation > 1e-12,
+                                 "max_cdf_violation_before_projection": round(violation, 8),
+                                 "reference_level": previous_readiness.get("level"),
+                                 "reference_attained": previous_readiness.get("attained")})
     # Beyond every observed historical gap we deliberately enter a separate
     # record-hiatus regime: modest mass on the next issue, with the remaining
     # tail inherited from history.  This is the one circumstance where the
@@ -789,7 +836,7 @@ def main(asof=None, quiet=False, rid=None):
         "level": "1+2 combined posterior",
         "half_life_batches": HALF_LIFE,
         "analogs": analogs,
-        "level2_design": ("ordered_readiness_two_sided_mixture_v11" if LEVEL2_MODE == "readiness_mixture"
+        "level2_design": ("monotone_ordered_readiness_mixture_v12" if LEVEL2_MODE == "readiness_mixture"
                           else "ordered_readiness_feasibility_floor_v10" if LEVEL2_MODE == "feasibility"
                           else "all_pairs_coordinate_likelihood_v9_mixture_level1"),
         "n_chapters_with_current_readiness": sum(r["p_hat"] is not None
@@ -839,6 +886,7 @@ def main(asof=None, quiet=False, rid=None):
         "level2_mode": LEVEL2_MODE,
         "feasibility": feasibility,
         "readiness_mixture": readiness_mixture,
+        "readiness_monotonicity": monotonicity,
         "no_start_update": "The posterior support is conditioned through each issue publicly known not to contain the batch. The analog-fade likelihood is held at the latest production-event issue until a record hiatus.",
         "record_hiatus": record_hiatus,
         "median": med[1].isoformat(),

@@ -37,7 +37,7 @@ steps in the history charts.
     python3 scripts/replay_forecast.py            # replay, skipping what exists
     python3 scripts/replay_forecast.py --dry-run  # list the dates, write nothing
 
-Use `--revision-v2`, `--revision-v3`, `--revision-v4`, `--revision-v5`, `--revision-v6`, `--revision-v6-gated`, `--revision-v6-buffer`, `--revision-v7-two-gap`, `--revision-v8-parametric`, `--revision-v9`, `--revision-v10`, or `--revision-v11` to reconstruct an
+Use `--revision-v2`, `--revision-v3`, `--revision-v4`, `--revision-v5`, `--revision-v6`, `--revision-v6-gated`, `--revision-v6-buffer`, `--revision-v7-two-gap`, `--revision-v8-parametric`, `--revision-v9`, `--revision-v10`, `--revision-v11`, or `--revision-v12` to reconstruct an
 append-only series for a later model revision.
 """
 import csv
@@ -139,6 +139,7 @@ def main():
     revision_v9 = "--revision-v9" in sys.argv
     revision_v10 = "--revision-v10" in sys.argv
     revision_v11 = "--revision-v11" in sys.argv
+    revision_v12 = "--revision-v12" in sys.argv
     hi = live_from()
     ch = target_chapter()
     start = first_event(ch) or date(2026, 6, 29)
@@ -156,7 +157,8 @@ def main():
         # Keep reconstructed v2 forecasts alongside, rather than overwriting,
         # the original v1 replay.  Noon UTC makes the run id parse as a normal
         # timestamp in the site history while staying distinct from v1 midnight.
-        rid = (d.strftime("%Y%m%dT235800Z") if revision_v11 else
+        rid = (d.strftime("%Y%m%dT235700Z") if revision_v12 else
+               d.strftime("%Y%m%dT235800Z") if revision_v11 else
                d.strftime("%Y%m%dT235900Z") if revision_v10 else
                d.strftime("%Y%m%dT235500Z") if revision_v9 else
                d.strftime("%Y%m%dT234500Z") if revision_v8_parametric else

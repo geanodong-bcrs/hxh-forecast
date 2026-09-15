@@ -158,24 +158,22 @@ def floor_components(ev, target_chapters, analog_chapters, analog_starts, asof):
                     "binding": bool(floors) and max(floors.values()) > asof.toordinal()}
 
 
-def components(ev, target_chapters, analog_chapters, analog_starts, asof):
-    """(implied, sigma, detail) — one Gaussian component per analog batch.
+def _components_at(now_path, analog_paths, analog_starts, index):
+    """Build analogue centres for one observed readiness step.
 
-    `analog_chapters[h]` is that batch's own ten chapters; `analog_starts[h]`
-    the date it began.  Each analog is traced only on evidence public before it
-    started, so this is a leakage-free comparison.
+    Keeping this calculation separate lets V12 compare the current readiness
+    state with the immediately preceding state at the *same forecast date*.
+    Calendar time is therefore held fixed when enforcing production
+    monotonicity.
     """
-    now_path = trace(ev, target_chapters, asof)
     if not now_path:
         return {}, {}, {"level": 0.0, "reason": "no production reported"}
-    b_now = now_path[-1][1]
-    at = attained_date(now_path, b_now)
+    at, b_now = now_path[index]
     implied, detail_h = {}, {}
-    for h, chs in analog_chapters.items():
+    for h, path in analog_paths.items():
         outcome = analog_starts.get(h)
         if outcome is None:
             continue
-        path = trace(ev, chs, outcome)
         r = remaining(path, outcome, b_now)
         if r is None:
             detail_h[h] = {"usable": False,
@@ -189,17 +187,30 @@ def components(ev, target_chapters, analog_chapters, analog_starts, asof):
 
     if not implied:
         return {}, {}, {"level": round(b_now, 4),
-                        "attained": at.isoformat() if at else None,
-                        "analogs": detail_h,
+                        "attained": at.isoformat(), "analogs": detail_h,
                         "reason": "no analog reached this readiness level pre-start"}
 
-    # The spread ACROSS analogs is the honest scale: it is the disagreement
-    # between the only comparable runs about how long "this ready" lasts.  A
-    # single usable analog cannot supply a spread, so it falls back to the floor.
     vals = np.array(list(implied.values()), float)
     spread = max(float(1.4826 * np.median(np.abs(vals - np.median(vals)))), SIGMA_FLOOR)
     sigma = {h: spread for h in implied}
     return implied, sigma, {"level": round(b_now, 4),
-                            "attained": at.isoformat() if at else None,
+                            "attained": at.isoformat(),
                             "sigma_days": round(spread, 1),
                             "analogs": detail_h}
+
+
+def components(ev, target_chapters, analog_chapters, analog_starts, asof,
+               previous=False):
+    """(implied, sigma, detail) — one Gaussian component per analog batch.
+
+    `analog_chapters[h]` is that batch's own ten chapters; `analog_starts[h]`
+    the date it began.  Each analog is traced only on evidence public before it
+    started, so this is a leakage-free comparison.
+    """
+    now_path = trace(ev, target_chapters, asof)
+    if previous and len(now_path) < 2:
+        return {}, {}, {"reason": "no preceding readiness state"}
+    analog_paths = {h: trace(ev, chs, analog_starts[h])
+                    for h, chs in analog_chapters.items() if h in analog_starts}
+    return _components_at(now_path, analog_paths, analog_starts,
+                          -2 if previous else -1)
