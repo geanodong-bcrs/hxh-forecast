@@ -684,14 +684,28 @@ def manuscript_completion_annotations(rows):
                 continue
             seen.add(key)
             event_day = date.fromisoformat(e["event_date"][:10])
-            # A model replay is not necessarily saved on every tweet day.
-            # Plot the marker on the real event date, using the first posterior
-            # whose as-of date includes that evidence.
+            # A model replay is not necessarily saved on every tweet day. Keep
+            # the marker at the real event date, and place it on the line drawn
+            # between the surrounding saved forecasts. Its tooltip identifies
+            # the evidence; the dot does not imply an unsaved point forecast.
             r = next((row for asof, row in dated_rows if asof >= event_day), None)
             if r is None or not (dated_rows[0][0] <= event_day <= dated_rows[-1][0]):
                 continue
-            out.append({"t": datetime.combine(event_day, datetime.min.time()),
+            event_t = datetime.combine(event_day, datetime.min.time())
+            before = max((row for _, row in dated_rows if row["t"] <= event_t),
+                         key=lambda row: row["t"], default=None)
+            after = min((row for _, row in dated_rows if row["t"] >= event_t),
+                        key=lambda row: row["t"], default=None)
+            ordinate = float(date.fromisoformat(r["median"]).toordinal())
+            if before is not None and after is not None and before is not after:
+                span = (after["t"] - before["t"]).total_seconds()
+                frac = (event_t - before["t"]).total_seconds() / span
+                b = date.fromisoformat(before["median"]).toordinal()
+                a = date.fromisoformat(after["median"]).toordinal()
+                ordinate = b + frac * (a - b)
+            out.append({"t": event_t,
                         "median": r["median"],
+                        "ordinate": ordinate,
                         "label": "Chapter %s: manuscript complete" % e["chapter"]})
     return out
 
@@ -981,7 +995,7 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     for a in annotations or []:
         if not (rows[0]["t"] <= a["t"] <= rows[-1]["t"]):
             continue
-        xx, yy = X(a["t"]), Y(O(a["median"]))
+        xx, yy = X(a["t"]), Y(a.get("ordinate", O(a["median"])))
         body.append('<circle cx="%.1f" cy="%.1f" r="6" fill="var(--pend)" '
                     'stroke="var(--bg)" stroke-width="2"><title>%s</title></circle>'
                     % (xx, yy, esc(a["label"])))
@@ -1170,7 +1184,7 @@ def gap_prior_chart(pri, width=720, height=280, clip=200):
             '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
 
 
-def zoomed(render, rows, weeks=4, name="z"):
+def zoomed(render, rows, weeks=8, name="z"):
     """Two pre-rendered views of the same chart, toggled by a CSS radio.
 
     No JavaScript: the site is static HTML regenerated every run and published
