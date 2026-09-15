@@ -461,7 +461,8 @@ def posterior_series(chapter, direct_only=False):
         out = [r for r in out if r["direct"]]
     # Revision snapshots are append-only, so preserve the old record on disk
     # but do not draw two incompatible models as one apparent time series.
-    for model in ("ordered_readiness_two_sided_mixture_v11",
+    for model in ("monotone_ordered_readiness_mixture_v12",
+                  "ordered_readiness_two_sided_mixture_v11",
                   "ordered_readiness_feasibility_floor_v10",
                   "readiness_feasibility_floor_v9",
                   "all_pairs_coordinate_likelihood_v9_mixture_level1",
@@ -1698,11 +1699,13 @@ def build_method(post, l2, pri, snap_path):
              'once, and the confidence scales with how many comparable runs exist, '
              'not how many posts there are.</p></div>' % (n_ready, n_ready))
     feas = post.get("feasibility") or {}
-    if post.get("level2_design") in {"ordered_readiness_two_sided_mixture_v11",
+    if post.get("level2_design") in {"monotone_ordered_readiness_mixture_v12",
+                                     "ordered_readiness_two_sided_mixture_v11",
                                      "ordered_readiness_feasibility_floor_v10",
                                      "readiness_feasibility_floor_v9"}:
         lvl = feas.get("level")
-        if post.get("level2_design") == "ordered_readiness_two_sided_mixture_v11":
+        if post.get("level2_design") in {"monotone_ordered_readiness_mixture_v12",
+                                          "ordered_readiness_two_sided_mixture_v11"}:
             centres = (post.get("readiness_mixture") or {}).get("centres") or {}
             centre_text = ", ".join(centres[k] for k in sorted(centres))
             h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
@@ -1712,8 +1715,14 @@ def build_method(post, l2, pri, snap_path):
                      '120-day component; the components are averaged, not '
                      'multiplied. This makes dates far beyond every comparable '
                      'readiness trajectory less likely while preserving a wide '
-                     'tail for Shueisha&rsquo;s independent scheduling decision.</p></div>'
-                     % (lvl or 0.0, centre_text or 'unavailable'))
+                     'tail for Shueisha&rsquo;s independent scheduling decision.%s'
+                     '</p></div>'
+                     % (lvl or 0.0, centre_text or 'unavailable',
+                        (' A monotonicity check compares this with the preceding '
+                         'readiness state at the same date, so reported progress '
+                         'cannot make the forecast later.')
+                        if post.get("level2_design") == "monotone_ordered_readiness_mixture_v12"
+                        else ''))
         else:
             h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
                  'The run is summarised by one number: the summed ordered readiness '
@@ -1788,7 +1797,8 @@ def build_method(post, l2, pri, snap_path):
                      % (hprior.get("elapsed_first_gap", 0),
                         "" if hprior.get("elapsed_first_gap", 0) == 1 else "s",
                         hprior.get("n_eligible_pairs", 0), hprior.get("n_pairs", 0)))
-    elif post.get("level2_design") not in {"ordered_readiness_two_sided_mixture_v11",
+    elif post.get("level2_design") not in {"monotone_ordered_readiness_mixture_v12",
+                                           "ordered_readiness_two_sided_mixture_v11",
                                            "ordered_readiness_feasibility_floor_v10"}:
         ctx = (post.get("preceding_batch_context") or {}).get("weight")
         h.append('<div class=card><h3>How silence is handled</h3><p class=note>'

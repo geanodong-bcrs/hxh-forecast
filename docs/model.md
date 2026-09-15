@@ -1,6 +1,6 @@
 # How the Prediction Is Made
 
-> **The live model is V11** — see "Two-sided ordered readiness (V11)" at the end
+> **The live model is V12** — see "Monotone readiness updates (V12)" at the end
 > of this file. Everything from here to that section is the historical record of
 > V1–V8 and is kept unchanged so every forecast already written stays
 > reproducible. In particular the "Current output (2026-08-28)" block below, with
@@ -1023,3 +1023,45 @@ is much more consistent with the cross-sectional readiness evidence, but the
 trajectory results show that the dynamic update rule remains provisional. With
 only two resolved replay targets, selecting the 120-day width or adding a
 monotonicity correction based on these scores would be overfitting.
+
+### Monotone readiness updates (V12, 2026-09-15)
+
+V11 exposed a dynamic inconsistency on 2026-09-15. Reporting chapter 428
+complete raised ordered readiness from `B=8.7` to `B=9.1`, but the newly
+attained threshold re-anchored two historical components later and moved the
+median from 22 January to 29 January 2027. No publication issue had elapsed;
+the production update alone caused the later forecast.
+
+V12 retains V11's cross-sectional analogue mixture, but compares it with the
+immediately preceding readiness state evaluated at the same forecast date,
+with the same Level-1 prior and eligible-issue set. If the new posterior lowers
+the cumulative probability of publication at any candidate issue, it is
+projected onto the first-order stochastic-dominance constraint
+
+    F_new(w) >= F_previous-readiness(w)  for every candidate issue w.
+
+The projected CDF is the pointwise maximum of the two CDFs. This is the
+smallest correction that enforces the physical interpretation of a
+non-regressive production event: at a fixed timestamp, more completed work
+cannot make publication later. It adds no fitted effect size. Calendar passage,
+newly ruled-out issues, retakes, and disruptions may still move the forecast
+later through their own evidence channels.
+
+Every snapshot records whether the constraint bound and the largest CDF
+violation before projection. Regression tests verify both stochastic dominance
+and that an already-earlier update is left unchanged. On the chapter 428 event,
+the raw V11 update violated the reference CDF by 1.03 percentage points; V12
+bound and retained the 22 January 2027 median.
+
+The same 21-day trajectory diagnostic used for V11 gives:
+
+| model | target | drift | mean absolute error | mean CRPS |
+|---|---|---:|---:|---:|
+| V11 | batch 48 | 0.61 | 153 days | 14.39 issues |
+| V12 | batch 48 | 0.61 | 153 days | 14.39 issues |
+| V11 | batch 49 | 1.55 | 198 days | 18.52 issues |
+| V12 | batch 49 | 1.55 | 201 days | 18.86 issues |
+
+V12 is therefore adopted as a structural consistency constraint, not as a
+claimed accuracy improvement. With only two resolved replay targets, the small
+score difference is not useful evidence for model selection.

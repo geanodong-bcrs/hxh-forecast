@@ -168,8 +168,8 @@ def pairs_history_svg():
 def posterior_history_svg():
     return forecast_history_svg(
         D("data", "working", "chapter421_forecast_steps.csv"),
-        "Chapter 421 — final V11 prediction history",
-        "Chapter 421 final V11 posterior prediction history",
+        "Chapter 421 — final V12 prediction history",
+        "Chapter 421 final V12 posterior prediction history",
         date_key="as_of", median_key="chapter421_p50",
         lo_key="chapter421_p10", hi_key="chapter421_p90")
 
@@ -388,7 +388,7 @@ a{{color:#245b6b}}
 <h4>Direct-target likelihood history for ch. 421</h4>
 <p class="note">This plot starts on 2026-06-29, when ch. 421 first became the direct next-batch target. At each of these {pairs_n} dates, \(L_{{\mathrm{{pairs}}}}\) is normalized over still-possible WSJ issues only so that its median and central 80% date range can be shown. Level 1 is not multiplied in. Before 2026-06-29, the model&rsquo;s all-pairs likelihood concerned the preceding batch rather than ch. 421.</p>
 {pairs_chart}
-<h3>Selected method: two-sided ordered-readiness likelihood</h3>
+<h3>Selected method: monotone two-sided ordered-readiness likelihood</h3>
 <p>Work within a chapter is represented on the existing linear stage scale, while different chapters may overlap heavily. Retouch is excluded because it is rework rather than a stable forward position. Let \(p_c(t)\) be the furthest explicit non-retouch coordinate for chapter \(c\), \(A_c(t)\) indicate any such production report, and \(M_c(t)\) indicate an explicit manuscript-complete report. The order-adjusted lower bound is</p>
 \[
 q_c(t)=\min\left\{{1,\max\left[p_c(t),\;0.5I\!\left(\exists j>c:A_j(t)\right),\;I\!\left(\exists j>c:M_j(t)\right),\;I(c=430)M_{{430}}(t)\right]\right\}}.
@@ -400,8 +400,9 @@ q_c(t)=\min\left\{{1,\max\left[p_c(t),\;0.5I\!\left(\exists j>c:A_j(t)\right),\;
 <p>The three centres enter as broad Gaussian components with a declared 120-day scale:</p>
 \[L_{{\mathrm{{ready}}}}(s)=\frac1{{|H|}}\sum_{{h\in H}}\exp\left[-\frac12\left(\frac{{s-m_h(t)}}{{120\text{{ days}}}}\right)^2\right].\]
 <p>One analog contributes one component and the components are averaged, not multiplied. Unlike V10&rsquo;s one-sided floor, this likelihood makes both dates that are implausibly early and dates far beyond every comparable readiness trajectory less compatible. The 120-day width is deliberately broad because only three independent production-era analogs exist.</p>
+<p>V12 evaluates the immediately preceding readiness state on the same forecast date and eligible-issue grid. If the new readiness posterior would reduce cumulative publication probability at any issue, its CDF is projected to the pointwise maximum of the new and preceding-state CDFs. Thus ordinary forward progress cannot make publication later while elapsed non-publication, retakes, and disruptions remain free to do so.</p>
 <h4>Readiness diagnostics</h4>
-<p class="note">These {feasibility_diag_n} snapshots show the ordered readiness input on a 0&ndash;10 scale and the corresponding V10 floor dates retained for comparison. The selected V11 likelihood uses two-sided components centred on the analog-implied dates rather than the displayed one-sided ramps.</p>
+<p class="note">These {feasibility_diag_n} snapshots show the ordered readiness input on a 0&ndash;10 scale and the corresponding V10 floor dates retained for comparison. The selected V12 likelihood uses two-sided components centred on the analog-implied dates, followed by the monotonicity check.</p>
 {feasibility_floor_chart}
 {readiness_chart}
 <h3>Reader-facing batch-progress chart</h3>
@@ -415,7 +416,7 @@ B_{{\mathrm{{chart}}}}(t)=\frac{{B(t)}}{{10}}=\frac1{{10}}\sum_{{c=421}}^{{430}}
 \[P(S_{{421}}=s\mid\mathcal D_t)\propto P_0(s)L_{{\mathrm{{ready}}}}(s\mid B(t))I(s>F_t).\]
 <p>The distribution can move when readiness changes and when an eligible issue passes without ch. 421. A missed issue is publication information, not a claim that production slowed.</p>
 <h3>Final prediction history for ch. 421</h3>
-<p class="note">This fixed-target replay shows the final combined V11 posterior at {posterior_history_n} historical forecast dates. It includes Level 1, the two-sided ordered-readiness likelihood, and the non-publication floor. The teal line is the median predicted publication date; the shaded band is the central 80% interval.</p>
+<p class="note">This fixed-target replay shows the final combined V12 posterior at {posterior_history_n} historical forecast dates. It includes Level 1, the monotone two-sided ordered-readiness likelihood, and the non-publication floor. The teal line is the median predicted publication date; the shaded band is the central 80% interval.</p>
 {posterior_history_chart}
 <h2>8. Later chapters</h2>
 <p>Once the start issue is estimated, ch. 422&ndash;430 are derived from a shared batch-level cadence regime. Fourteen of fifteen completed modeling-era batches were consecutive. The only disrupted batch contained both exceptional intervals: one extra issue before its sixth chapter and another before its ninth. The model therefore draws one regular-or-disrupted regime for the whole batch rather than nine independent skip events.</p>
