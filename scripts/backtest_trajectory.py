@@ -49,6 +49,9 @@ import build_posterior as bp
 
 # name -> the module-level switches it sets
 SETTINGS = {
+    "V13 worst countdown": dict(LEVEL2_MODE="worst_case_countdown",
+                                PARAMETRIC_LEVEL1=False, SEPARATE_ZERO_GAP_MODE=True,
+                                WEIGHT_ANALOGS_BY_SURVIVAL=False),
     "V8 live (all-pairs)": dict(LEVEL2_MODE="all_pairs",
                                 PARAMETRIC_LEVEL1=True,  SEPARATE_ZERO_GAP_MODE=False,
                                 WEIGHT_ANALOGS_BY_SURVIVAL=False),

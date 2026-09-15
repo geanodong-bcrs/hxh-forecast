@@ -461,7 +461,8 @@ def posterior_series(chapter, direct_only=False):
         out = [r for r in out if r["direct"]]
     # Revision snapshots are append-only, so preserve the old record on disk
     # but do not draw two incompatible models as one apparent time series.
-    for model in ("monotone_ordered_readiness_mixture_v12",
+    for model in ("slowest_observed_countdown_v13",
+                  "monotone_ordered_readiness_mixture_v12",
                   "ordered_readiness_two_sided_mixture_v11",
                   "ordered_readiness_feasibility_floor_v10",
                   "readiness_feasibility_floor_v9",
@@ -1699,12 +1700,27 @@ def build_method(post, l2, pri, snap_path):
              'once, and the confidence scales with how many comparable runs exist, '
              'not how many posts there are.</p></div>' % (n_ready, n_ready))
     feas = post.get("feasibility") or {}
-    if post.get("level2_design") in {"monotone_ordered_readiness_mixture_v12",
+    if post.get("level2_design") in {"slowest_observed_countdown_v13",
+                                     "monotone_ordered_readiness_mixture_v12",
                                      "ordered_readiness_two_sided_mixture_v11",
                                      "ordered_readiness_feasibility_floor_v10",
                                      "readiness_feasibility_floor_v9"}:
         lvl = feas.get("level")
-        if post.get("level2_design") in {"monotone_ordered_readiness_mixture_v12",
+        if post.get("level2_design") == "slowest_observed_countdown_v13":
+            v13 = post.get("slowest_observed_countdown") or {}
+            h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
+                     'The run is at %.2f of 10.00 ordered chapter-equivalents. '
+                     'For every half-chapter transition, V13 takes the slowest '
+                     'duration observed across the three resolved production-era '
+                     'runs, then adds the slowest observed post-production scheduling '
+                     'delay. The resulting production deadline is %s; the longest '
+                     'historical hiatus would end %s. The earlier deadline is the '
+                     'centre of a deliberately broad 120-day forecast. Elapsed time '
+                     'counts down the current budget, and reported progress can only '
+                     'move the deadline earlier or leave it unchanged.</p></div>'
+                     % (v13.get('level', 0.0), v13.get('deadline', 'unavailable'),
+                        v13.get('historical_worst_deadline', 'unavailable')))
+        elif post.get("level2_design") in {"monotone_ordered_readiness_mixture_v12",
                                           "ordered_readiness_two_sided_mixture_v11"}:
             centres = (post.get("readiness_mixture") or {}).get("centres") or {}
             centre_text = ", ".join(centres[k] for k in sorted(centres))
@@ -1797,7 +1813,8 @@ def build_method(post, l2, pri, snap_path):
                      % (hprior.get("elapsed_first_gap", 0),
                         "" if hprior.get("elapsed_first_gap", 0) == 1 else "s",
                         hprior.get("n_eligible_pairs", 0), hprior.get("n_pairs", 0)))
-    elif post.get("level2_design") not in {"monotone_ordered_readiness_mixture_v12",
+    elif post.get("level2_design") not in {"slowest_observed_countdown_v13",
+                                           "monotone_ordered_readiness_mixture_v12",
                                            "ordered_readiness_two_sided_mixture_v11",
                                            "ordered_readiness_feasibility_floor_v10"}:
         ctx = (post.get("preceding_batch_context") or {}).get("weight")
