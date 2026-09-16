@@ -280,13 +280,15 @@ def render(d, path):
     # does not compete typographically with the hero date, which is still the
     # answer to the question being asked.
     lvl = d.get("readiness_level")
+    progress_y = .15 if footnoted and not quiet else .205
+    bar_y = .10 if footnoted and not quiet else .142
     if lvl is not None:
         frac = max(0.0, min(1.0, lvl / 10.0))
-        fig.text(.055, .205, "Batch %d–%d progress" % (d["chapter"], d["chapter"] + 9),
+        fig.text(.055, progress_y, "Batch %d–%d progress" % (d["chapter"], d["chapter"] + 9),
                  color=INK2, fontsize=10.5)
-        fig.text(.475, .205, "%.0f%%" % (frac * 100), color=ACCENT, fontsize=13,
+        fig.text(.475, progress_y, "%.0f%%" % (frac * 100), color=ACCENT, fontsize=13,
                  fontweight="bold", ha="right", va="baseline")
-        ax_bar = fig.add_axes([.055, .142, .42, .026])
+        ax_bar = fig.add_axes([.055, bar_y, .42, .026])
         ax_bar.set_axis_off()
         ax_bar.set_xlim(0, 1)
         ax_bar.set_ylim(0, 1)
@@ -378,11 +380,12 @@ def render(d, path):
     # evidence, so there is never a chip to displace. Geometry is unchanged:
     # when a chip does appear, there is no footnote to collide with it.
     if footnoted:
+        footnote_y = .255 if not quiet else .535
         for i, line in enumerate(
                 ("*Chapter %d–%d has not been scheduled yet," % (d["chapter"] - 10,
                                                                  d["chapter"] - 1),
                  "so this estimate inherits all of that uncertainty.")):
-            fig.text(.055, .535 - i * .042, line, color=MUTED, fontsize=8)
+            fig.text(.055, footnote_y - i * .042, line, color=MUTED, fontsize=8)
 
     # ---------------- footer ----------------
     fig.text(.055, .058, HANDLE, color=MUTED, fontsize=9)
