@@ -461,6 +461,8 @@ def posterior_series(chapter, direct_only=False):
         out = [r for r in out if r["direct"]]
     # Revision snapshots are append-only, so preserve the old record on disk
     # but do not draw two incompatible models as one apparent time series.
+    # V14 is deliberately absent: it was measured and not adopted (docs/model.md),
+    # so the one experimental snapshot it wrote must not become the drawn series.
     for model in ("slowest_observed_countdown_v13",
                   "monotone_ordered_readiness_mixture_v12",
                   "ordered_readiness_two_sided_mixture_v11",
@@ -1739,13 +1741,31 @@ def build_method(post, l2, pri, snap_path):
              'once, and the confidence scales with how many comparable runs exist, '
              'not how many posts there are.</p></div>' % (n_ready, n_ready))
     feas = post.get("feasibility") or {}
-    if post.get("level2_design") in {"slowest_observed_countdown_v13",
+    if post.get("level2_design") in {"analog_countdown_mixture_v14",
+                                     "slowest_observed_countdown_v13",
                                      "monotone_ordered_readiness_mixture_v12",
                                      "ordered_readiness_two_sided_mixture_v11",
                                      "ordered_readiness_feasibility_floor_v10",
                                      "readiness_feasibility_floor_v9"}:
         lvl = feas.get("level")
-        if post.get("level2_design") == "slowest_observed_countdown_v13":
+        if post.get("level2_design") == "analog_countdown_mixture_v14":
+            v14 = post.get("analog_countdown") or {}
+            waits = v14.get("analog_remaining_days") or {}
+            wait_text = ", ".join("batch %s waited %d days" % (k, waits[k])
+                                  for k in sorted(waits)) or "unavailable"
+            h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
+                     'The run is at %.2f of 10.00 ordered chapter-equivalents. '
+                     'Each of the three resolved production-era runs supplies one '
+                     'observed wait from that same readiness level to its own '
+                     'publication &mdash; %s. Each becomes one broad 120-day '
+                     'component and the components are averaged, not multiplied, '
+                     'so the spread between the three runs is the width of the '
+                     'forecast. The slowest of them lands on %s; that is a marker '
+                     'of the slowest pace yet observed, not the expected date. '
+                     'Reported progress cannot move the forecast later.</p></div>'
+                     % (v14.get('level', 0.0), wait_text,
+                        v14.get('slowest_observed_date', 'unavailable')))
+        elif post.get("level2_design") == "slowest_observed_countdown_v13":
             v13 = post.get("slowest_observed_countdown") or {}
             h.append('<div class=card><h3>How production evidence is used</h3><p class=note>'
                      'The run is at %.2f of 10.00 ordered chapter-equivalents. '
@@ -1852,7 +1872,8 @@ def build_method(post, l2, pri, snap_path):
                      % (hprior.get("elapsed_first_gap", 0),
                         "" if hprior.get("elapsed_first_gap", 0) == 1 else "s",
                         hprior.get("n_eligible_pairs", 0), hprior.get("n_pairs", 0)))
-    elif post.get("level2_design") not in {"slowest_observed_countdown_v13",
+    elif post.get("level2_design") not in {"analog_countdown_mixture_v14",
+                                           "slowest_observed_countdown_v13",
                                            "monotone_ordered_readiness_mixture_v12",
                                            "ordered_readiness_two_sided_mixture_v11",
                                            "ordered_readiness_feasibility_floor_v10"}:

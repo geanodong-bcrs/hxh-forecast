@@ -1,7 +1,10 @@
 # How the Prediction Is Made
 
 > **The live model is V13** — see "Slowest-observed countdown (V13)" at the end
-> of this file. Everything from here to that section is the historical record of
+> of this file, whose two known defects are quantified there and diagnosed in
+> `docs/v13_review.md`. The replacement proposed by that review was built,
+> measured and rejected; see "Per-analog countdowns (V14, not adopted)".
+> Everything from here to the V13 section is the historical record of
 > V1–V8 and is kept unchanged so every forecast already written stays
 > reproducible. In particular the "Current output (2026-08-28)" block below, with
 > its 50.6% on 2026-09-14, is what an earlier model said, not what the site says.
@@ -1091,6 +1094,42 @@ three paths are irregularly reported, maxima from different batches are added
 together, and a future transition may exceed every observation. The construction
 is deliberately pessimistic and auditable rather than statistically efficient.
 
+**How much the summing inflates it.** Adding maxima drawn from different batches
+gives a 0→10 envelope of 1256 days, plus the 125-day scheduling delay: **1381
+days**. No observed run took that long. Measured from first production report to
+publication, batch 48 took 800 days and batch 49 751 (batch 47's 152 is
+left-censored, its reporting beginning at B=3.00). The envelope therefore exceeds
+the slowest run ever observed by 581 days, a factor of 1.7. Two cells dominate
+it: 2.0→2.5 carries 422 days from batch 48's stall of 2023-03-09, and 5.5→6.0
+carries 280 days from batch 49's stall of 2024-11-20 — different runs, added
+together.
+
+Where a stall lands on the grid is an artifact rather than a measurement.
+`ordered_trace` can cross several levels on one reporting date, so a 420-day
+silence spanning B=2.01→2.47 is charged entirely to one half-chapter cell while
+the cells between it get zero. The budget consequently falls in cliffs rather
+than a gradient — crossing 2.5 drops it 1159→737, crossing 6.0 drops it 597→317
+— and the live deadline is in effect the date the target crossed 6.0 plus 317
+days, fixed on 2026-04-08 at B=6.1 and unchanged for five months.
+
+**The scheduling delay dominates near completion.** The 125 days is a `max` over
+three observations of last-report-to-publication which span 6 to 125 days and are
+measured from three *different* readiness levels (batch 47 from B=9.10, 48 from
+9.50, 49 from 10.00), so they are not the same quantity. Batch 49's figure does
+run from completion, so the current total double-counts nothing — but had batch
+48's 78 days won the `max`, the floor would have run from B=9.50 and overlapped
+the 9.5→10.0 cell already inside the sum. Because the term is additive and does
+not shrink as readiness rises, it is 125 of the 147 remaining days at B=9.1
+(85%) and all 125 at B=10.00: above roughly B=9 the forecast is one scheduling
+observation restated and is no longer meaningfully responsive to production
+progress. For scale, at batch 47's own final state (B=9.10, 2022-10-18) the
+envelope implies 2023-03-14 against an actual 2022-10-24 — though batch 47 is
+inside the envelope that produced it, so this is illustrative, not a score.
+
+Both defects were diagnosed in `docs/v13_review.md`, and the replacement
+proposed there was measured and rejected; see "Per-analog countdowns (V14, not
+adopted)" below for why the summing turns out to be load-bearing.
+
 At `B=9.1` on 2026-09-15, the production deadline is 2027-02-09 and the live
 median is 2027-02-19. In the September 20 counterfactual, chapter 429 completion
 raises readiness to 9.5, moves the deadline to 2027-01-30, the median to
@@ -1101,3 +1140,84 @@ A 21-day trajectory diagnostic gives mean absolute errors of 92 and 34 days
 for batches 48 and 49, with CRPS 9.46 and 3.78 issues. These are better than V12
 on the same two outcomes, but they are only two correlated trajectories. The
 model is selected for its monotone countdown semantics, not on those scores.
+
+### Per-analog countdowns (V14, not adopted)
+
+`scripts/build_v14.py`, selectable as `LEVEL2_MODE = "analog_countdown_mixture"`.
+Built to remove both defects recorded above, measured against them, and **not
+adopted**. The live model remains V13.
+
+The construction replaces the summed per-cell envelope with one quantity measured
+inside a single batch:
+
+    r_b(x) = publication_b − date_b(x)
+
+the observed wait from readiness level *x* to that batch's own publication. Both
+ends come from the same run, so nothing is added across batches and no value can
+exceed that batch's own production span. It also already contains the scheduling
+delay, so V13's separate additive floor disappears: at x = 10.0, `r_b` *is* the
+completion-to-publication wait, and it decays as readiness rises instead of
+standing as a constant. Each analog then supplies one Gaussian component at
+`attained + r_b(level)` with the same 120-day width V11/V12 used, and the
+components are averaged, not multiplied (§11) — so the spread between runs is the
+forecast's width rather than a declared band around the slowest one.
+
+Monotonicity is checked one step instead of over the whole history: the candidate
+from the newest readiness state is compared with the candidate from the
+immediately preceding state and the earlier is kept, per analog. This is V12's
+rule on the countdown coordinate. It is also *necessary*: V13's minimum over
+every candidate ever formed stays well behaved only because its envelope is
+inflated. On a like-for-like envelope that minimum locks onto pre-stall estimates
+— run on the direct envelope it returns 2026-10-19, set by an observation from
+October 2024 at B=1.30 which the run's own eleven-month silence at B≈2.0 has
+refuted, and which the publication floor has nearly passed.
+
+**Why it fails.** Production reporting only begins with batch 47, and batch 47's
+reported trajectory is left-censored and compressed: 146 days from B=3.00 to
+B=9.10, against 722 and 626 days for batches 48 and 49. So `r_47(x)` is small at
+every level — 126 days at B=4.0 where batch 49 took 659 — because "B=4.0
+reported" does not describe the same production state across the three runs. V13's
+`max` discarded that analog implicitly; averaging gives it equal weight.
+
+Excluding left-censored runs (`REQUIRE_UNCENSORED_ANALOGS`) states that exclusion
+rather than leaving it to `max`, but it does not rescue the method, because under
+leave-one-out there is almost nothing left. Forecasting batch 48, batches 45 and
+46 have no production reports at all and batch 47 is censored: **zero** usable
+components. Forecasting batch 49, only batch 48 qualifies: **one**.
+
+| setting | target | drift | mean absolute error | mean CRPS |
+|---|---|---:|---:|---:|
+| V13 summed envelope | batch 48 | 0.77 | **92 days** | **9.46** |
+| V13 summed envelope | batch 49 | 0.18 | **34 days** | **3.78** |
+| V14 uncensored analogs only | batch 48 | 0.50 | 379 days | 31.13 |
+| V14 uncensored analogs only | batch 49 | 1.91 | 237 days | 21.49 |
+| V14 all analogs | batch 48 | 0.45 | 266 days | 22.87 |
+| V14 all analogs | batch 49 | 1.92 | 246 days | 22.29 |
+| Level 1, no Level 2 | batch 48 | 0.64 | 212 days | 18.65 |
+| Level 1, no Level 2 | batch 49 | 0.60 | 158 days | 16.62 |
+
+V14 is worse than V13, worse than V12, and worse than running no Level 2 at all.
+Two correlated trajectories cannot select a model — that is why V12 and V13 were
+each adopted on semantics rather than on these scores — but they can reject one,
+and a Level 2 that is beaten by its own absence on every available outcome has
+not earned the live slot.
+
+**What this says about V13.** The summing is load-bearing. Per-cell maxima let
+any batch that covered any cell contribute to that cell, so three sparsely and
+unevenly reported runs still yield a full budget; measuring within one batch
+requires a complete path, and the corpus contains at most two, one of which is
+always the target. V13's envelope buys robustness to sparse reporting with an
+inflation of 581 days. That trade is now documented rather than implicit, which
+was the point of the review — but it is a real trade, not a mistake to be
+removed.
+
+Every V13 snapshot now also records the `analog_countdown` block, so what V14
+would have said is on the record at each forecast date without being published.
+
+**What would actually settle it** is more complete production reporting, or a
+principled reconciliation of reported readiness across reporting regimes so that
+B is comparable between runs. Both are data problems, not modelling ones. Until
+then the open items from the review stand unaddressed: V13 still discards the
+Level-1 prior (`post = v13_pmf.copy()`), still centres a symmetric Gaussian on a
+date it calls the slowest observed, and its `record_hiatus` branch still
+overwrites the countdown without a guard.

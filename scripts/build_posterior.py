@@ -36,6 +36,7 @@ from build_readiness import (states as readiness_states, batch_scope as name_sco
                              coordinate_events)
 import build_feasibility
 import build_v13
+import build_v14
 import snapshot
 
 HALF_LIFE = None       # backtest-selected: no recency decay (docs/backtest.md)
@@ -75,7 +76,17 @@ NORMALISE_ANALOG_COMPONENTS = False
 # Which Level 2 to run.  "all_pairs" is the V5-V8 coordinate date-translation;
 # "readiness_mixture" is V12's monotone two-sided readiness likelihood.
 # "feasibility" retains V10's one-sided floor for comparison/replay.
+# "worst_case_countdown" is V13's summed slowest-observed envelope, still live.
+# "analog_countdown_mixture" is the V14 attempt: one observed countdown per
+# analog, averaged.  It is cleaner in construction but NOT adopted — production
+# reporting only begins with batch 47, so under leave-one-out it has 0-1 usable
+# analogs and scores far worse than V13 and than Level 1 alone.  See
+# docs/model.md "Per-analog countdowns (V14, not adopted)" and docs/v13_review.md.
 LEVEL2_MODE = "worst_case_countdown"
+# V14: only analogs reported from the start of their run supply a countdown.
+# False includes left-censored batch 47 and is much worse on the trajectory
+# diagnostic — see build_v14.REQUIRE_UNCENSORED_ANALOGS and docs/model.md.
+V14_REQUIRE_UNCENSORED_ANALOGS = True
 ENFORCE_READINESS_MONOTONICITY = True  # V12; False reproduces V11
 FEASIBILITY_SIGMA = 30.0    # days of softness on the one-sided ramp
 # Which confidence levels in data/annotations/known_absent_issues.csv are allowed
@@ -531,6 +542,22 @@ def main(asof=None, quiet=False, rid=None):
                 "active_deadline": v13_active_deadline.isoformat(),
                 "combination": "earlier of historical worst-gap and production countdown"})
     v13_pmf = None
+    # ---------- V14: one observed countdown per analog, averaged ----------
+    v14_components, v14 = build_v14.build(
+        ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today,
+        floor=by_seq[floor_seq]["on_sale"],
+        require_uncensored=V14_REQUIRE_UNCENSORED_ANALOGS)
+    # The historical worst-gap cap is retained from V13 as a per-component
+    # ceiling.  It has never bound — the worst observed hiatus ends far beyond
+    # any production-implied date — but dropping it could only ever move a
+    # forecast later, so it stays.
+    v14_capped = [b for b, d in v14_components.items() if d > historical_worst_deadline]
+    v14_components = {b: min(d, historical_worst_deadline)
+                      for b, d in v14_components.items()}
+    v14.update({"historical_worst_gap_issues": historical_worst_gap,
+                "historical_worst_deadline": historical_worst_deadline.isoformat(),
+                "capped_by_historical_worst": sorted(v14_capped)})
+    v14_pmf = None
     if LEVEL2_MODE == "none":
         lik = np.ones(len(cand), float)
     elif LEVEL2_MODE == "feasibility":
@@ -580,6 +607,9 @@ def main(asof=None, quiet=False, rid=None):
         lik = np.ones(len(cand), float)
         v13_pmf = build_v13.distribution([d for _, d, _ in cand],
                                          v13_active_deadline)
+    elif LEVEL2_MODE == "analog_countdown_mixture":
+        lik = np.ones(len(cand), float)
+        v14_pmf = build_v14.distribution([d for _, d, _ in cand], v14_components)
 
     '''
     Legacy exact-stage implementation retained below in git history; the
@@ -661,6 +691,10 @@ def main(asof=None, quiet=False, rid=None):
     post = prior * lik
     if LEVEL2_MODE == "worst_case_countdown" and v13_pmf is not None:
         post = v13_pmf.copy()
+    if LEVEL2_MODE == "analog_countdown_mixture" and v14_pmf is not None:
+        # Like V13, V14 does not multiply by the Level-1 gap PMF.  That remains
+        # an open question rather than a settled choice — see docs/v13_review.md.
+        post = v14_pmf.copy()
     for i, (s, _, _) in enumerate(cand):
         if not eligible(s):                  # not started, or issue ruled out
             post[i] = 0.0
@@ -856,7 +890,8 @@ def main(asof=None, quiet=False, rid=None):
         "level": "1+2 combined posterior",
         "half_life_batches": HALF_LIFE,
         "analogs": analogs,
-        "level2_design": ("slowest_observed_countdown_v13" if LEVEL2_MODE == "worst_case_countdown"
+        "level2_design": ("analog_countdown_mixture_v14" if LEVEL2_MODE == "analog_countdown_mixture"
+                          else "slowest_observed_countdown_v13" if LEVEL2_MODE == "worst_case_countdown"
                           else "monotone_ordered_readiness_mixture_v12" if LEVEL2_MODE == "readiness_mixture"
                           else "ordered_readiness_feasibility_floor_v10" if LEVEL2_MODE == "feasibility"
                           else "all_pairs_coordinate_likelihood_v9_mixture_level1"),
@@ -909,6 +944,7 @@ def main(asof=None, quiet=False, rid=None):
         "readiness_mixture": readiness_mixture,
         "readiness_monotonicity": monotonicity,
         "slowest_observed_countdown": v13,
+        "analog_countdown": v14,
         "no_start_update": "The posterior support is conditioned through each issue publicly known not to contain the batch. The analog-fade likelihood is held at the latest production-event issue until a record hiatus.",
         "record_hiatus": record_hiatus,
         "median": med[1].isoformat(),

@@ -49,6 +49,13 @@ import build_posterior as bp
 
 # name -> the module-level switches it sets
 SETTINGS = {
+    "V14 analog countdown": dict(LEVEL2_MODE="analog_countdown_mixture",
+                                PARAMETRIC_LEVEL1=False, SEPARATE_ZERO_GAP_MODE=True,
+                                WEIGHT_ANALOGS_BY_SURVIVAL=False),
+    "V14 all analogs":     dict(LEVEL2_MODE="analog_countdown_mixture",
+                                V14_REQUIRE_UNCENSORED_ANALOGS=False,
+                                PARAMETRIC_LEVEL1=False, SEPARATE_ZERO_GAP_MODE=True,
+                                WEIGHT_ANALOGS_BY_SURVIVAL=False),
     "V13 worst countdown": dict(LEVEL2_MODE="worst_case_countdown",
                                 PARAMETRIC_LEVEL1=False, SEPARATE_ZERO_GAP_MODE=True,
                                 WEIGHT_ANALOGS_BY_SURVIVAL=False),
