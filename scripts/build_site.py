@@ -977,13 +977,15 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     pad_y = max((y1 - y0) * 0.07, 3)
     y0, y1 = y0 - pad_y, y1 + pad_y
     Y = lambda o: pad_t + H * (o - y0) / max(y1 - y0, 1)
+    compact_y_dates = bool(rows[0].get("_compact_y_dates"))
 
     for frac in (0, .25, .5, .75, 1):
         o = y0 + (y1 - y0) * frac
         g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
                  '<text class="ax" x="%d" y="%.1f" text-anchor="end">%s</text>'
                  % (pad_l, Y(o), pad_l + W, Y(o), pad_l - 6, Y(o) + 4,
-                    date.fromordinal(int(o)).strftime("%b %Y")))
+                    date.fromordinal(int(o)).strftime(
+                        "%m/%d/%y" if compact_y_dates else "%b %Y")))
 
     body, labels = [], []
     for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
@@ -1191,7 +1193,7 @@ def zoomed(render, rows, weeks=8, name="z"):
     through an allowlist, and a chart toggle is not worth changing that.
     """
     cut = rows[-1]["t"] - timedelta(weeks=weeks)
-    recent = [r for r in rows if r["t"] >= cut]
+    recent = [dict(r, _compact_y_dates=True) for r in rows if r["t"] >= cut]
     full_svg = render(rows)
     if not full_svg:
         return ""
