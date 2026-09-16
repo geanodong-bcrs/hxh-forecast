@@ -73,6 +73,14 @@ COMPONENT_SIGMA_DAYS = 120.0
 # and 246 days against V13's 92 and 34).  Requiring an uncensored path is the
 # stated reason to exclude it rather than relying on ``max`` to do so silently.
 REQUIRE_UNCENSORED_ANALOGS = True
+# Ablation axes, so the V14 result can be attributed rather than guessed at.
+# "mixture" gives each analog one averaged component (the V14 proposal);
+# "max" collapses them to the slowest, which is V13's combination rule on V14's
+# envelope.  "one_step" compares only against the preceding readiness state;
+# "min_history" is V13's minimum over every candidate ever formed, reproduced
+# faithfully -- including that it does not drop candidates the floor has passed.
+COMBINE = "mixture"
+MONOTONE = "one_step"
 
 
 def analog_remaining(analog_paths, analog_starts, level, require_uncensored=None):
@@ -110,7 +118,7 @@ def candidates(analog_paths, analog_starts, attained, level,
 
 
 def build(events, target_chapters, analog_chapters, analog_starts, asof,
-          floor=None, require_uncensored=None):
+          floor=None, require_uncensored=None, combine=None, monotone=None):
     """Return ``(components, detail)``: one implied date per analog batch.
 
     ``floor`` is the earliest issue the batch could still start on.  A candidate
@@ -130,12 +138,27 @@ def build(events, target_chapters, analog_chapters, analog_starts, asof,
                     "one_step_monotonicity": {"applied": False},
                     "interpretation": "no target readiness observations yet"}
 
+    if combine is None:
+        combine = COMBINE
+    if monotone is None:
+        monotone = MONOTONE
+
     attained, level = target_path[-1]
     current = candidates(analog_paths, analog_starts, attained, level,
                          require_uncensored)
 
     previous, previous_state = {}, None
-    if len(target_path) > 1:
+    if monotone == "min_history":
+        # V13's rule: the earliest candidate ever formed, from any observation,
+        # with no refutation check. Reproduced for the ablation only.
+        for attained_t, level_t in target_path[:-1]:
+            for batch, implied in candidates(analog_paths, analog_starts,
+                                             attained_t, level_t,
+                                             require_uncensored).items():
+                if batch not in previous or implied < previous[batch]:
+                    previous[batch] = implied
+        previous_state = {"rule": "minimum over all %d observations" % len(target_path)}
+    elif len(target_path) > 1:
         prev_attained, prev_level = target_path[-2]
         previous = candidates(analog_paths, analog_starts, prev_attained,
                               prev_level, require_uncensored)
@@ -145,7 +168,8 @@ def build(events, target_chapters, analog_chapters, analog_starts, asof,
     components, bound, refuted = {}, [], []
     for batch, implied in current.items():
         earlier = previous.get(batch)
-        if earlier is not None and floor is not None and earlier < floor:
+        if (earlier is not None and floor is not None and earlier < floor
+                and monotone != "min_history"):
             refuted.append(batch)
             earlier = None
         if earlier is not None and earlier < implied:
@@ -154,7 +178,11 @@ def build(events, target_chapters, analog_chapters, analog_starts, asof,
         components[batch] = implied
 
     slowest = max(components.values()) if components else None
-    return components, {
+    # "max" is V13's combination rule applied to V14's envelope: one component on
+    # the slowest analog instead of one component per analog.
+    effective = ({"slowest": slowest} if combine == "max" and slowest
+                 else components)
+    return effective, {
         "level": round(level, 4),
         "attained": attained.isoformat(),
         "grid_step": GRID_STEP,
@@ -172,7 +200,11 @@ def build(events, target_chapters, analog_chapters, analog_starts, asof,
             "refuted_by_floor": sorted(refuted),
             "previous_readiness": previous_state,
         },
-        "combination": "one component per analog, averaged (Agents.md 11)",
+        "combination": ("slowest analog only (V13 rule)" if combine == "max"
+                        else "one component per analog, averaged (Agents.md 11)"),
+        "combine": combine,
+        "monotone_rule": monotone,
+        "effective_components": {str(b): d.isoformat() for b, d in effective.items()},
         "require_uncensored_analogs": (REQUIRE_UNCENSORED_ANALOGS
                                        if require_uncensored is None
                                        else require_uncensored),

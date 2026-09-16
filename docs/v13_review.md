@@ -8,15 +8,84 @@ same habit: adding together quantities that were never observed together.
 Everything below is reproducible from the snapshot JSON alone, because each one
 carries the full `deadline_history` and the per-cell `observations`.
 
-> **Outcome (2026-09-16).** Both findings stand. The fix proposed below was
-> implemented as `scripts/build_v14.py`, scored, and **rejected** — it is worse
-> than V13, worse than V12, and worse than running no Level 2 at all, because
-> measuring within a single batch needs a complete production path and the corpus
-> contains at most two of those, one of which is always the target. V13's summing
-> turns out to be load-bearing: it is what makes three sparsely reported runs
-> usable. See "Per-analog countdowns (V14, not adopted)" in `docs/model.md`. The
-> corrections to the *documentation* of V13 were applied. Two claims in the
-> Recommendation below were wrong when written and are marked inline.
+---
+
+## Summary (2026-09-16)
+
+**Both findings stand. The proposed fix was built, measured and rejected. V13
+remains live, now with its two defects quantified in `docs/model.md` instead of
+left implicit.**
+
+What the review found:
+
+1. V13's envelope takes a per-cell maximum across batches and sums the cells, so
+   two unrelated production stalls — batch 48's from 2023-03-09 and batch 49's
+   from 2024-11-20 — both enter one total. The 0→10 envelope plus the scheduling
+   delay is **1381 days** against a slowest observed run of **800**: 581 days
+   longer than anything that happened, a factor of 1.7.
+2. The 125-day scheduling floor is a `max` over three observations spanning 6 to
+   125 days, measured from three *different* readiness levels, and it is additive
+   and never decays: 125 of 147 remaining days at B=9.1 (**85%**) and all 125 at
+   B=10.00.
+
+What was built: `scripts/build_v14.py`, which replaces both with one quantity
+measured inside a single batch, `r_b(x) = publication_b − date_b(x)`, then gives
+each analog one 120-day component and averages them (§11). This removes the
+summing, dissolves the additive floor (at x = 10.0, `r_b` *is* the
+completion-to-publication wait), and makes the countdown decay with readiness.
+
+Why it was rejected — the 21-day trajectory diagnostic:
+
+| model | target | mean absolute error | mean CRPS |
+|---|---|---:|---:|
+| V13 summed envelope | batch 48 | **92 days** | **9.46** |
+| V13 summed envelope | batch 49 | **34 days** | **3.78** |
+| V14 uncensored analogs only | batch 48 | 379 days | 31.13 |
+| V14 uncensored analogs only | batch 49 | 237 days | 21.49 |
+| V14 all analogs | batch 48 | 266 days | 22.87 |
+| V14 all analogs | batch 49 | 246 days | 22.29 |
+| Level 1, no Level 2 | batch 48 | 212 days | 18.65 |
+| Level 1, no Level 2 | batch 49 | 158 days | 16.62 |
+
+Two correlated trajectories cannot *select* a model — V12 and V13 were each
+adopted on semantics for that reason — but they can reject one, and a Level 2
+beaten by its own absence on every available outcome has not earned the live slot.
+
+The cause is data starvation, not the formulation. Production reporting begins
+with batch 47, whose reported trajectory is left-censored and compressed: 146 days
+from B=3.00 to B=9.10 against 722 and 626 for batches 48 and 49. So `r_47(x)` is
+small at every level and not comparable. Excluding it leaves **one** usable analog
+when forecasting batch 49 and **none** when forecasting batch 48 — batches 45 and
+46 have no production reports at all.
+
+**So V13's summing is load-bearing.** Per-cell maxima let any batch that covered
+any cell contribute to it, which is what makes three sparsely and unevenly
+reported runs yield a full budget. The 581-day inflation is the price of that
+robustness: a real trade, not a mistake to be removed.
+
+What V14 would have predicted for ch 421 (= W_50), had it shipped:
+
+| model | median | 80% interval |
+|---|---|---|
+| V13 (live, published) | 2027-02-19 | 2026-11-02 .. 2027-07-16 |
+| V14 uncensored analogs | 2027-01-29 | 2026-10-19 .. 2027-06-25 |
+| V14 all analogs | 2027-01-15 | 2026-10-12 .. 2027-06-11 |
+
+Three weeks earlier than V13, because V13 takes the slower of the two components
+(batch 49's 2027-02-06) as its centre while V14 averages it with batch 48's
+2026-12-03.
+
+What changed on disk: the V13 section of `docs/model.md` now quantifies both
+defects; a new "Per-analog countdowns (V14, not adopted)" section records the
+negative result; `build_v14.py` is retained as a selectable comparison mode and
+every live snapshot carries an `analog_countdown` block, so what V14 would have
+said is on the record at each forecast date without being published. Two claims in
+the Recommendation below were wrong when written and are struck through inline.
+
+Still unaddressed, from the original review: V13 discards the Level-1 prior
+(`post = v13_pmf.copy()`), centres a symmetric Gaussian on a date it calls the
+slowest observed, and its `record_hiatus` branch overwrites the countdown without
+a guard.
 
 ---
 
@@ -167,6 +236,58 @@ against 722 and 626 for batches 48 and 49 — so `r_47(x)` is small at every lev
 and not comparable. Excluding it leaves **one** usable analog when forecasting
 batch 49 and **none** when forecasting batch 48. The summing that inflates V13 is
 what makes it robust to exactly this sparsity.
+
+---
+
+## Tests
+
+`tests/test_ordered_readiness.py`, 20 tests, all passing. Ten were added for
+V14 in a `V14AnalogCountdown` case; they still run because the module is retained
+as a comparison mode, and they pin the properties the review asked for so a future
+attempt does not have to rediscover them.
+
+**Finding 1 — no summing across batches**
+
+| test | what it pins |
+|---|---|
+| `test_remaining_is_measured_within_one_batch` | `r_b(x)` comes from one batch's own two dates: 20 and 60 days for the two fixtures |
+| `test_remaining_never_exceeds_that_batch_own_run` | at every level, no analog's remaining wait exceeds that batch's whole observed run — the invariant V13's 1381-day envelope violates |
+| `test_left_censored_analog_is_excluded_outright` | a run first reported at B=4.0 contributes nothing, and with the requirement off only levels *above* its first observation do |
+
+**Finding 2 — no additive scheduling floor**
+
+| test | what it pins |
+|---|---|
+| `test_no_additive_scheduling_floor_at_completion` | at B=10.0 the remaining wait *is* the completion-to-publication delay, not that delay plus a residue |
+| `test_remaining_decays_with_readiness` | the countdown is non-increasing in readiness, so the floor cannot stand as a constant |
+
+**Monotonicity — the one-step rule that replaced the minimum over history**
+
+| test | what it pins |
+|---|---|
+| `test_one_step_monotonicity_keeps_the_earlier_candidate` | the V11 defect: a report after a long silence with a small readiness gain implies a later date (2027-03-02) and is clamped to the preceding state's candidate (2026-06-02) |
+| `test_progress_without_silence_is_left_alone` | the mirror case — an already-earlier candidate passes through untouched, so the constraint costs nothing when not needed |
+| `test_refuted_previous_candidate_does_not_bind` | a preceding candidate the publication floor has passed is refuted and must not pin the forecast to a date that cannot happen |
+
+**Combination and degenerate inputs**
+
+| test | what it pins |
+|---|---|
+| `test_components_are_averaged_not_multiplied` | two far-apart components both keep mass; multiplying would collapse onto their overlap and starve the later one (§11) |
+| `test_empty_target_path_is_neutral` | no readiness observations yields no components, a null slowest date, and a flat likelihood rather than a crash |
+
+One existing V13 test, `test_v13_uses_longest_observed_transition`, was annotated
+rather than changed: both its fixture paths jump 0.0 → 9.0 in one step, so every
+elapsed day before the jump is charged to cell 0.0–0.5 and the cells between get
+zero. That is exactly the attribution artifact Finding 1 describes, and the test
+asserted it as correct behaviour without noting it. It now pins V13's behaviour
+for replay while recording that it is an artifact.
+
+**Not covered by tests.** The two claims that need data rather than fixtures: that
+the envelope exceeds every observed run (checked against the live analog paths, in
+the tables above) and the trajectory scores (`scripts/backtest_trajectory.py`,
+settings `V14 analog countdown` and `V14 all analogs`). Cross-run non-regression
+of the deadline (Finding 6) remains unenforced and therefore untested.
 
 ---
 

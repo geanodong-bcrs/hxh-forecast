@@ -817,6 +817,124 @@ def resolved_batch_runs():
     return out
 
 
+# Validated 5-slot categorical palette (dataviz skill, canonical order).  The
+# previous site hues put batch 48 and batch 49 at deutan Delta-E 5.9 -- one line
+# for a red-green colourblind reader.  These pass every hard gate in both modes
+# (worst adjacent CVD Delta-E 9.1 light / 8.4 dark).  Both views share them, so
+# a batch keeps its colour when you switch between them.
+SERIES_HUE = {
+    "r47":   ("#2a78d6", "#3987e5"),
+    "r48":   ("#eb6834", "#d95926"),
+    "r49":   ("#1baf7a", "#199e70"),
+    "rlive": ("#eda100", "#c98500"),
+    "rnext": ("#e87ba4", "#d55181"),
+}
+TIMELINE_PX_PER_DAY = 3.0
+
+
+def _timeline_view(series, asof):
+    """The same five runs on real calendar dates instead of aligned origins.
+
+    Aligning every run at its own first report is what makes the shapes
+    comparable, but it hides the thing a reader most wants to see: the real
+    gaps between batches, and what was being drawn during them.  This view
+    trades comparability for that.  The y axis is a separate SVG outside the
+    scrolling pane so the scale stays on screen while the dates move.
+    """
+    origins = [s["path"]["origin"] for s in series]
+    ends = [s["path"]["origin"] + timedelta(days=s["path"]["path"][-1][0]) for s in series]
+    ends += [when for s in series for _, when in s["publication"]]
+    t0 = min(origins) - timedelta(days=14)
+    t1 = max(ends + [asof]) + timedelta(days=40)
+    span = (t1 - t0).days
+    pad_t, plot_h, pad_b = 30, 216, 40
+    height = pad_t + plot_h + pad_b
+    width = int(span * TIMELINE_PX_PER_DAY)
+    X = lambda when: (when - t0).days * TIMELINE_PX_PER_DAY
+    Y = lambda value: pad_t + plot_h * (1 - value / 1.10)
+
+    grid = ['<rect class="pubband" x="0" y="%.1f" width="%d" height="%.1f"/>'
+            % (Y(1.10), width, Y(1.00) - Y(1.10))]
+    for value in (0, .25, .5, .75):
+        grid.append('<line class="grid" x1="0" y1="%.1f" x2="%d" y2="%.1f"/>'
+                    % (Y(value), width, Y(value)))
+    # Quarter rules, with the year spelled out each January.
+    year, month = t0.year, ((t0.month - 1) // 3) * 3 + 1
+    while date(year, month, 1) <= t1:
+        when = date(year, month, 1)
+        if when >= t0:
+            x = X(when)
+            grid.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                        % (x, pad_t, x, pad_t + plot_h))
+            label = when.strftime("%b") if month != 1 else when.strftime("%b %Y")
+            grid.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                        % (x, height - 22, label))
+        month += 3
+        if month > 12:
+            month, year = 1, year + 1
+
+    body, legend = [], []
+    for s in series:
+        origin = s["path"]["origin"]
+        pts = [(origin + timedelta(days=day), min(value / .90, 1.0))
+               for day, value in s["path"]["path"]]
+        d = ["M%.1f,%.1f" % (X(pts[0][0]), Y(pts[0][1]))]
+        prev = pts[0][1]
+        for when, value in pts[1:]:
+            d.append("L%.1f,%.1f L%.1f,%.1f" % (X(when), Y(prev), X(when), Y(value)))
+            prev = value
+        body.append('<path class="rline %s" d="%s"/>' % (s["css"], " ".join(d)))
+        if s["publication"]:
+            pub = [(when, 1.00 + .10 * (position - 1) / 9.0)
+                   for position, when in s["publication"]]
+            d = ["M%.1f,%.1f" % (X(pub[0][0]), Y(pub[0][1]))]
+            prev = pub[0][1]
+            for when, value in pub[1:]:
+                d.append("L%.1f,%.1f L%.1f,%.1f" % (X(when), Y(prev), X(when), Y(value)))
+                prev = value
+            body.append('<path class="pline %s" d="%s"/>' % (s["css"], " ".join(d)))
+        # Direct label on each run, so identity never rests on colour alone.
+        body.append('<text class="rlab %s" x="%.1f" y="%.1f">%s</text>'
+                    % (s["css"], X(pts[-1][0]) + 6, Y(pts[-1][1]) + 4, s["label"]))
+        legend.append('<span><i class="dot %s"></i>%s%s</span>'
+                      % (s["css"], s["label"], s["legend_suffix"]))
+
+    # The one interval the model argues about: batch 49 finished, then waited.
+    marks = []
+    # readiness_path stores B/10, so a finished run is 1.0.  (0.90 means
+    # manuscript-complete in the *display* transform above, not here -- reusing
+    # that threshold made this read B=9.0 and report a 144-day wait.)
+    complete = next((s["path"]["origin"] + timedelta(days=day)
+                     for s in series if s["css"] == "r49"
+                     for day, value in s["path"]["path"] if value >= .9999), None)
+    onsale = next((s["publication"][0][1] for s in series
+                   if s["css"] == "r49" and s["publication"]), None)
+    if complete and onsale and onsale > complete:
+        x0, x1 = X(complete), X(onsale)
+        marks.append('<rect class="waitband" x="%.1f" y="%d" width="%.1f" height="%d"/>'
+                     % (x0, pad_t, x1 - x0, plot_h))
+        marks.append('<text class="ax wait" x="%.1f" y="%d" text-anchor="middle">'
+                     'batch 49 finished, waiting %d days</text>'
+                     % ((x0 + x1) / 2, pad_t - 10, (onsale - complete).days))
+
+    axis = ('<svg viewBox="0 0 52 %d" width="52" height="%d" class="tlaxis" role="presentation">'
+            % (height, height))
+    for value in (0, .25, .5, .75, 1.00):
+        axis += ('<text class="ax" x="46" y="%.1f" text-anchor="end">%d%%</text>'
+                 % (Y(value) + 4, round(value * 100)))
+    axis += ('<text class="ax" x="12" y="%.1f" transform="rotate(-90 12 %.1f)" '
+             'text-anchor="middle">Togashi&rsquo;s working progress</text></svg>'
+             % (pad_t + plot_h / 2, pad_t + plot_h / 2))
+
+    plot = ('<svg viewBox="0 0 %d %d" width="%d" height="%d" class="chart" role="img" '
+            'aria-label="Production and publication progress of five Hunter x Hunter '
+            'batches on real calendar dates from %s to %s">%s%s%s</svg>'
+            % (width, height, width, height, t0.isoformat(), t1.isoformat(),
+               "".join(marks), "\n".join(grid), "".join(body)))
+    return ('<div class="tlwrap"><div class="tlgutter">%s</div>'
+            '<div class="tlscroll">%s</div></div>' % (axis, plot)), legend
+
+
 def readiness_comparison_chart(post):
     """Public progress paths, aligned at each run's first observed event."""
     first = int(post["target"].split("ch ")[-1])
@@ -922,23 +1040,34 @@ def readiness_comparison_chart(post):
 <text class="ax" x="14" y="%d" transform="rotate(-90 14 %d)" text-anchor="middle">Togashi&rsquo;s working progress</text>
 </svg>''' % (width, height, "\n".join(grid), "".join(paths), "".join(publication_paths),
               pad_l + W / 2, height - 7, pad_t + H / 2, pad_t + H / 2)
+    timeline, _tl_legend = _timeline_view(series, asof)
     return [
-        '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}'
-        '.pubband{fill:var(--soft)}'
-        '.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.r47,.pline.r47{stroke:#8a5a44}.rline.r48,.pline.r48{stroke:#775b9c}'
-        '.rline.r49,.pline.r49{stroke:#2c7a7b}.rline.rlive{stroke:var(--accent);stroke-width:3}'
-        '.rline.rnext{stroke:#c05c22}'
-        '.dot.r47{background:#8a5a44;border-color:#8a5a44}'
-        '.dot.r48{background:#775b9c;border-color:#775b9c}.dot.r49{background:#2c7a7b;border-color:#2c7a7b}'
-        '.dot.rlive{background:var(--accent);border-color:var(--accent)}.dot.rnext{background:#c05c22;border-color:#c05c22}.dot.pub{background:#b34070;border-color:#b34070}'
-        '</style>',
+        '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}.pubband{fill:var(--soft)}.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.rlive{stroke-width:3}.rlab{font-size:11px;font-weight:600}.waitband{fill:var(--mut);opacity:.13}.ax.wait{font-weight:600;fill:var(--fg)}.rline.r47,.pline.r47{stroke:#2a78d6}.rlab.r47{fill:#2a78d6}.dot.r47{background:#2a78d6;border-color:#2a78d6}.rline.r48,.pline.r48{stroke:#eb6834}.rlab.r48{fill:#eb6834}.dot.r48{background:#eb6834;border-color:#eb6834}.rline.r49,.pline.r49{stroke:#1baf7a}.rlab.r49{fill:#1baf7a}.dot.r49{background:#1baf7a;border-color:#1baf7a}.rline.rlive,.pline.rlive{stroke:#eda100}.rlab.rlive{fill:#eda100}.dot.rlive{background:#eda100;border-color:#eda100}.rline.rnext,.pline.rnext{stroke:#e87ba4}.rlab.rnext{fill:#e87ba4}.dot.rnext{background:#e87ba4;border-color:#e87ba4}.tlwrap{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.tlgutter{flex:none;background:var(--bg);border-right:1px solid var(--line)}.tlgutter svg{display:block}.tlscroll{overflow-x:auto;overflow-y:hidden;flex:1;min-width:0;direction:rtl}.tlscroll svg{display:block;width:auto;max-width:none;height:auto;direction:ltr}.vradio{position:absolute;opacity:0;width:0;height:0}.vtabs{display:flex;gap:6px;margin:12px 0 10px}.vtabs label{font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--mut);user-select:none}#pv-a:checked~.vtabs label[for="pv-a"],#pv-b:checked~.vtabs label[for="pv-b"]{background:var(--card);color:var(--fg);border-color:var(--mut)}#pv-a:focus-visible~.vtabs label[for="pv-a"],#pv-b:focus-visible~.vtabs label[for="pv-b"]{outline:2px solid var(--accent);outline-offset:2px}.vpane{display:none}#pv-a:checked~.vp-a,#pv-b:checked~.vp-b{display:block}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}}:root[data-theme="dark"]{.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}</style>',
         '<h2>Production progress compared with earlier batches</h2>',
         '<h3>Publicly reported production and publication progress</h3>',
-        chart,
+        '<div class="views">'
+        '<input class="vradio" type="radio" name="pv" id="pv-a" checked>'
+        '<input class="vradio" type="radio" name="pv" id="pv-b">'
+        '<div class="vtabs" role="group" aria-label="Chart view">'
+        '<label for="pv-a">Aligned at each run&rsquo;s start</label>'
+        '<label for="pv-b">Real dates</label></div>'
+        '<div class="vpane vp-a">' + chart +
+        '<p class=note>Each run starts at day 0, its first public production post, '
+        'so the shapes can be compared. Real calendar gaps between batches are not '
+        'visible in this view.</p></div>'
+        '<div class="vpane vp-b">' + timeline +
+        '<p class=note>The same five runs on real dates &mdash; scroll sideways. '
+        'This is the view that shows the waits <em>between</em> batches, and what '
+        'was being drawn during them.</p></div>'
+        '</div>',
         '<div class=legend>%s</div>' % "".join(legend),
         '<p class=note><strong>Ch. 391&ndash;400 is incomplete:</strong> Togashi began '
         'posting after production of that batch had already started, so its '
         'displayed duration is a lower bound.</p>',
+        '<p class=note>One interval is worth its own page: ch. 411&ndash;420 was '
+        'finished on 24 February 2026 and did not go on sale until 29 June. '
+        '<a href="125-day-wait.html">What the production record shows across '
+        'those 125 days</a> &mdash; and why it is the only wait of its kind.</p>',
     ]
 
 

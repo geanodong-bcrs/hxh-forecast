@@ -87,6 +87,10 @@ LEVEL2_MODE = "worst_case_countdown"
 # False includes left-censored batch 47 and is much worse on the trajectory
 # diagnostic — see build_v14.REQUIRE_UNCENSORED_ANALOGS and docs/model.md.
 V14_REQUIRE_UNCENSORED_ANALOGS = True
+# V14 ablation axes; see build_v14.COMBINE / MONOTONE. Defaults are the V14
+# proposal. backtest_trajectory.py varies them to attribute the V14 result.
+V14_COMBINE = "mixture"
+V14_MONOTONE = "one_step"
 ENFORCE_READINESS_MONOTONICITY = True  # V12; False reproduces V11
 FEASIBILITY_SIGMA = 30.0    # days of softness on the one-sided ramp
 # Which confidence levels in data/annotations/known_absent_issues.csv are allowed
@@ -546,7 +550,8 @@ def main(asof=None, quiet=False, rid=None):
     v14_components, v14 = build_v14.build(
         ev, target_chapters, analog_chapters, {h: start[h] for h in analogs}, today,
         floor=by_seq[floor_seq]["on_sale"],
-        require_uncensored=V14_REQUIRE_UNCENSORED_ANALOGS)
+        require_uncensored=V14_REQUIRE_UNCENSORED_ANALOGS,
+        combine=V14_COMBINE, monotone=V14_MONOTONE)
     # The historical worst-gap cap is retained from V13 as a per-component
     # ceiling.  It has never bound — the worst observed hiatus ends far beyond
     # any production-implied date — but dropping it could only ever move a
