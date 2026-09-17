@@ -29,13 +29,13 @@ MIN_DAYS = 7          # a shift smaller than one issue is not a story
 MIN_PP = 2.0          # percentage points
 
 
-def posteriors():
-    """Every timestamped LIVE posterior snapshot, oldest first.
+def posteriors(include_replays=False):
+    """Timestamped posterior snapshots, oldest first.
 
-    Replays are excluded. They are re-runs at past dates emitted in bulk
-    whenever a candidate Level 2 is scored, so they are not part of the record
-    of what the model said as evidence arrived — and one written with a run_id
-    at or after the newest live snapshot would silently become the baseline.
+    Live snapshots select the current forecast. Replays are normally excluded,
+    but ``pick_pair`` may use a same-design replay as the pre-event baseline:
+    that is the honest counterfactual when a model revision was introduced on
+    the same day as the tweet whose effect the card is reporting.
     """
     out = []
     for f in sorted(glob.glob(D("data", "forecasts", "*_posterior.json"))):
@@ -43,7 +43,7 @@ def posteriors():
             continue                      # pre-automation, date-only names
         with open(f, encoding="utf-8") as fh:
             snap = json.load(fh)
-        if snap.get("provenance") == "replay":
+        if snap.get("provenance") == "replay" and not include_replays:
             continue
         if not snap.get("median") or not (snap.get("intervals") or {}).get("80"):
             continue                      # incomplete snapshot, nothing to diff
@@ -55,39 +55,43 @@ def _design(snap):
     return snap.get("level2_design") or "legacy_v1"
 
 
-def pick_pair(snaps=None):
-    """Newest snapshot, and the newest baseline it can honestly be diffed with.
+def pick_pair(snaps=None, history=None):
+    """Newest live snapshot and the prior evidence state on the same model.
 
     Returns ``(cur, prev, reason)``; ``prev`` is None when no such baseline
     exists and ``reason`` says why.
 
-    Walking back STOPS at the first snapshot whose model design or target batch
-    differs, rather than skipping over it: if either changed anywhere between
-    the two snapshots, the difference is contaminated by that change and is not
-    a measurement of new evidence.
-
-    This is not hypothetical. The V10 -> V11 revision on 2026-09-02 moved the
-    ch. 421 median from 2028-03-21 to 2026-11-09 — 498 days. With the bot armed
-    and a production post landing in that window, it would have told Togashi's
-    readers that his post moved the forecast sixteen months. The batch guard is
-    the same argument at the roll-over: the first forecast of batch 51 is a new
-    target, not a shift in batch 50.
+    The baseline must have the same design and target but an *earlier latest
+    production event*. Duplicate manual or daily runs carrying the same evidence
+    are ignored. This makes the displayed delta the effect of the newest tweet,
+    rather than the effect of a model revision or of writing the same forecast
+    twice. A same-design replay is allowed only as this historical baseline.
     """
+    supplied = snaps is not None
     snaps = posteriors() if snaps is None else snaps
     if not snaps:
         return None, None, "no snapshots"
     cur = snaps[-1][1]
-    if len(snaps) == 1:
-        return cur, None, "only one live snapshot"
-    for _, prev in reversed(snaps[:-1]):
-        if _design(prev) != _design(cur):
-            return cur, None, ("model changed to %s after %s; no baseline on "
-                               "this model yet" % (_design(cur), prev["run_id"]))
-        if prev.get("batch") != cur.get("batch"):
-            return cur, None, ("target moved to batch %s after %s; nothing to "
-                               "compare" % (cur.get("batch"), prev["run_id"]))
-        return cur, prev, "ok"
-    return cur, None, "no comparable baseline"
+    history = (snaps if supplied else posteriors(include_replays=True)) \
+        if history is None else history
+    current_event = cur.get("last_production_event") or \
+        (cur.get("evidence_asof") or "")[:10]
+    candidates = []
+    for _, prev in history:
+        if prev.get("run_id") == cur.get("run_id"):
+            continue
+        if _design(prev) != _design(cur) or prev.get("batch") != cur.get("batch"):
+            continue
+        previous_event = prev.get("last_production_event") or \
+            (prev.get("evidence_asof") or "")[:10]
+        if not previous_event or not current_event or previous_event >= current_event:
+            continue
+        effective = prev.get("replay_asof") or prev.get("forecast_timestamp") or ""
+        candidates.append((previous_event, effective, prev.get("run_id", ""), prev))
+    if not candidates:
+        return cur, None, ("no earlier evidence state for %s on batch %s"
+                           % (_design(cur), cur.get("batch")))
+    return cur, max(candidates, key=lambda item: item[:3])[-1], "ok"
 
 
 def pmf_at(snap, iso):

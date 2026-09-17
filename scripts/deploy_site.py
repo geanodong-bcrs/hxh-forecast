@@ -80,6 +80,9 @@ DENY = [
     # entry names; this is the second guard.
     (r"(^|/)private(/|$)", "private working notes"),
     (r"(^|/)editorial_notes\.md$", "private editorial notes"),
+    # The account's own post archive (scripts/fetch_own_posts.py). No ALLOW
+    # entry names data/own_posts, so this is the redundant second guard.
+    (r"(^|/)own_posts(/|$)", "the account's own post archive"),
 ]
 
 README = """# Hunter x Hunter — publication forecast
