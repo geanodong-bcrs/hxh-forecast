@@ -77,22 +77,77 @@ def collect():
                 pubs.append({"chapter": ch, "date": row["publication_date_jp"]})
     pubs.sort(key=lambda r: r["chapter"])
 
-    # Every run with a production record, so "is 125 days normal" is answerable.
-    compare = []
+    # The comparison, built WITHOUT a completion threshold.
+    #
+    # An earlier version of this page asked "when did the batch reach B=10.00,
+    # and how long then until it went on sale", and concluded batch 49 was the
+    # only run ever held back.  That was an artifact of the cut: batch 48 went
+    # quiet at B=9.50 and published 78 days later, reaching 10.00 only after
+    # serialisation had begun.  Move the line to 9.5 and two runs waited; move
+    # it to 9.0 and all three did.  So measure the thing that needs no
+    # threshold -- the silence between the last public report and the on-sale
+    # date -- and show the sensitivity instead of hiding it.
+    waits = []
     for h in sorted(set(batch.values())):
-        done = completed_on(h)
-        if not done or h not in start or not chapters(h):
+        if h not in start or not chapters(h):
             continue
-        compare.append({"batch": h, "complete": done.isoformat(),
-                        "publish": start[h].isoformat(),
-                        "wait": (start[h] - done).days,
-                        "next_B_at_publish": readiness_at(h + 1, start[h])})
+        path = ordered_trace(ev, chapters(h), start[h])
+        if not path:
+            continue
+        when, level, _ = path[-1]
+        gap = (start[h] - when).days
+        nxt = h + 1
+        n_reports = sum(1 for r in ev
+                        if r.get("event_date") and r.get("chapter")
+                        and when.isoformat() < r["event_date"] <= start[h].isoformat()
+                        and int(float(r["chapter"])) in chapters(nxt))
+        waits.append({
+            "batch": h, "last_report": when.isoformat(), "level": round(level, 2),
+            "publish": start[h].isoformat(), "silent_days": gap,
+            "next_batch": nxt,
+            "next_from": readiness_at(nxt, when), "next_to": readiness_at(nxt, start[h]),
+            "next_reports": n_reports,
+        })
+
+    # How the answer moves with the threshold, stated rather than assumed.
+    sensitivity = []
+    for thr in (9.0, 9.5, 10.0):
+        row = {"threshold": thr}
+        for h in sorted(set(batch.values())):
+            if h not in start or not chapters(h):
+                continue
+            hit = next((d for d, b_, _ in ordered_trace(ev, chapters(h), date(2099, 1, 1))
+                        if b_ >= thr - 1e-9), None)
+            if hit:
+                row[str(h)] = (start[h] - hit).days
+        sensitivity.append(row)
+
+    # Shueisha's side of the rhythm: the on-sale block barely moves.
+    rhythm = []
+    with open(D_("data", "processed", "chapters.csv"), encoding="utf-8") as fh:
+        by_batch = {}
+        for row in csv.DictReader(fh):
+            if row.get("batch_id") and row.get("publication_date_jp"):
+                by_batch.setdefault(int(row["batch_id"]), []).append(
+                    date.fromisoformat(row["publication_date_jp"]))
+    previous_end = None
+    for h in sorted(by_batch):
+        if h < 44:
+            continue
+        first_ch, last_ch = min(by_batch[h]), max(by_batch[h])
+        rhythm.append({"batch": h, "first": first_ch.isoformat(),
+                       "last": last_ch.isoformat(),
+                       "on_sale_days": (last_ch - first_ch).days,
+                       "hiatus_before": (first_ch - previous_end).days if previous_end else None,
+                       "has_production_data": h >= 47})
+        previous_end = last_ch
 
     w0, w1 = (date.fromisoformat(x) for x in WINDOW)
     return {
         "b49": trace(TARGET_BATCH), "b50": trace(NEXT_BATCH),
         "window": list(WINDOW), "chapter_pubs": pubs, "events": events,
-        "compare": compare,
+        "waits": waits, "sensitivity": sensitivity, "rhythm": rhythm,
+        "data_start": min(r["event_date"] for r in ev if r.get("event_date")),
         "b50_at_w0": readiness_at(NEXT_BATCH, w0),
         "b50_at_w1": readiness_at(NEXT_BATCH, w1),
         "wait_days": (w1 - w0).days,
@@ -186,13 +241,13 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 <div class="wrap">
   <p class="eyebrow">Hunter &times; Hunter &middot; batch 49 &middot; production record</p>
   <h1>The 125-Day Wait</h1>
-  <p class="stand">Batch 49 was finished on 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between.</p>
+  <p class="stand">Batch 49 was drawn by 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between &mdash; and why it has happened before.</p>
 
   <div class="tiles">
     <div class="tile"><span class="k">Batch 49 complete</span><span class="v">Feb 24</span><span class="s">B = 10.00 of 10</span></div>
     <div class="tile"><span class="k">First chapter on sale</span><span class="v">Jun 29</span><span class="s">125 days later</span></div>
     <div class="tile"><span class="k">Batch 50 progress</span><span class="v">+1.90</span><span class="s">4.30 &rarr; 6.20</span></div>
-    <div class="tile"><span class="k">Reports in window</span><span class="v">14</span><span class="s">13 on later batches</span></div>
+    <div class="tile"><span class="k">Runs that waited</span><span class="v">2 of 3</span><span class="s">batch 48 also, 78 d</span></div>
   </div>
 
   <h2>Readiness against real dates</h2>
@@ -221,13 +276,70 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
     <tbody id="evrows"></tbody>
   </table></div>
 
-  <h2>Is 125 days normal? No &mdash; it is the only one</h2>
-  <p>The two earlier batches with production records did the opposite. Both began serializing <em>before</em> their last chapter was drawn: batch 47 by 29 days, batch 48 by 40. Batch 49 is the first run that was finished and then held.</p>
-  <div class="scroll"><svg id="cmp" role="img" aria-label="Days between a batch becoming complete and going on sale: batch 47 published 29 days early, batch 48 40 days early, batch 49 waited 125 days"></svg></div>
-  <p>That is why the 125 days is a strange number to build a forecast on. It is not a standing scheduling lag that every batch pays &mdash; it is a single decision, made once, about a batch that happened to be ready early.</p>
+  <h2>Is 125 days normal? It has happened twice</h2>
+  <p>The obvious way to ask is &ldquo;when did the batch become finished, and how long
+  then until it went on sale?&rdquo; That question has no stable answer, because
+  &ldquo;finished&rdquo; needs a line drawn and the answer moves with it.</p>
+  <p>Measure instead the thing that needs no threshold &mdash; the silence between a
+  run&rsquo;s last public report and its on-sale date:</p>
+
+  <div class="scroll"><table>
+    <caption>Every run with a production record. The level is where reporting stopped, not a claim about what was finished.</caption>
+    <thead><tr><th>Batch</th><th>Last report</th><th>At B</th><th>On sale</th><th>Silent</th><th>Next batch, meanwhile</th></tr></thead>
+    <tbody id="waitrows"></tbody>
+  </table></div>
+
+  <svg id="cmp" role="img" aria-label="Days of silence between each batch's last production report and its on-sale date"></svg>
+
+  <p><strong>Two of the three runs show the same shape:</strong> reporting stops near
+  the end, the run goes quiet for months, the next batch advances, and only then does
+  the magazine publish. Batch 48 is the clearer case of the two &mdash; 54 reports on
+  ch. 411&ndash;420 during its silence, against 10 on ch. 421&ndash;430 during batch
+  49&rsquo;s.</p>
+  <p>Batch 47 is the exception, and an instructive one: six days from its last report
+  to the shelves, with no work reported on the next batch at all. It was also the
+  return from a 1428-day hiatus, so it is arguably not comparable to anything.</p>
+
+  <h3>Why the threshold matters</h3>
+  <p>An earlier version of this page said batch 49 was the only run ever held back.
+  That was true only at a cut of exactly B=10.00, and it was the wrong way to look.
+  Batch 48 went quiet at 9.50 and reached 10.00 on 2024-11-16, five weeks
+  <em>after</em> it started serialising. Where you put the line decides the answer:</p>
+
+  <div class="scroll"><table>
+    <caption>Days from crossing each level to going on sale. Negative means the level was only reached after publication had begun.</caption>
+    <thead><tr><th>Reached</th><th>Batch 47</th><th>Batch 48</th><th>Batch 49</th></tr></thead>
+    <tbody id="sensrows"></tbody>
+  </table></div>
+
+  <h2>What does hold still: the on-sale block</h2>
+  <p>Shueisha&rsquo;s side of this barely moves. Ten chapters, nine or ten weeks, six
+  runs in a row. Everything that varies is the gap between them.</p>
+
+  <div class="scroll"><table>
+    <caption>Modern batches. Production reporting only begins in 2022, so the first three have no readiness data at all.</caption>
+    <thead><tr><th>Batch</th><th>First chapter</th><th>On sale for</th><th>Hiatus before</th><th>Readiness data?</th></tr></thead>
+    <tbody id="rhythmrows"></tbody>
+  </table></div>
+
+  <p>That is the firmest thing in the record: a fixed serialisation block with a
+  variable gap in front of it. It is consistent with a magazine holding its rhythm
+  steady and letting the hiatus absorb whatever pace the author sets &mdash; but
+  consistent-with is not evidence-for, and the next section says why this cannot
+  currently be pushed further.</p>
 
   <div class="caveat">
-    <b>One caveat on reading the buffer figures.</b> Readiness here is <em>reported</em> progress, and Togashi has been posting more often and in more detail with each run. The buffer the next batch had at publication rises across the three cases &mdash; 1.61, then 5.00, then 6.20 &mdash; but part of that rise may be better reporting rather than more finished pages. The sign flip is the robust part: publishing before completion versus after it does not depend on how granular the reports are.
+    <b>Why the obvious next question cannot be answered yet.</b> If the magazine is
+    waiting on anything, the natural candidate is the <em>next</em> batch reaching some
+    level of readiness. At batch 48&rsquo;s publication the next run stood at exactly
+    5.00 of 10, crossed eight days earlier &mdash; a striking fit. At batch 49&rsquo;s it
+    stood at 6.20, having passed 5.00 fully 108 days before. No single trigger level
+    fits both. And the record cannot be extended backwards to settle it: Togashi&rsquo;s
+    first production post is from May 2022, so batches 44&ndash;46 have no readiness
+    data of any kind, and batch 47 was the return from a four-year hiatus. That leaves
+    two usable transitions. Two points do not identify a rule, and this page is not
+    going to pretend otherwise &mdash; it is a hypothesis for batch 50 to test, not a
+    finding.
   </div>
 
   <details>
@@ -413,45 +525,43 @@ svg.addEventListener("touchend", leave);
 /* open with the wait in view */
 scroller.scrollLeft = Math.max(0, bx0 - 120);
 
-/* ---------- comparison: complete -> on sale ---------- */
+/* ---------- comparison: last report -> on sale ---------- */
 (function () {
   const c = document.getElementById("cmp");
-  const rows = D.compare, rowH = 50, padL = 136, padR = 18, padT = 28;
-  const w = 640, h = padT + rows.length * rowH + 16;
+  const rows = D.waits, rowH = 52, padL = 150, padR = 24, padT = 30;
+  const w = 660, h = padT + rows.length * rowH + 18;
   c.setAttribute("viewBox", `0 0 ${w} ${h}`);
   c.setAttribute("width", "100%"); c.setAttribute("height", h);
-  c.style.minWidth = "540px";
-  const lo = -58, hi = 132, plotW = w - padL - padR;
-  const XX = v => padL + plotW * (v - lo) / (hi - lo);
-  const zero = XX(0);
+  c.style.minWidth = "560px"; c.style.margin = "1.4rem 0 .4rem";
 
-  c.appendChild(el("line", {x1:zero, y1:padT-12, x2:zero, y2:padT + rows.length*rowH - 10,
-    stroke:"var(--ink-2)", "stroke-width":1.5}));
-  const zt = el("text", {x:zero, y:padT-17, "text-anchor":"middle", fill:"var(--ink-2)",
-    "font-family":"var(--sans)", "font-size":11, "font-weight":600});
-  zt.textContent = "batch complete";
-  c.appendChild(zt);
+  const plotW = w - padL - padR;
+  const max = Math.max(...rows.map(r => r.silent_days), 10);
+  const XX = v => padL + plotW * v / (max * 1.12);
 
   rows.forEach((r, i) => {
-    const y = padT + i*rowH + 8, x = XX(r.wait), pos = r.wait > 0;
-    // name and value live in their own left column; nothing sits beside the bar
+    const y = padT + i * rowH + 6;
     const lab = el("text", {x:6, y:y+12, fill:"var(--ink)",
       "font-family":"var(--mono)", "font-size":12});
     lab.textContent = "batch " + r.batch;
     c.appendChild(lab);
-    const val = el("text", {x:padL-14, y:y+12, "text-anchor":"end", fill:"var(--ink)",
-      "font-family":"var(--mono)", "font-size":13, "font-weight":500});
-    val.textContent = (pos ? "+" : "\\u2212") + Math.abs(r.wait) + " d";
-    c.appendChild(val);
-
-    c.appendChild(el("rect", {x:Math.min(zero, x), y:y, width:Math.abs(x-zero), height:16,
-      rx:3, fill:pos ? "var(--s50)" : "var(--ink-3)", opacity:pos ? 1 : .5}));
-
-    // note hangs off the zero line, on the same side as the bar, so it cannot overflow
-    const note = el("text", {x:pos ? zero+7 : zero-7, y:y+29,
-      "text-anchor":pos ? "start" : "end", fill:"var(--ink-3)",
+    const sub = el("text", {x:6, y:y+27, fill:"var(--ink-3)",
       "font-family":"var(--sans)", "font-size":10.5});
-    note.textContent = pos ? "held after finishing" : "on sale before finishing";
+    sub.textContent = "stopped at B=" + r.level.toFixed(2);
+    c.appendChild(sub);
+
+    // the silence itself; batch 47's is a stub, which is the point
+    c.appendChild(el("rect", {x:padL, y:y, width:Math.max(XX(r.silent_days)-padL, 2),
+      height:17, rx:3, fill:r.next_reports ? "var(--s50)" : "var(--ink-3)",
+      opacity:r.next_reports ? 1 : .45}));
+    const val = el("text", {x:XX(r.silent_days)+8, y:y+13, fill:"var(--ink)",
+      "font-family":"var(--mono)", "font-size":12, "font-weight":500});
+    val.textContent = r.silent_days + " d silent";
+    c.appendChild(val);
+    const note = el("text", {x:padL, y:y+31, fill:"var(--ink-3)",
+      "font-family":"var(--sans)", "font-size":10.5});
+    note.textContent = r.next_reports
+      ? `next batch ${r.next_from.toFixed(2)} \u2192 ${r.next_to.toFixed(2)} on ${r.next_reports} reports`
+      : "no work reported on the next batch";
     c.appendChild(note);
   });
 })();
@@ -461,6 +571,33 @@ const BATCH = ch => ch >= 431 ? 51 : ch >= 421 ? 50 : 49;
 document.getElementById("evrows").innerHTML = D.events.map(e =>
   `<tr><td>${e.date}</td><td>${e.chapter ?? "&mdash;"}</td><td>${e.chapter ? BATCH(e.chapter) : "&mdash;"}</td><td style="text-align:left">${e.stage || "&mdash;"}</td></tr>`
 ).join("");
+
+document.getElementById("waitrows").innerHTML = D.waits.map(r =>
+  `<tr><td>${r.batch}</td><td>${r.last_report}</td><td>${r.level.toFixed(2)}</td>`
+  + `<td>${r.publish}</td><td><b>${r.silent_days} d</b></td>`
+  + `<td style="text-align:left">${r.next_reports
+       ? `${r.next_from.toFixed(2)} &rarr; ${r.next_to.toFixed(2)} (${r.next_reports} reports)`
+       : "nothing reported"}</td></tr>`
+).join("");
+
+const batches = D.waits.map(r => r.batch);
+document.getElementById("sensrows").innerHTML = D.sensitivity.map(row =>
+  `<tr><td>B &ge; ${row.threshold.toFixed(1)}</td>`
+  + batches.map(b => {
+      const v = row[String(b)];
+      if (v === undefined) return "<td>&mdash;</td>";
+      const cls = v > 0 ? ' style="color:var(--s50)"' : ' style="color:var(--ink-3)"';
+      return `<td${cls}>${v > 0 ? "+" : ""}${v} d</td>`;
+    }).join("")
+  + "</tr>"
+).join("");
+
+document.getElementById("rhythmrows").innerHTML = D.rhythm.map(r =>
+  `<tr><td>${r.batch}</td><td>${r.first}</td><td><b>${r.on_sale_days} d</b></td>`
+  + `<td>${r.hiatus_before == null ? "&mdash;" : r.hiatus_before + " d"}</td>`
+  + `<td style="color:var(--ink-3)">${r.has_production_data ? "yes" : "none"}</td></tr>`
+).join("");
+
 const dates = [...new Set([...D.b49.map(r=>r[0]), ...D.b50.map(r=>r[0])])].sort();
 document.getElementById("serrows").innerHTML = dates.map(d =>
   `<tr><td>${d}</td><td>${(at(D.b49,d) ?? "&mdash;") === "&mdash;" ? "&mdash;" : at(D.b49,d).toFixed(2)}</td><td>${at(D.b50,d) == null ? "&mdash;" : at(D.b50,d).toFixed(2)}</td></tr>`
@@ -484,10 +621,12 @@ def main():
     with open(out, "w", encoding="utf-8") as fh:
         fh.write(html)
     print("site: %s  %.1f KB" % (os.path.relpath(out, D_()), len(html) / 1024))
-    w = data["compare"]
-    for row in w:
-        print("  batch %d: complete %s -> on sale %s  (%+d d)"
-              % (row["batch"], row["complete"], row["publish"], row["wait"]))
+    for row in data["waits"]:
+        print("  batch %d: last report %s at B=%.2f -> on sale %s  (%d d silent,"
+              " next batch %.2f->%.2f on %d reports)"
+              % (row["batch"], row["last_report"], row["level"], row["publish"],
+                 row["silent_days"], row["next_from"], row["next_to"],
+                 row["next_reports"]))
 
 
 if __name__ == "__main__":
