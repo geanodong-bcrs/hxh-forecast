@@ -39,6 +39,12 @@ STAGE_LABEL = {
 }
 
 
+def chapter_label(batch_id):
+    """Readers know chapter numbers, not our internal batch ids."""
+    first = 411 + (batch_id - 49) * 10
+    return "Ch. %d-%d" % (first, first + 9)
+
+
 def collect():
     ev, batch, pos, start, cur, last = load_l2()
     chapters = lambda h: sorted(c for c, b in batch.items() if b == h)[:10]
@@ -102,7 +108,9 @@ def collect():
                         and when.isoformat() < r["event_date"] <= start[h].isoformat()
                         and int(float(r["chapter"])) in chapters(nxt))
         waits.append({
-            "batch": h, "last_report": when.isoformat(), "level": round(level, 2),
+            "batch": h, "label": chapter_label(h),
+            "next_label": chapter_label(nxt),
+            "last_report": when.isoformat(), "level": round(level, 2),
             "publish": start[h].isoformat(), "silent_days": gap,
             "next_batch": nxt,
             "next_from": readiness_at(nxt, when), "next_to": readiness_at(nxt, start[h]),
@@ -111,6 +119,7 @@ def collect():
 
     # How the answer moves with the threshold, stated rather than assumed.
     sensitivity = []
+    sens_labels = {}
     for thr in (9.0, 9.5, 10.0):
         row = {"threshold": thr}
         for h in sorted(set(batch.values())):
@@ -120,6 +129,7 @@ def collect():
                         if b_ >= thr - 1e-9), None)
             if hit:
                 row[str(h)] = (start[h] - hit).days
+                sens_labels[str(h)] = chapter_label(h)
         sensitivity.append(row)
 
     # Shueisha's side of the rhythm: the on-sale block barely moves.
@@ -135,7 +145,8 @@ def collect():
         if h < 44:
             continue
         first_ch, last_ch = min(by_batch[h]), max(by_batch[h])
-        rhythm.append({"batch": h, "first": first_ch.isoformat(),
+        rhythm.append({"batch": h, "label": chapter_label(h),
+                       "first": first_ch.isoformat(),
                        "last": last_ch.isoformat(),
                        "on_sale_days": (last_ch - first_ch).days,
                        "hiatus_before": (first_ch - previous_end).days if previous_end else None,
@@ -146,7 +157,8 @@ def collect():
     return {
         "b49": trace(TARGET_BATCH), "b50": trace(NEXT_BATCH),
         "window": list(WINDOW), "chapter_pubs": pubs, "events": events,
-        "waits": waits, "sensitivity": sensitivity, "rhythm": rhythm,
+        "waits": waits, "sensitivity": sensitivity, "sens_labels": sens_labels,
+        "rhythm": rhythm,
         "data_start": min(r["event_date"] for r in ev if r.get("event_date")),
         "b50_at_w0": readiness_at(NEXT_BATCH, w0),
         "b50_at_w1": readiness_at(NEXT_BATCH, w1),
@@ -161,7 +173,7 @@ TEMPLATE = """\
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
-<meta name="description" content="Batch 49 of Hunter x Hunter was finished on 24 February 2026 and went on sale on 29 June. What the production record shows in between.">
+<meta name="description" content="Chapters 411-420 of Hunter x Hunter were finished on 24 February 2026 and went on sale on 29 June. What the production record shows in between.">
 <title>The 125-Day Wait</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
@@ -239,40 +251,40 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 <body>
 
 <div class="wrap">
-  <p class="eyebrow">Hunter &times; Hunter &middot; batch 49 &middot; production record</p>
+  <p class="eyebrow">Hunter &times; Hunter &middot; ch. 411&ndash;420 &middot; production record</p>
   <h1>The 125-Day Wait</h1>
-  <p class="stand">Batch 49 was drawn by 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between &mdash; and why it has happened before.</p>
+  <p class="stand">Chapters 411-420 were drawn by 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between &mdash; and why it has happened before.</p>
 
   <div class="tiles">
-    <div class="tile"><span class="k">Batch 49 complete</span><span class="v">Feb 24</span><span class="s">B = 10.00 of 10</span></div>
+    <div class="tile"><span class="k">Ch. 411-420 complete</span><span class="v">Feb 24</span><span class="s">B = 10.00 of 10</span></div>
     <div class="tile"><span class="k">First chapter on sale</span><span class="v">Jun 29</span><span class="s">125 days later</span></div>
-    <div class="tile"><span class="k">Batch 50 progress</span><span class="v">+1.90</span><span class="s">4.30 &rarr; 6.20</span></div>
-    <div class="tile"><span class="k">Runs that waited</span><span class="v">2 of 3</span><span class="s">batch 48 also, 78 d</span></div>
+    <div class="tile"><span class="k">Ch. 421-430 progress</span><span class="v">+1.90</span><span class="s">4.30 &rarr; 6.20</span></div>
+    <div class="tile"><span class="k">Runs that waited</span><span class="v">2 of 3</span><span class="s">ch. 401-410 also, 78 d</span></div>
   </div>
 
   <h2>Readiness against real dates</h2>
   <div class="legend" id="legend">
-    <span><i style="background:var(--s49)"></i>Batch 49 &mdash; ch. 411&ndash;420</span>
-    <span><i style="background:var(--s50)"></i>Batch 50 &mdash; ch. 421&ndash;430</span>
+    <span><i style="background:var(--s49)"></i>Ch. 411&ndash;420 &mdash; the last batch</span>
+    <span><i style="background:var(--s50)"></i>Ch. 421&ndash;430 &mdash; the next batch</span>
     <span><i class="tick" style="background:var(--pub)"></i>Weekly chapter on sale</span>
     <span><i class="bandkey"></i>The 125-day wait</span>
   </div>
   <div class="chart-shell">
     <div class="yaxis"><svg id="yax" role="presentation"></svg></div>
     <div class="scroller" id="scroller">
-      <svg id="plot" role="img" aria-label="Reported production readiness of Hunter x Hunter batches 49 and 50 against calendar dates, June 2024 to September 2026, with the 125-day wait between batch 49 completion and publication highlighted"></svg>
+      <svg id="plot" role="img" aria-label="Reported production readiness of Hunter x Hunter batches 49 and 50 against calendar dates, June 2024 to September 2026, with the 125-day wait between completion of ch. 411-420 and its publication highlighted"></svg>
     </div>
     <div class="tip" id="tip" hidden></div>
   </div>
   <p class="hint">Scroll the panel sideways &middot; 0&ndash;10 is ordered chapter-equivalents complete, so 10.00 means all ten chapters finished</p>
 
   <h2>What the wait was spent on</h2>
-  <p>Batch 49&rsquo;s line is flat across the whole window: there was nothing left to report, because every one of its ten chapters was already finished. The work in those 125 days went to <em>batch 50</em>, which climbed from 4.30 to 6.20 chapter-equivalents on thirteen separate reports.</p>
-  <p>One of those matters more than the rest. Chapter 421 &mdash; the first chapter of the <em>next</em> batch &mdash; reached manuscript complete on <strong>26 May 2026</strong>, thirty-four days before batch 49 went on sale. So at the moment Shueisha started serializing batch 49, it was holding a finished batch plus six chapters of the batch after it, with the next batch&rsquo;s opener already in hand.</p>
+  <p>The ch. 411-420 line is flat across the whole window: there was nothing left to report, because every one of its ten chapters was already finished. The work in those 125 days went to <em>ch. 421-430</em>, which climbed from 4.30 to 6.20 chapter-equivalents on thirteen separate reports.</p>
+  <p>One of those matters more than the rest. Chapter 421 &mdash; the first chapter of the <em>next</em> batch &mdash; reached manuscript complete on <strong>26 May 2026</strong>, thirty-four days before ch. 411 went on sale. So at the moment Shueisha started serializing ch. 411-420, it was holding a finished batch plus six chapters of the batch after it, with the next batch&rsquo;s opener already in hand.</p>
 
   <div class="scroll"><table>
     <caption>Every production report inside the window, 24 February &ndash; 29 June 2026.</caption>
-    <thead><tr><th>Date</th><th>Chapter</th><th>Batch</th><th>Reported</th></tr></thead>
+    <thead><tr><th>Date</th><th>Chapter</th><th>Belongs to</th><th>Reported</th></tr></thead>
     <tbody id="evrows"></tbody>
   </table></div>
 
@@ -293,22 +305,21 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 
   <p><strong>Two of the three runs show the same shape:</strong> reporting stops near
   the end, the run goes quiet for months, the next batch advances, and only then does
-  the magazine publish. Batch 48 is the clearer case of the two &mdash; 54 reports on
-  ch. 411&ndash;420 during its silence, against 10 on ch. 421&ndash;430 during batch
-  49&rsquo;s.</p>
-  <p>Batch 47 is the exception, and an instructive one: six days from its last report
+  the magazine publish. Ch. 401-410 is the clearer case of the two &mdash; 54 reports on
+  ch. 411&ndash;420 during its silence, against 10 on ch. 421&ndash;430 during the other.</p>
+  <p>Ch. 391-400 is the exception, and an instructive one: six days from its last report
   to the shelves, with no work reported on the next batch at all. It was also the
   return from a 1428-day hiatus, so it is arguably not comparable to anything.</p>
 
   <h3>Why the threshold matters</h3>
-  <p>An earlier version of this page said batch 49 was the only run ever held back.
+  <p>An earlier version of this page said ch. 411-420 was the only run ever held back.
   That was true only at a cut of exactly B=10.00, and it was the wrong way to look.
-  Batch 48 went quiet at 9.50 and reached 10.00 on 2024-11-16, five weeks
+  Ch. 401-410 went quiet at 9.50 and reached 10.00 on 2024-11-16, five weeks
   <em>after</em> it started serialising. Where you put the line decides the answer:</p>
 
   <div class="scroll"><table>
     <caption>Days from crossing each level to going on sale. Negative means the level was only reached after publication had begun.</caption>
-    <thead><tr><th>Reached</th><th>Batch 47</th><th>Batch 48</th><th>Batch 49</th></tr></thead>
+    <thead><tr><th>Reached</th><th id="sh47"></th><th id="sh48"></th><th id="sh49"></th></tr></thead>
     <tbody id="sensrows"></tbody>
   </table></div>
 
@@ -318,7 +329,7 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 
   <div class="scroll"><table>
     <caption>Modern batches. Production reporting only begins in 2022, so the first three have no readiness data at all.</caption>
-    <thead><tr><th>Batch</th><th>First chapter</th><th>On sale for</th><th>Hiatus before</th><th>Readiness data?</th></tr></thead>
+    <thead><tr><th>Chapters</th><th>First on sale</th><th>On sale for</th><th>Hiatus before</th><th>Readiness data?</th></tr></thead>
     <tbody id="rhythmrows"></tbody>
   </table></div>
 
@@ -331,14 +342,14 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
   <div class="caveat">
     <b>Why the obvious next question cannot be answered yet.</b> If the magazine is
     waiting on anything, the natural candidate is the <em>next</em> batch reaching some
-    level of readiness. At batch 48&rsquo;s publication the next run stood at exactly
-    5.00 of 10, crossed eight days earlier &mdash; a striking fit. At batch 49&rsquo;s it
+    level of readiness. When ch. 401-410 went on sale the next run stood at exactly
+    5.00 of 10, crossed eight days earlier &mdash; a striking fit. For ch. 411-420 it
     stood at 6.20, having passed 5.00 fully 108 days before. No single trigger level
     fits both. And the record cannot be extended backwards to settle it: Togashi&rsquo;s
-    first production post is from May 2022, so batches 44&ndash;46 have no readiness
-    data of any kind, and batch 47 was the return from a four-year hiatus. That leaves
+    first production post is from May 2022, so ch. 361-390 have no readiness
+    data of any kind, and ch. 391-400 was the return from a four-year hiatus. That leaves
     two usable transitions. Two points do not identify a rule, and this page is not
-    going to pretend otherwise &mdash; it is a hypothesis for batch 50 to test, not a
+    going to pretend otherwise &mdash; it is a hypothesis for ch. 421-430 to test, not a
     finding.
   </div>
 
@@ -346,7 +357,7 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
     <summary>Series data &mdash; every reported readiness change</summary>
     <div class="scroll"><table>
       <caption>Ordered readiness B(t) on the 0&ndash;10 scale, as reported.</caption>
-      <thead><tr><th>Date</th><th>Batch 49</th><th>Batch 50</th></tr></thead>
+      <thead><tr><th>Date</th><th>Ch. 411-420</th><th>Ch. 421-430</th></tr></thead>
       <tbody id="serrows"></tbody>
     </table></div>
   </details>
@@ -393,7 +404,7 @@ svg.appendChild(el("rect", {x:bx0, y:PAD_T, width:bx1-bx0, height:PLOT_H, fill:"
   {x1:x, y1:PAD_T, x2:x, y2:PAD_T+PLOT_H, stroke:"var(--band-edge)", "stroke-width":1.5})));
 const blab = el("text", {x:(bx0+bx1)/2, y:PAD_T-20, "text-anchor":"middle", fill:"var(--ink-2)",
   "font-family":"var(--sans)", "font-size":12, "font-weight":600});
-blab.textContent = "125 days, batch 49 finished and waiting";
+blab.textContent = "125 days, ch. 411-420 finished and waiting";
 svg.appendChild(blab);
 svg.appendChild(el("line", {x1:bx0, y1:PAD_T-13, x2:bx1, y2:PAD_T-13,
   stroke:"var(--band-edge)", "stroke-width":1}));
@@ -467,11 +478,11 @@ D.chapter_pubs.forEach((p, i) => {
 const sx0 = X(D.chapter_pubs[0].date), sx1 = X(D.chapter_pubs[D.chapter_pubs.length-1].date);
 const sl = el("text", {x:(sx0+sx1)/2, y:PAD_T-20, "text-anchor":"middle", fill:"var(--ink-2)",
   "font-family":"var(--sans)", "font-size":12, "font-weight":600});
-sl.textContent = "batch 49 serializes, weekly";
+sl.textContent = "ch. 411-420 serializes, weekly";
 svg.appendChild(sl);
 
 /* direct labels at the right edge */
-[["Batch 49", D.b49, "var(--s49)"], ["Batch 50", D.b50, "var(--s50)"]].forEach(([name, pts, c]) => {
+[["Ch. 411-420", D.b49, "var(--s49)"], ["Ch. 421-430", D.b50, "var(--s50)"]].forEach(([name, pts, c]) => {
   const last = pts[pts.length-1];
   const t = el("text", {x:X("2026-09-20")-6, y:Y(last[1]) - 8, "text-anchor":"end", fill:c,
     "font-family":"var(--sans)", "font-size":12, "font-weight":600});
@@ -504,8 +515,8 @@ function move(ev) {
   tip.hidden = false;
   tip.innerHTML = `<b>${fmtD(iso)}</b>`
     + (inWin ? `<div style="color:var(--ink-3)">inside the 125-day wait</div>` : "")
-    + (v49 != null ? `<div class="r"><i style="background:var(--s49)"></i>Batch 49 &nbsp;<b>${v49.toFixed(2)}</b></div>` : "")
-    + (v50 != null ? `<div class="r"><i style="background:var(--s50)"></i>Batch 50 &nbsp;<b>${v50.toFixed(2)}</b></div>` : "");
+    + (v49 != null ? `<div class="r"><i style="background:var(--s49)"></i>Ch. 411-420 &nbsp;<b>${v49.toFixed(2)}</b></div>` : "")
+    + (v50 != null ? `<div class="r"><i style="background:var(--s50)"></i>Ch. 421-430 &nbsp;<b>${v50.toFixed(2)}</b></div>` : "");
   const shell = scroller.parentElement.getBoundingClientRect();
   let left = ev.clientX - shell.left + 14;
   if (left + tip.offsetWidth > shell.width - 6) left = ev.clientX - shell.left - tip.offsetWidth - 14;
@@ -542,7 +553,7 @@ scroller.scrollLeft = Math.max(0, bx0 - 120);
     const y = padT + i * rowH + 6;
     const lab = el("text", {x:6, y:y+12, fill:"var(--ink)",
       "font-family":"var(--mono)", "font-size":12});
-    lab.textContent = "batch " + r.batch;
+    lab.textContent = r.label;
     c.appendChild(lab);
     const sub = el("text", {x:6, y:y+27, fill:"var(--ink-3)",
       "font-family":"var(--sans)", "font-size":10.5});
@@ -560,27 +571,31 @@ scroller.scrollLeft = Math.max(0, bx0 - 120);
     const note = el("text", {x:padL, y:y+31, fill:"var(--ink-3)",
       "font-family":"var(--sans)", "font-size":10.5});
     note.textContent = r.next_reports
-      ? `next batch ${r.next_from.toFixed(2)} \u2192 ${r.next_to.toFixed(2)} on ${r.next_reports} reports`
+      ? `${r.next_label} went ${r.next_from.toFixed(2)} \u2192 ${r.next_to.toFixed(2)} on ${r.next_reports} reports`
       : "no work reported on the next batch";
     c.appendChild(note);
   });
 })();
 
 /* ---------- tables ---------- */
-const BATCH = ch => ch >= 431 ? 51 : ch >= 421 ? 50 : 49;
+const BATCH = ch => ch >= 431 ? "Ch. 431-440" : ch >= 421 ? "Ch. 421-430" : "Ch. 411-420";
 document.getElementById("evrows").innerHTML = D.events.map(e =>
   `<tr><td>${e.date}</td><td>${e.chapter ?? "&mdash;"}</td><td>${e.chapter ? BATCH(e.chapter) : "&mdash;"}</td><td style="text-align:left">${e.stage || "&mdash;"}</td></tr>`
 ).join("");
 
 document.getElementById("waitrows").innerHTML = D.waits.map(r =>
-  `<tr><td>${r.batch}</td><td>${r.last_report}</td><td>${r.level.toFixed(2)}</td>`
+  `<tr><td>${r.label}</td><td>${r.last_report}</td><td>${r.level.toFixed(2)}</td>`
   + `<td>${r.publish}</td><td><b>${r.silent_days} d</b></td>`
   + `<td style="text-align:left">${r.next_reports
-       ? `${r.next_from.toFixed(2)} &rarr; ${r.next_to.toFixed(2)} (${r.next_reports} reports)`
+       ? `${r.next_label}: ${r.next_from.toFixed(2)} &rarr; ${r.next_to.toFixed(2)} (${r.next_reports} reports)`
        : "nothing reported"}</td></tr>`
 ).join("");
 
 const batches = D.waits.map(r => r.batch);
+batches.forEach(b => {
+  const th = document.getElementById("sh" + b);
+  if (th) th.textContent = D.sens_labels[String(b)] || ("Batch " + b);
+});
 document.getElementById("sensrows").innerHTML = D.sensitivity.map(row =>
   `<tr><td>B &ge; ${row.threshold.toFixed(1)}</td>`
   + batches.map(b => {
@@ -593,7 +608,7 @@ document.getElementById("sensrows").innerHTML = D.sensitivity.map(row =>
 ).join("");
 
 document.getElementById("rhythmrows").innerHTML = D.rhythm.map(r =>
-  `<tr><td>${r.batch}</td><td>${r.first}</td><td><b>${r.on_sale_days} d</b></td>`
+  `<tr><td>${r.label}</td><td>${r.first}</td><td><b>${r.on_sale_days} d</b></td>`
   + `<td>${r.hiatus_before == null ? "&mdash;" : r.hiatus_before + " d"}</td>`
   + `<td style="color:var(--ink-3)">${r.has_production_data ? "yes" : "none"}</td></tr>`
 ).join("");
