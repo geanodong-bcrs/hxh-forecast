@@ -27,6 +27,8 @@ APP_DIR = ROOT / "story_annotator"
 DEFAULT_DB = ROOT / "private" / "story" / "story_annotations.sqlite"
 DEFAULT_IMPORT = ROOT / "private" / "story" / "chapter_407_panel_transcription.csv"
 EXPORT_DIR = ROOT / "private" / "story" / "exports"
+CHARACTERS_CSV = ROOT / "data" / "story" / "characters.csv"
+CHARACTER_APPEARANCES_CSV = ROOT / "data" / "story" / "chapter_character_appearances.csv"
 
 PANEL_FIELDS = (
     "panel_id", "chapter", "page_start", "page_end", "panel_order",
@@ -75,9 +77,64 @@ def connect(path: Path) -> sqlite3.Connection:
             text TEXT NOT NULL DEFAULT '',
             UNIQUE(panel_id, segment_order)
         );
+        CREATE TABLE IF NOT EXISTS characters (
+            character_id TEXT PRIMARY KEY,
+            display_name TEXT NOT NULL,
+            hunterpedia_title TEXT NOT NULL DEFAULT '',
+            identity_status TEXT NOT NULL DEFAULT 'community_wiki_seed',
+            first_listed_chapter INTEGER,
+            source_type TEXT NOT NULL DEFAULT '',
+            source_url TEXT NOT NULL DEFAULT '',
+            retrieved_utc TEXT NOT NULL DEFAULT '',
+            notes TEXT NOT NULL DEFAULT ''
+        );
+        CREATE TABLE IF NOT EXISTS chapter_character_appearances (
+            chapter INTEGER NOT NULL,
+            appearance_order INTEGER NOT NULL,
+            character_id TEXT NOT NULL REFERENCES characters(character_id),
+            appearance_type TEXT NOT NULL DEFAULT 'appears',
+            source_note TEXT NOT NULL DEFAULT '',
+            PRIMARY KEY(chapter, appearance_order, character_id)
+        );
         """
     )
+    seed_characters(db)
     return db
+
+
+def seed_characters(db: sqlite3.Connection) -> None:
+    if not CHARACTERS_CSV.exists() or not CHARACTER_APPEARANCES_CSV.exists():
+        return
+    if not db.execute("SELECT COUNT(*) FROM characters").fetchone()[0]:
+        with CHARACTERS_CSV.open(newline="", encoding="utf-8-sig") as handle:
+            for row in csv.DictReader(handle):
+                db.execute(
+                    "INSERT OR IGNORE INTO characters VALUES(?,?,?,?,?,?,?,?,?)",
+                    (row["character_id"], row["display_name"], row["hunterpedia_title"],
+                     row["identity_status"], int(row["first_listed_chapter"]),
+                     row["source_type"], row["source_url"], row["retrieved_utc"], row["notes"]),
+                )
+        with CHARACTER_APPEARANCES_CSV.open(newline="", encoding="utf-8-sig") as handle:
+            for row in csv.DictReader(handle):
+                db.execute(
+                    "INSERT OR IGNORE INTO chapter_character_appearances VALUES(?,?,?,?,?)",
+                    (int(row["chapter"]), int(row["appearance_order"]), row["character_id"],
+                     row["appearance_type"], row["source_note"]),
+                )
+        db.commit()
+
+
+def characters_payload(db: sqlite3.Connection, chapter: int | None = None) -> dict:
+    rows = db.execute(
+        """SELECT c.*, a.appearance_order, a.appearance_type, a.source_note,
+        CASE WHEN a.chapter IS NULL THEN 0 ELSE 1 END AS chapter_candidate
+        FROM characters c
+        LEFT JOIN chapter_character_appearances a
+          ON a.character_id=c.character_id AND a.chapter=?
+        ORDER BY chapter_candidate DESC, COALESCE(a.appearance_order, 9999), c.display_name""",
+        (chapter,),
+    ).fetchall()
+    return {"chapter": chapter, "characters": [dict(row) for row in rows]}
 
 
 def make_panel_id(chapter: int, page_start: int, page_end: int, order: int) -> str:
@@ -315,6 +372,12 @@ class AppHandler(BaseHTTPRequestHandler):
                 panel_id = parsed.path.rsplit("/", 1)[1]
                 with connect(self.db_path) as db:
                     self.send_json(panel_payload(db, panel_id))
+                return
+            if parsed.path == "/api/characters":
+                query = __import__("urllib.parse").parse.parse_qs(parsed.query)
+                chapter = int(query["chapter"][0]) if query.get("chapter") else None
+                with connect(self.db_path) as db:
+                    self.send_json(characters_payload(db, chapter))
                 return
             self.serve_static(parsed.path)
         except KeyError as exc:

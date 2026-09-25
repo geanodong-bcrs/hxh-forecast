@@ -44,8 +44,11 @@ STAGES = [
      "The backgrounds themselves, drawn by staff."),
     ("dialogue", "Lettering", "台詞入れ",
      "Final dialogue written into the speech balloons."),
-    ("retouch", "Touch-ups", "加筆",
-     "Last corrections, made on the printed manuscript."),
+    # No 加筆 (retouch) column. In 2024-26 serialization retouch was only ever
+    # reported in the same post as 完成, so it said nothing "Finished" does not;
+    # the model ignores it; and 加筆 on published chapters is tankobon work
+    # (2026-09-25, No411〜420). A column that is empty for every live chapter
+    # reads as skipped work.
     ("manuscript_complete", "Finished", "原稿完成",
      "Chapter complete and delivered to Shueisha."),
 ]
@@ -950,18 +953,18 @@ def readiness_comparison_chart(post):
         # the current date, while its publication trace uses only issues that
         # have actually appeared.
         end = asof if batch == 49 else run["end"]
-        path = readiness_path(run["first"], end)
+        path = readiness_path(run["first"], end, extend_to_end=True)
         if path:
             series.append({"label": "ch. %d–%d" % (run["first"], run["first"] + 9),
                            "css": css, "path": path, "publication": run["publication"],
                            "legend_suffix": " · publishing now" if batch == 49 else " · published"})
-    live = readiness_path(first, asof)
+    live = readiness_path(first, asof, extend_to_end=True)
     if not live:
         return []
     series.append({"label": "ch. %d–%d" % (first, first + 9),
                    "css": "rlive", "path": live, "publication": [],
                    "legend_suffix": " (working)"})
-    following = readiness_path(nfirst, asof)
+    following = readiness_path(nfirst, asof, extend_to_end=True)
     if following:
         series.append({"label": "ch. %d–%d" % (nfirst, nfirst + 9),
                        "css": "rnext", "path": following, "publication": [],
