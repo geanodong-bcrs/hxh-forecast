@@ -241,7 +241,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 411,49,1,dialogue,complete,2024-11-17,2026-06-29,589,E00197,high,text_explicit
 411,49,1,bg_spec,complete,2024-11-18,2026-06-29,588,E00198,high,text_explicit
 411,49,1,manuscript_complete,complete,2025-12-14,2026-06-29,197,E00226,high,text_explicit
-411,49,1,retouch,complete,2026-09-25,2026-06-29,-88,E00278,medium,image_transcription
 412,49,2,chapter_level,started,2024-06-15,2026-07-06,751,E00123,high,text_explicit
 412,49,2,page_log,,2024-06-17,2026-07-06,749,E00407,high,image_transcription
 412,49,2,page_log,,2024-06-18,2026-07-06,748,E00408,high,image_transcription
@@ -253,7 +252,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 412,49,2,dialogue,complete,2024-11-19,2026-07-06,594,E00199,high,text_explicit
 412,49,2,bg_spec,complete,2024-11-20,2026-07-06,593,E00200,high,text_explicit
 412,49,2,manuscript_complete,complete,2025-12-27,2026-07-06,191,E00259,high,image_transcription
-412,49,2,retouch,complete,2026-09-25,2026-07-06,-81,E00279,medium,image_transcription
 413,49,3,chapter_level,started,2024-06-23,2026-07-13,750,E00129,high,text_explicit
 413,49,3,page_log,,2024-06-24,2026-07-13,749,E00413,medium,image_transcription
 413,49,3,page_log,,2024-06-25,2026-07-13,748,E00414,medium,image_transcription
@@ -264,7 +262,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 413,49,3,dialogue,complete,2024-11-20,2026-07-13,600,E00201,high,text_explicit
 413,49,3,bg_spec,complete,2025-08-19,2026-07-13,328,E00214,high,text_explicit
 413,49,3,manuscript_complete,complete,2026-01-13,2026-07-13,181,E00260,high,image_transcription
-413,49,3,retouch,complete,2026-09-25,2026-07-13,-74,E00280,medium,image_transcription
 414,49,4,character_inking,started,2024-06-30,2026-07-20,750,E00131,high,text_explicit
 414,49,4,chapter_level,in_progress,2024-07-01,2026-07-20,749,E00133,high,text_explicit
 414,49,4,page_log,,2024-07-01,2026-07-20,749,E00418,high,image_transcription
@@ -276,7 +273,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 414,49,4,bg_spec,complete,2025-08-26,2026-07-20,328,E00215,high,text_explicit
 414,49,4,dialogue,complete,2025-10-07,2026-07-20,286,E00250,high,image_transcription
 414,49,4,manuscript_complete,complete,2026-01-14,2026-07-20,187,E00261,high,image_transcription
-414,49,4,retouch,complete,2026-09-25,2026-07-20,-67,E00281,medium,image_transcription
 415,49,5,character_inking,started,2024-07-11,2026-07-27,746,E00144,high,text_explicit
 415,49,5,page_log,,2024-07-12,2026-07-27,745,E00424,high,image_transcription
 415,49,5,page_log,,2024-07-13,2026-07-27,744,E00425,high,image_transcription
@@ -288,7 +284,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 415,49,5,bg_spec,complete,2025-08-28,2026-07-27,333,E00216,high,text_explicit
 415,49,5,dialogue,complete,2025-10-08,2026-07-27,292,E00251,high,image_transcription
 415,49,5,manuscript_complete,complete,2026-01-20,2026-07-27,188,E00262,high,image_transcription
-415,49,5,retouch,complete,2026-09-25,2026-07-27,-60,E00282,medium,image_transcription
 416,49,6,character_inking,started,2024-07-19,2026-08-03,745,E00146,high,text_explicit
 416,49,6,page_log,,2024-07-20,2026-08-03,744,E00430,high,image_transcription
 416,49,6,page_log,,2024-07-21,2026-08-03,743,E00431,medium,image_transcription
@@ -303,7 +298,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 416,49,6,bg_spec,complete,2025-08-31,2026-08-03,337,E00217,high,text_explicit
 416,49,6,dialogue,complete,2025-10-09,2026-08-03,298,E00253,high,image_transcription
 416,49,6,manuscript_complete,complete,2026-01-23,2026-08-03,192,E00263,high,image_transcription
-416,49,6,retouch,complete,2026-09-25,2026-08-03,-53,E00283,medium,image_transcription
 417,49,7,character_inking,started,2024-08-01,2026-08-10,739,E00158,high,text_explicit
 417,49,7,page_log,,2024-08-02,2026-08-10,738,E00439,high,image_transcription
 417,49,7,page_log,,2024-08-03,2026-08-10,737,E00440,high,image_transcription
@@ -322,7 +316,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 417,49,7,bg_spec,complete,2025-09-02,2026-08-10,342,E00218,high,text_explicit
 417,49,7,dialogue,complete,2025-10-09,2026-08-10,305,E00252,high,image_transcription
 417,49,7,manuscript_complete,complete,2026-02-05,2026-08-10,186,E00268,high,image_transcription
-417,49,7,retouch,complete,2026-09-25,2026-08-10,-46,E00284,medium,image_transcription
 418,49,8,character_inking,started,2024-08-17,2026-08-24,737,E00160,high,text_explicit
 418,49,8,page_log,,2024-08-18,2026-08-24,736,E00452,high,image_transcription
 418,49,8,page_log,,2024-08-19,2026-08-24,735,E00453,medium,image_transcription
@@ -341,7 +334,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 418,49,8,bg_spec,complete,2025-09-03,2026-08-24,355,E00219,high,text_explicit
 418,49,8,dialogue,complete,2025-10-10,2026-08-24,318,E00254,high,image_transcription
 418,49,8,manuscript_complete,complete,2026-02-10,2026-08-24,195,E00227,high,text_explicit
-418,49,8,retouch,complete,2026-09-25,2026-08-24,-32,E00285,medium,image_transcription
 419,49,9,character_inking,started,2024-09-09,2026-08-31,721,E00171,high,text_explicit
 419,49,9,page_log,,2024-09-10,2026-08-31,720,E00465,medium,inferred
 419,49,9,page_log,,2024-09-12,2026-08-31,718,E00466,medium,inferred
@@ -354,7 +346,6 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 419,49,9,character_inking,complete,2024-09-22,2026-08-31,708,E00173,high,text_explicit
 419,49,9,bg_spec,complete,2025-09-10,2026-08-31,355,E00220,high,text_explicit
 419,49,9,manuscript_complete,complete,2026-02-17,2026-08-31,195,E00228,high,text_explicit
-419,49,9,retouch,complete,2026-09-25,2026-08-31,-25,E00286,medium,image_transcription
 420,49,10,character_inking,started,2024-09-23,2026-09-07,714,E00174,high,text_explicit
 420,49,10,page_log,,2024-09-25,2026-09-07,712,E00473,medium,inferred
 420,49,10,page_log,,2024-09-26,2026-09-07,711,E00474,medium,inferred
@@ -364,4 +355,3 @@ chapter,batch_id,position_in_batch,stage,status,event_date,publication_date,lag_
 420,49,10,bg_spec,complete,2025-10-06,2026-09-07,336,E00221,high,text_explicit
 420,49,10,dialogue,complete,2025-10-11,2026-09-07,331,E00255,high,image_transcription
 420,49,10,manuscript_complete,complete,2026-02-24,2026-09-07,195,E00229,high,text_explicit
-420,49,10,retouch,complete,2026-09-25,2026-09-07,-18,E00287,medium,image_transcription

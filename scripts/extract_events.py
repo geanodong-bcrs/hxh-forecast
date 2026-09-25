@@ -150,8 +150,8 @@ def flag_implausible(events):
         # A chapter already in print cannot be reaching manuscript completion.
         # This is what catches 「No388.399…完成」 (388 published four years
         # earlier, a typo for 398) where a distance check does not: 388 is only
-        # nine chapters from its neighbours. Retouch is exempt - Togashi really
-        # does rework published chapters for the tankobon.
+        # nine chapters from its neighbours. Retouch is exempt - see
+        # reclassify_tankobon_retouch, which runs first.
         p = pub.get(ch)
         if p and r["stage"] in ("manuscript_complete", "character_inking") \
                 and (d - p).days > 30:
@@ -163,6 +163,34 @@ def flag_implausible(events):
             med = near[len(near) // 2]
             if abs(ch - med) > IMPLAUSIBLE_CHAPTER_DISTANCE:
                 mark(r, "chapter_temporally_implausible (neighbours ~%d)" % med)
+
+
+def reclassify_tankobon_retouch(events):
+    """Retouch on a chapter already in print is tankobon work, not serialization.
+
+    2026-09-25 「No411〜420 加筆修正 完了。」 came the day after 単行本表紙カラー完了
+    (vol. 40's cover): corrections for the collected volume, on chapters that had
+    run in Jump months earlier. As chapter_stage events they would read as
+    production progress and yield negative production->publication lags. As
+    ancillary_work they are what §8 says they are - competition for his hours.
+    The chapter number is kept: it says which volume the work was for.
+    """
+    from datetime import date
+
+    pub = {}
+    with open(D("data", "processed", "chapters.csv"), encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if r["publication_date_jp"]:
+                pub[int(r["chapter"])] = r["publication_date_jp"]
+    for r in events:
+        if r["event_class"] != "chapter_stage" or r["stage"] != "retouch" \
+                or not str(r["chapter"]).strip().isdigit():
+            continue
+        p = pub.get(int(r["chapter"]))
+        if p and r["event_date"] > p:
+            r.update(event_class="ancillary_work", kind="tankobon", stage="", status="",
+                     notes=(r["notes"] + "; retouch after publication %s: tankobon "
+                            "correction, not serialization" % p).strip("; "))
 
 
 def main():
@@ -262,6 +290,7 @@ def main():
                 notes="chapter via %s" % r["chapter_source"])
 
     events = dedupe(events)
+    reclassify_tankobon_retouch(events)
     flag_implausible(events)
 
     events.sort(key=lambda r: (r["event_date"], r["event_id"]))

@@ -160,6 +160,9 @@ event_classes:
     note: >
       Competes for the same hours as chapter production, so it is evidence about
       capacity even though it produces no chapter progress.
+      Retouch (加筆, 加筆修正) on a chapter already published in Jump is
+      reclassified here as kind=tankobon, chapter number kept - e.g. 2026-09-25
+      「No411〜420 加筆修正 完了。」, the day after vol. 40's cover (単行本表紙カラー完了).
 
 # ---------------------------------------------------------------- guards
 guards:
