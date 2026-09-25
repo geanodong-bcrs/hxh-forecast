@@ -298,3 +298,4 @@ tweet_id,date,image_type,pages_shown,transcribed_text,chapters,stage_raw,annotat
 2033764977727967457,2026-03-17,milestone_text,,No.429 人物ペン入れ完了…,429,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,,sheet_048.jpg
 2084155567363539307,2026-08-03,milestone_text,,No.433 人物ペン入れ完了。,433,人物ペン入れ完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,photographed against roses,sheet_048.jpg
 2092902182790341023,2026-08-27,milestone_text,,No.429 背景指定書 完成,429,背景指定書作成完了,claude,vision_model,high,2026-08-27T14:30:00Z,proposed,"user-supplied tweet, 2026-08-27",sheet_049.jpg
+2103523865637134659,2026-09-25,milestone_text,,No411 ～420 加筆修正 完了。 なめんなよ,411 412 413 414 415 416 417 418 419 420,加筆修正 完了。,claude,vision_model_auto,high,2026-09-25T16:45:36.005536+00:00,proposed,"The image writes the range 411～420; the chapters list expands it. The written stage is 加筆修正, not 加筆. なめんなよ is on a sign the cat drawing holds and is not a production milestone.",
