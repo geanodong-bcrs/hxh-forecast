@@ -152,6 +152,11 @@ def readiness_paths(first_chapter):
         upto = date.fromisoformat(start_iso) if start_iso else date.today()
         trace = br.ordered_trace(ev, list(range(ch0, ch0 + 10)), upto)
         if trace:
+            # Hold the last level flat through `upto`: days with no report are
+            # still elapsed days, and a curve that stops at its last report
+            # understates how long the run has taken.
+            if trace[-1][0] < upto:
+                trace.append((upto, trace[-1][1], None))
             out.append((ch0, trace, ch0 == first_chapter, start_iso is not None))
     return [(ch0, [((w - t[0][0]).days, v / 10.0) for w, v, _ in t], cur, started)
             for ch0, t, cur, started in out]

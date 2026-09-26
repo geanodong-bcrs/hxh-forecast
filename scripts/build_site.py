@@ -670,49 +670,56 @@ def manuscript_completion_annotations(rows):
     The line may move after any production report, and manuscript completion is
     not irreversible (a retake can follow it).  To avoid pretending every move
     has an obvious single cause, mark only this late, reader-legible milestone.
+
+    The dot sits ON the first saved forecast made after the post -- the top of
+    the step the evidence entered at -- not at the post's date on the line.
+    Placing it by date put it at midnight UTC, before the post, on the old
+    value, which read as the evidence preceding the jump rather than causing
+    it. The post time comes from the tweet id, since image-read events carry
+    only a date. That forecast may also fold in other same-day evidence, so the
+    tooltip names the post, not a cause.
     """
-    dated_rows = sorted(
-        ((date.fromisoformat((r.get("asof") or r["t"].date().isoformat())[:10]), r)
-         for r in rows),
-        key=lambda item: item[0],
-    )
+    rows = sorted(rows, key=lambda r: r["t"])
     out, seen = [], set()
     with open(D("data", "processed", "production_events.csv"), encoding="utf-8") as fh:
         for e in csv.DictReader(fh):
             if (e.get("event_class") != "chapter_stage" or
                     e.get("stage") != "manuscript_complete" or
                     e.get("status") != "complete" or
-                    not e.get("chapter") or not e.get("event_date")):
+                    not e.get("chapter") or not e.get("tweet_id")):
                 continue
-            key = (e["event_date"], e["chapter"])
+            key = (e["tweet_id"], e["chapter"])
             if key in seen:
                 continue
             seen.add(key)
-            event_day = date.fromisoformat(e["event_date"][:10])
-            # A model replay is not necessarily saved on every tweet day. Keep
-            # the marker at the real event date, and place it on the line drawn
-            # between the surrounding saved forecasts. Its tooltip identifies
-            # the evidence; the dot does not imply an unsaved point forecast.
-            r = next((row for asof, row in dated_rows if asof >= event_day), None)
-            if r is None or not (dated_rows[0][0] <= event_day <= dated_rows[-1][0]):
+            posted = snowflake_time(e["tweet_id"])
+            if not rows or posted < rows[0]["t"]:
                 continue
-            event_t = datetime.combine(event_day, datetime.min.time())
-            before = max((row for _, row in dated_rows if row["t"] <= event_t),
-                         key=lambda row: row["t"], default=None)
-            after = min((row for _, row in dated_rows if row["t"] >= event_t),
-                        key=lambda row: row["t"], default=None)
-            ordinate = float(date.fromisoformat(r["median"]).toordinal())
-            if before is not None and after is not None and before is not after:
-                span = (after["t"] - before["t"]).total_seconds()
-                frac = (event_t - before["t"]).total_seconds() / span
-                b = date.fromisoformat(before["median"]).toordinal()
-                a = date.fromisoformat(after["median"]).toordinal()
-                ordinate = b + frac * (a - b)
-            out.append({"t": event_t,
-                        "median": r["median"],
-                        "ordinate": ordinate,
-                        "label": "Chapter %s: manuscript complete" % e["chapter"]})
+            r = next((row for row in rows if row["t"] >= posted), None)
+            if r is None:
+                continue
+            label = ("Chapter %s: manuscript complete (posted %s JST)"
+                     % (e["chapter"], (posted + timedelta(hours=9))
+                        .strftime("%-d %b %Y %H:%M")))
+            if r["t"] - posted > timedelta(days=2):
+                # The drawn series has a hole here (e.g. v13 replays stop on
+                # 25 Aug 2026 and resume 14 Sep). Snapping to the next saved
+                # forecast would misdate the post by weeks; mark it where it
+                # happened, on the value then standing.
+                held = max((row for row in rows if row["t"] <= posted),
+                           key=lambda row: row["t"])
+                out.append({"t": posted, "median": held["median"],
+                            "label": label + "; next saved forecast %s"
+                                     % r["t"].strftime("%-d %b %Y")})
+                continue
+            out.append({"t": r["t"], "median": r["median"], "label": label})
     return out
+
+
+def snowflake_time(tweet_id):
+    """Naive-UTC creation time encoded in an X post id."""
+    ms = (int(tweet_id) >> 22) + 1288834974657
+    return datetime.fromtimestamp(ms / 1000, timezone.utc).replace(tzinfo=None)
 
 
 def event_only_series(rows):
@@ -1090,6 +1097,22 @@ def _frame(rows, width, height, pad):
     return (pad_l, pad_r, pad_t, pad_b, W, H, X, g)
 
 
+def step_path(pts):
+    """SVG path through forecast snapshots, held flat until the next one.
+
+    A forecast stands until a later snapshot replaces it; nothing drifts in
+    between. Joining snapshots with straight segments drew a slope where there
+    was a jump, and put any evidence marker at its foot.
+    """
+    d = ["M%.1f,%.1f" % pts[0]]
+    for i, ((_, y0), (x1, y1)) in enumerate(zip(pts, pts[1:])):
+        if y1 != y0:
+            d.append("H%.1f V%.1f" % (x1, y1))
+        elif i == len(pts) - 2:
+            d.append("H%.1f" % x1)
+    return " ".join(d)
+
+
 def fan_chart(rows, annotations=None, width=720, height=250):
     """Predicted publication date for one chapter, as the forecast has moved.
 
@@ -1124,8 +1147,7 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     body, labels = [], []
     for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
         pts = [(X(r["t"]), Y(O(key(r)))) for r in rows]
-        body.append('<path class="%s" d="M%s"/>'
-                    % (cls, " L".join("%.1f,%.1f" % p for p in pts)))
+        body.append('<path class="%s" d="%s"/>' % (cls, step_path(pts)))
         labels.append([pts[-1][1], "%s &middot; %s" % (name, fmt(key(rows[-1])))])
 
     for a in annotations or []:
@@ -1178,8 +1200,8 @@ def decomposition_chart(rows, width=720, height=230):
                                                      ("median", "var(--accent)", "", "full real-time"))):
         pts = [(X(r["t"]), Y(O(r[key]))) for r in rows]
         dash_attr = ' stroke-dasharray="%s"' % dash if dash else ""
-        body.append('<path d="M%s" fill="none" stroke="%s" stroke-width="2"%s/>'
-                    % (" L".join("%.1f,%.1f" % p for p in pts), stroke, dash_attr))
+        body.append('<path d="%s" fill="none" stroke="%s" stroke-width="2"%s/>'
+                    % (step_path(pts), stroke, dash_attr))
         body.append('<text class="ax lbl" x="%.1f" y="%.1f">%s</text>'
                     % (pad_l + W + 6, pts[-1][1] + 4 + (12 if n else 0), label))
     return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
@@ -1212,8 +1234,7 @@ def prob_chart(rows, horizons, width=720, height=230):
         pts = [(X(r["t"]), Y(r["p_by"][hz])) for r in rows if hz in r["p_by"]]
         if len(pts) < 2:
             continue
-        body.append('<path class="qline q%d" d="M%s"/>'
-                    % (i + 1, " L".join("%.1f,%.1f" % p for p in pts)))
+        body.append('<path class="qline q%d" d="%s"/>' % (i + 1, step_path(pts)))
         last = next(r for r in reversed(rows) if hz in r["p_by"])
         labels.append([pts[-1][1], "by %s &middot; %s"
                        % (date.fromisoformat(hz).strftime("%b %Y"),
@@ -1486,8 +1507,11 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
         h.append(zoomed(lambda rr: fan_chart(rr, complete), ser, name="hf%d" % first))
         h.append('<p class=note>The predicted publication date for chapter %d. '
                  'Later dates sit <em>lower</em>, so a line rising means a shorter '
-                 'expected wait. Amber dots are manuscript-completion reports; '
-                 'hover them for the chapter. They are evidence, not guarantees: '
+                 'expected wait. Each step is a new forecast replacing the last. Amber '
+                 'dots are manuscript-completion reports, placed on the first '
+                 'forecast made after the post; hover them for the chapter. That '
+                 'step can also fold in other same-day evidence. They are '
+                 'evidence, not guarantees: '
                  'production can be revisited or retaken, and scheduling remains '
                  'an editorial decision.</p>' % first)
     if secondary:
