@@ -35,7 +35,8 @@ def character_id(title: str) -> str:
 
 def strip_templates(text: str) -> str:
     text = re.sub(r"\{\{\s*Sm\s*\|\s*([^{}]+?)\s*\}\}", r"\1", text, flags=re.IGNORECASE)
-    for code, label in (("M", "Mentioned"), ("I", "Image"), ("D", "Debut"), ("V", "Voice only")):
+    for code, label in (("M", "Mentioned"), ("I", "Image"), ("D", "Debut"),
+                        ("V", "Voice only"), ("F", "Flashback")):
         text = re.sub(r"\{\{\s*" + code + r"\s*\}\}", label, text, flags=re.IGNORECASE)
     previous = None
     while text != previous:
@@ -76,6 +77,7 @@ def parse_chapter(chapter: int, wikitext: str) -> list[dict]:
             ("image", "image"), ("photo", "image"), ("casket", "remains"),
             ("corpse", "remains"), ("debut", "debut"), ("{{m}}", "mentioned"),
             ("{{i}}", "image"), ("{{d}}", "debut"), ("{{v}}", "voice_only"),
+            ("{{f}}", "flashback"),
         ):
             if marker in lowered:
                 appearance_type = value

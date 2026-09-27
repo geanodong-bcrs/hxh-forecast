@@ -161,8 +161,6 @@ def infer_mode(text: str) -> str:
 def import_legacy_csv(db: sqlite3.Connection, path: Path) -> int:
     if not path.exists():
         return 0
-    if db.execute("SELECT COUNT(*) FROM panels").fetchone()[0]:
-        return 0
 
     with path.open(newline="", encoding="utf-8-sig") as handle:
         rows = list(csv.DictReader(handle))
@@ -170,17 +168,29 @@ def import_legacy_csv(db: sqlite3.Connection, path: Path) -> int:
         return 0
 
     chapter = int(rows[0]["chapter"])
-    page_count = max(split_pages(row["page"])[1] for row in rows)
+    if db.execute("SELECT COUNT(*) FROM panels WHERE chapter=?", (chapter,)).fetchone()[0]:
+        return 0
+    modern = "page_start" in rows[0]
+    page_count = max(
+        int(row["page_end"]) if modern else split_pages(row["page"])[1]
+        for row in rows
+    )
     db.execute(
         "INSERT OR IGNORE INTO chapters(chapter,title,page_count,edition,language) "
         "VALUES(?,?,?,?,?)",
         (chapter, "Negotiation", page_count, "", "en"),
     )
     for row in rows:
-        page_start, page_end = split_pages(row["page"])
+        if modern:
+            page_start, page_end = int(row["page_start"]), int(row["page_end"])
+        else:
+            page_start, page_end = split_pages(row["page"])
         order = int(row["panel_order"])
         panel_id = make_panel_id(chapter, page_start, page_end, order)
-        visual = (row.get("characters_on_panel") or "").strip()
+        legacy_visual = (row.get("characters_on_panel") or "").strip()
+        segments = []
+        if modern and (row.get("text_segments_json") or "").strip():
+            segments = json.loads(row["text_segments_json"])
         db.execute(
             """INSERT INTO panels(
                 panel_id,chapter,page_start,page_end,panel_order,panel_types,
@@ -189,16 +199,27 @@ def import_legacy_csv(db: sqlite3.Connection, path: Path) -> int:
             ) VALUES(?,?,?,?,?,?,?,?,?,?,?,?,?,?)""",
             (
                 panel_id, chapter, page_start, page_end, order,
-                (row.get("panel_type") or "standard").strip().replace(", ", ";"),
-                visual, (row.get("characters_mentioned") or "").strip(),
+                (row.get("panel_types") or row.get("panel_type") or "standard").strip().replace(", ", ";"),
+                legacy_visual, (row.get("characters_mentioned") or "").strip(),
                 (row.get("location") or "").strip(),
-                (row.get("keywords") or "").strip().replace(", ", ";"),
-                "", (row.get("notes") or "").strip(), "needs_review",
-                1 if not (row.get("script_text") or "").strip() else 0,
+                (row.get("tags") or row.get("keywords") or "").strip().replace(", ", ";"),
+                (row.get("visual_description") or "").strip(),
+                (row.get("notes") or "").strip(),
+                (row.get("review_status") or "needs_review").strip(),
+                int(row.get("silent_panel") or 0) if modern else 1 if not (row.get("script_text") or "").strip() else 0,
             ),
         )
-        text = (row.get("script_text") or "").strip()
-        if text:
+        if modern:
+            for index, segment in enumerate(segments, start=1):
+                db.execute(
+                    "INSERT INTO text_segments(panel_id,segment_order,speaker,mode,text) VALUES(?,?,?,?,?)",
+                    (panel_id, index, (segment.get("speaker") or "").strip(),
+                     segment.get("mode") or "dialogue", segment.get("text") or ""),
+                )
+        else:
+            text = (row.get("script_text") or "").strip()
+            if not text:
+                continue
             db.execute(
                 "INSERT INTO text_segments(panel_id,segment_order,speaker,mode,text) "
                 "VALUES(?,?,?,?,?)",
@@ -238,6 +259,16 @@ def chapter_payload(db: sqlite3.Connection, chapter: int) -> dict:
         panel["silent_panel"] = bool(panel["silent_panel"])
     complete = sum(1 for row in panel_rows if row["review_status"] == "reviewed")
     return {"chapter": dict(meta), "panels": panels, "reviewed": complete}
+
+
+def chapters_payload(db: sqlite3.Connection) -> dict:
+    rows = db.execute(
+        """SELECT c.chapter,c.title,c.page_count,COUNT(p.panel_id) AS panel_count,
+        SUM(CASE WHEN p.review_status='reviewed' THEN 1 ELSE 0 END) AS reviewed
+        FROM chapters c LEFT JOIN panels p ON p.chapter=c.chapter
+        GROUP BY c.chapter,c.title,c.page_count ORDER BY c.chapter"""
+    ).fetchall()
+    return {"chapters": [dict(row) for row in rows]}
 
 
 def update_panel(db: sqlite3.Connection, panel_id: str, payload: dict) -> dict:
@@ -368,6 +399,10 @@ class AppHandler(BaseHTTPRequestHandler):
                 with connect(self.db_path) as db:
                     self.send_json(chapter_payload(db, chapter))
                 return
+            if parsed.path == "/api/chapters":
+                with connect(self.db_path) as db:
+                    self.send_json(chapters_payload(db))
+                return
             if parsed.path.startswith("/api/panel/"):
                 panel_id = parsed.path.rsplit("/", 1)[1]
                 with connect(self.db_path) as db:
@@ -445,14 +480,17 @@ def main() -> int:
     parser.add_argument("--no-open", action="store_true")
     args = parser.parse_args()
     with connect(args.db) as db:
-        imported = import_legacy_csv(db, DEFAULT_IMPORT)
+        imported = sum(
+            import_legacy_csv(db, path)
+            for path in sorted((ROOT / "private" / "story").glob("chapter_*_panel_transcription.csv"))
+        )
     AppHandler.db_path = args.db
     server = ThreadingHTTPServer((args.host, args.port), AppHandler)
     url = f"http://{args.host}:{args.port}/"
     print(f"Story annotator: {url}")
     print(f"Database: {args.db}")
     if imported:
-        print(f"Imported {imported} panels from {DEFAULT_IMPORT.relative_to(ROOT)}")
+        print(f"Imported {imported} panels from private story CSV files")
     if not args.no_open:
         webbrowser.open(url)
     try:
