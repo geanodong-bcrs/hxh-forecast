@@ -1134,7 +1134,9 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     pad_y = max((y1 - y0) * 0.07, 3)
     y0, y1 = y0 - pad_y, y1 + pad_y
     Y = lambda o: pad_t + H * (o - y0) / max(y1 - y0, 1)
-    compact_y_dates = bool(rows[0].get("_compact_y_dates"))
+    # Month labels repeat when the whole range is a few weeks ("Aug 2028,
+    # Aug 2028, Sep 2028..."), so short ranges get day-level ticks.
+    compact_y_dates = bool(rows[0].get("_compact_y_dates")) or y1 - y0 < 120
 
     for frac in (0, .25, .5, .75, 1):
         o = y0 + (y1 - y0) * frac
@@ -1148,7 +1150,13 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
         pts = [(X(r["t"]), Y(O(key(r)))) for r in rows]
         body.append('<path class="%s" d="%s"/>' % (cls, step_path(pts)))
-        labels.append([pts[-1][1], "%s &middot; %s" % (name, fmt(key(rows[-1])))])
+        # Sit the label clear of the line under it: above everything the line
+        # does across the label's width (~150px at the right edge), or below
+        # when there is no room above. Placed ON the last value it overlapped.
+        span = [y for x, y in pts if x >= pad_l + W - 150] + [pts[-1][1]]
+        top, bottom = min(span), max(span)
+        ybase = top - 6 if top - 17 >= pad_t else bottom + 15
+        labels.append([ybase - 4, "%s &middot; %s" % (name, fmt(key(rows[-1])))])
 
     for a in annotations or []:
         if not (rows[0]["t"] <= a["t"] <= rows[-1]["t"]):

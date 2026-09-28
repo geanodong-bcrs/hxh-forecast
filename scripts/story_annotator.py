@@ -345,6 +345,39 @@ def add_panel(db: sqlite3.Connection, payload: dict) -> dict:
     return panel_payload(db, panel_id)
 
 
+def delete_panel(db: sqlite3.Connection, panel_id: str) -> dict:
+    panel = db.execute("SELECT * FROM panels WHERE panel_id=?", (panel_id,)).fetchone()
+    if panel is None:
+        raise KeyError(panel_id)
+    page_count = db.execute(
+        "SELECT COUNT(*) FROM panels WHERE chapter=? AND page_start=? AND page_end=?",
+        (panel["chapter"], panel["page_start"], panel["page_end"]),
+    ).fetchone()[0]
+    if page_count <= 1:
+        raise ValueError("Each page must retain at least one panel.")
+    db.execute("DELETE FROM panels WHERE panel_id=?", (panel_id,))
+    following = db.execute(
+        """SELECT panel_id,panel_order FROM panels
+        WHERE chapter=? AND page_start=? AND page_end=? AND panel_order>?
+        ORDER BY panel_order""",
+        (panel["chapter"], panel["page_start"], panel["page_end"], panel["panel_order"]),
+    ).fetchall()
+    for row in following:
+        db.execute(
+            "UPDATE panels SET panel_id=?,panel_order=? WHERE panel_id=?",
+            (f"__moving__{row['panel_id']}", -row["panel_order"], row["panel_id"]),
+        )
+    for row in following:
+        new_order = row["panel_order"] - 1
+        new_id = make_panel_id(panel["chapter"], panel["page_start"], panel["page_end"], new_order)
+        db.execute(
+            "UPDATE panels SET panel_id=?,panel_order=? WHERE panel_id=?",
+            (new_id, new_order, f"__moving__{row['panel_id']}"),
+        )
+    db.commit()
+    return {"deleted": panel_id}
+
+
 def export_chapter(db: sqlite3.Connection, chapter: int) -> tuple[Path, str]:
     EXPORT_DIR.mkdir(parents=True, exist_ok=True)
     path = EXPORT_DIR / f"chapter_{chapter}_panels.csv"
@@ -446,6 +479,20 @@ class AppHandler(BaseHTTPRequestHandler):
                 self.send_json({"saved": str(path.relative_to(ROOT))})
                 return
             self.send_json({"error": "Unknown endpoint"}, HTTPStatus.NOT_FOUND)
+        except Exception as exc:
+            self.send_json({"error": str(exc)}, HTTPStatus.BAD_REQUEST)
+
+    def do_DELETE(self) -> None:
+        parsed = urlparse(self.path)
+        try:
+            if parsed.path.startswith("/api/panel/"):
+                panel_id = parsed.path.rsplit("/", 1)[1]
+                with connect(self.db_path) as db:
+                    self.send_json(delete_panel(db, panel_id))
+                return
+            self.send_json({"error": "Unknown endpoint"}, HTTPStatus.NOT_FOUND)
+        except KeyError as exc:
+            self.send_json({"error": f"Not found: {exc.args[0]}"}, HTTPStatus.NOT_FOUND)
         except Exception as exc:
             self.send_json({"error": str(exc)}, HTTPStatus.BAD_REQUEST)
 
