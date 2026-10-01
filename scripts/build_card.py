@@ -162,16 +162,26 @@ def readiness_paths(first_chapter):
             for ch0, t, cur, started in out]
 
 
-def readiness_state(first_chapter):
-    """(level 0-10, {batch: days from that level to its start}) for any run."""
+def readiness_state(first_chapter, asof=None):
+    """(level 0-10, {batch: days FROM ASOF to start, at that run's pace}, days at level).
+
+    A run's raw figure R is the days from first reaching this level to starting.
+    The live run has already spent some of that time at the level, so the card
+    shows R minus those days -- what the model's feasibility floor uses too
+    (build_feasibility: remaining_h = max(0, R_h - days already spent)). Showing
+    raw R read as "from today" and overstated the wait by the days already spent.
+    A run that started sooner than we have already waited maps to 0 and renders
+    as "already past"; one that never reached the level stays None.
+    """
     import build_feasibility as bf
     import build_readiness as br
+    asof = asof or date.today()
     ev = _events()
-    trace = br.ordered_trace(ev, list(range(first_chapter, first_chapter + 10)),
-                             date.today())
+    trace = br.ordered_trace(ev, list(range(first_chapter, first_chapter + 10)), asof)
     if not trace:
-        return None, {}
+        return None, {}, 0
     level = trace[-1][1]
+    spent = (asof - bf.attained_date([(w, v) for w, v, _ in trace], level)).days
     rem = {}
     for batch, start_iso in sorted(BATCH_STARTS.items()):
         ch0 = 391 + (batch - 47) * 10
@@ -181,9 +191,9 @@ def readiness_state(first_chapter):
         # None is kept, not dropped: "we never observed that run at this level"
         # is information, and silently omitting the row would imply the batch
         # was not comparable rather than not measurable.
-        rem[str(batch)] = bf.remaining(
-            bf.trace(ev, list(range(ch0, ch0 + 10)), start), start, level)
-    return level, rem
+        r = bf.remaining(bf.trace(ev, list(range(ch0, ch0 + 10)), start), start, level)
+        rem[str(batch)] = None if r is None else max(0, r - spent)
+    return level, rem, spent
 
 
 def chapter_pub_date(ch):
@@ -202,11 +212,10 @@ def chapter_pub_date(ch):
 def render(d, path):
     d = dict(d)
     d.setdefault("readiness_paths", readiness_paths(d["chapter"]))
-    if d.get("readiness_level") is None or not d.get("analog_remaining"):
-        # The snapshot records readiness only for the run it forecasts, so the
-        # following run's state is derived here from the same event table.
-        lvl, rem = readiness_state(d["chapter"])
-        d["readiness_level"], d["analog_remaining"] = lvl, rem
+    # Both cards derive readiness from the event table, so the two read the
+    # same way: the snapshot records raw analog days, not days from today.
+    lvl, rem, spent = readiness_state(d["chapter"])
+    d["readiness_level"], d["analog_remaining"], d["days_at_level"] = lvl, rem, spent
     fig = plt.figure(figsize=(8, 4.5), dpi=200)
     fig.patch.set_facecolor(SURFACE)
 
@@ -313,7 +322,7 @@ def render(d, path):
     # Accent for this run, graduated grays for context, per the card's palette
     # rule. The three grays are not categories to decode: each is labelled at the
     # dot where that run actually began.
-    ax = fig.add_axes([.575, .40, .37, .42])
+    ax = fig.add_axes([.575, .47, .37, .40])
     ax.set_facecolor(SURFACE)
     for sp in ax.spines.values():
         sp.set_visible(False)
@@ -363,17 +372,19 @@ def render(d, path):
     rem = d.get("analog_remaining") or {}
     prev = [b for b in sorted(BATCH_STARTS) if 391 + (b - 47) * 10 < d["chapter"]]
     if prev:
-        fig.text(.575, .295,
-                 "At this readiness, previous batches began in", color=INK,
-                 fontsize=8.5)
+        fig.text(.575, .335,
+                 "At the pace of earlier batches, it would begin in\n"
+                 "how many days from today", color=INK, fontsize=8.5,
+                 va="top", linespacing=1.4)
         for row, batch in enumerate(prev):
             first_ch = 391 + (batch - 47) * 10
-            y = .225 - row * .05
+            y = .215 - row * .05
             days = rem.get(str(batch))
             fig.text(.575, y, "ch. %d–%d" % (first_ch, first_ch + 9),
                      color=INK2, fontsize=9.5)
-            fig.text(.945, y, "%d days" % days if days is not None else "—",
-                     color=INK if days is not None else MUTED, fontsize=9.5,
+            txt = ("—" if days is None else "already past" if days == 0
+                   else "%d days" % days)
+            fig.text(.945, y, txt, color=INK if days else MUTED, fontsize=9.5,
                      ha="right")
 
     # ---------------- caveat ----------------

@@ -225,7 +225,7 @@ def main():
         if d is None:
             print("no comparable baseline for the following run — staying quiet")
             return 0
-        level, _ = build_card.readiness_state(d["chapter"])
+        level = build_card.readiness_state(d["chapter"])[0]
         last = state.get("last_following_level")
         if level is None:
             print("no readiness for ch. %d–%d — staying quiet"
