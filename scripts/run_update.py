@@ -90,6 +90,32 @@ def log_poll(row):
         w.writerow(row)
 
 
+CALENDAR_STALE_DAYS = 14
+
+
+def calendar_staleness_check():
+    """Warn when the newest real (jajanken-listed) issue is old.
+
+    The calendar froze for six weeks before anyone noticed, because nothing
+    failed: projected slots look like real issues. jajanken lists issues about
+    two weeks ahead of cover date, so its newest on-sale date sits near today.
+    """
+    try:
+        with open(D("data", "processed", "wsj_issues.csv"), encoding="utf-8") as fh:
+            newest = max(r["on_sale_date"] for r in csv.DictReader(fh))
+    except (OSError, ValueError):
+        print("  WARNING: issue calendar unreadable")
+        return False
+    age = (datetime.now(timezone.utc).date()
+           - datetime.strptime(newest, "%Y-%m-%d").date()).days
+    if age > CALENDAR_STALE_DAYS:
+        print("  WARNING: issue calendar is STALE — newest issue on sale %s "
+              "(%d days ago). Check fetch_jajanken_calendar.py." % (newest, age))
+        return False
+    print("  issue calendar current through %s" % newest)
+    return True
+
+
 class Runner:
     """Runs a pipeline step, tees its output to the run log, stops on failure."""
 
@@ -218,11 +244,11 @@ def main():
     # happen to this forecast. A failure here is not fatal: the forecast is
     # still better rebuilt on stale publication data than not rebuilt at all.
     #
-    # NOTE: this refreshes Hunterpedia (chapters) only. `wsj_issues.csv`, which
-    # supplies `last_obs` and therefore the continuous no-start conditioning,
-    # comes from jajanken and has no fetch script -- the raw HTML was collected
-    # by hand. Until one exists, issues ruled out ahead of the calendar have to
-    # be recorded in data/annotations/known_absent_issues.csv.
+    # The WSJ issue calendar (jajanken -> wsj_issues.csv) is refreshed here too.
+    # It was collected by hand once and froze at 2026 no.39; build_posterior now
+    # rules out past issues by date regardless, but only a current calendar has
+    # the real combined issues (42-43 was one) rather than projected slots.
+    # Rebuilt after the chapter dataset, which supplies its on-sale anchors.
     if daily_due or trigger == "daily":
         print("\npublication record:")
         if run("fetch_hunterpedia_chapters.py"):
@@ -230,6 +256,10 @@ def main():
             run("validate_chapters.py")
         else:
             print("  publication fetch failed — continuing on the existing data")
+        if not run("fetch_jajanken_calendar.py"):
+            print("  calendar fetch failed — continuing on the existing calendar")
+        run("build_issue_calendar.py")
+        calendar_staleness_check()
 
     # ---------- 2. rebuild only what the change touches ----------
     if new_ids:

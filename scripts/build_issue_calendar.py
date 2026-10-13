@@ -73,9 +73,14 @@ def load_anchors():
 
 
 def main():
-    rows = []
+    # Newest snapshot per year. fetch_jajanken_calendar.py writes
+    # years_<YYYY>_<stamp>.html alongside the hand-collected years_<YYYY>.html;
+    # "_" sorts after ".", so the latest stamp wins and old files stay untouched.
+    latest = {}
     for path in sorted(glob.glob(os.path.join(RAW, "years_*.html"))):
-        year = int(re.search(r"years_(\d{4})", path).group(1))
+        latest[int(re.search(r"years_(\d{4})", path).group(1))] = path
+    rows = []
+    for year, path in sorted(latest.items()):
         rows.extend(parse_year(path, year))
     rows.sort(key=lambda r: (r["issue_year"], r["issue_no_first"]))
 

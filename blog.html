@@ -1,0 +1,116 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1"><title>Hunter × Hunter forecast — blog</title><meta name=description content="Longer pieces on Hunter x Hunter production and publication."><style>
+:root{--bg:#fff;--fg:#14161a;--mut:#697079;--line:#e4e7ec;--card:#f7f8fa;
+ --accent:#2f6fd0;--band:#2f6fd01f;--ok:#1f7a4d;--pend:#c8901a;--soft:#e9edf3;
+ --q1:#12408f;--q2:#2f6fd0;--q3:#6b9ce0;--q4:#8fb4e8}
+@media(prefers-color-scheme:dark){:root{--bg:#0f1115;--fg:#e8eaed;--mut:#98a1ac;
+ --line:#272b33;--card:#161920;--accent:#6fa8ff;--band:#6fa8ff26;--ok:#5fd39a;
+ --pend:#e0b44a;--soft:#1d222b;
+ --q1:#cfe0ff;--q2:#6fa8ff;--q3:#4b7fd0;--q4:#35598f}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+ -webkit-font-smoothing:antialiased}
+.wrap{max-width:840px;margin:0 auto;padding:30px 20px 72px}
+h1{font-size:15px;font-weight:600;margin:0;color:var(--mut);letter-spacing:.01em}
+h2{font-size:12px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;
+ color:var(--mut);margin:46px 0 12px;padding-bottom:8px;border-bottom:1px solid var(--line)}
+h3{font-size:14px;font-weight:600;margin:20px 0 6px}
+p{margin:10px 0} a{color:var(--accent)}
+.hero{margin:20px 0 4px}
+.hero .ch{font-size:12px;color:var(--mut);letter-spacing:.09em;text-transform:uppercase}
+.hero .date{font-size:46px;font-weight:650;letter-spacing:-.025em;line-height:1.08;margin:6px 0 2px}
+.hero .sub{color:var(--mut)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}
+@media(max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile .v{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.15}
+.tile .k{font-size:12.5px;color:var(--mut)}
+nav.top{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:0 0 18px}
+nav.top a{color:var(--mut);text-decoration:none}
+nav.top a[aria-current]{color:var(--fg);font-weight:600}
+details>summary{cursor:pointer;font-size:14px;font-weight:600;margin:20px 0 6px}
+.pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;
+ font-weight:600;background:var(--band);color:var(--accent)}
+.pill.plain{background:var(--soft);color:var(--mut)}
+.chart{width:100%;height:auto;display:block;margin:10px 0 2px;overflow:visible}
+.grid{stroke:var(--line);stroke-width:1}
+.grid.yr{stroke:var(--mut);opacity:.4}
+.ax{fill:var(--mut);font-size:11px}
+.ax.yr{font-weight:600}
+.area{fill:var(--band);stroke:none}
+.cdfline{fill:none;stroke:var(--accent);stroke-width:2;stroke-linejoin:round}
+.band{fill:var(--band)}
+.bar{fill:var(--accent);opacity:.82}
+.bar.pi0{opacity:.5}
+.brk{fill:none;stroke:var(--bg);stroke-width:3}
+.rug{stroke:var(--fg);stroke-width:2;opacity:.55}
+.fan80{fill:var(--accent);opacity:.13;stroke:none}
+.fan50{fill:var(--accent);opacity:.16;stroke:none}
+.boundary{stroke:var(--mut);stroke-width:1;stroke-dasharray:2 3;opacity:.65}
+.ax.bd{font-size:10px}
+.ax.lbl{font-size:10.5px}
+.qline{fill:none;stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.q1{stroke:var(--q1)}.q2{stroke:var(--q2)}.q3{stroke:var(--q3)}.q4{stroke:var(--q4)}
+.zoom input{position:absolute;opacity:0;pointer-events:none}
+.zoom .zt{display:flex;gap:6px;margin:12px 0 -4px}
+.zoom .zt label{font-size:11.5px;padding:3px 10px;border-radius:99px;
+ background:var(--soft);color:var(--mut);cursor:pointer;-webkit-user-select:none;user-select:none}
+.zoom .zb{display:none}
+.zoom input:nth-of-type(1):checked~.zt label[for$="-a"],
+.zoom input:nth-of-type(2):checked~.zt label[for$="-b"]{
+ background:var(--band);color:var(--accent);font-weight:600}
+.zoom input:nth-of-type(2):checked~.za{display:none}
+.zoom input:nth-of-type(2):checked~.zb{display:block}
+.ax.spk{fill:var(--accent);font-weight:600;paint-order:stroke;stroke:var(--bg);
+ stroke-width:4px;stroke-linejoin:round}
+.med{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
+.pt{fill:var(--accent);stroke:var(--bg);stroke-width:1.5}
+.pt.tweet{fill:var(--pend)} .pt.annotation{fill:var(--ok)}
+table{border-collapse:collapse;width:100%;font-size:14px;margin:6px 0}
+th,td{text-align:left;padding:7px 9px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--mut);font-weight:600}
+td.num,th.num{text-align:right;font-variant-numeric:tabular-nums}
+tr.hi td{background:var(--card);font-weight:600}
+tr.sep td{border-top:2px solid var(--line)}
+.mono{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12px}
+.note{color:var(--mut);font-size:13.5px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:12px 0}
+/* span is inline by default, so width/height are ignored without this —
+   which is exactly why the status squares rendered as nothing at all */
+.st{display:inline-block;width:14px;height:14px;border-radius:3px;
+ background:var(--soft);border:1px solid var(--line);vertical-align:middle}
+.st.done{background:var(--ok);border-color:transparent}
+.st.prog{background:var(--pend);border-color:transparent}
+.legend{display:flex;gap:15px;flex-wrap:wrap;color:var(--mut);font-size:12.5px;margin:10px 0}
+.legend span{display:flex;gap:6px;align-items:center}
+.dot{display:inline-block;width:10px;height:10px;border-radius:99px;
+ background:var(--soft);border:1px solid var(--line)}
+.tblwrap{overflow-x:auto}
+.strip{display:grid;grid-template-columns:repeat(10,1fr);gap:5px;margin:12px 0}
+@media(max-width:560px){.strip{grid-template-columns:repeat(5,1fr)}}
+.chip{display:flex;align-items:center;justify-content:center;height:38px;
+ border-radius:5px;font-weight:650;font-size:14px;color:#12240f;
+ background:var(--soft);border:1px solid var(--line);cursor:default}
+.chip.delivered{background:#63a844;border-color:transparent;color:#0e2408}
+.chip.spec{background:#5b96d6;border-color:transparent;color:#08182b}
+.chip.drawn{background:#dd8f36;border-color:transparent;color:#2a1704}
+.chip.none{background:var(--soft);color:var(--mut)}
+.dot.delivered{background:#63a844;border-color:transparent}
+.dot.spec{background:#5b96d6;border-color:transparent}
+.dot.drawn{background:#dd8f36;border-color:transparent}
+.dot.none{background:var(--soft)}
+.dot.done{background:var(--ok);border-color:transparent}
+.dot.assumed{background:transparent;border:2px solid var(--ok)}
+.st.assumed{background:transparent;border:2px dashed var(--ok)}
+.jp{font-size:12px;color:var(--mut);font-weight:400}
+th.stg{font-size:10px;line-height:1.25;white-space:nowrap}
+footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);color:var(--mut);font-size:12.5px}
+footer code{font-size:11.5px;word-break:break-all}
+ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
+</style><div class=wrap>
+<nav class=top><a href="index.html">Next 10 chapters</a><a href="chapter-431.html">Following 10 chapters</a><a href="blog.html" aria-current="page">Blog</a><a href="method.html">Method</a></nav>
+<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>
+<div class=hero><div class=date style="font-size:30px">Blog</div>
+<div class=sub>Longer looks at the production record and the forecast</div></div>
+<div class=card><div class=note>16 Sep 2026</div><h3 style="margin-top:4px"><a href="125-day-wait.html">The 125-day wait</a></h3><p class=note>Chapters 411&ndash;420 were finished by 24 February 2026 and did not go on sale until 29 June. What the production record shows across those 125 days &mdash; and whether it has happened before.</p></div>
+</div></html>

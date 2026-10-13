@@ -246,12 +246,16 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 .caveat{background:var(--ground);border-left:3px solid var(--band-edge);padding:.9rem 1.1rem;font-family:var(--sans);font-size:.94rem;line-height:1.55;margin:1.5rem 0 0}
 .caveat b{font-weight:600}
 @media (max-width:560px){.yaxis{width:42px}}
+.topnav{display:flex;gap:14px;flex-wrap:wrap;font-family:var(--sans);font-size:13px;margin:0 0 22px}
+.topnav a{color:var(--ink-3);text-decoration:none}
+.topnav a[aria-current]{color:var(--ink);font-weight:600}
 </style>
 </head>
 <body>
 
 <div class="wrap">
-  <p class="eyebrow">Hunter &times; Hunter &middot; ch. 411&ndash;420 &middot; production record</p>
+  __NAV__
+  <p class="eyebrow">Blog &middot; Hunter &times; Hunter &middot; ch. 411&ndash;420 &middot; production record</p>
   <h1>The 125-Day Wait</h1>
   <p class="stand">Chapters 411-420 were drawn by 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between &mdash; and why it has happened before.</p>
 
@@ -632,7 +636,13 @@ document.getElementById("serrows").innerHTML = dates.map(d =>
 def main():
     data = collect()
     out = D_("site", "125-day-wait.html")
-    html = TEMPLATE.replace("__DATA__", json.dumps(data, separators=(",", ":")))
+    # Site nav shared with build_site.py; this page is a post under the blog.
+    from build_site import NAV
+    nav = '<nav class="topnav">%s</nav>' % "".join(
+        '<a href="%s"%s>%s</a>' % (href, ' aria-current="page"' if href == "blog.html" else "", label)
+        for href, label in NAV)
+    html = (TEMPLATE.replace("__DATA__", json.dumps(data, separators=(",", ":")))
+            .replace("__NAV__", nav))
     with open(out, "w", encoding="utf-8") as fh:
         fh.write(html)
     print("site: %s  %.1f KB" % (os.path.relpath(out, D_()), len(html) / 1024))

@@ -60,7 +60,9 @@ STAGE_IDX = {k: i for i, (k, _, _, _) in enumerate(STAGES)}
 # per-stage matrix as the detail view.
 TIERS = [
     (3, "delivered", "Delivered to Shueisha", "集英社に納品済み"),
-    (2, "spec", "Backgrounds &amp; dialogue specified", "背景/セリフ指定が完成"),
+    # 「/」 is "or": tier 2 is reached by either stage, and 429-430 have only the
+    # background brief. "&amp;" claimed both.
+    (2, "spec", "Backgrounds or dialogue specified", "背景/セリフ指定が完成"),
     (1, "drawn", "Drawn, no backgrounds or dialogue yet", "描かれたが背景/セリフ無し"),
     (0, "none", "Nothing reported", "情報不足"),
 ]
@@ -90,9 +92,9 @@ def stage_marks(stages):
     for key, en, ja, _ in STAGES:
         r = stages.get(key)
         if r and r["status"] == "complete":
-            out.append(("done", "%s %s — reported %s" % (ja, en, r["event_date"])))
+            out.append(("done", "%s %s — reported %s" % (ja, en, fmt(r["event_date"]))))
         elif r:
-            out.append(("prog", "%s %s — started %s" % (ja, en, r["event_date"])))
+            out.append(("prog", "%s %s — started %s" % (ja, en, fmt(r["event_date"]))))
         elif STAGE_IDX[key] < furthest:
             out.append(("assumed", "%s %s — not posted, but a later stage was, "
                                    "so this must be done" % (ja, en)))
@@ -219,8 +221,9 @@ def esc(t):
 
 
 def fmt(iso, short=False):
+    # Short form keeps an apostrophe on the year: "2 Nov 26" reads as a day.
     d = date.fromisoformat(iso)
-    return d.strftime("%-d %b %y") if short else d.strftime("%-d %b %Y")
+    return d.strftime("%-d %b &rsquo;%y") if short else d.strftime("%-d %b %Y")
 
 
 def pct(p):
@@ -1074,7 +1077,7 @@ def readiness_comparison_chart(post):
         '<p class=note><strong>Ch. 391&ndash;400 is incomplete:</strong> Togashi began '
         'posting after production of that batch had already started, so its '
         'displayed duration is a lower bound.</p>',
-        '<p class=note>One interval is worth its own page: ch. 411&ndash;420 was '
+        '<p class=note>From the blog: ch. 411&ndash;420 was '
         'finished on 24 February 2026 and did not go on sale until 29 June. '
         '<a href="125-day-wait.html">What the production record shows across '
         'those 125 days</a> &mdash; and why it is the only wait of its kind.</p>',
@@ -1143,8 +1146,9 @@ def fan_chart(rows, annotations=None, width=720, height=250):
         g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
                  '<text class="ax" x="%d" y="%.1f" text-anchor="end">%s</text>'
                  % (pad_l, Y(o), pad_l + W, Y(o), pad_l - 6, Y(o) + 4,
-                    date.fromordinal(int(o)).strftime(
-                        "%m/%d/%y" if compact_y_dates else "%b %Y")))
+                    fmt(date.fromordinal(int(o)).isoformat(), True)
+                    if compact_y_dates else
+                    date.fromordinal(int(o)).strftime("%b %Y")))
 
     body, labels = [], []
     for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
@@ -1158,13 +1162,18 @@ def fan_chart(rows, annotations=None, width=720, height=250):
         ybase = top - 6 if top - 17 >= pad_t else bottom + 15
         labels.append([ybase - 4, "%s &middot; %s" % (name, fmt(key(rows[-1])))])
 
+    # Posts that land on the same forecast share one dot; stacking identical
+    # circles hid every tooltip but the top one.
+    dots = OrderedDict()
     for a in annotations or []:
         if not (rows[0]["t"] <= a["t"] <= rows[-1]["t"]):
             continue
-        xx, yy = X(a["t"]), Y(a.get("ordinate", O(a["median"])))
+        xy = (round(X(a["t"]), 1), round(Y(a.get("ordinate", O(a["median"]))), 1))
+        dots.setdefault(xy, []).append(a["label"])
+    for (xx, yy), lbls in dots.items():
         body.append('<circle cx="%.1f" cy="%.1f" r="6" fill="var(--pend)" '
                     'stroke="var(--bg)" stroke-width="2"><title>%s</title></circle>'
-                    % (xx, yy, esc(a["label"])))
+                    % (xx, yy, esc("\n".join(lbls))))
 
     labels.sort()
     if len(labels) > 1 and labels[1][0] - labels[0][0] < 13:
@@ -1176,10 +1185,12 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     live = next((r for r in rows if not r["replay"]), None)
     if live and live is not rows[0]:
         xx = X(live["t"])
+        # Label sits in the top margin, outside the plot: inside it, it collided
+        # with the median label whenever that was pushed to the bottom edge.
         body.append('<line class="boundary" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
                     '<text class="ax bd" x="%.1f" y="%d" text-anchor="end">'
                     'live record &#8594;</text>'
-                    % (xx, pad_t, xx, pad_t + H, xx - 5, pad_t + H - 5))
+                    % (xx, pad_t, xx, pad_t + H, xx - 4, pad_t - 4))
     return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
             '"Median predicted publication date over time">'
             '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
@@ -1394,6 +1405,15 @@ p{margin:10px 0} a{color:var(--accent)}
 .hero .ch{font-size:12px;color:var(--mut);letter-spacing:.09em;text-transform:uppercase}
 .hero .date{font-size:46px;font-weight:650;letter-spacing:-.025em;line-height:1.08;margin:6px 0 2px}
 .hero .sub{color:var(--mut)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}
+@media(max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile .v{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.15}
+.tile .k{font-size:12.5px;color:var(--mut)}
+nav.top{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:0 0 18px}
+nav.top a{color:var(--mut);text-decoration:none}
+nav.top a[aria-current]{color:var(--fg);font-weight:600}
+details>summary{cursor:pointer;font-size:14px;font-weight:600;margin:20px 0 6px}
 .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;
  font-weight:600;background:var(--band);color:var(--accent)}
 .pill.plain{background:var(--soft);color:var(--mut)}
@@ -1426,7 +1446,8 @@ p{margin:10px 0} a{color:var(--accent)}
  background:var(--band);color:var(--accent);font-weight:600}
 .zoom input:nth-of-type(2):checked~.za{display:none}
 .zoom input:nth-of-type(2):checked~.zb{display:block}
-.ax.spk{fill:var(--accent);font-weight:600}
+.ax.spk{fill:var(--accent);font-weight:600;paint-order:stroke;stroke:var(--bg);
+ stroke-width:4px;stroke-linejoin:round}
 .med{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
 .pt{fill:var(--accent);stroke:var(--bg);stroke-width:1.5}
 .pt.tweet{fill:var(--pend)} .pt.annotation{fill:var(--ok)}
@@ -1458,11 +1479,11 @@ tr.sep td{border-top:2px solid var(--line)}
 .chip.delivered{background:#63a844;border-color:transparent;color:#0e2408}
 .chip.spec{background:#5b96d6;border-color:transparent;color:#08182b}
 .chip.drawn{background:#dd8f36;border-color:transparent;color:#2a1704}
-.chip.none{background:#b3453d;border-color:transparent;color:#fff}
+.chip.none{background:var(--soft);color:var(--mut)}
 .dot.delivered{background:#63a844;border-color:transparent}
 .dot.spec{background:#5b96d6;border-color:transparent}
 .dot.drawn{background:#dd8f36;border-color:transparent}
-.dot.none{background:#b3453d;border-color:transparent}
+.dot.none{background:var(--soft)}
 .dot.done{background:var(--ok);border-color:transparent}
 .dot.assumed{background:transparent;border:2px solid var(--ok)}
 .st.assumed{background:transparent;border:2px dashed var(--ok)}
@@ -1484,7 +1505,9 @@ def rng(first, n=10):
 
 
 def chapter_table(rows, highlight=None):
-    h = ['<div class=tblwrap><table><tr><th>Chapter</th><th>Most likely</th>'
+    # "Median", not "most likely": the single most likely issue is usually a
+    # different, earlier date, and the hero pill names that one.
+    h = ['<div class=tblwrap><table><tr><th>Chapter</th><th>Median</th>'
          '<th>50% range</th><th>80% range</th></tr>']
     for r in rows:
         h.append('<tr%s><td>%d</td><td>%s</td><td class=note>%s &ndash; %s</td>'
@@ -1546,26 +1569,40 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
                  'live record. See <a href="method.html">method</a>.</p>' % (prefix, n_rep))
     if companion:
         href, chapter = companion
-        h.append('<p class=note>Also see the preserved prediction history for '
-                 '<a href="%s">chapter %d &rarr;</a></p>' % (href, chapter))
+        label = dict(NAV).get(href, "chapter %d" % chapter).lower()
+        h.append('<p class=note>Also see the forecast history for the '
+                 '<a href="%s">%s (%s) &rarr;</a></p>' % (href, label, rng(chapter)))
     return h
 
 
-def forecast_tables(post, first, nfirst, current=True, following=True):
-    """Repeat the two forecast tables on both reader-facing forecast pages."""
-    h = []
-    if current:
-        h += ['<h2>Chapters %s</h2>' % rng(first),
-              '<p class=note>These are not ten separate predictions. Once the run '
-              'starts, chapters usually come out one per week, so nearly all the '
-              'uncertainty is the start date.</p>',
-              chapter_table(post["ten_chapter_forecast"], highlight=first)]
-    nb = post.get("next_batch") or {}
-    if following and nb:
-        h += ['<h2>Chapters %s</h2>' % rng(nfirst),
-              '<p class=note>This is the following run. Its timing is a rough '
-              'horizon based mostly on publication history.</p>',
-              chapter_table(nb["ten_chapter_forecast"], highlight=nfirst)]
+def schedule_section(name, rows, p_started_by=None):
+    """Per-chapter dates, summarised in one line and collapsed.
+
+    Readers do not scan ten rows of dates; the rows differ by about a week
+    each, so the first and last chapter say it. The full table and the
+    started-by odds stay one click away for anyone who wants them.
+    """
+    if not rows:
+        return []
+    a, z = rows[0], rows[-1]
+    h = ['<h2>%s: chapter by chapter</h2>' % name,
+         '<p>Chapter %d: median <strong>%s</strong>. Once a run starts, chapters '
+         'usually come out once a week, so chapter %d follows about %d weeks '
+         'later (median %s). Nearly all the uncertainty is the start date.</p>'
+         % (a["chapter"], fmt(a["median"]), z["chapter"],
+            round((date.fromisoformat(z["median"]) - date.fromisoformat(a["median"])).days / 7.0),
+            fmt(z["median"])),
+         '<details><summary>All ten chapters, with ranges</summary>',
+         chapter_table(rows, highlight=a["chapter"])]
+    if p_started_by:
+        # Stop at the first horizon past 99%: six rows of ">99%" were padding.
+        h.append('<h3>Chance the run has started by</h3><table>')
+        for d, p in sorted(p_started_by.items()):
+            h.append('<tr><td>%s</td><td class=num>%s</td></tr>' % (fmt(d), pct(p)))
+            if p > 0.99:
+                break
+        h.append('</table>')
+    h.append('</details>')
     return h
 
 
@@ -1615,7 +1652,16 @@ def togashi_drawn_section(first, nfirst):
     for _, en, ja, _ in STAGES:
         h.append('<th class=stg><span class=jp>%s</span><br>%s</th>' % (ja, en))
     h.append('<th>Latest post</th></tr>')
-    for c, stages in grid.items():
+    # Trailing chapters with nothing reported collapse to one row: seven rows of
+    # empty squares said nothing the single line does not.
+    chs = list(grid)
+    while chs and not grid[chs[-1]]:
+        chs.pop()
+    blank = [c for c in grid if c not in chs]
+    if len(blank) < 2:
+        chs, blank = list(grid), []
+    for c in chs:
+        stages = grid[c]
         h.append('<tr%s><td>%d</td>' % (" class=sep" if c == nfirst else "", c))
         for cls, tip in stage_marks(stages):
             h.append('<td><span class="st %s" title="%s"></span></td>' % (cls, tip))
@@ -1624,17 +1670,65 @@ def togashi_drawn_section(first, nfirst):
                  % (("%s &middot; %s" % (fmt(newest["event_date"], True),
                                           esc(newest["source_text_ja"][:26])))
                     if newest else "&mdash;"))
+    if blank:
+        h.append('<tr%s><td style="white-space:nowrap">%d&ndash;%d</td><td colspan=%d class=note>nothing '
+                 'reported yet</td></tr>'
+                 % (" class=sep" if nfirst in blank and blank[0] == nfirst else "",
+                    blank[0], blank[-1], len(STAGES) + 1))
     h.append('</table></div><div class=legend>'
              '<span><i class="dot done"></i>reported by Togashi</span>'
              '<span><i class="dot assumed"></i>assumed done</span>'
              '<span><i class=dot></i>no information</span></div>')
-    h.append('<h3>What the stages mean</h3><div class=tblwrap><table><tr><th>Stage</th>'
+    h.append('<details><summary>What the stages mean</summary>'
+             '<div class=tblwrap><table><tr><th>Stage</th>'
              '<th>Japanese</th><th>What happens</th></tr>')
     for _, en, ja, desc in STAGES:
         h.append('<tr><td>%s</td><td class=jp>%s</td><td class=note>%s</td></tr>'
                  % (en, ja, desc))
-    h.append('</table></div>')
+    h.append('</table></div></details>')
     return h
+
+
+# The two forecast pages are named as a pair, by what they cover rather than by
+# chapter number. File names stay as published so shared links keep working.
+NAV = [("index.html", "Next 10 chapters"), ("chapter-431.html", "Following 10 chapters"),
+       ("blog.html", "Blog"), ("method.html", "Method")]
+
+# Blog posts: (href, title, date, one-line summary). Each post keeps the URL it
+# was first shared under; the blog index is what links them.
+POSTS = [
+    ("125-day-wait.html", "The 125-day wait", "2026-09-16",
+     "Chapters 411&ndash;420 were finished by 24 February 2026 and did not go on "
+     "sale until 29 June. What the production record shows across those 125 days "
+     "&mdash; and whether it has happened before."),
+]
+
+
+def nav(current):
+    """Site-wide links."""
+    return ('<nav class=top>%s</nav>'
+            % "".join('<a href="%s"%s>%s</a>'
+                      % (href, ' aria-current="page"' if href == current else "", label)
+                      for href, label in NAV))
+
+
+def announcement_status(anns, asof, first):
+    """(upcoming announcements, past announcements, one-line hero status).
+
+    Past announcements are history, not the current state: listing ch. 419-420
+    under "Already announced" weeks after they went on sale read as if the
+    publisher had said something about the next run.
+    """
+    upcoming = [r for r in anns if r["publication_date"] >= asof]
+    past = [r for r in anns if r["publication_date"] < asof]
+    hit = next((r for r in upcoming if int(r["chapter"]) == first), None)
+    if hit:
+        status = ('Chapter %d is announced for Weekly Sh&#333;nen Jump %s no.%s, '
+                  'on sale %s' % (first, esc(hit["wsj_issue_year"]),
+                                   esc(hit["wsj_issue_no"]), fmt(hit["publication_date"])))
+    else:
+        status = 'No issue has been announced for chapter %d yet' % first
+    return upcoming, past, status
 
 
 def build_index(post, l2, pri, snap_path):
@@ -1646,15 +1740,33 @@ def build_index(post, l2, pri, snap_path):
     i = post["intervals"]
     anns, counts = announcements(), corpus_counts()
 
-    h = ['<div class=wrap>',
+    asof = post["forecast_timestamp"][:10]
+    upcoming, past, ann_status = announcement_status(anns, asof, first)
+    n_finished = sum(1 for s in production_status(first, 20).values() if tier_of(s) == 3)
+
+    h = ['<div class=wrap>', nav("index.html"),
          '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>']
 
-    # hero
+    # hero. Leads with probabilities, not a date: one day in 46px type claimed
+    # a precision the 8-month 80% range does not have.
+    def by_label(iso):
+        d = date.fromisoformat(iso)
+        return ("by end of %d" % d.year if d.month == 12
+                else "by end of %s" % d.strftime("%b %Y"))
+    horizons = [(d, p) for d, p in sorted((post.get("p_started_by") or {}).items())
+                if p <= 0.99][:2]
+    tiles = ['<div class=tile><div class=v>%s</div><div class=k>chance it is out %s</div></div>'
+             % (pct(p), by_label(d)) for d, p in horizons]
+    tiles.append('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>'
+                 % fmt(post["median"]))
     h += ['<div class=hero>',
-          '<div class=ch>Chapters %s &mdash; next up, chapter %d</div>' % (rng(first), first),
-          '<div class=date>%s</div>' % fmt(post["median"]),
-          '<div class=sub>most likely date &middot; 80%% chance between %s and %s</div>'
+          '<div class=ch>Next 10 chapters &middot; %s &mdash; first up, chapter %d</div>'
+          % (rng(first), first),
+          '<div class=tiles>%s</div>' % "".join(tiles),
+          '<div class=sub>80%% chance between %s and %s</div>'
           % (fmt(i["80"][0], True), fmt(i["80"][1], True)),
+          '<div class=sub>%s &middot; %d finished manuscript%s waiting</div>'
+          % (ann_status, n_finished, "" if n_finished == 1 else "s"),
           '<div class=sub>forecast made %s</div>' % fmt(post["forecast_timestamp"])]
     if spike:
         # Zero-mass issues are dropped from posterior_pmf, so pmf[0] is the
@@ -1682,36 +1794,40 @@ def build_index(post, l2, pri, snap_path):
                  % (pill_p * 100, fmt(pill_iso, True), note))
     h.append('</div>')
 
+    # Order: the batch-comparison chart leads. It reads more easily to a general
+    # audience than the probability charts (tested with readers on X). The
+    # per-chapter date table goes last and collapsed: nearly all its uncertainty
+    # is the start date, which the hero already gives.
     h += readiness_comparison_chart(post)
     h += history_charts(first, post, primary=True, secondary=False,
                         probabilities=False,
                         companion=("chapter-431.html", nfirst))
+    h.append('<h2>When chapter %d comes out</h2>' % first)
     h += distribution_charts(first, pmf, post["median"], i["80"])
-
-    h += forecast_tables(post, first, nfirst, current=True, following=False)
-
-    if post.get("p_started_by"):
-        h.append('<h3>Chance it has started by</h3><table>')
-        for d, p in sorted(post["p_started_by"].items()):
-            h.append('<tr><td>%s</td><td class=num>%s</td></tr>' % (fmt(d), pct(p)))
-        h.append('</table>')
-
+    # Production detail sits below the forecast; curious readers scroll on.
     h += togashi_drawn_section(first, nfirst)
 
     # announced
-    if anns:
-        h.append('<h2>Already announced</h2>')
+    h.append('<h2>Publisher announcements</h2>')
+    h.append('<p><strong>%s.</strong></p>' % ann_status)
+    if upcoming:
         h.append('<table><tr><th>Chapter</th><th>Issue</th><th>On sale</th></tr>')
-        for r in anns:
+        for r in upcoming:
             h.append('<tr><td>%s</td><td>Weekly Sh&#333;nen Jump %s no.%s</td>'
                      '<td>%s</td></tr>'
                      % (esc(r["chapter"]), esc(r["wsj_issue_year"]),
                         esc(r["wsj_issue_no"]), fmt(r["publication_date"])))
         h.append('</table>')
-        h.append('<p class=note>Once Shueisha announces an issue, that chapter is '
-                 'settled and the forecast stops guessing at it. Schedules have '
-                 'moved before, so this is &ldquo;scheduled&rdquo;, not '
-                 '&ldquo;certain&rdquo;.</p>')
+    if past:
+        h.append('<p class=note>Last announced: chapter %s, published %s.</p>'
+                 % (esc(past[-1]["chapter"]), fmt(past[-1]["publication_date"])))
+    h.append('<p class=note>Once Shueisha announces an issue, that chapter is '
+             'settled and the forecast stops guessing at it. Schedules have '
+             'moved before, so this is &ldquo;scheduled&rdquo;, not '
+             '&ldquo;certain&rdquo;.</p>')
+
+    h += schedule_section("Next 10 chapters", post["ten_chapter_forecast"],
+                          post.get("p_started_by"))
 
     ser = posterior_series(first)
 
@@ -1733,7 +1849,7 @@ def build_index(post, l2, pri, snap_path):
     h.append('</footer></div>')
 
     title = "Hunter × Hunter — when is chapter %d out?" % first
-    desc = ("Forecast for Hunter x Hunter chapter %d: most likely %s. Updated daily."
+    desc = ("Forecast for Hunter x Hunter chapter %d: median %s. Updated daily."
             % (first, fmt(post["median"])))
     return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
 
@@ -1744,30 +1860,38 @@ def build_chapter_431(post, l2, pri, snap_path):
     nb = post.get("next_batch") or {}
     nfirst = nb.get("first_chapter", first + 10)
     counts = corpus_counts()
-    h = ['<div class=wrap>',
-         '<h1><a href="index.html">&larr; Hunter &times; Hunter forecast</a></h1>',
-         '<div class=hero><div class=ch>Following run &mdash; chapter %d</div>' % nfirst]
+    i80 = nb.get("intervals", {}).get("80", post["intervals"]["80"])
+    h = ['<div class=wrap>', nav("chapter-431.html"),
+         '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>',
+         '<div class=hero><div class=ch>Following 10 chapters &middot; %s &mdash; '
+         'first up, chapter %d</div>' % (rng(nfirst), nfirst)]
     h += ['<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
+          '<div class=sub>median &middot; 80%% chance between %s and %s</div>'
+          % (fmt(i80[0], True), fmt(i80[1], True)),
           '<div class=sub>forecast history and current probability distribution</div>',
           '<div class=sub>forecast made %s</div></div>' % fmt(post["forecast_timestamp"])]
+    # Same section order as the next-10 page, so the pair reads as one design.
     h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
     if nb:
+        h.append('<h2>When chapter %d comes out</h2>' % nfirst)
         h += distribution_charts(nfirst, nb.get("pmf") or [],
-                                 nb.get("median", post["median"]),
-                                 nb.get("intervals", {}).get("80", post["intervals"]["80"]))
-    h += forecast_tables(post, first, nfirst, current=False, following=True)
+                                 nb.get("median", post["median"]), i80)
+        h.append('<p class=note>This is the run after next. Its timing is a rough '
+                 'horizon based mostly on publication history.</p>')
     h += togashi_drawn_section(first, nfirst)
+    if nb:
+        h += schedule_section("Following 10 chapters", nb.get("ten_chapter_forecast") or [])
 
     h.append('<footer><p>Built from %d chapters, %d posts by Togashi and %d '
              'production events. <a href="method.html">Method and limitations '
              '&rarr;</a></p>'
              % (counts["chapters"], counts["tweets"], counts["events"]))
-    h.append('<p><a href="index.html">&larr; Back to the chapter %d forecast</a></p>'
-             % first)
+    h.append('<p><a href="index.html">&larr; Next 10 chapters (%s)</a></p>' % rng(first))
     h.append('</footer></div>')
-    title = "Hunter × Hunter — chapter %d prediction history" % nfirst
-    desc = "Historical forecast evolution and current forecast for Hunter x Hunter chapter %d." % nfirst
+    title = "Hunter × Hunter — following 10 chapters (%d–%d)" % (nfirst, nfirst + 9)
+    desc = ("Forecast and forecast history for Hunter x Hunter chapters %d-%d, "
+            "the run after next." % (nfirst, nfirst + 9))
     return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
 
 
@@ -1781,8 +1905,7 @@ def build_method(post, l2, pri, snap_path):
     spike = max(pmf, key=lambda x: x[1]) if pmf else None
     counts = corpus_counts()
 
-    h = ['<div class=wrap>',
-         '<h1><a href="index.html">&larr; Forecast</a></h1>',
+    h = ['<div class=wrap>', nav("method.html"),
          '<div class=hero><div class=date style="font-size:30px">How this works</div>',
          '<div class=sub>and where it is weakest</div></div>']
 
@@ -1843,9 +1966,10 @@ def build_method(post, l2, pri, snap_path):
     h.append('<div class=card><h3>1 &mdash; what history alone suggests</h3>'
              '<p class=note>Built from publication records only, never from '
              'Togashi&rsquo;s posts &mdash; otherwise the next step would not be an '
-             'update. %s <a href="research-methods.html">See the full '
-             'statistical-methods paper and its plot &rarr;</a></p></div>'
+             'update. %s</p></div>'
              % (prior_note % ((pri or {}).get("n_observations") or 16)))
+    # With a smooth-zero prior there is no point-mass chart to draw here, and
+    # nothing is linked instead: the statistical-methods page is internal.
     if pri and pri.get("gap_pmf") and not smooth_zero:
         h.append(gap_prior_chart(pri))
         chart_note = ('That single-process prior, drawn. The tick marks along the '
@@ -1865,11 +1989,6 @@ def build_method(post, l2, pri, snap_path):
                       '<em>how long</em> a wait will be once there is a wait at all.')
         h.append('<p class=note>%s</p>' %
                  (chart_note % ((pri or {}).get("n_observations") or 16)))
-    elif smooth_zero:
-        h.append('<p class=note>The full fitted shifted-lognormal prior is plotted '
-                 'on the <a href="research-methods.html">statistical-methods page</a>. '
-                 'It is kept separate here because this page&rsquo;s older gap chart '
-                 'is designed for a point-mass mixture.</p>')
     if post.get("analogs"):
         h.append('<div class=card><h3>2 &mdash; what Togashi&rsquo;s posts add</h3>'
                  '<p class=note>Production data covers only %d past runs. That is '
@@ -2141,12 +2260,29 @@ def build_method(post, l2, pri, snap_path):
                     "publication forecast.", CSS)) + "\n".join(h) + "</html>"
 
 
+def build_blog():
+    """Index of longer one-off pieces. Posts keep their own generators and URLs."""
+    h = ['<div class=wrap>', nav("blog.html"),
+         '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>',
+         '<div class=hero><div class=date style="font-size:30px">Blog</div>',
+         '<div class=sub>Longer looks at the production record and the forecast</div></div>']
+    for href, title, when, summary in sorted(POSTS, key=lambda p: p[2], reverse=True):
+        h.append('<div class=card><div class=note>%s</div>'
+                 '<h3 style="margin-top:4px"><a href="%s">%s</a></h3>'
+                 '<p class=note>%s</p></div>' % (fmt(when), href, title, summary))
+    h.append('</div>')
+    return (HEAD % ("Hunter × Hunter forecast — blog",
+                    "Longer pieces on Hunter x Hunter production and publication.",
+                    CSS)) + "\n".join(h) + "</html>"
+
+
 def main():
     post, l2, pri, snap_path = latest_snapshot()
     os.makedirs(SITE, exist_ok=True)
     for name, doc in (("index.html", build_index(post, l2, pri, snap_path)),
                       ("chapter-431.html", build_chapter_431(post, l2, pri, snap_path)),
-                      ("method.html", build_method(post, l2, pri, snap_path))):
+                      ("method.html", build_method(post, l2, pri, snap_path)),
+                      ("blog.html", build_blog())):
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as fh:
             fh.write(doc)
         print("site: site/%-12s %.1f KB" % (name, len(doc) / 1024.0))
@@ -2154,9 +2290,8 @@ def main():
     steps, pmf, _readme, n = build_chapter421_workings()
     print("working: %s (%d forecast dates)" % (os.path.relpath(steps, D()), n))
     print("working: %s" % os.path.relpath(pmf, D()))
-    from build_prior_explainer import build as build_prior_explainer
-    prior_path = build_prior_explainer()
-    print("site: %s" % os.path.relpath(prior_path, D()))
+    # research-methods.html (build_prior_explainer.py) is internal and no longer
+    # built with the public site; run that script directly when needed.
 
 
 if __name__ == "__main__":

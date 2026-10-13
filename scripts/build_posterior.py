@@ -222,6 +222,15 @@ def quarter_ends(start, n=10):
     return out
 
 
+def chapter_data_date():
+    """UTC date the chapter records were last retrieved; today if unknown."""
+    try:
+        with open(D("data", "processed", "chapters.meta.json"), encoding="utf-8") as fh:
+            return date.fromisoformat(json.load(fh)["raw_retrieved_utc"][:10])
+    except (OSError, KeyError, ValueError):
+        return date.today()
+
+
 def main(asof=None, quiet=False, rid=None):
     """asof=None is the live run. A date replays the model on the evidence that
     existed then — see build_level2.load for what that does and does not filter.
@@ -296,7 +305,19 @@ def main(asof=None, quiet=False, rid=None):
     # the latest issue known not to contain this batch.
     latest_event = max((date.fromisoformat(r["event_date"]) for r in ev
                         if r.get("event_date")), default=today)
-    floor_seq = max(end_seq + 1, last_obs + 1)
+    #
+    # "Latest issue known" must be read off the DATE, not off which calendar
+    # rows are observed. wsj_issues.csv is rebuilt from a one-off jajanken
+    # scrape, so after 2026 no.39 every slot was projected and last_obs froze:
+    # issues 43-46 went on sale without the batch and kept ~6% of the mass.
+    # An issue already on sale without a chapter is a public fact whether or
+    # not the calendar file has caught up. Strictly before the cutoff, and no
+    # later than the last chapter-data refresh, so a chapter that came out but
+    # is not yet ingested can never have its own issue ruled out. In a replay
+    # the calendar is complete up to asof, so this adds nothing there.
+    cutoff = asof or min(today, chapter_data_date())
+    past_seq = max((c["seq"] for c in cal if c["on_sale"] < cutoff), default=last_obs)
+    floor_seq = max(end_seq + 1, last_obs + 1, past_seq + 1)
     eligible = lambda s: s >= floor_seq and s not in excluded_seqs
     elapsed_gap = floor_seq - end_seq - 1
     record_hiatus = elapsed_gap > max(g for _, g in gaps)

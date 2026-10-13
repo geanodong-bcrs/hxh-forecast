@@ -20,6 +20,15 @@ p{margin:10px 0} a{color:var(--accent)}
 .hero .ch{font-size:12px;color:var(--mut);letter-spacing:.09em;text-transform:uppercase}
 .hero .date{font-size:46px;font-weight:650;letter-spacing:-.025em;line-height:1.08;margin:6px 0 2px}
 .hero .sub{color:var(--mut)}
+.tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:14px 0 10px}
+@media(max-width:560px){.tiles{grid-template-columns:1fr}}
+.tile{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px 14px}
+.tile .v{font-size:30px;font-weight:650;letter-spacing:-.02em;line-height:1.15}
+.tile .k{font-size:12.5px;color:var(--mut)}
+nav.top{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:0 0 18px}
+nav.top a{color:var(--mut);text-decoration:none}
+nav.top a[aria-current]{color:var(--fg);font-weight:600}
+details>summary{cursor:pointer;font-size:14px;font-weight:600;margin:20px 0 6px}
 .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;
  font-weight:600;background:var(--band);color:var(--accent)}
 .pill.plain{background:var(--soft);color:var(--mut)}
@@ -52,7 +61,8 @@ p{margin:10px 0} a{color:var(--accent)}
  background:var(--band);color:var(--accent);font-weight:600}
 .zoom input:nth-of-type(2):checked~.za{display:none}
 .zoom input:nth-of-type(2):checked~.zb{display:block}
-.ax.spk{fill:var(--accent);font-weight:600}
+.ax.spk{fill:var(--accent);font-weight:600;paint-order:stroke;stroke:var(--bg);
+ stroke-width:4px;stroke-linejoin:round}
 .med{stroke:var(--fg);stroke-width:1;stroke-dasharray:3 3;opacity:.5}
 .pt{fill:var(--accent);stroke:var(--bg);stroke-width:1.5}
 .pt.tweet{fill:var(--pend)} .pt.annotation{fill:var(--ok)}
@@ -84,11 +94,11 @@ tr.sep td{border-top:2px solid var(--line)}
 .chip.delivered{background:#63a844;border-color:transparent;color:#0e2408}
 .chip.spec{background:#5b96d6;border-color:transparent;color:#08182b}
 .chip.drawn{background:#dd8f36;border-color:transparent;color:#2a1704}
-.chip.none{background:#b3453d;border-color:transparent;color:#fff}
+.chip.none{background:var(--soft);color:var(--mut)}
 .dot.delivered{background:#63a844;border-color:transparent}
 .dot.spec{background:#5b96d6;border-color:transparent}
 .dot.drawn{background:#dd8f36;border-color:transparent}
-.dot.none{background:#b3453d;border-color:transparent}
+.dot.none{background:var(--soft)}
 .dot.done{background:var(--ok);border-color:transparent}
 .dot.assumed{background:transparent;border:2px solid var(--ok)}
 .st.assumed{background:transparent;border:2px dashed var(--ok)}
@@ -98,7 +108,7 @@ footer{margin-top:52px;padding-top:16px;border-top:1px solid var(--line);color:v
 footer code{font-size:11.5px;word-break:break-all}
 ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
 </style><div class=wrap>
-<h1><a href="index.html">&larr; Forecast</a></h1>
+<nav class=top><a href="index.html">Next 10 chapters</a><a href="chapter-431.html">Following 10 chapters</a><a href="blog.html">Blog</a><a href="method.html" aria-current="page">Method</a></nav>
 <div class=hero><div class=date style="font-size:30px">How this works</div>
 <div class=sub>and where it is weakest</div></div>
 <h2>The question</h2>
@@ -106,8 +116,8 @@ ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
 <p>So there is really only one hard question: <strong>when does the next run start?</strong> Everything else follows from it, which is why the ten-chapter tables are so tightly bunched.</p>
 <h2>The three levels</h2>
 <div class=card><h3>0 &mdash; already announced</h3><p class=note>If Shueisha has named the issue, there is nothing to predict. That chapter is recorded as scheduled and drops out of the model.</p></div>
-<div class=card><h3>0 &mdash; issues ruled out</h3><p class=note>Issues publicly reported not to carry the series are removed from the candidate set. This is a factual exclusion, not evidence about Togashi&rsquo;s pace &mdash; nothing else in the model changes.</p><table><tr><th>Issue</th><th>On sale</th><th>Source</th><th>Confidence</th></tr><tr><td>2026 no.42</td><td>14 Sep 26</td><td>X reports; primary source not located</td><td>reported</td></tr></table><p class=note><strong>Marked &ldquo;reported&rdquo; means no primary source has been seen.</strong> The forecast has been moved on secondhand reports, which is a judgement call and is recorded here rather than buried. If they turn out to be wrong the row is deleted and the forecast returns &mdash; the snapshot for every run in between stays on the record either way.</p></div>
-<div class=card><h3>1 &mdash; what history alone suggests</h3><p class=note>Built from publication records only, never from Togashi&rsquo;s posts &mdash; otherwise the next step would not be an update. There are 16 gaps between runs since 2007, and they are <em>bimodal</em>: three times the next run began with no wait at all, the rest after waits of 9 to 184 issues. A single smooth curve would describe neither case, so the model uses a mixture. <a href="research-methods.html">See the full statistical-methods paper and its plot &rarr;</a></p></div>
+<div class=card><h3>0 &mdash; issues ruled out</h3><p class=note>Issues publicly reported not to carry the series are removed from the candidate set. This is a factual exclusion, not evidence about Togashi&rsquo;s pace &mdash; nothing else in the model changes.</p><table><tr><th>Issue</th><th>On sale</th><th>Source</th><th>Confidence</th></tr><tr><td>2026 no.42</td><td>14 Sep &rsquo;26</td><td>X reports; primary source not located</td><td>reported</td></tr></table><p class=note><strong>Marked &ldquo;reported&rdquo; means no primary source has been seen.</strong> The forecast has been moved on secondhand reports, which is a judgement call and is recorded here rather than buried. If they turn out to be wrong the row is deleted and the forecast returns &mdash; the snapshot for every run in between stays on the record either way.</p></div>
+<div class=card><h3>1 &mdash; what history alone suggests</h3><p class=note>Built from publication records only, never from Togashi&rsquo;s posts &mdash; otherwise the next step would not be an update. There are 16 gaps between runs since 2007, and they are <em>bimodal</em>: three times the next run began with no wait at all, the rest after waits of 9 to 184 issues. A single smooth curve would describe neither case, so the model uses a mixture.</p></div>
 <svg viewBox="0 0 720 280" class="chart" role="img" aria-label="Level 1 prior over the gap in issues before the next batch"><line class="grid" x1="52" y1="220.0" x2="700.0" y2="220.0"/><text class="ax" x="46" y="224.0" text-anchor="end">0.0%</text>
 <line class="grid" x1="52" y1="162.8" x2="700.0" y2="162.8"/><text class="ax" x="46" y="166.8" text-anchor="end">0.2%</text>
 <line class="grid" x1="52" y1="105.5" x2="700.0" y2="105.5"/><text class="ax" x="46" y="109.5" text-anchor="end">0.4%</text>
@@ -129,12 +139,12 @@ ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
 <tr><td>the run starting at chapter 411</td><td>12 Jan 2027</td></tr>
 </table><p class=note>The table is based on one readiness summary per chapter, not on treating every tweet as a separate timing signal.</p></div>
 <div class=card><h3>Putting them together</h3><p class=note>The current run has readiness evidence for 10 chapters. Those are <strong>not</strong> 10 independent pieces of evidence &mdash; they are one person&rsquo;s working process observed across a batch. Treating every tweet as independent would produce a forecast about a week wide: very impressive, and wrong. So each <em>past run</em> counts once, and the confidence scales with how many comparable runs exist, not how many posts there are.</p></div>
-<div class=card><h3>How production evidence is used</h3><p class=note>The run is at 9.10 of 10.00 ordered chapter-equivalents. For every half-chapter transition, V13 takes the slowest duration observed across the three resolved production-era runs, then adds the slowest observed post-production scheduling delay. The resulting production deadline is 2027-02-09; the longest historical hiatus would end 2030-05-01. The earlier deadline is the centre of a deliberately broad 120-day forecast. Elapsed time counts down the current budget, and reported progress can only move the deadline earlier or leave it unchanged.</p></div>
+<div class=card><h3>How production evidence is used</h3><p class=note>The run is at 9.10 of 10.00 ordered chapter-equivalents. For every half-chapter transition, V13 takes the slowest duration observed across the three resolved production-era runs, then adds the slowest observed post-production scheduling delay. The resulting production deadline is 2027-02-09; the longest historical hiatus would end 2030-05-29. The earlier deadline is the centre of a deliberately broad 120-day forecast. Elapsed time counts down the current budget, and reported progress can only move the deadline earlier or leave it unchanged.</p></div>
 <div class=card><h3>How continued non-publication is handled</h3><p class=note>Each forecast rules out issues already known not to contain the batch. This is a factual update, applied continuously. It can gradually move the forecast later during a hiatus, but does not treat silence as a new production milestone.</p></div>
 <h2>The forecast history, and which of it is reconstructed</h2>
 <div class=card><h3>200 of 229 points were re-run afterwards</h3><p class=note>The model started producing forecasts on 15 Sep 2026, but the interesting stretch is the whole of the run that produced the evidence it uses. So it was replayed: for each earlier date it was re-run seeing only the chapters published, the issues on sale and the production posts made <em>by that date</em>. Those points are marked <code>provenance: replay</code> in the stored snapshot and the charts rule off where the live record begins.</p><p class=note>One honest caveat. An event enters the replay on the day it happened, not the day it was known &mdash; some readings come from images transcribed and human-checked later, and some posts were only found through the Wayback Machine. The replay is therefore very slightly better informed than a live run would have been. The batch&rsquo;s length is treated the same way throughout, as an assumption rather than as evidence that arrived on some date.</p></div>
 <h2>Where it is weakest</h2>
-<div class=card><h3>The headline number is the least defensible part</h3><p class=note>The 2.7% on 12 Feb 27 comes from a point mass estimated from <strong>two clustered observations from 2010&ndash;2012</strong>. It says there is roughly an even chance the series rolls straight from this run into the next with no break &mdash; which has not actually happened since 2012. It survived every check I ran, and it is still the claim I would least want to defend.</p></div>
+<div class=card><h3>The headline number is the least defensible part</h3><p class=note>The 2.9% on 12 Feb &rsquo;27 comes from a point mass estimated from <strong>two clustered observations from 2010&ndash;2012</strong>. It says there is roughly an even chance the series rolls straight from this run into the next with no break &mdash; which has not actually happened since 2012. It survived every check I ran, and it is still the claim I would least want to defend.</p></div>
 <ol class=caveats>
 <li><strong>The production side has never been scored against a real outcome.</strong> Three comparable runs, and none has started since the method was built. Chapter 421 will be the first genuine test.</li>
 <li><strong>No accuracy figures are published.</strong> Scoring honestly means separating forecasts made <em>before</em> an official announcement from those made after, and that record has not been built yet. Without the split the numbers would measure how early Shueisha announces things, not whether this model knows anything. They are left out rather than estimated.</li>
@@ -144,6 +154,6 @@ ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
 <li><strong>Both publication sources are secondary.</strong> Nothing has been checked against Shueisha directly.</li>
 </ol>
 <footer>
-<p>Forecast run <code>20261013T141254Z</code>, triggered by <code>daily</code>. Evidence as of <code>2026-10-05T10:19</code>. Snapshot <code>data/forecasts/20261013T141254Z_batch50_posterior.json</code>.</p>
+<p>Forecast run <code>20261013T182730Z</code>, triggered by <code>manual</code>. Evidence as of <code>2026-10-05T10:19</code>. Snapshot <code>data/forecasts/20261013T182730Z_batch50_posterior.json</code>.</p>
 <p>Every forecast this model has ever made is kept unedited, including the wrong ones. Built from 420 chapters, 497 posts and 512 production events. <a href="index.html">Chapter 421 forecast</a> &middot; <a href="chapter-431.html">chapter 431 forecast history</a></p>
 </footer></div></html>
