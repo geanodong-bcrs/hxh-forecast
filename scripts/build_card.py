@@ -54,6 +54,11 @@ def fmt(d):
     return d.strftime("%-d %b %Y")
 
 
+def fmt_short(d):
+    """Same short form as the site: "16 Nov ’26", never "16 Nov 26"."""
+    return d.strftime("%-d %b ’%y")
+
+
 def cdf(pmf, clip=0.99):
     """Step points, opened with a zero so the first jump is actually drawn.
 
@@ -250,13 +255,23 @@ def render(d, path):
     # spaced by hand
     fig.text(.055, .885, " ".join("HUNTER × HUNTER"), color=MUTED, fontsize=8,
              fontweight="bold")
-    fig.text(.055, .805, "Chapter %d — most likely release" % d["chapter"],
-             color=INK2, fontsize=11)
-    # hero figure: exactly one per view, >=48px equivalent
+    # Named like the site's two pages, and "median" rather than "most likely":
+    # the single most likely issue is a different, earlier date.
     footnoted = d.get("target_view") == "next"
-    fig.text(.055, .625,
-             fmt(date.fromisoformat(d["median"])) + ("*" if footnoted else ""),
-             color=INK, fontsize=34, fontweight="semibold", va="baseline")
+    sub = fig.text(.055, .805, "%s 10 chapters · ch. %d median release"
+                   % ("Following" if footnoted else "Next", d["chapter"]),
+                   color=INK2, fontsize=11)
+    # hero figure: exactly one per view, >=48px equivalent. Shrunk to fit the
+    # left column: "19 Sep 2028*" at 34pt ran into the chart.
+    hero = fig.text(.055, .625,
+                    fmt(date.fromisoformat(d["median"])) + ("*" if footnoted else ""),
+                    color=INK, fontsize=34, fontweight="semibold", va="baseline")
+    # Both shrink to the left column, which ends where the delta chip does.
+    renderer = fig.canvas.get_renderer()
+    for t, floor in ((sub, 9), (hero, 24)):
+        while t.get_fontsize() > floor and \
+                t.get_window_extent(renderer).x1 > .475 * fig.bbox.width:
+            t.set_fontsize(t.get_fontsize() - .5)
 
     # A card with nothing to report shows no chip at all. A grey "no change"
     # pill is a headline saying there is no headline, and on the following run's
@@ -276,15 +291,21 @@ def render(d, path):
 
     # "was X" only when the date actually moved — on a probability-only card the
     # previous median is the same date, and repeating it reads as a mistake
+    # A weekly card names its baseline date: "7 days later" alone would read
+    # as the effect of one post, as it does on the reply card.
+    since = d.get("since_date")
+    when = " on %s" % since.strftime("%-d %b") if since else ""
     if d["shift_days"] != 0:
-        fig.text(.055, .375, "was %s" % fmt(date.fromisoformat(d["prev_median"])),
+        fig.text(.055, .375, "was %s%s" % (fmt(date.fromisoformat(d["prev_median"])), when),
                  color=MUTED, fontsize=10.5)
-    elif not quiet:
-        fig.text(.055, .375, "date unchanged", color=MUTED, fontsize=10.5)
+    elif not quiet or since:
+        fig.text(.055, .375, "date unchanged" + (" since %s" % since.strftime("%-d %b")
+                                                 if since else ""),
+                 color=MUTED, fontsize=10.5)
     fig.text(.055, .30,
              "80%% range  %s – %s"
-             % (date.fromisoformat(d["i80"][0]).strftime("%-d %b %y"),
-                date.fromisoformat(d["i80"][1]).strftime("%-d %b %y")),
+             % (fmt_short(date.fromisoformat(d["i80"][0])),
+                fmt_short(date.fromisoformat(d["i80"][1]))),
              color=INK2, fontsize=10.5)
 
     # ---------------- readiness meter ----------------
@@ -298,7 +319,7 @@ def render(d, path):
     bar_y = .10 if footnoted and not quiet else .142
     if lvl is not None:
         frac = max(0.0, min(1.0, lvl / 10.0))
-        fig.text(.055, progress_y, "Batch %d–%d progress" % (d["chapter"], d["chapter"] + 9),
+        fig.text(.055, progress_y, "Ch. %d–%d drawn" % (d["chapter"], d["chapter"] + 9),
                  color=INK2, fontsize=10.5)
         fig.text(.475, progress_y, "%.0f%%" % (frac * 100), color=ACCENT, fontsize=13,
                  fontweight="bold", ha="right", va="baseline")
@@ -336,6 +357,7 @@ def render(d, path):
     paths = d.get("readiness_paths") or []
     grays = ["#4e4c48", "#63615c", "#7a7872", "#918f88"]
     gi = 0
+    labels = []   # (y, x, text, colour, weight), placed after de-collision
     for ch0, pts, is_current, started in paths:
         xs = [p[0] for p in pts]
         ys = [p[1] for p in pts]
@@ -350,20 +372,27 @@ def render(d, path):
                 # the dot is where that run began publishing; a run still
                 # waiting has no such point and must not be given one
                 ax.plot(xs[-1], ys[-1], "o", color=col, markersize=4, zorder=3)
-            ax.text(xs[-1] + 14, ys[-1], "ch. %d" % ch0, color=col, fontsize=8,
-                    va="center", ha="left")
+            labels.append([ys[-1], xs[-1] + 14, "ch. %d" % ch0, col, "normal"])
     if paths:
         cur = [p for p in paths if p[2]]
         if cur:
             xs = [p[0] for p in cur[0][1]]
-            ax.text(xs[-1] + 14, cur[0][1][-1][1], "ch. %d" % cur[0][0],
-                    color=ACCENT, fontsize=8, fontweight="bold", va="center",
-                    ha="left")
+            labels.append([cur[0][1][-1][1], xs[-1] + 14, "ch. %d" % cur[0][0],
+                           ACCENT, "bold"])
+        # Runs that finished near 100% end at the same height and their labels
+        # overprinted; push them apart vertically, keeping the order.
+        labels.sort(key=lambda l: -l[0])
+        for a, b in zip(labels, labels[1:]):
+            if a[0] - b[0] < .085:
+                b[0] = a[0] - .085
+        for y, x, txt, col, wt in labels:
+            ax.text(x, y, txt, color=col, fontsize=8, fontweight=wt,
+                    va="center", ha="left")
         allx = [p[0] for _, pts, _, _ in paths for p in pts]
         ax.set_xlim(0, max(allx) * 1.26)
         step = 180
         ax.set_xticks(list(range(0, int(max(allx)) + 1, step)))
-    ax.set_xlabel("Days since Togashi's first post of this batch", color=MUTED,
+    ax.set_xlabel("Days since Togashi's first post of each run", color=MUTED,
                   fontsize=7.5, labelpad=3)
     ax.set_ylabel("Togashi's production progress", color=MUTED, fontsize=7.5,
                   labelpad=4)
@@ -373,8 +402,8 @@ def render(d, path):
     prev = [b for b in sorted(BATCH_STARTS) if 391 + (b - 47) * 10 < d["chapter"]]
     if prev:
         fig.text(.575, .335,
-                 "At the pace of earlier batches, it would begin in\n"
-                 "how many days from today", color=INK, fontsize=8.5,
+                 "If this run keeps the pace of an earlier one,\n"
+                 "it starts in", color=INK, fontsize=8.5,
                  va="top", linespacing=1.4)
         for row, batch in enumerate(prev):
             first_ch = 391 + (batch - 47) * 10
@@ -419,13 +448,24 @@ def main():
     ap.add_argument("--demo", type=int, default=None,
                     help="shift the median by N days to preview the card")
     ap.add_argument("--out", default=None)
+    ap.add_argument("--since", type=int, default=None, metavar="DAYS",
+                    help="weekly mode: compare with the forecast published DAYS "
+                         "earlier (e.g. 7), instead of the pre-post baseline")
     ap.add_argument("--next", action="store_true",
                     help="build the card for the FOLLOWING run (ch. 431-440)")
     args = ap.parse_args()
 
-    d = fd.compute(target="next" if args.next else "current")
-    if not d:
-        return print("no comparable baseline: %s" % fd.pick_pair()[2]) or 1
+    target = "next" if args.next else "current"
+    if args.since:
+        cur, prev, why = fd.pick_since(args.since)
+        d = fd.compute(cur, prev, target=target) if prev else None
+        if not d:
+            return print("no weekly baseline: %s" % why) or 1
+        d["since_date"] = fd._written(prev).date()
+    else:
+        d = fd.compute(target=target)
+        if not d:
+            return print("no comparable baseline: %s" % fd.pick_pair()[2]) or 1
     if args.demo is not None:
         shift = args.demo
         d["prev_median"] = (date.fromisoformat(d["median"])
@@ -435,7 +475,8 @@ def main():
                          for i, p in d["pmf"]]
         d["spike_prev_p"] = max(d["spike_p"] - .078, 0.0)
 
-    path = args.out or os.path.join(OUT, "%s_ch%d.png" % (d["run_id"], d["chapter"]))
+    path = args.out or os.path.join(OUT, "%s_ch%d%s.png" % (
+        d["run_id"], d["chapter"], "_weekly" if args.since else ""))
     render(d, path)
     print("card -> %s" % os.path.relpath(path, D()))
     return 0

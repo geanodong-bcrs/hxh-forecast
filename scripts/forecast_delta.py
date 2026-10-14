@@ -20,7 +20,7 @@ import csv
 import glob
 import json
 import os
-from datetime import date
+from datetime import date, datetime, timedelta
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 D = lambda *p: os.path.join(HERE, "..", *p)
@@ -92,6 +92,44 @@ def pick_pair(snaps=None, history=None):
         return cur, None, ("no earlier evidence state for %s on batch %s"
                            % (_design(cur), cur.get("batch")))
     return cur, max(candidates, key=lambda item: item[:3])[-1], "ok"
+
+
+def _written(snap):
+    """When a live snapshot was made, from its run_id (YYYYmmddTHHMMSSZ)."""
+    try:
+        return datetime.strptime(snap.get("run_id", ""), "%Y%m%dT%H%M%SZ")
+    except ValueError:
+        return None
+
+
+def pick_since(days, snaps=None):
+    """Newest live snapshot and the live one that stood `days` earlier.
+
+    For the weekly post, not the reply card. The reply asks "what did this
+    tweet do", so pick_pair holds the model design fixed. A weekly recap asks
+    "what did we say last week", so the baseline is whatever was PUBLISHED
+    then -- the newest live snapshot written at least `days` before the
+    current one -- and a model revision in between is part of the change.
+    Replays are never used: they were not what readers saw.
+
+    The batch must match. Once a run is announced the target moves to the next
+    batch, and a delta across that would compare two different chapters.
+    """
+    snaps = posteriors() if snaps is None else snaps
+    if not snaps:
+        return None, None, "no snapshots"
+    cur = snaps[-1][1]
+    t = _written(cur)
+    if t is None:
+        return cur, None, "current snapshot has no timestamped run_id"
+    cutoff = t - timedelta(days=days)
+    earlier = [s for _, s in snaps
+               if _written(s) and _written(s) <= cutoff
+               and s.get("batch") == cur.get("batch")]
+    if not earlier:
+        return cur, None, ("no live forecast for batch %s from %d days before %s"
+                           % (cur.get("batch"), days, cur.get("run_id")))
+    return cur, max(earlier, key=_written), "ok"
 
 
 def pmf_at(snap, iso):
