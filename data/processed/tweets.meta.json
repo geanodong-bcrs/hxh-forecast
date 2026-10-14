@@ -1,16 +1,16 @@
 {
-  "built_utc": "2026-10-05T21:08:23.743007+00:00",
+  "built_utc": "2026-10-14T22:45:48.358625+00:00",
   "handle": "Un4v5s8bgsVk9Xp",
-  "row_count": 499,
-  "by_togashi": 497,
+  "row_count": 500,
+  "by_togashi": 498,
   "span": [
     "2022-05-24",
-    "2026-10-05"
+    "2026-10-14"
   ],
-  "with_text": 197,
+  "with_text": 198,
   "image_only": 300,
-  "image_only_pct": 60.4,
-  "mentioning_chapter_number": 123,
+  "image_only_pct": 60.2,
+  "mentioning_chapter_number": 124,
   "active_months": 32,
   "discovery": "Wayback CDX enumeration of status URLs",
   "hydration": "cdn.syndication.twimg.com (unauthenticated)",
