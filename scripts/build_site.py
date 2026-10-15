@@ -21,6 +21,7 @@ import csv
 import glob
 import json
 import os
+import re
 from collections import OrderedDict
 from datetime import date, datetime, timedelta, timezone
 
@@ -845,6 +846,108 @@ SERIES_HUE = {
 TIMELINE_PX_PER_DAY = 3.0
 
 
+# Brief hover wording for one production event. Plain English, a few words:
+# the tooltip lists every report on a day, and page logs come in bursts.
+EVENT_STAGE = {"name": "storyboard", "panel_layout": "storyboard",
+               "character_inking": "inking", "bg_spec": "BG brief",
+               "bg_work": "backgrounds", "dialogue": "lettering",
+               "retouch": "touch-ups", "chapter_level": "chapter",
+               "manuscript_complete": "manuscript"}
+EVENT_STATUS = {"complete": "%s done", "started": "%s started",
+                "in_progress": "%s in progress", "awaiting_return": "%s waiting on staff",
+                "under_review": "%s with editor", "retake": "%s retake", "": "%s"}
+
+
+def event_text(row):
+    ch = int(float(row["chapter"]))
+    if row.get("event_class") == "page_completed":
+        nums = sorted({int(n) for n in re.findall(r"\d+", row.get("pages_manuscript") or "")})
+        if not nums:
+            return "ch. %d page log" % ch
+        if len(nums) == 1:
+            return "ch. %d p. %d" % (ch, nums[0])
+        if nums == list(range(nums[0], nums[-1] + 1)):
+            return "ch. %d pp. %d\u2013%d" % (ch, nums[0], nums[-1])  # textContent: no entities
+        return "ch. %d pp. %s" % (ch, ", ".join(map(str, nums)))
+    stage, status = row.get("stage") or "", row.get("status") or ""
+    if stage == "manuscript_complete" and status == "complete":
+        return "ch. %d finished" % ch
+    if stage == "chapter_level":
+        # "ch. 414 chapter in progress" said "chapter" twice
+        return ("ch. %d %s" % (ch, EVENT_STATUS.get(status, "%s " + status) % "")).replace("  ", " ").strip()
+    return "ch. %d %s" % (ch, EVENT_STATUS.get(status, "%s " + status).strip()
+                          % EVENT_STAGE.get(stage, stage.replace("_", " ")))
+
+
+def timeline_hover_index(series, X):
+    """[{x, date, rows: [[css, text], ...]}] sorted by x, one entry per day.
+
+    One entry per DAY rather than per event: during a burst Togashi posts most
+    days and the chart is 3px/day, so per-event targets would overlap. The
+    script snaps to the nearest day and lists every run's reports for it.
+    Only events inside a run's drawn line are included, plus its on-sale days.
+    """
+    events = []
+    with open(D("data", "processed", "production_events.csv"), encoding="utf-8") as fh:
+        for r in csv.DictReader(fh):
+            if (r.get("event_class") in ("chapter_stage", "page_completed")
+                    and r.get("chapter") and r.get("event_date")
+                    and r.get("confidence") != "low"):
+                events.append(r)
+    days = {}
+    for s in series:
+        first = s.get("first")
+        if first is None:
+            continue
+        lo = s["path"]["origin"]
+        hi = lo + timedelta(days=s["path"]["path"][-1][0])
+        texts = {}
+        for r in events:
+            try:
+                ch = int(float(r["chapter"]))
+            except ValueError:
+                continue
+            when = date.fromisoformat(r["event_date"])
+            if first <= ch < first + 10 and lo <= when <= hi:
+                t = event_text(r)
+                bucket = texts.setdefault(when, [])
+                if t not in bucket:
+                    bucket.append(t)
+        for position, when in s["publication"]:
+            texts.setdefault(when, []).append("ch. %d on sale" % (first + position - 1))
+        for when, items in texts.items():
+            shown = items[:4] + (["+%d more" % (len(items) - 4)] if len(items) > 4 else [])
+            days.setdefault(when, []).append(
+                [s["css"], "%s · %s" % (s["label"], ", ".join(shown))])
+    return [{"x": round(X(when), 1), "date": when.strftime("%-d %b %Y"), "rows": rows}
+            for when, rows in sorted(days.items())]
+
+
+TIMELINE_JS = """(function(){
+var w=document.querySelector('.tlwrap');if(!w)return;
+var svg=w.querySelector('.tlscroll svg'),x=svg.querySelector('.tlcross'),tip=w.querySelector('.tltip');
+var data=JSON.parse(document.getElementById('tl-events').textContent),xs=data.map(function(d){return d.x});
+function hide(){x.style.display='none';tip.style.display='none'}
+function show(e){
+ if(!xs.length)return;
+ var r=svg.getBoundingClientRect(),px=(e.clientX-r.left)*svg.viewBox.baseVal.width/r.width;
+ var lo=0,hi=xs.length-1;while(lo<hi){var m=(lo+hi)>>1;if(xs[m]<px)lo=m+1;else hi=m}
+ if(lo>0&&px-xs[lo-1]<xs[lo]-px)lo--;
+ if(Math.abs(xs[lo]-px)>18){hide();return}
+ var d=data[lo];x.setAttribute('x1',d.x);x.setAttribute('x2',d.x);x.style.display='block';
+ tip.textContent='';var h=document.createElement('div');h.className='tlh';h.textContent=d.date;tip.appendChild(h);
+ d.rows.forEach(function(row){var p=document.createElement('div'),i=document.createElement('i');
+  i.className='dot '+row[0];p.appendChild(i);p.appendChild(document.createTextNode(' '+row[1]));tip.appendChild(p)});
+ tip.style.display='block';
+ var wr=w.getBoundingClientRect(),left=e.clientX-wr.left+14;
+ if(left+tip.offsetWidth>wr.width-4)left=e.clientX-wr.left-14-tip.offsetWidth;
+ var top=Math.min(e.clientY-wr.top+14,wr.height-tip.offsetHeight-4);
+ tip.style.left=Math.max(4,left)+'px';tip.style.top=Math.max(4,top)+'px'}
+svg.addEventListener('pointermove',show);svg.addEventListener('pointerdown',show);
+svg.addEventListener('pointerleave',hide);
+})();"""
+
+
 def _timeline_view(series, asof):
     """The same five runs on real calendar dates instead of aligned origins.
 
@@ -860,7 +963,7 @@ def _timeline_view(series, asof):
     t0 = min(origins) - timedelta(days=14)
     t1 = max(ends + [asof]) + timedelta(days=40)
     span = (t1 - t0).days
-    pad_t, plot_h, pad_b = 30, 216, 40
+    pad_t, plot_h, pad_b = 30, 264, 40
     height = pad_t + plot_h + pad_b
     width = int(span * TIMELINE_PX_PER_DAY)
     X = lambda when: (when - t0).days * TIMELINE_PX_PER_DAY
@@ -871,25 +974,30 @@ def _timeline_view(series, asof):
     for value in (0, .25, .5, .75):
         grid.append('<line class="grid" x1="0" y1="%.1f" x2="%d" y2="%.1f"/>'
                     % (Y(value), width, Y(value)))
-    # Quarter rules, with the year spelled out each January.
-    year, month = t0.year, ((t0.month - 1) // 3) * 3 + 1
+    for value in (.125, .375, .625, .875):
+        grid.append('<line class="grid minor" x1="0" y1="%.1f" x2="%d" y2="%.1f"/>'
+                    % (Y(value), width, Y(value)))
+    # Monthly rules, labelled each quarter with the year spelled out in January.
+    year, month = t0.year, t0.month
     while date(year, month, 1) <= t1:
         when = date(year, month, 1)
         if when >= t0:
             x = X(when)
-            grid.append('<line class="grid" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
-                        % (x, pad_t, x, pad_t + plot_h))
-            label = when.strftime("%b") if month != 1 else when.strftime("%b %Y")
-            grid.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
-                        % (x, height - 22, label))
-        month += 3
+            quarter = month in (1, 4, 7, 10)
+            grid.append('<line class="grid%s" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
+                        % ("" if quarter else " minor", x, pad_t, x, pad_t + plot_h))
+            if quarter:
+                label = when.strftime("%b") if month != 1 else when.strftime("%b %Y")
+                grid.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                            % (x, height - 22, label))
+        month += 1
         if month > 12:
             month, year = 1, year + 1
 
     body, legend = [], []
     for s in series:
         origin = s["path"]["origin"]
-        pts = [(origin + timedelta(days=day), min(value / .90, 1.0))
+        pts = [(origin + timedelta(days=day), min(value, 1.0))
                for day, value in s["path"]["path"]]
         d = ["M%.1f,%.1f" % (X(pts[0][0]), Y(pts[0][1]))]
         prev = pts[0][1]
@@ -912,23 +1020,12 @@ def _timeline_view(series, asof):
         legend.append('<span><i class="dot %s"></i>%s%s</span>'
                       % (s["css"], s["label"], s["legend_suffix"]))
 
-    # The one interval the model argues about: batch 49 finished, then waited.
+    # No wait band: the 125-day wait has its own blog post, and a shaded
+    # interval on the front page singled out one gap as if it were the story.
     marks = []
-    # readiness_path stores B/10, so a finished run is 1.0.  (0.90 means
-    # manuscript-complete in the *display* transform above, not here -- reusing
-    # that threshold made this read B=9.0 and report a 144-day wait.)
-    complete = next((s["path"]["origin"] + timedelta(days=day)
-                     for s in series if s["css"] == "r49"
-                     for day, value in s["path"]["path"] if value >= .9999), None)
-    onsale = next((s["publication"][0][1] for s in series
-                   if s["css"] == "r49" and s["publication"]), None)
-    if complete and onsale and onsale > complete:
-        x0, x1 = X(complete), X(onsale)
-        marks.append('<rect class="waitband" x="%.1f" y="%d" width="%.1f" height="%d"/>'
-                     % (x0, pad_t, x1 - x0, plot_h))
-        marks.append('<text class="ax wait" x="%.1f" y="%d" text-anchor="middle">'
-                     'batch 49 finished, waiting %d days</text>'
-                     % ((x0 + x1) / 2, pad_t - 10, (onsale - complete).days))
+    hover = timeline_hover_index(series, X)
+    body.append('<line class="tlcross" x1="0" y1="%d" x2="0" y2="%d"/>'
+                % (pad_t, pad_t + plot_h))
 
     axis = ('<svg viewBox="0 0 52 %d" width="52" height="%d" class="tlaxis" role="presentation">'
             % (height, height))
@@ -944,8 +1041,13 @@ def _timeline_view(series, asof):
             'batches on real calendar dates from %s to %s">%s%s%s</svg>'
             % (width, height, width, height, t0.isoformat(), t1.isoformat(),
                "".join(marks), "\n".join(grid), "".join(body)))
+    # json.dumps output is safe inside <script type="application/json"> once
+    # "</" is escaped; event text is our own wording, never tweet text.
+    data = json.dumps(hover, ensure_ascii=False, separators=(",", ":")).replace("</", "<\\/")
     return ('<div class="tlwrap"><div class="tlgutter">%s</div>'
-            '<div class="tlscroll">%s</div></div>' % (axis, plot)), legend
+            '<div class="tlscroll">%s</div><div class="tltip" role="tooltip"></div></div>'
+            '<script type="application/json" id="tl-events">%s</script>'
+            '<script>%s</script>' % (axis, plot, data, TIMELINE_JS)), legend
 
 
 def readiness_comparison_chart(post):
@@ -959,24 +1061,30 @@ def readiness_comparison_chart(post):
         if batch not in runs:
             continue
         run = runs[batch]
-        # Batch 49 is still publishing. Extend its production trace through
-        # the current date, while its publication trace uses only issues that
-        # have actually appeared.
-        end = asof if batch == 49 else run["end"]
-        path = readiness_path(run["first"], end, extend_to_end=True)
+        # A production line is held flat only while production is unfinished:
+        # a run whose chapters are all out, or whose last report reached 100%,
+        # stops at its last report. Holding every run to its publication end
+        # (and batch 49 to today) drew production as still going after it was
+        # done. A run still publishing is traced through today.
+        published = len(run["publication"]) >= 10
+        end = run["end"] if published else asof
+        path = readiness_path(run["first"], end, extend_to_end=not published)
+        if path and path["path"][-1][1] >= 1.0:
+            path = readiness_path(run["first"], end)
         if path:
             series.append({"label": "ch. %d–%d" % (run["first"], run["first"] + 9),
+                           "first": run["first"],
                            "css": css, "path": path, "publication": run["publication"],
-                           "legend_suffix": " · publishing now" if batch == 49 else " · published"})
+                           "legend_suffix": " · published" if published else " · publishing now"})
     live = readiness_path(first, asof, extend_to_end=True)
     if not live:
         return []
-    series.append({"label": "ch. %d–%d" % (first, first + 9),
+    series.append({"label": "ch. %d–%d" % (first, first + 9), "first": first,
                    "css": "rlive", "path": live, "publication": [],
                    "legend_suffix": " (working)"})
     following = readiness_path(nfirst, asof, extend_to_end=True)
     if following:
-        series.append({"label": "ch. %d–%d" % (nfirst, nfirst + 9),
+        series.append({"label": "ch. %d–%d" % (nfirst, nfirst + 9), "first": nfirst,
                        "css": "rnext", "path": following, "publication": [],
                        "legend_suffix": " (working)"})
     xmax = max(
@@ -989,10 +1097,12 @@ def readiness_comparison_chart(post):
     pad_l, pad_r, pad_t, pad_b = 52, 16, 30, 54
     W, H = width - pad_l - pad_r, height - pad_t - pad_b
     X = lambda day: pad_l + W * day / xmax
-    # This is a display scale, not a replacement for the model's coordinate.
-    # Manuscript-complete is 0.90 in the source coordinate, so map it to the
-    # visible upper edge of the Togashi-work phase (1.00). The publication
-    # process occupies the separate 1.00–1.10 band.
+    # Values are ordered_trace's B/10: chapter-equivalents finished out of ten,
+    # where a finished chapter already counts 1.00. They are plotted as is.
+    # An older coordinate put manuscript-complete at 0.90 and was divided by
+    # .90 here; applied to B that inflated every point by 11% and pinned
+    # anything from 90% up at 100%, so ch. 429's completion (91% -> 95%) drew
+    # nothing. The publication process occupies the separate 1.00-1.10 band.
     Y = lambda value: pad_t + H * (1 - value / 1.10)
     grid = []
     # The 1.00-1.10 band is WSJ publication, a separate phase rather than
@@ -1023,7 +1133,7 @@ def readiness_comparison_chart(post):
 
     paths, publication_paths, legend = [], [], []
     for s in series:
-        points = [(day, min(value / .90, 1.0)) for day, value in s["path"]["path"]]
+        points = [(day, min(value, 1.0)) for day, value in s["path"]["path"]]
         d = ["M%.1f,%.1f" % (X(points[0][0]), Y(points[0][1]))]
         previous_day, previous_value = points[0]
         for day, value in points[1:]:
@@ -1055,7 +1165,7 @@ def readiness_comparison_chart(post):
               pad_l + W / 2, height - 7, pad_t + H / 2, pad_t + H / 2)
     timeline, _tl_legend = _timeline_view(series, asof)
     return [
-        '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}.pubband{fill:var(--soft)}.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.rlive{stroke-width:3}.rlab{font-size:11px;font-weight:600}.waitband{fill:var(--mut);opacity:.13}.ax.wait{font-weight:600;fill:var(--fg)}.rline.r47,.pline.r47{stroke:#2a78d6}.rlab.r47{fill:#2a78d6}.dot.r47{background:#2a78d6;border-color:#2a78d6}.rline.r48,.pline.r48{stroke:#eb6834}.rlab.r48{fill:#eb6834}.dot.r48{background:#eb6834;border-color:#eb6834}.rline.r49,.pline.r49{stroke:#1baf7a}.rlab.r49{fill:#1baf7a}.dot.r49{background:#1baf7a;border-color:#1baf7a}.rline.rlive,.pline.rlive{stroke:#eda100}.rlab.rlive{fill:#eda100}.dot.rlive{background:#eda100;border-color:#eda100}.rline.rnext,.pline.rnext{stroke:#e87ba4}.rlab.rnext{fill:#e87ba4}.dot.rnext{background:#e87ba4;border-color:#e87ba4}.tlwrap{display:flex;border:1px solid var(--line);border-radius:6px;overflow:hidden}.tlgutter{flex:none;background:var(--bg);border-right:1px solid var(--line)}.tlgutter svg{display:block}.tlscroll{overflow-x:auto;overflow-y:hidden;flex:1;min-width:0;direction:rtl}.tlscroll svg{display:block;width:auto;max-width:none;height:auto;direction:ltr}.vradio{position:absolute;opacity:0;width:0;height:0}.vtabs{display:flex;gap:6px;margin:12px 0 10px}.vtabs label{font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--mut);user-select:none}#pv-a:checked~.vtabs label[for="pv-a"],#pv-b:checked~.vtabs label[for="pv-b"]{background:var(--card);color:var(--fg);border-color:var(--mut)}#pv-a:focus-visible~.vtabs label[for="pv-a"],#pv-b:focus-visible~.vtabs label[for="pv-b"]{outline:2px solid var(--accent);outline-offset:2px}.vpane{display:none}#pv-a:checked~.vp-a,#pv-b:checked~.vp-b{display:block}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}}:root[data-theme="dark"]{.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}</style>',
+        '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}.pubband{fill:var(--soft)}.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.rlive{stroke-width:3}.rlab{font-size:11px;font-weight:600}.rline.r47,.pline.r47{stroke:#2a78d6}.rlab.r47{fill:#2a78d6}.dot.r47{background:#2a78d6;border-color:#2a78d6}.rline.r48,.pline.r48{stroke:#eb6834}.rlab.r48{fill:#eb6834}.dot.r48{background:#eb6834;border-color:#eb6834}.rline.r49,.pline.r49{stroke:#1baf7a}.rlab.r49{fill:#1baf7a}.dot.r49{background:#1baf7a;border-color:#1baf7a}.rline.rlive,.pline.rlive{stroke:#eda100}.rlab.rlive{fill:#eda100}.dot.rlive{background:#eda100;border-color:#eda100}.rline.rnext,.pline.rnext{stroke:#e87ba4}.rlab.rnext{fill:#e87ba4}.dot.rnext{background:#e87ba4;border-color:#e87ba4}.tlwrap{display:flex;position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden}.grid.minor{opacity:.45}.tlcross{stroke:var(--mut);stroke-width:1;stroke-dasharray:3 3;display:none;pointer-events:none}.tltip{position:absolute;display:none;pointer-events:none;z-index:2;max-width:300px;padding:7px 10px;font-size:12px;line-height:1.5;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.tltip .tlh{font-weight:600;margin-bottom:2px}.tltip .dot{width:8px;height:8px;margin-right:2px}.tlgutter{flex:none;background:var(--bg);border-right:1px solid var(--line)}.tlgutter svg{display:block}.tlscroll{overflow-x:auto;overflow-y:hidden;flex:1;min-width:0;direction:rtl}.tlscroll svg{display:block;width:auto;max-width:none;height:auto;direction:ltr}.vradio{position:absolute;opacity:0;width:0;height:0}.vtabs{display:flex;gap:6px;margin:12px 0 10px}.vtabs label{font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--mut);user-select:none}#pv-a:checked~.vtabs label[for="pv-a"],#pv-b:checked~.vtabs label[for="pv-b"]{background:var(--card);color:var(--fg);border-color:var(--mut)}#pv-a:focus-visible~.vtabs label[for="pv-a"],#pv-b:focus-visible~.vtabs label[for="pv-b"]{outline:2px solid var(--accent);outline-offset:2px}.vpane{display:none}#pv-a:checked~.vp-a,#pv-b:checked~.vp-b{display:block}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}}:root[data-theme="dark"]{.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}</style>',
         '<h2>Production progress compared with earlier batches</h2>',
         '<h3>Publicly reported production and publication progress</h3>',
         '<div class="views">'
@@ -1697,10 +1807,10 @@ NAV = [("index.html", "Next 10 chapters"), ("chapter-431.html", "Following 10 ch
 # Blog posts: (href, title, date, one-line summary). Each post keeps the URL it
 # was first shared under; the blog index is what links them.
 POSTS = [
-    ("125-day-wait.html", "The 125-day wait", "2026-09-16",
-     "Chapters 411&ndash;420 were finished by 24 February 2026 and did not go on "
-     "sale until 29 June. What the production record shows across those 125 days "
-     "&mdash; and whether it has happened before."),
+    ("125-day-wait.html", "Does finishing Ch. 421&ndash;430 mean immediate publication?", "2026-09-16",
+     "Not last time. Chapters 411&ndash;420 were finished by 24 February 2026 and "
+     "did not go on sale until 29 June. What the production record shows across "
+     "those 125 days &mdash; and whether it has happened before."),
 ]
 
 

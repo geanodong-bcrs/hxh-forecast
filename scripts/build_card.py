@@ -380,11 +380,23 @@ def render(d, path):
             labels.append([cur[0][1][-1][1], xs[-1] + 14, "ch. %d" % cur[0][0],
                            ACCENT, "bold"])
         # Runs that finished near 100% end at the same height and their labels
-        # overprinted; push them apart vertically, keeping the order.
+        # overprinted; push them apart vertically, keeping the order. Only
+        # labels that also share x are pushed: ch. 391 ends far to the left at
+        # the same height as 401/411 and was being shoved off its own line.
+        near_x = .15 * max(l[1] for l in labels)
         labels.sort(key=lambda l: -l[0])
-        for a, b in zip(labels, labels[1:]):
-            if a[0] - b[0] < .085:
-                b[0] = a[0] - .085
+        placed = []
+        for lab in labels:
+            # Moves are strictly downward, so this ends; the 1e-9 keeps a label
+            # sitting exactly .085 below another from counting as a collision.
+            moved = True
+            while moved:
+                moved = False
+                for p in placed:
+                    if abs(p[1] - lab[1]) < near_x and abs(p[0] - lab[0]) < .085 - 1e-9:
+                        lab[0] = min(lab[0], p[0] - .085)
+                        moved = True
+            placed.append(lab)
         for y, x, txt, col, wt in labels:
             ax.text(x, y, txt, color=col, fontsize=8, fontweight=wt,
                     va="center", ha="left")

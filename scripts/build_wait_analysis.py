@@ -174,7 +174,7 @@ TEMPLATE = """\
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="description" content="Chapters 411-420 of Hunter x Hunter were finished on 24 February 2026 and went on sale on 29 June. What the production record shows in between.">
-<title>The 125-Day Wait</title>
+<title>Does finishing Ch. 421–430 mean immediate publication?</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -255,8 +255,8 @@ summary:focus-visible{outline:2px solid var(--s50);outline-offset:3px}
 
 <div class="wrap">
   __NAV__
-  <p class="eyebrow">Blog &middot; Hunter &times; Hunter &middot; ch. 411&ndash;420 &middot; production record</p>
-  <h1>The 125-Day Wait</h1>
+  <p class="eyebrow">Blog &middot; Hunter &times; Hunter &middot; the 125-day wait</p>
+  <h1>Does finishing Ch. 421&ndash;430 mean immediate publication?</h1>
   <p class="stand">Chapters 411-420 were drawn by 24 February 2026 and did not appear in Weekly Sh&#333;nen Jump until 29 June. Here is what the production record shows happening in between &mdash; and why it has happened before.</p>
 
   <div class="tiles">
