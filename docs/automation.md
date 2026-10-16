@@ -3,7 +3,7 @@
 The forecast updates itself: once a day, and again whenever Togashi posts.
 
     launchd ──┬── poll   every hour, 24×/day     run_update.py --poll
-              └── daily  09:30 ET                run_update.py --no-poll --daily
+              └── daily  11:00 ET                run_update.py --no-poll --daily
                              |
                     scripts/run_update.py
                              |
@@ -23,7 +23,7 @@ needs doing rather than running thirteen scripts unconditionally.
 | job | when | what |
 |---|---|---|
 | `com.togashi.forecast.poll` | every hour on the hour, 24×/day | polls X; reruns the model if anything arrived |
-| `com.togashi.forecast.daily` | 09:30 **Eastern** | the daily rerun, on the date rather than on evidence |
+| `com.togashi.forecast.daily` | 11:00 **Eastern** | the daily rerun, on the date rather than on evidence |
 
 **Why every hour.** The poll was originally an eight-hour overnight window,
 on the reasoning that the reviewer could trigger a run by hand the rest of the
@@ -32,7 +32,8 @@ rather than of the reviewer's convenience, and "Posting times" below already
 argued that evenly-spaced polls beat any window. An empty poll is not billed and
 usage stands at 492 of 3,000,000 posts a month, so the even spacing is free.
 
-**Why 09:30 and not a Tokyo hour.** Half an hour after the last poll, so the
+**Why 11:00 and not a Tokyo hour.** It fires on the same minute as the 11:00
+poll; `run_update.py` holds a lock, so the daily run waits for that poll and the
 last thing that happened before the daily snapshot was a fresh look at X.
 Daylight saving drifts it against JST by an hour twice a year and that does not
 matter — the daily run exists to guarantee one snapshot a day, not to land on a
@@ -98,7 +99,7 @@ a run on a day already covered writes nothing and logs `no_change`.
 
 | the Mac was… | what covers the missed daily |
 |---|---|
-| asleep at 09:30, still logged in | launchd replays it on wake |
+| asleep at 11:00, still logged in | launchd replays it on wake |
 | logged out, or rebooted | `RunAtLoad` fires it at the next login |
 | off for a whole day | that day is lost; the next login writes only its own |
 

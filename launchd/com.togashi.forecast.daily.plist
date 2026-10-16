@@ -6,16 +6,17 @@
   <key>Label</key>
   <string>com.togashi.forecast.daily</string>
 
-  <!-- The daily rerun: 09:30 local, half an hour after the last poll.
+  <!-- The daily rerun: 11:00 local (Eastern). It shares the minute with the
+       11:00 poll; run_update.py takes a lock, so it runs right after it.
 
        Deliberately NOT anchored to a Tokyo hour. Daylight saving drifts this
        against JST by an hour twice a year and that does not matter — the daily
        run exists to guarantee one snapshot a day, not to land on a Tokyo
        instant. Nothing in the model is a function of the hour it runs at.
 
-       Polling is hourly, so whatever the clock says, the poll immediately
-       before this run is at most an hour old and the daily snapshot is built on
-       the most recent evidence X has given up.
+       Polling is hourly, so the poll immediately before this run has just
+       finished and the daily snapshot is built on the most recent evidence X
+       has given up.
 
        --daily guarantees the snapshot; the guard in run_update.py keeps it to
        one a day if launchd replays a run missed while the Mac slept.
@@ -24,7 +25,7 @@
        truncation floor advances. -->
   <key>StartCalendarInterval</key>
   <array>
-    <dict><key>Hour</key><integer>9</integer><key>Minute</key><integer>30</integer></dict>
+    <dict><key>Hour</key><integer>11</integer><key>Minute</key><integer>0</integer></dict>
   </array>
 
   <key>ProgramArguments</key>

@@ -54,6 +54,14 @@ STAGES = [
      "Chapter complete and delivered to Shueisha."),
 ]
 STAGE_IDX = {k: i for i, (k, _, _, _) in enumerate(STAGES)}
+STAGE_DESC_JA = {
+    "name": "下描き段階のレイアウト。コマ割り、人物のラフ、台詞の位置。",
+    "character_inking": "冨樫先生が人物を手描きでペン入れ。",
+    "bg_spec": "アシスタントに描いてもらう背景の指示書。",
+    "bg_work": "スタッフによる背景の作画。",
+    "dialogue": "フキダシに最終的な台詞を入れる作業。",
+    "manuscript_complete": "原稿が完成し、集英社に納品。",
+}
 
 # The four tiers the fandom already uses (the @togashiactu chart). Our event data
 # reproduces that chart chapter-for-chapter from a completely different source,
@@ -92,15 +100,20 @@ def stage_marks(stages):
     out = []
     for key, en, ja, _ in STAGES:
         r = stages.get(key)
+        name = ja if LANG == "ja" else "%s %s" % (ja, en)
         if r and r["status"] == "complete":
-            out.append(("done", "%s %s — reported %s" % (ja, en, fmt(r["event_date"]))))
+            out.append(("done", tr("%s — reported %s", "%s — %s 完了報告")
+                        % (name, fmt(r["event_date"]))))
         elif r:
-            out.append(("prog", "%s %s — started %s" % (ja, en, fmt(r["event_date"]))))
+            out.append(("prog", tr("%s — started %s", "%s — %s 開始")
+                        % (name, fmt(r["event_date"]))))
         elif STAGE_IDX[key] < furthest:
-            out.append(("assumed", "%s %s — not posted, but a later stage was, "
-                                   "so this must be done" % (ja, en)))
+            out.append(("assumed", tr("%s — not posted, but a later stage was, "
+                                     "so this must be done",
+                                     "%s — 報告なし。後の工程が報告済みのため完了とみなす")
+                        % name))
         else:
-            out.append(("", "%s %s — nothing reported" % (ja, en)))
+            out.append(("", tr("%s — nothing reported", "%s — 報告なし") % name))
     return out
 
 
@@ -221,9 +234,57 @@ def esc(t):
             .replace('"', "&quot;"))
 
 
+# LANGUAGE SWITCH. The two forecast pages are also built in Japanese, into
+# site/ja/. Each string is written as tr(english, japanese) at the point of use,
+# so a layout change sees both and cannot leave one language behind. main()
+# sets LANG per build; method and blog stay English-only.
+LANG = "en"
+JA_PAGES = ("index.html", "chapter-431.html")
+# English pages link to the Japanese ones only once this is True and
+# deploy_site.py publishes site/ja/. Until then ja/ is built for review only.
+JA_LIVE = True
+# Published as a test version: no native speaker has reviewed the Japanese yet,
+# so the pages say so and ask readers to report mistakes. Drop the banner (and
+# the テスト版 tag on the switch link) once the wording has been checked.
+JA_BETA = True
+JA_BETA_BANNER = ('<p class=beta><strong>テスト版</strong> &mdash; この日本語ページは、'
+                  '日本語を母語としない作成者がAIの助けを借りて翻訳したもので、'
+                  'まだ確認中です。誤訳や不自然な表現を見つけたら、'
+                  '<a href="https://x.com/HxHforecast">X(@HxHforecast)</a>'
+                  'で教えていただけると助かります。</p>')
+
+
+def tr(en, ja):
+    return ja if LANG == "ja" else en
+
+
+def href(page):
+    """A site link that resolves from site/ or site/ja/."""
+    if LANG == "ja" and page not in JA_PAGES:
+        return "../" + page
+    return page
+
+
+def mon(d):
+    """Month tick: "Nov" / "11月"."""
+    return "%d月" % d.month if LANG == "ja" else d.strftime("%b")
+
+
+def mon_year(d):
+    return "%d年%d月" % (d.year, d.month) if LANG == "ja" else d.strftime("%b %Y")
+
+
+def day_month_year(d):
+    """Full date, for a date or datetime."""
+    return ("%d年%d月%d日" % (d.year, d.month, d.day) if LANG == "ja"
+            else d.strftime("%-d %b %Y"))
+
+
 def fmt(iso, short=False):
     # Short form keeps an apostrophe on the year: "2 Nov 26" reads as a day.
-    d = date.fromisoformat(iso)
+    d = date.fromisoformat(iso[:10])
+    if LANG == "ja":
+        return "%d/%d/%d" % (d.year, d.month, d.day) if short else day_month_year(d)
     return d.strftime("%-d %b &rsquo;%y") if short else d.strftime("%-d %b %Y")
 
 
@@ -261,7 +322,8 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
     of the chart that carries information.
     """
     if not pmf:
-        return "<p class=note>No distribution stored in this snapshot.</p>"
+        return tr("<p class=note>No distribution stored in this snapshot.</p>",
+                 "<p class=note>このスナップショットには分布が保存されていません。</p>")
     acc, cum = 0.0, []
     for d, p in pmf:
         acc += p
@@ -298,7 +360,7 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
                  % (" yr" if d.month == 1 else "", xx, pad_t, xx, pad_t + H))
         if label:
             g.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
-                     % (xx, height - 22, d.strftime("%b")))
+                     % (xx, height - 22, mon(d)))
 
     # Year labels sit centred under the span each year actually occupies, on
     # their own row. They used to be drawn at every January plus the first tick,
@@ -316,12 +378,14 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
     lo, hi = (date.fromisoformat(i80[0]).toordinal(),
               date.fromisoformat(i80[1]).toordinal())
     return """<svg viewBox="0 0 %d %d" class="chart" role="img"
-   aria-label="Cumulative probability publication has begun, by date">
+   aria-label="%s">
   <rect class="band" x="%.1f" y="%d" width="%.1f" height="%d"/>
   %s
   <path class="area" d="%s"/><path class="cdfline" d="%s"/>
   <line class="med" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>
-</svg>""" % (width, height, X(lo), pad_t, max(X(hi) - X(lo), 1), H,
+</svg>""" % (width, height, tr("Cumulative probability publication has begun, by date",
+                                  "日付ごとの掲載開始の累積確率"),
+             X(lo), pad_t, max(X(hi) - X(lo), 1), H,
              "\n  ".join(g), area, line, X(med), pad_t, X(med), pad_t + H)
 
 
@@ -377,7 +441,7 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
                  % (" yr" if d.month == 1 else "", xx, pad_t, xx, pad_t + H))
         if label:
             g.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
-                     % (xx, height - 22, d.strftime("%b")))
+                     % (xx, height - 22, mon(d)))
     for yr in range(date.fromordinal(x0).year, date.fromordinal(x1).year + 1):
         lo, hi = max(x0, date(yr, 1, 1).toordinal()), min(x1, date(yr, 12, 31).toordinal())
         if hi <= lo or X(hi) - X(lo) < 34:
@@ -395,12 +459,13 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
         bars.append('<rect class="bar" x="%.1f" y="%.1f" width="%.1f" height="%.1f">'
                     '<title>%s — %s</title></rect>'
                     % (xa + .75, Y(p), w, max(pad_t + H - Y(p), .5),
-                       date(y, m, 1).strftime("%B %Y"), pct(p)))
+                       mon_year(date(y, m, 1)) if LANG == "ja"
+                       else date(y, m, 1).strftime("%B %Y"), pct(p)))
         if spike and spike[0][:7] == k:
             # The spike month is the tallest bar, so a label above it would sit
             # outside the plot. Put it beside the bar instead, at the bar's top.
-            spike_lbl = ('<text class="ax spk" x="%.1f" y="%.1f">'
-                         '%s of it is %s alone</text>'
+            spike_lbl = (('<text class="ax spk" x="%.1f" y="%.1f">'
+                          + tr('%s of it is %s alone', 'うち%sは%s発売号のみ') + '</text>')
                          % (xa + w + 7, max(Y(p) + 11, pad_t + 11),
                             pct(spike[1]), fmt(spike[0], True)))
 
@@ -408,13 +473,15 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
               date.fromisoformat(i80[1]).toordinal())
     med = date.fromisoformat(median).toordinal()
     return """<svg viewBox="0 0 %d %d" class="chart" role="img"
-   aria-label="Probability chapter is published in each month">
+   aria-label="%s">
   <rect class="band" x="%.1f" y="%d" width="%.1f" height="%d"/>
   %s
   %s
   <line class="med" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>
   %s
-</svg>""" % (width, height, X(lo), pad_t, max(X(hi) - X(lo), 1), H,
+</svg>""" % (width, height, tr("Probability chapter is published in each month",
+                                  "月ごとの掲載確率"),
+             X(lo), pad_t, max(X(hi) - X(lo), 1), H,
              "\n  ".join(g), "".join(bars), X(med), pad_t, X(med), pad_t + H,
              spike_lbl)
 
@@ -702,9 +769,10 @@ def manuscript_completion_annotations(rows):
             r = next((row for row in rows if row["t"] >= posted), None)
             if r is None:
                 continue
-            label = ("Chapter %s: manuscript complete (posted %s JST)"
-                     % (e["chapter"], (posted + timedelta(hours=9))
-                        .strftime("%-d %b %Y %H:%M")))
+            jst = posted + timedelta(hours=9)
+            label = (tr("Chapter %s: manuscript complete (posted %s JST)",
+                       "第%s話 原稿完成(%s JST投稿)")
+                     % (e["chapter"], "%s %s" % (day_month_year(jst), jst.strftime("%H:%M"))))
             if r["t"] - posted > timedelta(days=2):
                 # The drawn series has a hole here (e.g. v13 replays stop on
                 # 25 Aug 2026 and resume 14 Sep). Snapping to the next saved
@@ -713,8 +781,9 @@ def manuscript_completion_annotations(rows):
                 held = max((row for row in rows if row["t"] <= posted),
                            key=lambda row: row["t"])
                 out.append({"t": posted, "median": held["median"],
-                            "label": label + "; next saved forecast %s"
-                                     % r["t"].strftime("%-d %b %Y")})
+                            "label": label + tr("; next saved forecast %s",
+                                               "/次の保存予測 %s")
+                                     % day_month_year(r["t"])})
                 continue
             out.append({"t": r["t"], "median": r["median"], "label": label})
     return out
@@ -763,14 +832,14 @@ def time_ticks(t0, t1):
         d, n = date(t0.year, t0.month, 1), 0
         while d <= t1.date():
             if d >= t0.date() and n % every == 0:
-                out.append((d, d.strftime("%b %Y")))
+                out.append((d, mon_year(d)))
             d = date(d.year + (d.month == 12), (d.month % 12) + 1, 1)
             n += 1
     else:
         d = t0.date()
         d += timedelta(days=(7 - d.weekday()) % 7)
         while d <= t1.date():
-            out.append((d, d.strftime("%-d %b %Y")))
+            out.append((d, day_month_year(d)))
             d += timedelta(days=14 if days > 40 else 7)
     return out
 
@@ -859,6 +928,8 @@ EVENT_STATUS = {"complete": "%s done", "started": "%s started",
 
 
 def event_text(row):
+    if LANG == "ja":
+        return event_text_ja(row)
     ch = int(float(row["chapter"]))
     if row.get("event_class") == "page_completed":
         nums = sorted({int(n) for n in re.findall(r"\d+", row.get("pages_manuscript") or "")})
@@ -877,6 +948,34 @@ def event_text(row):
         return ("ch. %d %s" % (ch, EVENT_STATUS.get(status, "%s " + status) % "")).replace("  ", " ").strip()
     return "ch. %d %s" % (ch, EVENT_STATUS.get(status, "%s " + status).strip()
                           % EVENT_STAGE.get(stage, stage.replace("_", " ")))
+
+
+EVENT_STAGE_JA = {"name": "ネーム", "panel_layout": "ネーム",
+                  "character_inking": "ペン入れ", "bg_spec": "背景指定",
+                  "bg_work": "背景", "dialogue": "台詞入れ",
+                  "retouch": "加筆", "chapter_level": "",
+                  "manuscript_complete": "原稿"}
+EVENT_STATUS_JA = {"complete": "%s完了", "started": "%s開始",
+                   "in_progress": "%s進行中", "awaiting_return": "%s返却待ち",
+                   "under_review": "%s確認中", "retake": "%sリテイク", "": "%s"}
+
+
+def event_text_ja(row):
+    ch = int(float(row["chapter"]))
+    if row.get("event_class") == "page_completed":
+        nums = sorted({int(n) for n in re.findall(r"\d+", row.get("pages_manuscript") or "")})
+        if not nums:
+            return "第%d話 ページ記録" % ch
+        if len(nums) == 1:
+            return "第%d話 %dページ目" % (ch, nums[0])
+        if nums == list(range(nums[0], nums[-1] + 1)):
+            return "第%d話 %d\u2013%dページ" % (ch, nums[0], nums[-1])
+        return "第%d話 %sページ" % (ch, ", ".join(map(str, nums)))
+    stage, status = row.get("stage") or "", row.get("status") or ""
+    if stage == "manuscript_complete" and status == "complete":
+        return "第%d話 完成" % ch
+    return ("第%d話 %s" % (ch, EVENT_STATUS_JA.get(status, "%s " + status)
+                         % EVENT_STAGE_JA.get(stage, stage.replace("_", " ")))).strip()
 
 
 def timeline_hover_index(series, X):
@@ -914,12 +1013,14 @@ def timeline_hover_index(series, X):
                 if t not in bucket:
                     bucket.append(t)
         for position, when in s["publication"]:
-            texts.setdefault(when, []).append("ch. %d on sale" % (first + position - 1))
+            texts.setdefault(when, []).append(tr("ch. %d on sale", "第%d話 発売")
+                                              % (first + position - 1))
         for when, items in texts.items():
-            shown = items[:4] + (["+%d more" % (len(items) - 4)] if len(items) > 4 else [])
+            shown = items[:4] + ([tr("+%d more", "ほか%d件") % (len(items) - 4)]
+                                 if len(items) > 4 else [])
             days.setdefault(when, []).append(
                 [s["css"], "%s · %s" % (s["label"], ", ".join(shown))])
-    return [{"x": round(X(when), 1), "date": when.strftime("%-d %b %Y"), "rows": rows}
+    return [{"x": round(X(when), 1), "date": day_month_year(when), "rows": rows}
             for when, rows in sorted(days.items())]
 
 
@@ -987,7 +1088,7 @@ def _timeline_view(series, asof):
             grid.append('<line class="grid%s" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
                         % ("" if quarter else " minor", x, pad_t, x, pad_t + plot_h))
             if quarter:
-                label = when.strftime("%b") if month != 1 else when.strftime("%b %Y")
+                label = mon(when) if month != 1 else mon_year(when)
                 grid.append('<text class="ax" x="%.1f" y="%d" text-anchor="middle">%s</text>'
                             % (x, height - 22, label))
         month += 1
@@ -1033,13 +1134,17 @@ def _timeline_view(series, asof):
         axis += ('<text class="ax" x="46" y="%.1f" text-anchor="end">%d%%</text>'
                  % (Y(value) + 4, round(value * 100)))
     axis += ('<text class="ax" x="12" y="%.1f" transform="rotate(-90 12 %.1f)" '
-             'text-anchor="middle">Togashi&rsquo;s working progress</text></svg>'
-             % (pad_t + plot_h / 2, pad_t + plot_h / 2))
+             'text-anchor="middle">%s</text></svg>'
+             % (pad_t + plot_h / 2, pad_t + plot_h / 2,
+                tr("Togashi&rsquo;s working progress", "冨樫先生の作業進捗")))
 
     plot = ('<svg viewBox="0 0 %d %d" width="%d" height="%d" class="chart" role="img" '
-            'aria-label="Production and publication progress of five Hunter x Hunter '
-            'batches on real calendar dates from %s to %s">%s%s%s</svg>'
-            % (width, height, width, height, t0.isoformat(), t1.isoformat(),
+            'aria-label="%s">%s%s%s</svg>'
+            % (width, height, width, height,
+               tr("Production and publication progress of five Hunter x Hunter "
+                 "batches on real calendar dates from %s to %s",
+                 "HUNTER×HUNTER 5回分の制作・掲載の進捗(%s〜%s、実際の日付)")
+               % (t0.isoformat(), t1.isoformat()),
                "".join(marks), "\n".join(grid), "".join(body)))
     # json.dumps output is safe inside <script type="application/json"> once
     # "</" is escaped; event text is our own wording, never tweet text.
@@ -1072,21 +1177,22 @@ def readiness_comparison_chart(post):
         if path and path["path"][-1][1] >= 1.0:
             path = readiness_path(run["first"], end)
         if path:
-            series.append({"label": "ch. %d–%d" % (run["first"], run["first"] + 9),
+            series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (run["first"], run["first"] + 9),
                            "first": run["first"],
                            "css": css, "path": path, "publication": run["publication"],
-                           "legend_suffix": " · published" if published else " · publishing now"})
+                           "legend_suffix": tr(" · published", "・掲載済み") if published
+                           else tr(" · publishing now", "・掲載中")})
     live = readiness_path(first, asof, extend_to_end=True)
     if not live:
         return []
-    series.append({"label": "ch. %d–%d" % (first, first + 9), "first": first,
+    series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (first, first + 9), "first": first,
                    "css": "rlive", "path": live, "publication": [],
-                   "legend_suffix": " (working)"})
+                   "legend_suffix": tr(" (working)", "(制作中)")})
     following = readiness_path(nfirst, asof, extend_to_end=True)
     if following:
-        series.append({"label": "ch. %d–%d" % (nfirst, nfirst + 9), "first": nfirst,
+        series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (nfirst, nfirst + 9), "first": nfirst,
                        "css": "rnext", "path": following, "publication": [],
-                       "legend_suffix": " (working)"})
+                       "legend_suffix": tr(" (working)", "(制作中)")})
     xmax = max(
         [s["path"]["path"][-1][0] for s in series] +
         [(when - s["path"]["origin"]).days for s in series for _, when in s["publication"]]
@@ -1109,8 +1215,9 @@ def readiness_comparison_chart(post):
     # progress past 100%. Shade it, and draw it first so the rules sit on top.
     grid.append('<rect class="pubband" x="%d" y="%.1f" width="%d" height="%.1f"/>'
                 % (pad_l, Y(1.10), W, Y(1.00) - Y(1.10)))
-    grid.append('<text class="ax" x="%.1f" y="%.1f">publishing phase</text>'
-                % (pad_l + 8, (Y(1.00) + Y(1.10)) / 2 + 4))
+    grid.append('<text class="ax" x="%.1f" y="%.1f">%s</text>'
+                % (pad_l + 8, (Y(1.00) + Y(1.10)) / 2 + 4,
+                   tr("publishing phase", "掲載期間")))
     for value in (0, .25, .5, .75):
         grid.append('<line class="grid" x1="%d" y1="%.1f" x2="%d" y2="%.1f"/>'
                     '<text class="ax" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
@@ -1156,41 +1263,62 @@ def readiness_comparison_chart(post):
         legend.append('<span><i class="dot %s"></i>%s%s</span>' %
                       (s["css"], s["label"], s["legend_suffix"]))
 
-    chart = '''<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label="Observed production and publication progress of Hunter x Hunter batches">
+    chart = '''<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label="%s">
 %s
 %s%s
-<text class="ax" x="%d" y="%d" text-anchor="middle">days since the first production tweet of a batch</text>
-<text class="ax" x="14" y="%d" transform="rotate(-90 14 %d)" text-anchor="middle">Togashi&rsquo;s working progress</text>
-</svg>''' % (width, height, "\n".join(grid), "".join(paths), "".join(publication_paths),
-              pad_l + W / 2, height - 7, pad_t + H / 2, pad_t + H / 2)
+<text class="ax" x="%d" y="%d" text-anchor="middle">%s</text>
+<text class="ax" x="14" y="%d" transform="rotate(-90 14 %d)" text-anchor="middle">%s</text>
+</svg>''' % (width, height,
+              tr("Observed production and publication progress of Hunter x Hunter batches",
+                "HUNTER×HUNTER 各回の制作・掲載の進捗"),
+              "\n".join(grid), "".join(paths), "".join(publication_paths),
+              pad_l + W / 2, height - 7,
+              tr("days since the first production tweet of a batch",
+                "その回の最初の制作ツイートからの日数"),
+              pad_t + H / 2, pad_t + H / 2,
+              tr("Togashi&rsquo;s working progress", "冨樫先生の作業進捗"))
     timeline, _tl_legend = _timeline_view(series, asof)
     return [
         '<style>.rline,.pline{fill:none;stroke-linejoin:miter;stroke-linecap:butt;shape-rendering:crispEdges}.pubband{fill:var(--soft)}.rline{stroke-width:2.2}.pline{stroke-width:3}.rline.rlive{stroke-width:3}.rlab{font-size:11px;font-weight:600}.rline.r47,.pline.r47{stroke:#2a78d6}.rlab.r47{fill:#2a78d6}.dot.r47{background:#2a78d6;border-color:#2a78d6}.rline.r48,.pline.r48{stroke:#eb6834}.rlab.r48{fill:#eb6834}.dot.r48{background:#eb6834;border-color:#eb6834}.rline.r49,.pline.r49{stroke:#1baf7a}.rlab.r49{fill:#1baf7a}.dot.r49{background:#1baf7a;border-color:#1baf7a}.rline.rlive,.pline.rlive{stroke:#eda100}.rlab.rlive{fill:#eda100}.dot.rlive{background:#eda100;border-color:#eda100}.rline.rnext,.pline.rnext{stroke:#e87ba4}.rlab.rnext{fill:#e87ba4}.dot.rnext{background:#e87ba4;border-color:#e87ba4}.tlwrap{display:flex;position:relative;border:1px solid var(--line);border-radius:6px;overflow:hidden}.grid.minor{opacity:.45}.tlcross{stroke:var(--mut);stroke-width:1;stroke-dasharray:3 3;display:none;pointer-events:none}.tltip{position:absolute;display:none;pointer-events:none;z-index:2;max-width:300px;padding:7px 10px;font-size:12px;line-height:1.5;background:var(--card);color:var(--fg);border:1px solid var(--line);border-radius:6px;box-shadow:0 4px 14px rgba(0,0,0,.25)}.tltip .tlh{font-weight:600;margin-bottom:2px}.tltip .dot{width:8px;height:8px;margin-right:2px}.tlgutter{flex:none;background:var(--bg);border-right:1px solid var(--line)}.tlgutter svg{display:block}.tlscroll{overflow-x:auto;overflow-y:hidden;flex:1;min-width:0;direction:rtl}.tlscroll svg{display:block;width:auto;max-width:none;height:auto;direction:ltr}.vradio{position:absolute;opacity:0;width:0;height:0}.vtabs{display:flex;gap:6px;margin:12px 0 10px}.vtabs label{font-size:12.5px;padding:5px 12px;border:1px solid var(--line);border-radius:999px;cursor:pointer;color:var(--mut);user-select:none}#pv-a:checked~.vtabs label[for="pv-a"],#pv-b:checked~.vtabs label[for="pv-b"]{background:var(--card);color:var(--fg);border-color:var(--mut)}#pv-a:focus-visible~.vtabs label[for="pv-a"],#pv-b:focus-visible~.vtabs label[for="pv-b"]{outline:2px solid var(--accent);outline-offset:2px}.vpane{display:none}#pv-a:checked~.vp-a,#pv-b:checked~.vp-b{display:block}@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}}:root[data-theme="dark"]{.rline.r47,.pline.r47{stroke:#3987e5}.rlab.r47{fill:#3987e5}.dot.r47{background:#3987e5;border-color:#3987e5}.rline.r48,.pline.r48{stroke:#d95926}.rlab.r48{fill:#d95926}.dot.r48{background:#d95926;border-color:#d95926}.rline.r49,.pline.r49{stroke:#199e70}.rlab.r49{fill:#199e70}.dot.r49{background:#199e70;border-color:#199e70}.rline.rlive,.pline.rlive{stroke:#c98500}.rlab.rlive{fill:#c98500}.dot.rlive{background:#c98500;border-color:#c98500}.rline.rnext,.pline.rnext{stroke:#d55181}.rlab.rnext{fill:#d55181}.dot.rnext{background:#d55181;border-color:#d55181}}</style>',
-        '<h2>Production progress compared with earlier batches</h2>',
-        '<h3>Publicly reported production and publication progress</h3>',
+        tr('<h2>Production progress compared with earlier batches</h2>',
+          '<h2>過去の掲載分との制作進捗の比較</h2>'),
+        tr('<h3>Publicly reported production and publication progress</h3>',
+          '<h3>公表された制作・掲載の進捗</h3>'),
         '<div class="views">'
         '<input class="vradio" type="radio" name="pv" id="pv-a" checked>'
         '<input class="vradio" type="radio" name="pv" id="pv-b">'
-        '<div class="vtabs" role="group" aria-label="Chart view">'
-        '<label for="pv-a">Aligned at each run&rsquo;s start</label>'
-        '<label for="pv-b">Real dates</label></div>'
+        '<div class="vtabs" role="group" aria-label="%s">' % tr("Chart view", "表示切替") +
+        tr('<label for="pv-a">Aligned at each run&rsquo;s start</label>'
+          '<label for="pv-b">Real dates</label></div>',
+          '<label for="pv-a">各回の開始日でそろえる</label>'
+          '<label for="pv-b">実際の日付</label></div>') +
         '<div class="vpane vp-a">' + chart +
-        '<p class=note>Each run starts at day 0, its first public production post, '
-        'so the shapes can be compared. Real calendar gaps between batches are not '
-        'visible in this view.</p></div>'
+        tr('<p class=note>Each run starts at day 0, its first public production post, '
+          'so the shapes can be compared. Real calendar gaps between batches are not '
+          'visible in this view.</p></div>',
+          '<p class=note>各回を最初の制作報告(0日目)でそろえ、進み方を比較できるようにしています。'
+          'この表示では、回と回の間の実際の空白期間は見えません。</p></div>') +
         '<div class="vpane vp-b">' + timeline +
-        '<p class=note>The same five runs on real dates &mdash; scroll sideways. '
-        'This is the view that shows the waits <em>between</em> batches, and what '
-        'was being drawn during them.</p></div>'
+        tr('<p class=note>The same five runs on real dates &mdash; scroll sideways. '
+          'This is the view that shows the waits <em>between</em> batches, and what '
+          'was being drawn during them.</p></div>',
+          '<p class=note>同じ5回分を実際の日付で表示しています(横にスクロールできます)。'
+          '回と回の<em>あいだ</em>の待ち期間と、その間に何が描かれていたかが分かります。</p></div>') +
         '</div>',
         '<div class=legend>%s</div>' % "".join(legend),
-        '<p class=note><strong>Ch. 391&ndash;400 is incomplete:</strong> Togashi began '
-        'posting after production of that batch had already started, so its '
-        'displayed duration is a lower bound.</p>',
-        '<p class=note>From the blog: ch. 411&ndash;420 was '
-        'finished on 24 February 2026 and did not go on sale until 29 June. '
-        '<a href="125-day-wait.html">What the production record shows across '
-        'those 125 days</a> &mdash; and why it is the only wait of its kind.</p>',
+        tr('<p class=note><strong>Ch. 391&ndash;400 is incomplete:</strong> Togashi began '
+          'posting after production of that batch had already started, so its '
+          'displayed duration is a lower bound.</p>',
+          '<p class=note><strong>第391&ndash;400話のデータは不完全です。</strong>'
+          '冨樫先生が進捗の投稿を始めたのはこの回の制作開始後のため、'
+          '表示されている制作期間は実際より短くなっています。</p>'),
+        tr('<p class=note>From the blog: ch. 411&ndash;420 was '
+          'finished on 24 February 2026 and did not go on sale until 29 June. '
+          '<a href="%s">What the production record shows across '
+          'those 125 days</a> &mdash; and why it is the only wait of its kind.</p>',
+          '<p class=note>ブログより:第411&ndash;420話は2026年2月24日に完成しましたが、'
+          '発売は6月29日でした。<a href="%s">この125日間に制作記録から分かること(英語)</a>'
+          '&mdash; そして、なぜこれが唯一の例なのか。</p>') % href("125-day-wait.html"),
     ]
 
 
@@ -1258,10 +1386,10 @@ def fan_chart(rows, annotations=None, width=720, height=250):
                  % (pad_l, Y(o), pad_l + W, Y(o), pad_l - 6, Y(o) + 4,
                     fmt(date.fromordinal(int(o)).isoformat(), True)
                     if compact_y_dates else
-                    date.fromordinal(int(o)).strftime("%b %Y")))
+                    mon_year(date.fromordinal(int(o)))))
 
     body, labels = [], []
-    for key, cls, name in ((lambda r: r["median"], "cdfline", "median"),):
+    for key, cls, name in ((lambda r: r["median"], "cdfline", tr("median", "中央値")),):
         pts = [(X(r["t"]), Y(O(key(r)))) for r in rows]
         body.append('<path class="%s" d="%s"/>' % (cls, step_path(pts)))
         # Sit the label clear of the line under it: above everything the line
@@ -1299,11 +1427,14 @@ def fan_chart(rows, annotations=None, width=720, height=250):
         # with the median label whenever that was pushed to the bottom edge.
         body.append('<line class="boundary" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>'
                     '<text class="ax bd" x="%.1f" y="%d" text-anchor="end">'
-                    'live record &#8594;</text>'
-                    % (xx, pad_t, xx, pad_t + H, xx - 4, pad_t - 4))
+                    '%s</text>'
+                    % (xx, pad_t, xx, pad_t + H, xx - 4, pad_t - 4,
+                       tr("live record &#8594;", "リアルタイム記録 &#8594;")))
     return ('<svg viewBox="0 0 %d %d" class="chart" role="img" aria-label='
-            '"Median predicted publication date over time">'
-            '%s%s</svg>' % (width, height, "\n".join(g), "".join(body)))
+            '"%s">%s%s</svg>'
+            % (width, height, tr("Median predicted publication date over time",
+                                "予測掲載日(中央値)の推移"),
+               "\n".join(g), "".join(body)))
 
 
 def decomposition_chart(rows, width=720, height=230):
@@ -1487,10 +1618,11 @@ def zoomed(render, rows, weeks=8, name="z"):
         '<div class="zoom">'
         '<input type="radio" name="%s" id="%s-a" checked><input type="radio" '
         'name="%s" id="%s-b">'
-        '<div class="zt"><label for="%s-a">whole run</label>'
-        '<label for="%s-b">last %d weeks</label></div>'
+        '<div class="zt"><label for="%s-a">%s</label>'
+        '<label for="%s-b">%s</label></div>'
         '<div class="za">%s</div><div class="zb">%s</div></div>'
-        % (name, name, name, name, name, name, weeks, full_svg, render(recent)))
+        % (name, name, name, name, name, tr("whole run", "全期間"), name,
+           tr("last %d weeks", "直近%d週間") % weeks, full_svg, render(recent)))
 
 
 CSS = """
@@ -1503,7 +1635,8 @@ CSS = """
  --q1:#cfe0ff;--q2:#6fa8ff;--q3:#4b7fd0;--q4:#35598f}}
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--fg);
- font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;
+ font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+ "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif;
  -webkit-font-smoothing:antialiased}
 .wrap{max-width:840px;margin:0 auto;padding:30px 20px 72px}
 h1{font-size:15px;font-weight:600;margin:0;color:var(--mut);letter-spacing:.01em}
@@ -1523,6 +1656,9 @@ p{margin:10px 0} a{color:var(--accent)}
 nav.top{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;margin:0 0 18px}
 nav.top a{color:var(--mut);text-decoration:none}
 nav.top a[aria-current]{color:var(--fg);font-weight:600}
+nav.top a.lang{margin-left:auto}
+.beta{font-size:13px;background:var(--card);border:1px solid var(--line);
+ border-left:3px solid var(--pend);border-radius:6px;padding:8px 12px;margin:0 0 18px}
 details>summary{cursor:pointer;font-size:14px;font-weight:600;margin:20px 0 6px}
 .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-size:12.5px;
  font-weight:600;background:var(--band);color:var(--accent)}
@@ -1604,21 +1740,37 @@ footer code{font-size:11.5px;word-break:break-all}
 ol.caveats{padding-left:20px} ol.caveats li{margin:10px 0}
 """
 
-HEAD = ('<!doctype html><html lang=en><meta charset=utf-8>'
-        '<meta name=viewport content="width=device-width,initial-scale=1">'
-        '<title>%s</title><meta name=description content="%s">'
-        '<style>%s</style>')
+HEAD_TPL = ('<!doctype html><html lang=%s><meta charset=utf-8>'
+            '<meta name=viewport content="width=device-width,initial-scale=1">'
+            '<title>%%s</title><meta name=description content="%%s">%s'
+            '<style>%%s</style>')
+HEAD = HEAD_TPL % ("en", "")
+
+
+def head(page, title, desc):
+    """HEAD for a page built in both languages, with hreflang alternates."""
+    if LANG == "ja":
+        alt = ('<link rel=alternate hreflang=en href="../%s">'
+               '<link rel=alternate hreflang=ja href="%s">' % (page, page))
+    elif JA_LIVE:
+        alt = ('<link rel=alternate hreflang=en href="%s">'
+               '<link rel=alternate hreflang=ja href="ja/%s">' % (page, page))
+    else:
+        alt = ""
+    return (HEAD_TPL % (LANG, alt)) % (esc(title), esc(desc), CSS)
 
 
 def rng(first, n=10):
-    return "%d&ndash;%d" % (first, first + n - 1)
+    return tr("%d&ndash;%d", "第%d&ndash;%d話") % (first, first + n - 1)
 
 
 def chapter_table(rows, highlight=None):
     # "Median", not "most likely": the single most likely issue is usually a
     # different, earlier date, and the hero pill names that one.
-    h = ['<div class=tblwrap><table><tr><th>Chapter</th><th>Median</th>'
-         '<th>50% range</th><th>80% range</th></tr>']
+    h = [tr('<div class=tblwrap><table><tr><th>Chapter</th><th>Median</th>'
+           '<th>50% range</th><th>80% range</th></tr>',
+           '<div class=tblwrap><table><tr><th>話</th><th>中央値</th>'
+           '<th>50%範囲</th><th>80%範囲</th></tr>')]
     for r in rows:
         h.append('<tr%s><td>%d</td><td>%s</td><td class=note>%s &ndash; %s</td>'
                  '<td class=note>%s &ndash; %s</td></tr>'
@@ -1643,18 +1795,27 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
     h = []
     complete = manuscript_completion_annotations(ser)
     if primary:
-        h.append('<h2>How the forecast for chapter %d has moved</h2>' % first)
-        h.append('<h3>Predicted publication date over time</h3>')
+        h.append(tr('<h2>How the forecast for chapter %d has moved</h2>',
+                   '<h2>第%d話の予測の推移</h2>') % first)
+        h.append(tr('<h3>Predicted publication date over time</h3>',
+                   '<h3>予測掲載日の推移</h3>'))
         h.append(zoomed(lambda rr: fan_chart(rr, complete), ser, name="hf%d" % first))
-        h.append('<p class=note>The predicted publication date for chapter %d. '
-                 'Later dates sit <em>lower</em>, so a line rising means a shorter '
-                 'expected wait. Each step is a new forecast replacing the last. Amber '
-                 'dots are manuscript-completion reports, placed on the first '
-                 'forecast made after the post; hover them for the chapter. That '
-                 'step can also fold in other same-day evidence. They are '
-                 'evidence, not guarantees: '
-                 'production can be revisited or retaken, and scheduling remains '
-                 'an editorial decision.</p>' % first)
+        h.append(tr('<p class=note>The predicted publication date for chapter %d. '
+                   'Later dates sit <em>lower</em>, so a line rising means a shorter '
+                   'expected wait. Each step is a new forecast replacing the last. Amber '
+                   'dots are manuscript-completion reports, placed on the first '
+                   'forecast made after the post; hover them for the chapter. That '
+                   'step can also fold in other same-day evidence. They are '
+                   'evidence, not guarantees: '
+                   'production can be revisited or retaken, and scheduling remains '
+                   'an editorial decision.</p>',
+                   '<p class=note>第%d話の予測掲載日です。遅い日付ほど<em>下</em>に表示されるので、'
+                   '線が上がると待ち時間が短くなったことを意味します。段差はそれぞれ、'
+                   '新しい予測が前の予測を置き換えた時点です。黄色の点は原稿完成の報告で、'
+                   '投稿後最初の予測の位置に置いています(カーソルを合わせると話数が出ます)。'
+                   'その段差には同じ日の他の情報も含まれることがあります。'
+                   '完成報告は保証ではありません。描き直しやリテイクはあり得ますし、'
+                   '掲載時期を決めるのは編集部です。</p>') % first)
     if secondary:
         decomp = event_only_series(ser)
         h.append('<h3>Forecast revisions by public evidence</h3>')
@@ -1672,16 +1833,23 @@ def history_charts(first, post, primary=True, secondary=True, probabilities=True
                      'chapter %d has been published by each quarter-end.</p>' % first)
     n_rep = sum(1 for r in ser if r["replay"])
     if n_rep:
-        prefix = ('The history begins once this batch became the direct next-run '
-                  'forecast. ' if direct_only else '')
-        h.append('<p class=note>%sThe first %d points are reconstructed from the '
-                 'information public on each date; the dashed boundary marks the '
-                 'live record. See <a href="method.html">method</a>.</p>' % (prefix, n_rep))
+        prefix = (tr('The history begins once this batch became the direct next-run '
+                    'forecast. ', 'この回が「次の掲載分」になった時点から記録しています。')
+                  if direct_only else '')
+        h.append(tr('<p class=note>%sThe first %d points are reconstructed from the '
+                   'information public on each date; the dashed boundary marks the '
+                   'live record. See <a href="%s">method</a>.</p>',
+                   '<p class=note>%s最初の%d点は、各日付の時点で公開されていた情報だけを使って'
+                   '再構成したものです。点線から右がリアルタイムの記録です。'
+                   '詳しくは<a href="%s">手法(英語)</a>をご覧ください。</p>')
+                 % (prefix, n_rep, href("method.html")))
     if companion:
-        href, chapter = companion
-        label = dict(NAV).get(href, "chapter %d" % chapter).lower()
-        h.append('<p class=note>Also see the forecast history for the '
-                 '<a href="%s">%s (%s) &rarr;</a></p>' % (href, label, rng(chapter)))
+        page, chapter = companion
+        label = dict(nav_items()).get(page, "chapter %d" % chapter)
+        h.append(tr('<p class=note>Also see the forecast history for the '
+                   '<a href="%s">%s (%s) &rarr;</a></p>',
+                   '<p class=note><a href="%s">%s(%s)の予測の推移 &rarr;</a></p>')
+                 % (page, label.lower() if LANG == "en" else label, rng(chapter)))
     return h
 
 
@@ -1695,18 +1863,23 @@ def schedule_section(name, rows, p_started_by=None):
     if not rows:
         return []
     a, z = rows[0], rows[-1]
-    h = ['<h2>%s: chapter by chapter</h2>' % name,
-         '<p>Chapter %d: median <strong>%s</strong>. Once a run starts, chapters '
-         'usually come out once a week, so chapter %d follows about %d weeks '
-         'later (median %s). Nearly all the uncertainty is the start date.</p>'
+    h = [tr('<h2>%s: chapter by chapter</h2>', '<h2>%s:各話の予測</h2>') % name,
+         tr('<p>Chapter %d: median <strong>%s</strong>. Once a run starts, chapters '
+           'usually come out once a week, so chapter %d follows about %d weeks '
+           'later (median %s). Nearly all the uncertainty is the start date.</p>',
+           '<p>第%d話:中央値 <strong>%s</strong>。掲載が始まると通常は毎週1話ずつなので、'
+           '第%d話はその約%d週間後(中央値 %s)になります。'
+           '不確実性のほとんどは、掲載がいつ始まるかです。</p>')
          % (a["chapter"], fmt(a["median"]), z["chapter"],
             round((date.fromisoformat(z["median"]) - date.fromisoformat(a["median"])).days / 7.0),
             fmt(z["median"])),
-         '<details><summary>All ten chapters, with ranges</summary>',
+         tr('<details><summary>All ten chapters, with ranges</summary>',
+           '<details><summary>全10話の予測と範囲</summary>'),
          chapter_table(rows, highlight=a["chapter"])]
     if p_started_by:
         # Stop at the first horizon past 99%: six rows of ">99%" were padding.
-        h.append('<h3>Chance the run has started by</h3><table>')
+        h.append(tr('<h3>Chance the run has started by</h3><table>',
+                   '<h3>各日付までに掲載が始まっている確率</h3><table>'))
         for d, p in sorted(p_started_by.items()):
             h.append('<tr><td>%s</td><td class=num>%s</td></tr>' % (fmt(d), pct(p)))
             if p > 0.99:
@@ -1719,24 +1892,30 @@ def schedule_section(name, rows, p_started_by=None):
 def distribution_charts(chapter, pmf, median, i80):
     """Current release-date distribution, reused on the two chapter pages."""
     spike = max(pmf, key=lambda x: x[1]) if pmf else None
-    h = ['<h3>Chance chapter %d has been published by a given date</h3>' % chapter,
+    h = [tr('<h3>Chance chapter %d has been published by a given date</h3>',
+           '<h3>各日付までに第%d話が掲載されている確率</h3>') % chapter,
          cdf_chart(pmf, median, i80),
          # Plain literal, not a format string: %% would render as two signs.
-         '<p class=note>Each step is one Weekly Sh&#333;nen Jump issue; the '
-         'shaded band is the 80% range.</p>',
-         '<h3>Probability distribution by month</h3>',
+         tr('<p class=note>Each step is one Weekly Sh&#333;nen Jump issue; the '
+           'shaded band is the 80% range.</p>',
+           '<p class=note>段差1つが週刊少年ジャンプ1号分です。網掛けは80%範囲です。</p>'),
+         tr('<h3>Probability distribution by month</h3>', '<h3>月別の確率分布</h3>'),
          pdf_chart(pmf, median, i80, spike),
-         '<p class=note>The same distribution as monthly probability mass, which '
-         'makes the likely dates and the long tail easier to compare.</p>']
+         tr('<p class=note>The same distribution as monthly probability mass, which '
+           'makes the likely dates and the long tail easier to compare.</p>',
+           '<p class=note>同じ分布を月ごとの確率で表したものです。'
+           '可能性の高い時期と、遅い側に長く続く裾野を比べやすくなります。</p>')]
     return h
 
 
 def togashi_drawn_section(first, nfirst):
     """Shared current-production section for both reader-facing pages."""
     grid = production_status(first, 20)
-    h = ['<h2>What Togashi has drawn</h2>',
-         '<p class=note>Togashi posts his own progress on X. Each chapter below '
-         'sits at the furthest point he has actually reported.</p>',
+    h = [tr('<h2>What Togashi has drawn</h2>', '<h2>冨樫先生の制作状況</h2>'),
+         tr('<p class=note>Togashi posts his own progress on X. Each chapter below '
+           'sits at the furthest point he has actually reported.</p>',
+           '<p class=note>冨樫先生はXで制作の進捗を投稿しています。'
+           '各話は、実際に報告された最も先の段階で表示しています。</p>'),
          '<div class=strip>']
     for c, stages in grid.items():
         t = tier_of(stages)
@@ -1744,24 +1923,32 @@ def togashi_drawn_section(first, nfirst):
         newest = max(stages.values(), key=lambda r: r["event_date"]) if stages else None
         tip = ("%s — %s" % (fmt(newest["event_date"], True),
                             esc(newest["source_text_ja"])) if newest
-               else "nothing reported yet")
+               else tr("nothing reported yet", "まだ報告なし"))
         h.append('<span class="chip %s" title="%s">%d</span>' % (cls, tip, c))
     h.append('</div><div class=legend>')
     for _, k, en, ja in TIERS:
-        h.append('<span><i class="dot %s"></i>%s <span class=jp>%s</span></span>' % (k, en, ja))
+        h.append('<span><i class="dot %s"></i>%s <span class=jp>%s</span></span>' % (k, en, ja)
+                 if LANG == "en" else
+                 '<span><i class="dot %s"></i>%s</span>' % (k, ja))
     h.append('</div>')
     counts_t = {}
     for stages in grid.values():
         counts_t[tier_of(stages)] = counts_t.get(tier_of(stages), 0) + 1
-    h.append('<p class=note><strong>%d finished manuscripts are waiting.</strong> '
-             'Drawing is not what holds the series up &mdash; Togashi has said the '
-             'publication pace is the editors&rsquo; decision. What he posts tells '
-             'us a run is <em>possible</em>, not that it is imminent.</p>'
+    h.append(tr('<p class=note><strong>%d finished manuscripts are waiting.</strong> '
+               'Drawing is not what holds the series up &mdash; Togashi has said the '
+               'publication pace is the editors&rsquo; decision. What he posts tells '
+               'us a run is <em>possible</em>, not that it is imminent.</p>',
+               '<p class=note><strong>完成原稿%d話分が掲載を待っています。</strong>'
+               '連載を止めているのは作画ではありません。冨樫先生は、掲載ペースは'
+               '編集部が決めることだと述べています。投稿から分かるのは掲載が'
+               '<em>可能</em>だということで、間近だということではありません。</p>')
              % counts_t.get(3, 0))
-    h.append('<h3>Stage by stage</h3><div class=tblwrap><table><tr><th>Ch.</th>')
+    h.append(tr('<h3>Stage by stage</h3><div class=tblwrap><table><tr><th>Ch.</th>',
+               '<h3>工程ごとの状況</h3><div class=tblwrap><table><tr><th>話</th>'))
     for _, en, ja, _ in STAGES:
-        h.append('<th class=stg><span class=jp>%s</span><br>%s</th>' % (ja, en))
-    h.append('<th>Latest post</th></tr>')
+        h.append('<th class=stg><span class=jp>%s</span><br>%s</th>' % (ja, en)
+                 if LANG == "en" else '<th class=stg>%s</th>' % ja)
+    h.append(tr('<th>Latest post</th></tr>', '<th>最新の投稿</th></tr>'))
     # Trailing chapters with nothing reported collapse to one row: seven rows of
     # empty squares said nothing the single line does not.
     chs = list(grid)
@@ -1781,20 +1968,29 @@ def togashi_drawn_section(first, nfirst):
                                           esc(newest["source_text_ja"][:26])))
                     if newest else "&mdash;"))
     if blank:
-        h.append('<tr%s><td style="white-space:nowrap">%d&ndash;%d</td><td colspan=%d class=note>nothing '
-                 'reported yet</td></tr>'
+        h.append('<tr%s><td style="white-space:nowrap">%d&ndash;%d</td><td colspan=%d class=note>%s</td></tr>'
                  % (" class=sep" if nfirst in blank and blank[0] == nfirst else "",
-                    blank[0], blank[-1], len(STAGES) + 1))
-    h.append('</table></div><div class=legend>'
-             '<span><i class="dot done"></i>reported by Togashi</span>'
-             '<span><i class="dot assumed"></i>assumed done</span>'
-             '<span><i class=dot></i>no information</span></div>')
-    h.append('<details><summary>What the stages mean</summary>'
-             '<div class=tblwrap><table><tr><th>Stage</th>'
-             '<th>Japanese</th><th>What happens</th></tr>')
-    for _, en, ja, desc in STAGES:
-        h.append('<tr><td>%s</td><td class=jp>%s</td><td class=note>%s</td></tr>'
-                 % (en, ja, desc))
+                    blank[0], blank[-1], len(STAGES) + 1,
+                    tr("nothing reported yet", "まだ報告なし")))
+    h.append('</table></div><div class=legend>' +
+             tr('<span><i class="dot done"></i>reported by Togashi</span>'
+               '<span><i class="dot assumed"></i>assumed done</span>'
+               '<span><i class=dot></i>no information</span></div>',
+               '<span><i class="dot done"></i>冨樫先生が報告</span>'
+               '<span><i class="dot assumed"></i>完了とみなす</span>'
+               '<span><i class=dot></i>情報なし</span></div>'))
+    if LANG == "ja":
+        h.append('<details><summary>各工程の説明</summary>'
+                 '<div class=tblwrap><table><tr><th>工程</th><th>内容</th></tr>')
+        for key, _, ja, _ in STAGES:
+            h.append('<tr><td>%s</td><td class=note>%s</td></tr>' % (ja, STAGE_DESC_JA[key]))
+    else:
+        h.append('<details><summary>What the stages mean</summary>'
+                 '<div class=tblwrap><table><tr><th>Stage</th>'
+                 '<th>Japanese</th><th>What happens</th></tr>')
+        for _, en, ja, desc in STAGES:
+            h.append('<tr><td>%s</td><td class=jp>%s</td><td class=note>%s</td></tr>'
+                     % (en, ja, desc))
     h.append('</table></div></details>')
     return h
 
@@ -1814,12 +2010,26 @@ POSTS = [
 ]
 
 
+NAV_JA = {"index.html": "次の10話", "chapter-431.html": "その次の10話",
+          "blog.html": "ブログ(英語)", "method.html": "手法(英語)"}
+
+
+def nav_items():
+    return [(page, NAV_JA[page] if LANG == "ja" else label) for page, label in NAV]
+
+
 def nav(current):
-    """Site-wide links."""
-    return ('<nav class=top>%s</nav>'
-            % "".join('<a href="%s"%s>%s</a>'
-                      % (href, ' aria-current="page"' if href == current else "", label)
-                      for href, label in NAV))
+    """Site-wide links, plus the switch to the same page in the other language."""
+    links = ['<a href="%s"%s>%s</a>'
+             % (href(page), ' aria-current="page"' if page == current else "", label)
+             for page, label in nav_items()]
+    if LANG == "ja":
+        links.append('<a class=lang href="../%s" hreflang=en lang=en>English</a>' % current)
+    elif JA_LIVE and current in JA_PAGES:
+        links.append('<a class=lang href="ja/%s" hreflang=ja lang=ja>日本語%s</a>'
+                     % (current, "(テスト版)" if JA_BETA else ""))
+    banner = JA_BETA_BANNER if LANG == "ja" and JA_BETA else ""
+    return '<nav class=top>%s</nav>%s' % ("".join(links), banner)
 
 
 def announcement_status(anns, asof, first):
@@ -1833,12 +2043,20 @@ def announcement_status(anns, asof, first):
     past = [r for r in anns if r["publication_date"] < asof]
     hit = next((r for r in upcoming if int(r["chapter"]) == first), None)
     if hit:
-        status = ('Chapter %d is announced for Weekly Sh&#333;nen Jump %s no.%s, '
-                  'on sale %s' % (first, esc(hit["wsj_issue_year"]),
-                                   esc(hit["wsj_issue_no"]), fmt(hit["publication_date"])))
+        status = (tr('Chapter %d is announced for Weekly Sh&#333;nen Jump %s no.%s, '
+                    'on sale %s',
+                    '第%d話は週刊少年ジャンプ%s年%s号(%s発売)に掲載予定と発表されています')
+                  % (first, esc(hit["wsj_issue_year"]),
+                     esc(hit["wsj_issue_no"]), fmt(hit["publication_date"])))
     else:
-        status = 'No issue has been announced for chapter %d yet' % first
+        status = tr('No issue has been announced for chapter %d yet',
+                   '第%d話の掲載号はまだ発表されていません') % first
     return upcoming, past, status
+
+
+def H1():
+    return tr('<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>',
+             '<h1>HUNTER&times;HUNTER &mdash; 掲載予測</h1>')
 
 
 def build_index(post, l2, pri, snap_path):
@@ -1854,30 +2072,37 @@ def build_index(post, l2, pri, snap_path):
     upcoming, past, ann_status = announcement_status(anns, asof, first)
     n_finished = sum(1 for s in production_status(first, 20).values() if tier_of(s) == 3)
 
-    h = ['<div class=wrap>', nav("index.html"),
-         '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>']
+    h = ['<div class=wrap>', nav("index.html"), H1()]
 
     # hero. Leads with probabilities, not a date: one day in 46px type claimed
     # a precision the 8-month 80% range does not have.
     def by_label(iso):
         d = date.fromisoformat(iso)
+        if LANG == "ja":
+            return "%d年末" % d.year if d.month == 12 else "%d年%d月末" % (d.year, d.month)
         return ("by end of %d" % d.year if d.month == 12
                 else "by end of %s" % d.strftime("%b %Y"))
     horizons = [(d, p) for d, p in sorted((post.get("p_started_by") or {}).items())
                 if p <= 0.99][:2]
-    tiles = ['<div class=tile><div class=v>%s</div><div class=k>chance it is out %s</div></div>'
+    tiles = [tr('<div class=tile><div class=v>%s</div><div class=k>chance it is out %s</div></div>',
+               '<div class=tile><div class=v>%s</div><div class=k>%sまでに掲載される確率</div></div>')
              % (pct(p), by_label(d)) for d, p in horizons]
-    tiles.append('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>'
+    tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>',
+                   '<div class=tile><div class=v>%s</div><div class=k>予測日(中央値)</div></div>')
                  % fmt(post["median"]))
     h += ['<div class=hero>',
-          '<div class=ch>Next 10 chapters &middot; %s &mdash; first up, chapter %d</div>'
+          tr('<div class=ch>Next 10 chapters &middot; %s &mdash; first up, chapter %d</div>',
+            '<div class=ch>次の10話 &middot; %s &mdash; まず第%d話</div>')
           % (rng(first), first),
           '<div class=tiles>%s</div>' % "".join(tiles),
-          '<div class=sub>80%% chance between %s and %s</div>'
+          tr('<div class=sub>80%% chance between %s and %s</div>',
+            '<div class=sub>80%%の確率で %s〜%s の間</div>')
           % (fmt(i["80"][0], True), fmt(i["80"][1], True)),
-          '<div class=sub>%s &middot; %d finished manuscript%s waiting</div>'
-          % (ann_status, n_finished, "" if n_finished == 1 else "s"),
-          '<div class=sub>forecast made %s</div>' % fmt(post["forecast_timestamp"])]
+          tr('<div class=sub>%s &middot; %d finished manuscript%s waiting</div>'
+            % (ann_status, n_finished, "" if n_finished == 1 else "s"),
+            '<div class=sub>%s &middot; 完成原稿%d話分が待機中</div>' % (ann_status, n_finished)),
+          tr('<div class=sub>forecast made %s</div>', '<div class=sub>予測作成日 %s</div>')
+          % fmt(post["forecast_timestamp"])]
     if spike:
         # Zero-mass issues are dropped from posterior_pmf, so pmf[0] is the
         # earliest issue the batch could still start on. While a zero-gap point
@@ -1892,15 +2117,19 @@ def build_index(post, l2, pri, snap_path):
         else:
             pill_iso, pill_p = spike
         if pill_iso != first_iso:
-            note = 'the single most likely issue'
+            note = tr('the single most likely issue', '最も可能性の高い号')
         elif any(a["on_sale"] < first_iso for a in (post.get("known_absent_issues") or [])):
             # An issue between chapter N-1 and here has been ruled out, so this
             # is NOT the next issue - it is the next one still possible.
-            note = 'the earliest issue it could still appear in'
+            note = tr('the earliest issue it could still appear in',
+                     'まだ掲載の可能性がある最も早い号')
         else:
-            note = 'the very next issue after chapter %d' % (first - 1)
-        h.append('<p><span class=pill>%.0f%% chance it is %s</span> &nbsp;'
-                 '<span class=note>%s</span></p>'
+            note = tr('the very next issue after chapter %d',
+                     '第%d話の直後の号') % (first - 1)
+        h.append(tr('<p><span class=pill>%.0f%% chance it is %s</span> &nbsp;'
+                   '<span class=note>%s</span></p>',
+                   '<p><span class=pill>%.0f%%の確率で%s発売号</span> &nbsp;'
+                   '<span class=note>%s</span></p>')
                  % (pill_p * 100, fmt(pill_iso, True), note))
     h.append('</div>')
 
@@ -1912,56 +2141,74 @@ def build_index(post, l2, pri, snap_path):
     h += history_charts(first, post, primary=True, secondary=False,
                         probabilities=False,
                         companion=("chapter-431.html", nfirst))
-    h.append('<h2>When chapter %d comes out</h2>' % first)
+    h.append(tr('<h2>When chapter %d comes out</h2>', '<h2>第%d話はいつ掲載されるか</h2>') % first)
     h += distribution_charts(first, pmf, post["median"], i["80"])
     # Production detail sits below the forecast; curious readers scroll on.
     h += togashi_drawn_section(first, nfirst)
 
     # announced
-    h.append('<h2>Publisher announcements</h2>')
-    h.append('<p><strong>%s.</strong></p>' % ann_status)
+    h.append(tr('<h2>Publisher announcements</h2>', '<h2>集英社からの発表</h2>'))
+    h.append(tr('<p><strong>%s.</strong></p>', '<p><strong>%s。</strong></p>') % ann_status)
     if upcoming:
-        h.append('<table><tr><th>Chapter</th><th>Issue</th><th>On sale</th></tr>')
+        h.append(tr('<table><tr><th>Chapter</th><th>Issue</th><th>On sale</th></tr>',
+                   '<table><tr><th>話</th><th>掲載号</th><th>発売日</th></tr>'))
         for r in upcoming:
-            h.append('<tr><td>%s</td><td>Weekly Sh&#333;nen Jump %s no.%s</td>'
-                     '<td>%s</td></tr>'
+            h.append(tr('<tr><td>%s</td><td>Weekly Sh&#333;nen Jump %s no.%s</td>'
+                       '<td>%s</td></tr>',
+                       '<tr><td>第%s話</td><td>週刊少年ジャンプ%s年%s号</td>'
+                       '<td>%s</td></tr>')
                      % (esc(r["chapter"]), esc(r["wsj_issue_year"]),
                         esc(r["wsj_issue_no"]), fmt(r["publication_date"])))
         h.append('</table>')
     if past:
-        h.append('<p class=note>Last announced: chapter %s, published %s.</p>'
+        h.append(tr('<p class=note>Last announced: chapter %s, published %s.</p>',
+                   '<p class=note>直近の発表:第%s話(%s掲載)。</p>')
                  % (esc(past[-1]["chapter"]), fmt(past[-1]["publication_date"])))
-    h.append('<p class=note>Once Shueisha announces an issue, that chapter is '
-             'settled and the forecast stops guessing at it. Schedules have '
-             'moved before, so this is &ldquo;scheduled&rdquo;, not '
-             '&ldquo;certain&rdquo;.</p>')
+    h.append(tr('<p class=note>Once Shueisha announces an issue, that chapter is '
+               'settled and the forecast stops guessing at it. Schedules have '
+               'moved before, so this is &ldquo;scheduled&rdquo;, not '
+               '&ldquo;certain&rdquo;.</p>',
+               '<p class=note>集英社が掲載号を発表すると、その話の予測は終了します。'
+               'ただし過去に予定が変更されたこともあるため、「確定」ではなく'
+               '「予定」として扱います。</p>'))
 
-    h += schedule_section("Next 10 chapters", post["ten_chapter_forecast"],
+    h += schedule_section(tr("Next 10 chapters", "次の10話"), post["ten_chapter_forecast"],
                           post.get("p_started_by"))
 
     ser = posterior_series(first)
 
-    h.append('<p class=note>%d forecast%s in the record, updated daily and again '
-             'whenever Togashi posts. Nothing here is ever edited or deleted after '
-             'the fact &mdash; including when it turns out wrong.</p>'
-             % (len(ser), "" if len(ser) == 1 else "s"))
+    h.append(tr('<p class=note>%d forecast%s in the record, updated daily and again '
+               'whenever Togashi posts. Nothing here is ever edited or deleted after '
+               'the fact &mdash; including when it turns out wrong.</p>'
+               % (len(ser), "" if len(ser) == 1 else "s"),
+               '<p class=note>記録されている予測は%d件です。毎日、そして冨樫先生が投稿するたびに'
+               '更新されます。外れた場合も含め、過去の予測を後から修正・削除することはありません。</p>'
+               % len(ser)))
 
     y0, y1 = data_span()
     h.append('<footer>')
-    h.append('<p>Built from %d chapters (%s&ndash;%s), %d posts by Togashi and %d '
-             'production events. <a href="method.html">How this is worked out, and '
-             'where it is shakiest &rarr;</a></p>'
-             % (counts["chapters"], y0, y1, counts["tweets"], counts["events"]))
-    h.append('<p>Updated %s UTC. Sources: Hunterpedia and jajanken.net for '
-             'publication records, Togashi&rsquo;s X account for production. An '
-             'independent fan project, not affiliated with Shueisha or Togashi.</p>'
+    h.append(tr('<p>Built from %d chapters (%s&ndash;%s), %d posts by Togashi and %d '
+               'production events. <a href="%s">How this is worked out, and '
+               'where it is shakiest &rarr;</a></p>',
+               '<p>%d話分の掲載記録(%s&ndash;%s年)、冨樫先生の投稿%d件、制作イベント%d件をもとに'
+               '作成しています。<a href="%s">計算方法と弱点(英語)&rarr;</a></p>')
+             % (counts["chapters"], y0, y1, counts["tweets"], counts["events"],
+                href("method.html")))
+    h.append(tr('<p>Updated %s UTC. Sources: Hunterpedia and jajanken.net for '
+               'publication records, Togashi&rsquo;s X account for production. An '
+               'independent fan project, not affiliated with Shueisha or Togashi.</p>',
+               '<p>更新:%s UTC。出典:掲載記録はHunterpediaおよびjajanken.net、'
+               '制作状況は冨樫先生のXアカウント。'
+               '本サイトは個人のファンプロジェクトであり、集英社および冨樫先生とは関係ありません。</p>')
              % datetime.now(timezone.utc).strftime("%Y-%m-%d %H:%M"))
     h.append('</footer></div>')
 
-    title = "Hunter × Hunter — when is chapter %d out?" % first
-    desc = ("Forecast for Hunter x Hunter chapter %d: median %s. Updated daily."
+    title = tr("Hunter × Hunter — when is chapter %d out?",
+              "HUNTER×HUNTER 第%d話はいつ掲載される?") % first
+    desc = (tr("Forecast for Hunter x Hunter chapter %d: median %s. Updated daily.",
+              "HUNTER×HUNTER 第%d話の掲載予測:中央値 %s。毎日更新。")
             % (first, fmt(post["median"])))
-    return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
+    return head("index.html", title, desc) + "\n".join(h) + "</html>"
 
 
 def build_chapter_431(post, l2, pri, snap_path):
@@ -1971,38 +2218,51 @@ def build_chapter_431(post, l2, pri, snap_path):
     nfirst = nb.get("first_chapter", first + 10)
     counts = corpus_counts()
     i80 = nb.get("intervals", {}).get("80", post["intervals"]["80"])
-    h = ['<div class=wrap>', nav("chapter-431.html"),
-         '<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>',
-         '<div class=hero><div class=ch>Following 10 chapters &middot; %s &mdash; '
-         'first up, chapter %d</div>' % (rng(nfirst), nfirst)]
+    h = ['<div class=wrap>', nav("chapter-431.html"), H1(),
+         tr('<div class=hero><div class=ch>Following 10 chapters &middot; %s &mdash; '
+           'first up, chapter %d</div>',
+           '<div class=hero><div class=ch>その次の10話 &middot; %s &mdash; まず第%d話</div>')
+         % (rng(nfirst), nfirst)]
     h += ['<div class=date>%s</div>' % fmt(nb.get("median", post["median"])),
-          '<div class=sub>median &middot; 80%% chance between %s and %s</div>'
+          tr('<div class=sub>median &middot; 80%% chance between %s and %s</div>',
+            '<div class=sub>中央値 &middot; 80%%の確率で %s〜%s の間</div>')
           % (fmt(i80[0], True), fmt(i80[1], True)),
-          '<div class=sub>forecast history and current probability distribution</div>',
-          '<div class=sub>forecast made %s</div></div>' % fmt(post["forecast_timestamp"])]
+          tr('<div class=sub>forecast history and current probability distribution</div>',
+            '<div class=sub>予測の推移と現在の確率分布</div>'),
+          tr('<div class=sub>forecast made %s</div></div>', '<div class=sub>予測作成日 %s</div></div>')
+          % fmt(post["forecast_timestamp"])]
     # Same section order as the next-10 page, so the pair reads as one design.
     h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
     if nb:
-        h.append('<h2>When chapter %d comes out</h2>' % nfirst)
+        h.append(tr('<h2>When chapter %d comes out</h2>', '<h2>第%d話はいつ掲載されるか</h2>') % nfirst)
         h += distribution_charts(nfirst, nb.get("pmf") or [],
                                  nb.get("median", post["median"]), i80)
-        h.append('<p class=note>This is the run after next. Its timing is a rough '
-                 'horizon based mostly on publication history.</p>')
+        h.append(tr('<p class=note>This is the run after next. Its timing is a rough '
+                   'horizon based mostly on publication history.</p>',
+                   '<p class=note>これは次の次の掲載分です。時期の予測は主に過去の掲載記録に基づく'
+                   '大まかな目安です。</p>'))
     h += togashi_drawn_section(first, nfirst)
     if nb:
-        h += schedule_section("Following 10 chapters", nb.get("ten_chapter_forecast") or [])
+        h += schedule_section(tr("Following 10 chapters", "その次の10話"),
+                              nb.get("ten_chapter_forecast") or [])
 
-    h.append('<footer><p>Built from %d chapters, %d posts by Togashi and %d '
-             'production events. <a href="method.html">Method and limitations '
-             '&rarr;</a></p>'
-             % (counts["chapters"], counts["tweets"], counts["events"]))
-    h.append('<p><a href="index.html">&larr; Next 10 chapters (%s)</a></p>' % rng(first))
+    h.append(tr('<footer><p>Built from %d chapters, %d posts by Togashi and %d '
+               'production events. <a href="%s">Method and limitations '
+               '&rarr;</a></p>',
+               '<footer><p>%d話分の掲載記録、冨樫先生の投稿%d件、制作イベント%d件をもとに'
+               '作成しています。<a href="%s">手法と限界(英語)&rarr;</a></p>')
+             % (counts["chapters"], counts["tweets"], counts["events"], href("method.html")))
+    h.append(tr('<p><a href="index.html">&larr; Next 10 chapters (%s)</a></p>',
+               '<p><a href="index.html">&larr; 次の10話(%s)</a></p>') % rng(first))
     h.append('</footer></div>')
-    title = "Hunter × Hunter — following 10 chapters (%d–%d)" % (nfirst, nfirst + 9)
-    desc = ("Forecast and forecast history for Hunter x Hunter chapters %d-%d, "
-            "the run after next." % (nfirst, nfirst + 9))
-    return (HEAD % (esc(title), esc(desc), CSS)) + "\n".join(h) + "</html>"
+    title = (tr("Hunter × Hunter — following 10 chapters (%d–%d)",
+               "HUNTER×HUNTER その次の10話(第%d–%d話)") % (nfirst, nfirst + 9))
+    desc = (tr("Forecast and forecast history for Hunter x Hunter chapters %d-%d, "
+              "the run after next.",
+              "HUNTER×HUNTER 第%d–%d話(次の次の掲載分)の掲載予測と予測の推移。")
+            % (nfirst, nfirst + 9))
+    return head("chapter-431.html", title, desc) + "\n".join(h) + "</html>"
 
 
 def build_method(post, l2, pri, snap_path):
@@ -2396,6 +2656,19 @@ def main():
         with open(os.path.join(SITE, name), "w", encoding="utf-8") as fh:
             fh.write(doc)
         print("site: site/%-12s %.1f KB" % (name, len(doc) / 1024.0))
+    # Japanese edition of the two forecast pages. Same snapshot, same figures;
+    # only the words and date formats change.
+    global LANG
+    LANG = "ja"
+    try:
+        os.makedirs(os.path.join(SITE, "ja"), exist_ok=True)
+        for name, doc in (("index.html", build_index(post, l2, pri, snap_path)),
+                          ("chapter-431.html", build_chapter_431(post, l2, pri, snap_path))):
+            with open(os.path.join(SITE, "ja", name), "w", encoding="utf-8") as fh:
+                fh.write(doc)
+            print("site: site/ja/%-9s %.1f KB" % (name, len(doc) / 1024.0))
+    finally:
+        LANG = "en"
     from build_chapter421_workings import build as build_chapter421_workings
     steps, pmf, _readme, n = build_chapter421_workings()
     print("working: %s (%d forecast dates)" % (os.path.relpath(steps, D()), n))

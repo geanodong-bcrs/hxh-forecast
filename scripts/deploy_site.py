@@ -184,7 +184,14 @@ def stage():
                      if n.endswith(".json") and _is_replay(os.path.join(_d, n))]
         return drop
 
-    for src, dst in ALLOW:
+    # The Japanese pages go out only once build_site.JA_LIVE is set, the same
+    # switch that makes the English pages link to them: one flag, no dead link.
+    sys.path.insert(0, HERE)
+    from build_site import JA_LIVE
+    allow = ALLOW + ([("site/ja/index.html", "ja/index.html"),
+                      ("site/ja/chapter-431.html", "ja/chapter-431.html")]
+                     if JA_LIVE else [])
+    for src, dst in allow:
         s, d = os.path.join(REPO, src), os.path.join(DEPLOY, dst)
         if not os.path.exists(s):
             print("  skip (missing): %s" % src)

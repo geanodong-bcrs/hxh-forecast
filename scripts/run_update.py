@@ -159,7 +159,7 @@ def main():
                     help="force the recorded trigger instead of inferring it")
     ap.add_argument("--daily", action="store_true",
                     help="guarantee one snapshot for today even with no new evidence "
-                         "(the scheduled 09:30 run; guarded so it fires once a day)")
+                         "(the scheduled 11:00 run; guarded so it fires once a day)")
     ap.add_argument("--force", action="store_true",
                     help="forecast and snapshot even if nothing changed")
     ap.add_argument("--no-vision", action="store_true",
@@ -169,6 +169,18 @@ def main():
     ap.add_argument("--dry-run", action="store_true",
                     help="report what would run; touch nothing")
     args = ap.parse_args()
+
+    # One run at a time. The daily run (11:00) fires on the same minute as the
+    # hourly poll; both write snapshots and deploy. Whichever starts second
+    # waits here, then reads state the first one left. Released on exit.
+    import fcntl
+    os.makedirs(AUTO, exist_ok=True)
+    lock = open(os.path.join(AUTO, "run.lock"), "w")
+    try:
+        fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+    except BlockingIOError:
+        print("another run is in progress; waiting for it to finish")
+        fcntl.flock(lock, fcntl.LOCK_EX)
 
     run_id = now().strftime("%Y%m%dT%H%M%SZ")
     state = load_state()
@@ -200,7 +212,7 @@ def main():
     review_changed = bool(review_sha) and review_sha != state.get("review_queue_sha", "")
 
     # The daily snapshot is guarded on the LOCAL date, because that is what the
-    # schedule is expressed in — one 09:30 run a day. The guard exists only for
+    # schedule is expressed in — one 11:00 run a day. The guard exists only for
     # idempotency: if launchd replays a run missed while the Mac slept, or the
     # job is kicked by hand, today still gets one daily snapshot rather than two.
     # The hourly polls never trigger on the date; they trigger on evidence.
