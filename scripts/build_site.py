@@ -2003,6 +2003,9 @@ NAV = [("index.html", "Next 10 chapters"), ("chapter-431.html", "Following 10 ch
 # Blog posts: (href, title, date, one-line summary). Each post keeps the URL it
 # was first shared under; the blog index is what links them.
 POSTS = [
+    ("night-owl.html", "Is Togashi a night owl?", "2026-10-18",
+     "His posting hours do not tell us when he works. They may tell us when he "
+     "sleeps—and, if they do, he keeps an unusually late schedule."),
     ("125-day-wait.html", "Does finishing Ch. 421&ndash;430 mean immediate publication?", "2026-09-16",
      "Not last time. Chapters 411&ndash;420 were finished by 24 February 2026 and "
      "did not go on sale until 29 June. What the production record shows across "
