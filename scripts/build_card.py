@@ -300,7 +300,7 @@ def render(d, path):
     if d["shift_days"] != 0:
         fig.text(.055, .375, "was %s%s" % (fmt(date.fromisoformat(d["prev_median"])), when),
                  color=MUTED, fontsize=10.5)
-    elif not quiet or since:
+    elif not quiet:
         fig.text(.055, .375, "date unchanged" + (" since %s" % since.strftime("%-d %b")
                                                  if since else ""),
                  color=MUTED, fontsize=10.5)
@@ -489,8 +489,10 @@ def main():
                          for i, p in d["pmf"]]
         d["spike_prev_p"] = max(d["spike_p"] - .078, 0.0)
 
-    path = args.out or os.path.join(OUT, "%s_ch%d%s.png" % (
-        d["run_id"], d["chapter"], "_weekly" if args.since else ""))
+    # One current card per chapter per day. A later forecast on the same day
+    # replaces the earlier rendering instead of accumulating run-id variants.
+    path = args.out or os.path.join(
+        OUT, "%s_ch%d.png" % (d["run_id"][:8], d["chapter"]))
     render(d, path)
     print("card -> %s" % os.path.relpath(path, D()))
     return 0

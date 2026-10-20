@@ -246,7 +246,8 @@ def main():
         return 0
 
     card = build_card.render(
-        d, D("data", "cards", "%s_ch%d.png" % (d["run_id"], d["chapter"])))
+        d, D("data", "cards", "%s_ch%d.png"
+             % (d["run_id"][:8], d["chapter"])))
     text = text_fn()
 
     print("=" * 62)
