@@ -71,7 +71,16 @@ def pick_pair(snaps=None, history=None):
     snaps = posteriors() if snaps is None else snaps
     if not snaps:
         return None, None, "no snapshots"
-    cur = snaps[-1][1]
+    latest = snaps[-1][1]
+    # Cards always display the newest forecast, but their delta answers a
+    # narrower question: what did Togashi's newest tweet change?  When daily
+    # no-start updates followed that tweet, compare around the tweet snapshot
+    # rather than misattributing later calendar movement to his post.
+    tweet_snaps = [s for _, s in snaps
+                   if s.get("trigger") == "tweet"
+                   and _design(s) == _design(latest)
+                   and s.get("batch") == latest.get("batch")]
+    cur = tweet_snaps[-1] if tweet_snaps else latest
     history = (snaps if supplied else posteriors(include_replays=True)) \
         if history is None else history
     current_event = cur.get("last_production_event") or \
@@ -158,14 +167,20 @@ def view(snap, target="current"):
 
 def compute(cur=None, prev=None, target="current"):
     """Delta between two snapshots. Defaults to the newest pair."""
+    display = cur
     if cur is None:
+        live = posteriors()
+        display = live[-1][1] if live else None
         cur, prev, _reason = pick_pair()
         if prev is None:
             return None
+    if display is None:
+        display = cur
 
-    cur_med, cur_i, pmf, first_ch = view(cur, target)
+    display_med, display_i, display_pmf, first_ch = view(display, target)
+    cur_med, _cur_i, pmf, _effect_ch = view(cur, target)
     prev_med, prev_i, prev_pmf_, _ = view(prev, target)
-    if not cur_med or not prev_med or not cur_i:
+    if not display_med or not cur_med or not prev_med or not display_i:
         return None
     new_med = date.fromisoformat(cur_med)
     old_med = date.fromisoformat(prev_med)
@@ -178,20 +193,22 @@ def compute(cur=None, prev=None, target="current"):
     return {
         "target_view": target,
         "chapter": first_ch,
-        "batch": cur.get("batch"),
-        "design": _design(cur),
-        "run_id": cur["run_id"],
+        "batch": display.get("batch"),
+        "design": _design(display),
+        "run_id": display["run_id"],
+        "effect_run_id": cur["run_id"],
         "prev_run_id": prev["run_id"],
         "trigger": cur.get("trigger", ""),
         "trigger_detail": cur.get("trigger_detail", ""),
-        "median": cur_med,
+        "median": display_med,
+        "effect_median": cur_med,
         "prev_median": prev_med,
         "shift_days": shift,
         "spike_date": spike_iso,
         "spike_p": spike_p,
         "spike_prev_p": spike_prev,
         "spike_pp": pp,
-        "i80": cur_i["80"],
+        "i80": display_i["80"],
         # Production state, for the card. V10/V11 measure readiness in
         # chapter-equivalents out of ten; `analog_remaining` is how long each
         # resolved run took to START once it stood at this same readiness.
@@ -200,17 +217,17 @@ def compute(cur=None, prev=None, target="current"):
         # table instead; handing over batch 50's 8.7 would label batch 51 with
         # a number belonging to a different set of chapters.
         "readiness_level": None if target == "next" else
-                           (cur.get("readiness_mixture") or cur.get("feasibility")
+                           (display.get("readiness_mixture") or display.get("feasibility")
                             or {}).get("level"),
         "analog_remaining": {} if target == "next" else {
             h: v.get("remaining_days_at_this_level")
-            for h, v in ((cur.get("readiness_mixture") or cur.get("feasibility")
+            for h, v in ((display.get("readiness_mixture") or display.get("feasibility")
                           or {}).get("analogs") or {}).items()
             if v.get("usable") and v.get("remaining_days_at_this_level") is not None},
         "prev_i80": (prev_i or {}).get("80"),
-        "pmf": pmf,
+        "pmf": display_pmf,
         "prev_pmf": prev_pmf_,
-        "evidence_asof": cur.get("evidence_asof", ""),
+        "evidence_asof": display.get("evidence_asof", ""),
     }
 
 
@@ -244,8 +261,9 @@ def main():
         print("no comparable baseline: %s" % reason)
         return 1
     ok, kind = newsworthy(d)
-    print("chapter %d   %s -> %s  (%+d days)"
-          % (d["chapter"], d["prev_median"], d["median"], d["shift_days"]))
+    print("chapter %d tweet effect   %s -> %s  (%+d days); current %s"
+          % (d["chapter"], d["prev_median"], d["effect_median"],
+             d["shift_days"], d["median"]))
     print("P(%s)  %.1f%% -> %.1f%%  (%+.1f pp)"
           % (d["spike_date"], d["spike_prev_p"] * 100, d["spike_p"] * 100, d["spike_pp"]))
     print("model %s, batch %s   %s -> %s"
