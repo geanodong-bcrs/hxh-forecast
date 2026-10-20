@@ -1,0 +1,6466 @@
+{
+  "run_id": "20261020T150306Z",
+  "written_utc": "2026-10-20T15:16:43.462536+00:00",
+  "trigger": "daily",
+  "trigger_detail": "scheduled daily run",
+  "annotation_status": "provisional:1_unconfirmed",
+  "evidence_asof": "2026-10-14T22:41:27.000Z",
+  "batch": 50,
+  "input_sha256": {
+    "chapters": "c8f8208c3d30aa84ec1209e8688bca24e6fb62020e30ee15c6d5eccf14e3b28c",
+    "wsj_issues": "9cf9fe3c113e3c18dbd74da7d89a915baf76f6fbb8c679c109b265fb21a2439c",
+    "production_events": "84f868c2befa6103b923a55e14903484c09f9eccbfe0837acfd84179f7c5d20f",
+    "production_intervals": "840b78c6d9210d9f2b96ccbae627efa4de254a21213ff441f2262b99da0fd74f",
+    "tweets": "32092e2cff01ca6b85ef4703fd0eb7f4bc41dabea8f56a349f530c0aa91a09c9",
+    "image_annotations_confirmed": "3c7872d79d71e8081402abe9b89203f969e7e50d7e9c0799524d62915e07f36d",
+    "announcements": "eea30cf1bb12c3fda29771c3f4ceb3800cc8970ea5becd8e81f7bf0c0e2266c4"
+  },
+  "forecast_timestamp": "2026-10-20",
+  "target": "W_50 — publication of ch 421",
+  "level": "1+2 combined posterior",
+  "half_life_batches": null,
+  "analogs": [
+    47,
+    48,
+    49
+  ],
+  "level2_design": "slowest_observed_countdown_v13",
+  "n_chapters_with_current_readiness": 10,
+  "readiness_target_batch": [
+    {
+      "chapter": 421,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-05-26",
+      "source_event": {
+        "event_id": "E00234",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2059299316800569524"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 422,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-07-01",
+      "source_event": {
+        "event_id": "E00237",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2072287279197126773"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 423,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-07-07",
+      "source_event": {
+        "event_id": "E00239",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2074538142506549407"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 424,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-08-08",
+      "source_event": {
+        "event_id": "E00242",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2086132321166794760"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 425,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-08-11",
+      "source_event": {
+        "event_id": "E00243",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2087170463839682713"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 426,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-08-25",
+      "source_event": {
+        "event_id": "E00244",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2092132894814998720"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 427,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-09-01",
+      "source_event": {
+        "event_id": "E00246",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2094673907626414299"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 428,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-09-15",
+      "source_event": {
+        "event_id": "E00248",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2099837550617903464"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 429,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-10-14",
+      "source_event": {
+        "event_id": "E00250",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2110501264543109360"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 430,
+      "p_hat": 0.6,
+      "p_interval": [
+        0.6,
+        0.6
+      ],
+      "attained_date": "2026-08-30",
+      "source_event": {
+        "event_id": "E00245",
+        "event_class": "chapter_stage",
+        "stage": "bg_spec",
+        "status": "complete",
+        "tweet_id": "2093900520406855763"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    }
+  ],
+  "readiness_preceding_batch": [
+    {
+      "chapter": 411,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2025-12-14",
+      "source_event": {
+        "event_id": "E00226",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2000286756982423780"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 412,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2025-12-27",
+      "source_event": {
+        "event_id": "E00260",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2004867336483078549"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 413,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-01-13",
+      "source_event": {
+        "event_id": "E00261",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2011143493742387642"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 414,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-01-14",
+      "source_event": {
+        "event_id": "E00262",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2011305545647735170"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 415,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-01-20",
+      "source_event": {
+        "event_id": "E00263",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2013553432829813035"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 416,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-01-23",
+      "source_event": {
+        "event_id": "E00264",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2014782311775236214"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 417,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-02-05",
+      "source_event": {
+        "event_id": "E00269",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2019278910136193215"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 418,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-02-10",
+      "source_event": {
+        "event_id": "E00227",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2021125854991089993"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 419,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-02-17",
+      "source_event": {
+        "event_id": "E00228",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2023776049042198535"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 420,
+      "p_hat": 0.9,
+      "p_interval": [
+        0.9,
+        0.9
+      ],
+      "attained_date": "2026-02-24",
+      "source_event": {
+        "event_id": "E00229",
+        "event_class": "chapter_stage",
+        "stage": "manuscript_complete",
+        "status": "complete",
+        "tweet_id": "2026231563562983740"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    }
+  ],
+  "readiness_following_batch": [
+    {
+      "chapter": 431,
+      "p_hat": 0.5,
+      "p_interval": [
+        0.5,
+        0.5
+      ],
+      "attained_date": "2026-06-14",
+      "source_event": {
+        "event_id": "E00235",
+        "event_class": "chapter_stage",
+        "stage": "character_inking",
+        "status": "complete",
+        "tweet_id": "2066167513214505229"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 432,
+      "p_hat": 0.5,
+      "p_interval": [
+        0.5,
+        0.5
+      ],
+      "attained_date": "2026-07-11",
+      "source_event": {
+        "event_id": "E00240",
+        "event_class": "chapter_stage",
+        "stage": "character_inking",
+        "status": "complete",
+        "tweet_id": "2075732291931009110"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 433,
+      "p_hat": 0.5,
+      "p_interval": [
+        0.5,
+        0.5
+      ],
+      "attained_date": "2026-08-03",
+      "source_event": {
+        "event_id": "E00277",
+        "event_class": "chapter_stage",
+        "stage": "character_inking",
+        "status": "complete",
+        "tweet_id": "2084155567363539307"
+      },
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 434,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 435,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 436,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 437,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 438,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 439,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    },
+    {
+      "chapter": 440,
+      "p_hat": null,
+      "p_interval": null,
+      "attained_date": null,
+      "source_event": null,
+      "flags": [],
+      "latest_flag_date": null
+    }
+  ],
+  "batch_scope_name_events": [
+    {
+      "event_date": "2024-09-01",
+      "n_chapters": "2",
+      "status": "",
+      "tweet_id": "1830200690305597638",
+      "source_text_ja": "2話分ネーム進んだ。"
+    },
+    {
+      "event_date": "2024-09-04",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1831346039175188725",
+      "source_text_ja": "もう1話分ネームが上がり、"
+    },
+    {
+      "event_date": "2024-11-23",
+      "n_chapters": "2",
+      "status": "",
+      "tweet_id": "1860286543652700383",
+      "source_text_ja": "ネーム2話分完成。"
+    },
+    {
+      "event_date": "2024-11-23",
+      "n_chapters": "2",
+      "status": "",
+      "tweet_id": "1860290549544370379",
+      "source_text_ja": "ネーム2話分完成。"
+    },
+    {
+      "event_date": "2024-11-28",
+      "n_chapters": "2",
+      "status": "",
+      "tweet_id": "1862062929174237282",
+      "source_text_ja": "ネーム、2話分完成。"
+    },
+    {
+      "event_date": "2024-12-01",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1863247914744820073",
+      "source_text_ja": "もう1話分ネーム完成。"
+    },
+    {
+      "event_date": "2024-12-02",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1863645898414362795",
+      "source_text_ja": "もう1話分ネーム完成。"
+    },
+    {
+      "event_date": "2024-12-11",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1866694333438759390",
+      "source_text_ja": "もう1話分ネーム完成。"
+    },
+    {
+      "event_date": "2024-12-12",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1867283459527651583",
+      "source_text_ja": "ネーム、もう1話分完成。"
+    },
+    {
+      "event_date": "2024-12-13",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1867661491870327045",
+      "source_text_ja": "もう1話分ネーム完成。"
+    },
+    {
+      "event_date": "2024-12-14",
+      "n_chapters": "1",
+      "status": "",
+      "tweet_id": "1867869969909952535",
+      "source_text_ja": "もう1話分ネーム完成。"
+    }
+  ],
+  "progress_coordinate": {
+    "page_log": "0.01 per observed manuscript page, capped at 0.19",
+    "stage_endpoints": {
+      "panel_layout": 0.3,
+      "character_inking": 0.5,
+      "bg_spec": 0.6,
+      "bg_work": 0.7,
+      "dialogue": 0.8,
+      "manuscript_complete": 0.9
+    },
+    "note": "Retouch is excluded. Direct progress is retained separately from the order-inferred readiness floor used by B(t)."
+  },
+  "analog_detail": {
+    "47": {
+      "n_positions": 10,
+      "mean_progress_compatibility": 0.8813,
+      "historical_outcome": "2022-10-24"
+    },
+    "48": {
+      "n_positions": 10,
+      "mean_progress_compatibility": 0.9013,
+      "historical_outcome": "2024-10-07"
+    },
+    "49": {
+      "n_positions": 10,
+      "mean_progress_compatibility": 0.9135,
+      "historical_outcome": "2026-06-29"
+    }
+  },
+  "preceding_batch_context": {
+    "weight": 0.1,
+    "analogs": {
+      "47": {
+        "n_positions": 10,
+        "mean_progress_compatibility": 0.9801,
+        "historical_outcome": "2024-10-07"
+      },
+      "48": {
+        "n_positions": 10,
+        "mean_progress_compatibility": 0.9801,
+        "historical_outcome": "2026-06-29"
+      }
+    },
+    "implied_by_analog": {
+      "47": "2028-02-07",
+      "48": "2028-01-10"
+    },
+    "fading_analogs": []
+  },
+  "all_pairs_coordinate_likelihood": {
+    "coordinate": "C = chapter - 1 + within-chapter progress",
+    "delta_c": "target publication coordinate minus event coordinate",
+    "coordinate_bandwidth_chapters": 1.0,
+    "coordinate_range": [
+      -20.0,
+      35.0
+    ],
+    "component_sigma_floor_days": 21.0,
+    "current_event_count": 393,
+    "historical_component_detail": {},
+    "note": "All coordinate pairs inform each historical batch component; components, not pairs, are averaged."
+  },
+  "exhausted_analogs": [],
+  "implied_by_analog": {
+    "47": "2026-09-16",
+    "48": "2026-12-08",
+    "49": "2027-01-19"
+  },
+  "truncation_floor": "2026-10-26",
+  "known_absent_issues": [
+    {
+      "on_sale": "2026-09-14",
+      "issue": "2026 no.42",
+      "source": "X reports; primary source not located",
+      "confidence": "reported",
+      "recorded_on": "2026-09-02"
+    }
+  ],
+  "analog_fade_floor": "2026-10-19",
+  "conditioning_through": "2026-10-26",
+  "last_production_event": "2026-10-14",
+  "level1_prior": {
+    "family": "kernel",
+    "separate_zero_mode": true
+  },
+  "level2_mode": "worst_case_countdown",
+  "feasibility": {
+    "level": 9.5,
+    "scale": "summed chapter-equivalents, 0 to 10",
+    "attained": "2026-10-14",
+    "days_at_level": 6,
+    "analogs": {
+      "47": {
+        "usable": false,
+        "reason": "analog never reached B=9.500 before starting"
+      },
+      "48": {
+        "usable": true,
+        "remaining_days_at_this_level": 78,
+        "days_already_spent": 6,
+        "still_required": 72,
+        "feasible_from": "2026-12-31"
+      },
+      "49": {
+        "usable": true,
+        "remaining_days_at_this_level": 132,
+        "days_already_spent": 6,
+        "still_required": 126,
+        "feasible_from": "2027-02-23"
+      }
+    },
+    "chapter_states": [
+      {
+        "chapter": 421,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 422,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 423,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 424,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 425,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 426,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 427,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 428,
+        "direct": 0.9,
+        "inferred_floor": 1.0,
+        "ordered": 1.0
+      },
+      {
+        "chapter": 429,
+        "direct": 0.9,
+        "inferred_floor": 0.5,
+        "ordered": 0.9
+      },
+      {
+        "chapter": 430,
+        "direct": 0.6,
+        "inferred_floor": 0.0,
+        "ordered": 0.6
+      }
+    ],
+    "binding": true
+  },
+  "readiness_mixture": {
+    "level": 9.5,
+    "attained": "2026-10-14",
+    "sigma_days": 40.0,
+    "analogs": {
+      "47": {
+        "usable": false,
+        "reason": "analog never reached B=9.500 before starting",
+        "max_level": 9.1
+      },
+      "48": {
+        "usable": true,
+        "remaining_days_at_this_level": 78,
+        "analog_start": "2024-10-07",
+        "implied_start": "2026-12-31"
+      },
+      "49": {
+        "usable": true,
+        "remaining_days_at_this_level": 132,
+        "analog_start": "2026-06-29",
+        "implied_start": "2027-02-23"
+      }
+    }
+  },
+  "readiness_monotonicity": {
+    "applied": false,
+    "rule": "first_order_stochastic_dominance"
+  },
+  "slowest_observed_countdown": {
+    "level": 9.5,
+    "grid_step": 0.5,
+    "transition_segments": [
+      {
+        "from": 0.0,
+        "to": 0.5,
+        "days": 35,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 35
+          },
+          {
+            "batch": 49,
+            "days": 6
+          }
+        ]
+      },
+      {
+        "from": 0.5,
+        "to": 1.0,
+        "days": 18,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 18
+          },
+          {
+            "batch": 49,
+            "days": 9
+          }
+        ]
+      },
+      {
+        "from": 1.0,
+        "to": 1.5,
+        "days": 19,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 19
+          },
+          {
+            "batch": 49,
+            "days": 6
+          }
+        ]
+      },
+      {
+        "from": 1.5,
+        "to": 2.0,
+        "days": 150,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 150
+          },
+          {
+            "batch": 49,
+            "days": 12
+          }
+        ]
+      },
+      {
+        "from": 2.0,
+        "to": 2.5,
+        "days": 422,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 422
+          },
+          {
+            "batch": 49,
+            "days": 7
+          }
+        ]
+      },
+      {
+        "from": 2.5,
+        "to": 3.0,
+        "days": 13,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 8
+          },
+          {
+            "batch": 49,
+            "days": 13
+          }
+        ]
+      },
+      {
+        "from": 3.0,
+        "to": 3.5,
+        "days": 16,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 4
+          },
+          {
+            "batch": 49,
+            "days": 16
+          }
+        ]
+      },
+      {
+        "from": 3.5,
+        "to": 4.0,
+        "days": 23,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 13
+          },
+          {
+            "batch": 48,
+            "days": 7
+          },
+          {
+            "batch": 49,
+            "days": 23
+          }
+        ]
+      },
+      {
+        "from": 4.0,
+        "to": 4.5,
+        "days": 18,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 18
+          },
+          {
+            "batch": 48,
+            "days": 6
+          },
+          {
+            "batch": 49,
+            "days": 14
+          }
+        ]
+      },
+      {
+        "from": 4.5,
+        "to": 5.0,
+        "days": 19,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 19
+          },
+          {
+            "batch": 48,
+            "days": 6
+          },
+          {
+            "batch": 49,
+            "days": 7
+          }
+        ]
+      },
+      {
+        "from": 5.0,
+        "to": 5.5,
+        "days": 51,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 3
+          },
+          {
+            "batch": 48,
+            "days": 3
+          },
+          {
+            "batch": 49,
+            "days": 51
+          }
+        ]
+      },
+      {
+        "from": 5.5,
+        "to": 6.0,
+        "days": 280,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 4
+          },
+          {
+            "batch": 48,
+            "days": 1
+          },
+          {
+            "batch": 49,
+            "days": 280
+          }
+        ]
+      },
+      {
+        "from": 6.0,
+        "to": 6.5,
+        "days": 15,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 1
+          },
+          {
+            "batch": 48,
+            "days": 0
+          },
+          {
+            "batch": 49,
+            "days": 15
+          }
+        ]
+      },
+      {
+        "from": 6.5,
+        "to": 7.0,
+        "days": 28,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 20
+          },
+          {
+            "batch": 48,
+            "days": 0
+          },
+          {
+            "batch": 49,
+            "days": 28
+          }
+        ]
+      },
+      {
+        "from": 7.0,
+        "to": 7.5,
+        "days": 2,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 0
+          },
+          {
+            "batch": 48,
+            "days": 0
+          },
+          {
+            "batch": 49,
+            "days": 2
+          }
+        ]
+      },
+      {
+        "from": 7.5,
+        "to": 8.0,
+        "days": 78,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 9
+          },
+          {
+            "batch": 48,
+            "days": 7
+          },
+          {
+            "batch": 49,
+            "days": 78
+          }
+        ]
+      },
+      {
+        "from": 8.0,
+        "to": 8.5,
+        "days": 19,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 18
+          },
+          {
+            "batch": 48,
+            "days": 19
+          },
+          {
+            "batch": 49,
+            "days": 18
+          }
+        ]
+      },
+      {
+        "from": 8.5,
+        "to": 9.0,
+        "days": 28,
+        "observations": [
+          {
+            "batch": 47,
+            "days": 28
+          },
+          {
+            "batch": 48,
+            "days": 2
+          },
+          {
+            "batch": 49,
+            "days": 22
+          }
+        ]
+      },
+      {
+        "from": 9.0,
+        "to": 9.5,
+        "days": 15,
+        "observations": [
+          {
+            "batch": 48,
+            "days": 15
+          },
+          {
+            "batch": 49,
+            "days": 12
+          }
+        ]
+      },
+      {
+        "from": 9.5,
+        "to": 10.0,
+        "days": 7,
+        "observations": [
+          {
+            "batch": 49,
+            "days": 7
+          }
+        ]
+      }
+    ],
+    "schedule_delay_days": 125,
+    "schedule_observations": [
+      {
+        "batch": 47,
+        "days": 6
+      },
+      {
+        "batch": 48,
+        "days": 78
+      },
+      {
+        "batch": 49,
+        "days": 125
+      }
+    ],
+    "deadline_history": [
+      {
+        "attained": "2024-09-30",
+        "level": 0.3,
+        "remaining_budget_days": 1381,
+        "candidate_deadline": "2028-07-12",
+        "running_deadline": "2028-07-12"
+      },
+      {
+        "attained": "2024-10-09",
+        "level": 0.5,
+        "remaining_budget_days": 1346,
+        "candidate_deadline": "2028-06-16",
+        "running_deadline": "2028-06-16"
+      },
+      {
+        "attained": "2024-10-10",
+        "level": 0.8,
+        "remaining_budget_days": 1346,
+        "candidate_deadline": "2028-06-17",
+        "running_deadline": "2028-06-16"
+      },
+      {
+        "attained": "2024-10-19",
+        "level": 1.3,
+        "remaining_budget_days": 1328,
+        "candidate_deadline": "2028-06-08",
+        "running_deadline": "2028-06-08"
+      },
+      {
+        "attained": "2024-10-28",
+        "level": 1.5,
+        "remaining_budget_days": 1309,
+        "candidate_deadline": "2028-05-29",
+        "running_deadline": "2028-05-29"
+      },
+      {
+        "attained": "2024-10-29",
+        "level": 1.8,
+        "remaining_budget_days": 1309,
+        "candidate_deadline": "2028-05-30",
+        "running_deadline": "2028-05-29"
+      },
+      {
+        "attained": "2024-11-08",
+        "level": 2.0,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-01-11",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-10-15",
+        "level": 2.02,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-12-17",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-10-16",
+        "level": 2.03,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-12-18",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-10-17",
+        "level": 2.04,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-12-19",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-10-19",
+        "level": 2.05,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-12-21",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-10-23",
+        "level": 2.07,
+        "remaining_budget_days": 1159,
+        "candidate_deadline": "2028-12-25",
+        "running_deadline": "2028-01-11"
+      },
+      {
+        "attained": "2025-11-09",
+        "level": 2.5,
+        "remaining_budget_days": 737,
+        "candidate_deadline": "2027-11-16",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2025-11-10",
+        "level": 2.8,
+        "remaining_budget_days": 737,
+        "candidate_deadline": "2027-11-17",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2025-12-16",
+        "level": 3.0,
+        "remaining_budget_days": 724,
+        "candidate_deadline": "2027-12-10",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-01-23",
+        "level": 3.5,
+        "remaining_budget_days": 708,
+        "candidate_deadline": "2028-01-01",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-01-26",
+        "level": 3.6,
+        "remaining_budget_days": 708,
+        "candidate_deadline": "2028-01-04",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-01-28",
+        "level": 3.8,
+        "remaining_budget_days": 708,
+        "candidate_deadline": "2028-01-06",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-02-16",
+        "level": 4.3,
+        "remaining_budget_days": 685,
+        "candidate_deadline": "2028-01-02",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-04",
+        "level": 4.6,
+        "remaining_budget_days": 667,
+        "candidate_deadline": "2027-12-31",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-06",
+        "level": 4.7,
+        "remaining_budget_days": 667,
+        "candidate_deadline": "2028-01-02",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-10",
+        "level": 4.8,
+        "remaining_budget_days": 667,
+        "candidate_deadline": "2028-01-06",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-12",
+        "level": 4.9,
+        "remaining_budget_days": 667,
+        "candidate_deadline": "2028-01-08",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-13",
+        "level": 5.0,
+        "remaining_budget_days": 648,
+        "candidate_deadline": "2027-12-21",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-15",
+        "level": 5.1,
+        "remaining_budget_days": 648,
+        "candidate_deadline": "2027-12-23",
+        "running_deadline": "2027-11-16"
+      },
+      {
+        "attained": "2026-03-17",
+        "level": 5.6,
+        "remaining_budget_days": 597,
+        "candidate_deadline": "2027-11-04",
+        "running_deadline": "2027-11-04"
+      },
+      {
+        "attained": "2026-04-08",
+        "level": 6.1,
+        "remaining_budget_days": 317,
+        "candidate_deadline": "2027-02-19",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-05-26",
+        "level": 6.2,
+        "remaining_budget_days": 317,
+        "candidate_deadline": "2027-04-08",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-07-01",
+        "level": 6.4,
+        "remaining_budget_days": 317,
+        "candidate_deadline": "2027-05-14",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-07-03",
+        "level": 6.5,
+        "remaining_budget_days": 302,
+        "candidate_deadline": "2027-05-01",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-07-07",
+        "level": 6.9,
+        "remaining_budget_days": 302,
+        "candidate_deadline": "2027-05-05",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-08-08",
+        "level": 7.3,
+        "remaining_budget_days": 274,
+        "candidate_deadline": "2027-05-09",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-08-11",
+        "level": 7.7,
+        "remaining_budget_days": 272,
+        "candidate_deadline": "2027-05-10",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-08-25",
+        "level": 8.1,
+        "remaining_budget_days": 194,
+        "candidate_deadline": "2027-03-07",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-08-27",
+        "level": 8.2,
+        "remaining_budget_days": 194,
+        "candidate_deadline": "2027-03-09",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-08-30",
+        "level": 8.3,
+        "remaining_budget_days": 194,
+        "candidate_deadline": "2027-03-12",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-09-01",
+        "level": 8.7,
+        "remaining_budget_days": 175,
+        "candidate_deadline": "2027-02-23",
+        "running_deadline": "2027-02-19"
+      },
+      {
+        "attained": "2026-09-15",
+        "level": 9.1,
+        "remaining_budget_days": 147,
+        "candidate_deadline": "2027-02-09",
+        "running_deadline": "2027-02-09"
+      },
+      {
+        "attained": "2026-10-14",
+        "level": 9.5,
+        "remaining_budget_days": 132,
+        "candidate_deadline": "2027-02-23",
+        "running_deadline": "2027-02-09"
+      }
+    ],
+    "deadline": "2027-02-09",
+    "tail_sigma_days": 120.0,
+    "interpretation": "slowest observed envelope; not a maximum possible wait",
+    "historical_worst_gap_issues": 184,
+    "historical_worst_deadline": "2030-05-29",
+    "active_deadline": "2027-02-09",
+    "combination": "earlier of historical worst-gap and production countdown"
+  },
+  "analog_countdown": {
+    "level": 9.5,
+    "attained": "2026-10-14",
+    "grid_step": 0.5,
+    "component_sigma_days": 120.0,
+    "analog_remaining_days": {
+      "48": 78,
+      "49": 132
+    },
+    "components": {
+      "48": "2026-12-17",
+      "49": "2027-02-06"
+    },
+    "slowest_observed_date": "2027-02-06",
+    "one_step_monotonicity": {
+      "rule": "per-analog earlier of newest and preceding readiness state",
+      "applied": true,
+      "bound_for_batches": [
+        48,
+        49
+      ],
+      "refuted_by_floor": [],
+      "previous_readiness": {
+        "attained": "2026-09-15",
+        "level": 9.1
+      }
+    },
+    "combination": "one component per analog, averaged (Agents.md 11)",
+    "combine": "mixture",
+    "monotone_rule": "one_step",
+    "effective_components": {
+      "48": "2026-12-17",
+      "49": "2027-02-06"
+    },
+    "require_uncensored_analogs": true,
+    "interpretation": "per-analog observed waits from the current readiness level to that analog's publication; the spread between analogs is the width, and the slowest component is a marker, not the centre",
+    "historical_worst_gap_issues": 184,
+    "historical_worst_deadline": "2030-05-29",
+    "capped_by_historical_worst": []
+  },
+  "no_start_update": "The posterior support is conditioned through each issue publicly known not to contain the batch. The analog-fade likelihood is held at the latest production-event issue until a record hiatus.",
+  "record_hiatus": false,
+  "median": "2027-03-05",
+  "intervals": {
+    "50": [
+      "2027-01-01",
+      "2027-05-14"
+    ],
+    "80": [
+      "2026-11-23",
+      "2027-07-16"
+    ],
+    "90": [
+      "2026-11-09",
+      "2027-09-10"
+    ]
+  },
+  "p_started_by": {
+    "2026-12-31": 0.2393,
+    "2027-03-31": 0.6107,
+    "2027-06-30": 0.8629,
+    "2027-09-30": 0.9652,
+    "2027-12-31": 0.9959,
+    "2028-03-31": 0.9997,
+    "2028-06-30": 1.0,
+    "2028-09-30": 1.0,
+    "2028-12-31": 1.0,
+    "2029-03-31": 1.0
+  },
+  "p_by_chapter": {
+    "421": {
+      "2026-12-31": 0.2393,
+      "2027-03-31": 0.6107,
+      "2027-06-30": 0.8629,
+      "2027-09-30": 0.9652,
+      "2027-12-31": 0.9959,
+      "2028-03-31": 0.9997,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "431": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0512,
+      "2027-06-30": 0.1256,
+      "2027-09-30": 0.1993,
+      "2027-12-31": 0.2873,
+      "2028-03-31": 0.3606,
+      "2028-06-30": 0.4408,
+      "2028-09-30": 0.5087,
+      "2028-12-31": 0.5927,
+      "2029-03-31": 0.6606,
+      "2029-06-30": 0.7231,
+      "2029-09-30": 0.7793,
+      "2029-12-31": 0.8325,
+      "2030-03-31": 0.8744,
+      "2030-06-30": 0.9097,
+      "2030-09-30": 0.939
+    },
+    "422": {
+      "2026-12-31": 0.2118,
+      "2027-03-31": 0.5834,
+      "2027-06-30": 0.8475,
+      "2027-09-30": 0.9603,
+      "2027-12-31": 0.9951,
+      "2028-03-31": 0.9996,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "432": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.046,
+      "2027-06-30": 0.1189,
+      "2027-09-30": 0.1927,
+      "2027-12-31": 0.2812,
+      "2028-03-31": 0.3544,
+      "2028-06-30": 0.4346,
+      "2028-09-30": 0.5026,
+      "2028-12-31": 0.5868,
+      "2029-03-31": 0.6551,
+      "2029-06-30": 0.7181,
+      "2029-09-30": 0.7749,
+      "2029-12-31": 0.8287,
+      "2030-03-31": 0.8712,
+      "2030-06-30": 0.907,
+      "2030-09-30": 0.9368
+    },
+    "423": {
+      "2026-12-31": 0.185,
+      "2027-03-31": 0.5556,
+      "2027-06-30": 0.8311,
+      "2027-09-30": 0.9549,
+      "2027-12-31": 0.9942,
+      "2028-03-31": 0.9995,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "433": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0409,
+      "2027-06-30": 0.1122,
+      "2027-09-30": 0.186,
+      "2027-12-31": 0.2751,
+      "2028-03-31": 0.3483,
+      "2028-06-30": 0.4284,
+      "2028-09-30": 0.4964,
+      "2028-12-31": 0.581,
+      "2029-03-31": 0.6496,
+      "2029-06-30": 0.7131,
+      "2029-09-30": 0.7704,
+      "2029-12-31": 0.8249,
+      "2030-03-31": 0.8679,
+      "2030-06-30": 0.9042,
+      "2030-09-30": 0.9345
+    },
+    "424": {
+      "2026-12-31": 0.1589,
+      "2027-03-31": 0.5273,
+      "2027-06-30": 0.8136,
+      "2027-09-30": 0.9488,
+      "2027-12-31": 0.9931,
+      "2028-03-31": 0.9993,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "434": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0361,
+      "2027-06-30": 0.1056,
+      "2027-09-30": 0.1794,
+      "2027-12-31": 0.269,
+      "2028-03-31": 0.3422,
+      "2028-06-30": 0.4222,
+      "2028-09-30": 0.4903,
+      "2028-12-31": 0.575,
+      "2029-03-31": 0.6441,
+      "2029-06-30": 0.7081,
+      "2029-09-30": 0.7659,
+      "2029-12-31": 0.821,
+      "2030-03-31": 0.8645,
+      "2030-06-30": 0.9014,
+      "2030-09-30": 0.9322
+    },
+    "425": {
+      "2026-12-31": 0.1335,
+      "2027-03-31": 0.4986,
+      "2027-06-30": 0.7951,
+      "2027-09-30": 0.9414,
+      "2027-12-31": 0.9919,
+      "2028-03-31": 0.9992,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "435": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0314,
+      "2027-06-30": 0.099,
+      "2027-09-30": 0.1727,
+      "2027-12-31": 0.2629,
+      "2028-03-31": 0.3361,
+      "2028-06-30": 0.4161,
+      "2028-09-30": 0.4841,
+      "2028-12-31": 0.5691,
+      "2029-03-31": 0.6385,
+      "2029-06-30": 0.7029,
+      "2029-09-30": 0.7613,
+      "2029-12-31": 0.817,
+      "2030-03-31": 0.8612,
+      "2030-06-30": 0.8986,
+      "2030-09-30": 0.9298
+    },
+    "426": {
+      "2026-12-31": 0.1073,
+      "2027-03-31": 0.4677,
+      "2027-06-30": 0.7742,
+      "2027-09-30": 0.9327,
+      "2027-12-31": 0.9904,
+      "2028-03-31": 0.9989,
+      "2028-06-30": 1.0,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "436": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0267,
+      "2027-06-30": 0.0922,
+      "2027-09-30": 0.1655,
+      "2027-12-31": 0.2563,
+      "2028-03-31": 0.3296,
+      "2028-06-30": 0.4095,
+      "2028-09-30": 0.4775,
+      "2028-12-31": 0.5628,
+      "2029-03-31": 0.6325,
+      "2029-06-30": 0.6974,
+      "2029-09-30": 0.7564,
+      "2029-12-31": 0.8128,
+      "2030-03-31": 0.8575,
+      "2030-06-30": 0.8955,
+      "2030-09-30": 0.9273
+    },
+    "427": {
+      "2026-12-31": 0.0837,
+      "2027-03-31": 0.4385,
+      "2027-06-30": 0.7536,
+      "2027-09-30": 0.9237,
+      "2027-12-31": 0.9888,
+      "2028-03-31": 0.9987,
+      "2028-06-30": 0.9999,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "437": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0225,
+      "2027-06-30": 0.0858,
+      "2027-09-30": 0.1588,
+      "2027-12-31": 0.2501,
+      "2028-03-31": 0.3235,
+      "2028-06-30": 0.4033,
+      "2028-09-30": 0.4714,
+      "2028-12-31": 0.5568,
+      "2029-03-31": 0.6268,
+      "2029-06-30": 0.6922,
+      "2029-09-30": 0.7518,
+      "2029-12-31": 0.8087,
+      "2030-03-31": 0.8541,
+      "2030-06-30": 0.8926,
+      "2030-09-30": 0.9249
+    },
+    "428": {
+      "2026-12-31": 0.061,
+      "2027-03-31": 0.4093,
+      "2027-06-30": 0.732,
+      "2027-09-30": 0.9138,
+      "2027-12-31": 0.987,
+      "2028-03-31": 0.9984,
+      "2028-06-30": 0.9999,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "438": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0185,
+      "2027-06-30": 0.0796,
+      "2027-09-30": 0.152,
+      "2027-12-31": 0.244,
+      "2028-03-31": 0.3174,
+      "2028-06-30": 0.3971,
+      "2028-09-30": 0.4652,
+      "2028-12-31": 0.5508,
+      "2029-03-31": 0.6212,
+      "2029-06-30": 0.687,
+      "2029-09-30": 0.747,
+      "2029-12-31": 0.8046,
+      "2030-03-31": 0.8505,
+      "2030-06-30": 0.8897,
+      "2030-09-30": 0.9224
+    },
+    "429": {
+      "2026-12-31": 0.0379,
+      "2027-03-31": 0.3781,
+      "2027-06-30": 0.7079,
+      "2027-09-30": 0.9014,
+      "2027-12-31": 0.9847,
+      "2028-03-31": 0.998,
+      "2028-06-30": 0.9999,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "439": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0146,
+      "2027-06-30": 0.0732,
+      "2027-09-30": 0.1448,
+      "2027-12-31": 0.2372,
+      "2028-03-31": 0.3109,
+      "2028-06-30": 0.3905,
+      "2028-09-30": 0.4586,
+      "2028-12-31": 0.5444,
+      "2029-03-31": 0.6151,
+      "2029-06-30": 0.6814,
+      "2029-09-30": 0.742,
+      "2029-12-31": 0.8002,
+      "2030-03-31": 0.8467,
+      "2030-06-30": 0.8864,
+      "2030-09-30": 0.9197
+    },
+    "430": {
+      "2026-12-31": 0.0185,
+      "2027-03-31": 0.349,
+      "2027-06-30": 0.6843,
+      "2027-09-30": 0.8888,
+      "2027-12-31": 0.9823,
+      "2028-03-31": 0.9976,
+      "2028-06-30": 0.9999,
+      "2028-09-30": 1.0,
+      "2028-12-31": 1.0,
+      "2029-03-31": 1.0,
+      "2029-06-30": 1.0,
+      "2029-09-30": 1.0,
+      "2029-12-31": 1.0,
+      "2030-03-31": 1.0,
+      "2030-06-30": 1.0,
+      "2030-09-30": 1.0
+    },
+    "440": {
+      "2026-12-31": 0.0,
+      "2027-03-31": 0.0111,
+      "2027-06-30": 0.0673,
+      "2027-09-30": 0.1381,
+      "2027-12-31": 0.2309,
+      "2028-03-31": 0.3048,
+      "2028-06-30": 0.3843,
+      "2028-09-30": 0.4524,
+      "2028-12-31": 0.5383,
+      "2029-03-31": 0.6093,
+      "2029-06-30": 0.676,
+      "2029-09-30": 0.7371,
+      "2029-12-31": 0.796,
+      "2030-03-31": 0.8431,
+      "2030-06-30": 0.8834,
+      "2030-09-30": 0.9172
+    }
+  },
+  "posterior_pmf": [
+    [
+      "2026-10-26",
+      0.01981034
+    ],
+    [
+      "2026-11-02",
+      0.02082242
+    ],
+    [
+      "2026-11-09",
+      0.02181186
+    ],
+    [
+      "2026-11-16",
+      0.0227707
+    ],
+    [
+      "2026-11-23",
+      0.02369094
+    ],
+    [
+      "2026-11-30",
+      0.02456464
+    ],
+    [
+      "2026-12-07",
+      0.02538404
+    ],
+    [
+      "2026-12-14",
+      0.02614166
+    ],
+    [
+      "2026-12-21",
+      0.02683044
+    ],
+    [
+      "2026-12-28",
+      0.02744383
+    ],
+    [
+      "2027-01-01",
+      0.02775817
+    ],
+    [
+      "2027-01-08",
+      0.02824135
+    ],
+    [
+      "2027-01-15",
+      0.02863533
+    ],
+    [
+      "2027-01-22",
+      0.02893618
+    ],
+    [
+      "2027-01-29",
+      0.02914086
+    ],
+    [
+      "2027-02-05",
+      0.0292473
+    ],
+    [
+      "2027-02-12",
+      0.02925441
+    ],
+    [
+      "2027-02-19",
+      0.02916212
+    ],
+    [
+      "2027-02-26",
+      0.02897137
+    ],
+    [
+      "2027-03-05",
+      0.02868409
+    ],
+    [
+      "2027-03-12",
+      0.02830319
+    ],
+    [
+      "2027-03-19",
+      0.02783248
+    ],
+    [
+      "2027-03-26",
+      0.02727663
+    ],
+    [
+      "2027-04-02",
+      0.02664107
+    ],
+    [
+      "2027-04-09",
+      0.02593192
+    ],
+    [
+      "2027-04-23",
+      0.02432022
+    ],
+    [
+      "2027-04-30",
+      0.02343242
+    ],
+    [
+      "2027-05-07",
+      0.02250034
+    ],
+    [
+      "2027-05-14",
+      0.02153193
+    ],
+    [
+      "2027-05-21",
+      0.02053522
+    ],
+    [
+      "2027-05-28",
+      0.01951811
+    ],
+    [
+      "2027-06-04",
+      0.01848836
+    ],
+    [
+      "2027-06-11",
+      0.01745345
+    ],
+    [
+      "2027-06-18",
+      0.01642049
+    ],
+    [
+      "2027-06-25",
+      0.0153962
+    ],
+    [
+      "2027-07-02",
+      0.01438676
+    ],
+    [
+      "2027-07-09",
+      0.01339783
+    ],
+    [
+      "2027-07-16",
+      0.0124345
+    ],
+    [
+      "2027-07-23",
+      0.01150123
+    ],
+    [
+      "2027-08-06",
+      0.00973964
+    ],
+    [
+      "2027-08-13",
+      0.00891713
+    ],
+    [
+      "2027-08-20",
+      0.00813636
+    ],
+    [
+      "2027-08-27",
+      0.00739873
+    ],
+    [
+      "2027-09-10",
+      0.00605588
+    ],
+    [
+      "2027-09-17",
+      0.00545094
+    ],
+    [
+      "2027-09-24",
+      0.00488975
+    ],
+    [
+      "2027-10-01",
+      0.00437144
+    ],
+    [
+      "2027-10-08",
+      0.0038948
+    ],
+    [
+      "2027-10-15",
+      0.00345833
+    ],
+    [
+      "2027-10-22",
+      0.00306035
+    ],
+    [
+      "2027-10-29",
+      0.00269897
+    ],
+    [
+      "2027-11-05",
+      0.00237218
+    ],
+    [
+      "2027-11-12",
+      0.00207787
+    ],
+    [
+      "2027-11-19",
+      0.00181389
+    ],
+    [
+      "2027-11-26",
+      0.00157807
+    ],
+    [
+      "2027-12-03",
+      0.00136825
+    ],
+    [
+      "2027-12-10",
+      0.00118229
+    ],
+    [
+      "2027-12-14",
+      0.00108595
+    ],
+    [
+      "2027-12-21",
+      0.00093335
+    ],
+    [
+      "2027-12-28",
+      0.00079948
+    ],
+    [
+      "2028-01-04",
+      0.00068248
+    ],
+    [
+      "2028-01-11",
+      0.00058062
+    ],
+    [
+      "2028-01-18",
+      0.00049229
+    ],
+    [
+      "2028-01-25",
+      0.00041598
+    ],
+    [
+      "2028-02-01",
+      0.0003503
+    ],
+    [
+      "2028-02-08",
+      0.00029399
+    ],
+    [
+      "2028-02-15",
+      0.00024589
+    ],
+    [
+      "2028-02-22",
+      0.00020497
+    ],
+    [
+      "2028-02-29",
+      0.00017027
+    ],
+    [
+      "2028-03-07",
+      0.00014097
+    ],
+    [
+      "2028-03-14",
+      0.00011631
+    ],
+    [
+      "2028-03-21",
+      9.564e-05
+    ],
+    [
+      "2028-04-04",
+      6.401e-05
+    ],
+    [
+      "2028-04-11",
+      5.21e-05
+    ],
+    [
+      "2028-04-18",
+      4.226e-05
+    ],
+    [
+      "2028-04-25",
+      3.417e-05
+    ],
+    [
+      "2028-05-02",
+      2.753e-05
+    ],
+    [
+      "2028-05-09",
+      2.21e-05
+    ],
+    [
+      "2028-05-16",
+      1.769e-05
+    ],
+    [
+      "2028-05-23",
+      1.411e-05
+    ],
+    [
+      "2028-05-30",
+      1.121e-05
+    ],
+    [
+      "2028-06-06",
+      8.88e-06
+    ],
+    [
+      "2028-06-13",
+      7.01e-06
+    ],
+    [
+      "2028-06-20",
+      5.51e-06
+    ],
+    [
+      "2028-06-27",
+      4.32e-06
+    ],
+    [
+      "2028-07-04",
+      3.38e-06
+    ],
+    [
+      "2028-07-18",
+      2.04e-06
+    ],
+    [
+      "2028-07-25",
+      1.58e-06
+    ],
+    [
+      "2028-08-01",
+      1.22e-06
+    ],
+    [
+      "2028-08-08",
+      9.4e-07
+    ],
+    [
+      "2028-08-22",
+      5.5e-07
+    ],
+    [
+      "2028-08-29",
+      4.2e-07
+    ],
+    [
+      "2028-09-05",
+      3.1e-07
+    ],
+    [
+      "2028-09-12",
+      2.4e-07
+    ],
+    [
+      "2028-09-19",
+      1.8e-07
+    ],
+    [
+      "2028-09-26",
+      1.3e-07
+    ],
+    [
+      "2028-10-03",
+      1e-07
+    ]
+  ],
+  "posterior_pmf_issue_seq": [
+    [
+      1434,
+      0.01981034
+    ],
+    [
+      1435,
+      0.02082242
+    ],
+    [
+      1436,
+      0.02181186
+    ],
+    [
+      1437,
+      0.0227707
+    ],
+    [
+      1438,
+      0.02369094
+    ],
+    [
+      1439,
+      0.02456464
+    ],
+    [
+      1440,
+      0.02538404
+    ],
+    [
+      1441,
+      0.02614166
+    ],
+    [
+      1442,
+      0.02683044
+    ],
+    [
+      1443,
+      0.02744383
+    ],
+    [
+      1444,
+      0.02775817
+    ],
+    [
+      1445,
+      0.02824135
+    ],
+    [
+      1446,
+      0.02863533
+    ],
+    [
+      1447,
+      0.02893618
+    ],
+    [
+      1448,
+      0.02914086
+    ],
+    [
+      1449,
+      0.0292473
+    ],
+    [
+      1450,
+      0.02925441
+    ],
+    [
+      1451,
+      0.02916212
+    ],
+    [
+      1452,
+      0.02897137
+    ],
+    [
+      1453,
+      0.02868409
+    ],
+    [
+      1454,
+      0.02830319
+    ],
+    [
+      1455,
+      0.02783248
+    ],
+    [
+      1456,
+      0.02727663
+    ],
+    [
+      1457,
+      0.02664107
+    ],
+    [
+      1458,
+      0.02593192
+    ],
+    [
+      1459,
+      0.02432022
+    ],
+    [
+      1460,
+      0.02343242
+    ],
+    [
+      1461,
+      0.02250034
+    ],
+    [
+      1462,
+      0.02153193
+    ],
+    [
+      1463,
+      0.02053522
+    ],
+    [
+      1464,
+      0.01951811
+    ],
+    [
+      1465,
+      0.01848836
+    ],
+    [
+      1466,
+      0.01745345
+    ],
+    [
+      1467,
+      0.01642049
+    ],
+    [
+      1468,
+      0.0153962
+    ],
+    [
+      1469,
+      0.01438676
+    ],
+    [
+      1470,
+      0.01339783
+    ],
+    [
+      1471,
+      0.0124345
+    ],
+    [
+      1472,
+      0.01150123
+    ],
+    [
+      1473,
+      0.00973964
+    ],
+    [
+      1474,
+      0.00891713
+    ],
+    [
+      1475,
+      0.00813636
+    ],
+    [
+      1476,
+      0.00739873
+    ],
+    [
+      1477,
+      0.00605588
+    ],
+    [
+      1478,
+      0.00545094
+    ],
+    [
+      1479,
+      0.00488975
+    ],
+    [
+      1480,
+      0.00437144
+    ],
+    [
+      1481,
+      0.0038948
+    ],
+    [
+      1482,
+      0.00345833
+    ],
+    [
+      1483,
+      0.00306035
+    ],
+    [
+      1484,
+      0.00269897
+    ],
+    [
+      1485,
+      0.00237218
+    ],
+    [
+      1486,
+      0.00207787
+    ],
+    [
+      1487,
+      0.00181389
+    ],
+    [
+      1488,
+      0.00157807
+    ],
+    [
+      1489,
+      0.00136825
+    ],
+    [
+      1490,
+      0.00118229
+    ],
+    [
+      1491,
+      0.00108595
+    ],
+    [
+      1492,
+      0.00093335
+    ],
+    [
+      1493,
+      0.00079948
+    ],
+    [
+      1494,
+      0.00068248
+    ],
+    [
+      1495,
+      0.00058062
+    ],
+    [
+      1496,
+      0.00049229
+    ],
+    [
+      1497,
+      0.00041598
+    ],
+    [
+      1498,
+      0.0003503
+    ],
+    [
+      1499,
+      0.00029399
+    ],
+    [
+      1500,
+      0.00024589
+    ],
+    [
+      1501,
+      0.00020497
+    ],
+    [
+      1502,
+      0.00017027
+    ],
+    [
+      1503,
+      0.00014097
+    ],
+    [
+      1504,
+      0.00011631
+    ],
+    [
+      1505,
+      9.564e-05
+    ],
+    [
+      1506,
+      6.401e-05
+    ],
+    [
+      1507,
+      5.21e-05
+    ],
+    [
+      1508,
+      4.226e-05
+    ],
+    [
+      1509,
+      3.417e-05
+    ],
+    [
+      1510,
+      2.753e-05
+    ],
+    [
+      1511,
+      2.21e-05
+    ],
+    [
+      1512,
+      1.769e-05
+    ],
+    [
+      1513,
+      1.411e-05
+    ],
+    [
+      1514,
+      1.121e-05
+    ],
+    [
+      1515,
+      8.88e-06
+    ],
+    [
+      1516,
+      7.01e-06
+    ],
+    [
+      1517,
+      5.51e-06
+    ],
+    [
+      1518,
+      4.32e-06
+    ],
+    [
+      1519,
+      3.38e-06
+    ],
+    [
+      1520,
+      2.04e-06
+    ],
+    [
+      1521,
+      1.58e-06
+    ],
+    [
+      1522,
+      1.22e-06
+    ],
+    [
+      1523,
+      9.4e-07
+    ],
+    [
+      1524,
+      5.5e-07
+    ],
+    [
+      1525,
+      4.2e-07
+    ],
+    [
+      1526,
+      3.1e-07
+    ],
+    [
+      1527,
+      2.4e-07
+    ],
+    [
+      1528,
+      1.8e-07
+    ],
+    [
+      1529,
+      1.3e-07
+    ],
+    [
+      1530,
+      1e-07
+    ]
+  ],
+  "prior_pmf": [
+    [
+      "2026-09-14",
+      0.13333333
+    ],
+    [
+      "2026-09-28",
+      0.00464236
+    ],
+    [
+      "2026-10-05",
+      0.004695
+    ],
+    [
+      "2026-10-12",
+      0.0047472
+    ],
+    [
+      "2026-10-19",
+      0.00479893
+    ],
+    [
+      "2026-10-26",
+      0.00485017
+    ],
+    [
+      "2026-11-02",
+      0.0049009
+    ],
+    [
+      "2026-11-09",
+      0.00495109
+    ],
+    [
+      "2026-11-16",
+      0.0050007
+    ],
+    [
+      "2026-11-23",
+      0.00504972
+    ],
+    [
+      "2026-11-30",
+      0.00509812
+    ],
+    [
+      "2026-12-07",
+      0.00514587
+    ],
+    [
+      "2026-12-14",
+      0.00519295
+    ],
+    [
+      "2026-12-21",
+      0.00523934
+    ],
+    [
+      "2026-12-28",
+      0.005285
+    ],
+    [
+      "2027-01-01",
+      0.00532992
+    ],
+    [
+      "2027-01-08",
+      0.00537406
+    ],
+    [
+      "2027-01-15",
+      0.00541741
+    ],
+    [
+      "2027-01-22",
+      0.00545995
+    ],
+    [
+      "2027-01-29",
+      0.00550164
+    ],
+    [
+      "2027-02-05",
+      0.00554247
+    ],
+    [
+      "2027-02-12",
+      0.00558241
+    ],
+    [
+      "2027-02-19",
+      0.00562145
+    ],
+    [
+      "2027-02-26",
+      0.00565955
+    ],
+    [
+      "2027-03-05",
+      0.00569671
+    ],
+    [
+      "2027-03-12",
+      0.00573289
+    ],
+    [
+      "2027-03-19",
+      0.00576808
+    ],
+    [
+      "2027-03-26",
+      0.00580226
+    ],
+    [
+      "2027-04-02",
+      0.00583541
+    ],
+    [
+      "2027-04-09",
+      0.00586751
+    ],
+    [
+      "2027-04-23",
+      0.00589855
+    ],
+    [
+      "2027-04-30",
+      0.00592851
+    ],
+    [
+      "2027-05-07",
+      0.00595736
+    ],
+    [
+      "2027-05-14",
+      0.0059851
+    ],
+    [
+      "2027-05-21",
+      0.00601171
+    ],
+    [
+      "2027-05-28",
+      0.00603717
+    ],
+    [
+      "2027-06-04",
+      0.00606148
+    ],
+    [
+      "2027-06-11",
+      0.00608461
+    ],
+    [
+      "2027-06-18",
+      0.00610656
+    ],
+    [
+      "2027-06-25",
+      0.00612731
+    ],
+    [
+      "2027-07-02",
+      0.00614685
+    ],
+    [
+      "2027-07-09",
+      0.00616518
+    ],
+    [
+      "2027-07-16",
+      0.00618228
+    ],
+    [
+      "2027-07-23",
+      0.00619814
+    ],
+    [
+      "2027-08-06",
+      0.00621276
+    ],
+    [
+      "2027-08-13",
+      0.00622613
+    ],
+    [
+      "2027-08-20",
+      0.00623824
+    ],
+    [
+      "2027-08-27",
+      0.00624909
+    ],
+    [
+      "2027-09-10",
+      0.00625867
+    ],
+    [
+      "2027-09-17",
+      0.00626698
+    ],
+    [
+      "2027-09-24",
+      0.00627401
+    ],
+    [
+      "2027-10-01",
+      0.00627977
+    ],
+    [
+      "2027-10-08",
+      0.00628424
+    ],
+    [
+      "2027-10-15",
+      0.00628744
+    ],
+    [
+      "2027-10-22",
+      0.00628936
+    ],
+    [
+      "2027-10-29",
+      0.00629
+    ],
+    [
+      "2027-11-05",
+      0.00628936
+    ],
+    [
+      "2027-11-12",
+      0.00628745
+    ],
+    [
+      "2027-11-19",
+      0.00628427
+    ],
+    [
+      "2027-11-26",
+      0.00627982
+    ],
+    [
+      "2027-12-03",
+      0.00627411
+    ],
+    [
+      "2027-12-10",
+      0.00626715
+    ],
+    [
+      "2027-12-14",
+      0.00625893
+    ],
+    [
+      "2027-12-21",
+      0.00624947
+    ],
+    [
+      "2027-12-28",
+      0.00623878
+    ],
+    [
+      "2028-01-04",
+      0.00622686
+    ],
+    [
+      "2028-01-11",
+      0.00621373
+    ],
+    [
+      "2028-01-18",
+      0.00619939
+    ],
+    [
+      "2028-01-25",
+      0.00618386
+    ],
+    [
+      "2028-02-01",
+      0.00616715
+    ],
+    [
+      "2028-02-08",
+      0.00614927
+    ],
+    [
+      "2028-02-15",
+      0.00613023
+    ],
+    [
+      "2028-02-22",
+      0.00611004
+    ],
+    [
+      "2028-02-29",
+      0.00608873
+    ],
+    [
+      "2028-03-07",
+      0.00606631
+    ],
+    [
+      "2028-03-14",
+      0.00604279
+    ],
+    [
+      "2028-03-21",
+      0.00601819
+    ],
+    [
+      "2028-04-04",
+      0.00599253
+    ],
+    [
+      "2028-04-11",
+      0.00596582
+    ],
+    [
+      "2028-04-18",
+      0.00593809
+    ],
+    [
+      "2028-04-25",
+      0.00590934
+    ],
+    [
+      "2028-05-02",
+      0.00587961
+    ],
+    [
+      "2028-05-09",
+      0.00584891
+    ],
+    [
+      "2028-05-16",
+      0.00581726
+    ],
+    [
+      "2028-05-23",
+      0.00578468
+    ],
+    [
+      "2028-05-30",
+      0.00575119
+    ],
+    [
+      "2028-06-06",
+      0.00571682
+    ],
+    [
+      "2028-06-13",
+      0.00568159
+    ],
+    [
+      "2028-06-20",
+      0.00564551
+    ],
+    [
+      "2028-06-27",
+      0.00560862
+    ],
+    [
+      "2028-07-04",
+      0.00557093
+    ],
+    [
+      "2028-07-18",
+      0.00553247
+    ],
+    [
+      "2028-07-25",
+      0.00549326
+    ],
+    [
+      "2028-08-01",
+      0.00545333
+    ],
+    [
+      "2028-08-08",
+      0.0054127
+    ],
+    [
+      "2028-08-22",
+      0.0053714
+    ],
+    [
+      "2028-08-29",
+      0.00532944
+    ],
+    [
+      "2028-09-05",
+      0.00528686
+    ],
+    [
+      "2028-09-12",
+      0.00524368
+    ],
+    [
+      "2028-09-19",
+      0.00519993
+    ],
+    [
+      "2028-09-26",
+      0.00515562
+    ],
+    [
+      "2028-10-03",
+      0.00511079
+    ],
+    [
+      "2028-10-10",
+      0.00506546
+    ],
+    [
+      "2028-10-17",
+      0.00501965
+    ],
+    [
+      "2028-10-24",
+      0.0049734
+    ],
+    [
+      "2028-10-31",
+      0.00492672
+    ],
+    [
+      "2028-11-07",
+      0.00487964
+    ],
+    [
+      "2028-11-14",
+      0.00483219
+    ],
+    [
+      "2028-11-21",
+      0.00478439
+    ],
+    [
+      "2028-11-25",
+      0.00473626
+    ],
+    [
+      "2028-12-02",
+      0.00468784
+    ],
+    [
+      "2028-12-09",
+      0.00463915
+    ],
+    [
+      "2028-12-16",
+      0.0045902
+    ],
+    [
+      "2028-12-23",
+      0.00454103
+    ],
+    [
+      "2028-12-30",
+      0.00449166
+    ],
+    [
+      "2029-01-06",
+      0.00444211
+    ],
+    [
+      "2029-01-13",
+      0.00439241
+    ],
+    [
+      "2029-01-20",
+      0.00434258
+    ],
+    [
+      "2029-01-27",
+      0.00429264
+    ],
+    [
+      "2029-02-03",
+      0.00424262
+    ],
+    [
+      "2029-02-10",
+      0.00419254
+    ],
+    [
+      "2029-02-17",
+      0.00414241
+    ],
+    [
+      "2029-02-24",
+      0.00409227
+    ],
+    [
+      "2029-03-03",
+      0.00404213
+    ],
+    [
+      "2029-03-17",
+      0.00399201
+    ],
+    [
+      "2029-03-24",
+      0.00394194
+    ],
+    [
+      "2029-03-31",
+      0.00389194
+    ],
+    [
+      "2029-04-07",
+      0.00384201
+    ],
+    [
+      "2029-04-14",
+      0.0037922
+    ],
+    [
+      "2029-04-21",
+      0.0037425
+    ],
+    [
+      "2029-04-28",
+      0.00369295
+    ],
+    [
+      "2029-05-05",
+      0.00364355
+    ],
+    [
+      "2029-05-12",
+      0.00359434
+    ],
+    [
+      "2029-05-19",
+      0.00354531
+    ],
+    [
+      "2029-05-26",
+      0.0034965
+    ],
+    [
+      "2029-06-02",
+      0.00344791
+    ],
+    [
+      "2029-06-09",
+      0.00339956
+    ],
+    [
+      "2029-06-16",
+      0.00335147
+    ],
+    [
+      "2029-06-30",
+      0.00330365
+    ],
+    [
+      "2029-07-07",
+      0.00325611
+    ],
+    [
+      "2029-07-14",
+      0.00320887
+    ],
+    [
+      "2029-07-21",
+      0.00316195
+    ],
+    [
+      "2029-08-04",
+      0.00311534
+    ],
+    [
+      "2029-08-11",
+      0.00306907
+    ],
+    [
+      "2029-08-18",
+      0.00302315
+    ],
+    [
+      "2029-08-25",
+      0.00297758
+    ],
+    [
+      "2029-09-01",
+      0.00293239
+    ],
+    [
+      "2029-09-08",
+      0.00288756
+    ],
+    [
+      "2029-09-15",
+      0.00284313
+    ],
+    [
+      "2029-09-22",
+      0.00279909
+    ],
+    [
+      "2029-09-29",
+      0.00275545
+    ],
+    [
+      "2029-10-06",
+      0.00271223
+    ],
+    [
+      "2029-10-13",
+      0.00266942
+    ],
+    [
+      "2029-10-20",
+      0.00262704
+    ],
+    [
+      "2029-10-27",
+      0.00258509
+    ],
+    [
+      "2029-11-03",
+      0.00254357
+    ],
+    [
+      "2029-11-07",
+      0.0025025
+    ],
+    [
+      "2029-11-14",
+      0.00246187
+    ],
+    [
+      "2029-11-21",
+      0.0024217
+    ],
+    [
+      "2029-11-28",
+      0.00238198
+    ],
+    [
+      "2029-12-05",
+      0.00234272
+    ],
+    [
+      "2029-12-12",
+      0.00230392
+    ],
+    [
+      "2029-12-19",
+      0.00226558
+    ],
+    [
+      "2029-12-26",
+      0.00222771
+    ],
+    [
+      "2030-01-02",
+      0.00219031
+    ],
+    [
+      "2030-01-09",
+      0.00215337
+    ],
+    [
+      "2030-01-16",
+      0.00211691
+    ],
+    [
+      "2030-01-23",
+      0.00208091
+    ],
+    [
+      "2030-01-30",
+      0.00204539
+    ],
+    [
+      "2030-02-06",
+      0.00201034
+    ],
+    [
+      "2030-02-13",
+      0.00197576
+    ],
+    [
+      "2030-02-27",
+      0.00194164
+    ],
+    [
+      "2030-03-06",
+      0.001908
+    ],
+    [
+      "2030-03-13",
+      0.00187482
+    ],
+    [
+      "2030-03-20",
+      0.00184211
+    ],
+    [
+      "2030-03-27",
+      0.00180986
+    ],
+    [
+      "2030-04-03",
+      0.00177807
+    ],
+    [
+      "2030-04-10",
+      0.00174674
+    ],
+    [
+      "2030-04-17",
+      0.00171586
+    ],
+    [
+      "2030-04-24",
+      0.00168544
+    ],
+    [
+      "2030-05-01",
+      0.00165546
+    ],
+    [
+      "2030-05-08",
+      0.00162593
+    ],
+    [
+      "2030-05-15",
+      0.00159685
+    ],
+    [
+      "2030-05-22",
+      0.0015682
+    ],
+    [
+      "2030-05-29",
+      0.00153998
+    ],
+    [
+      "2030-06-12",
+      0.0015122
+    ],
+    [
+      "2030-06-19",
+      0.00148484
+    ],
+    [
+      "2030-06-26",
+      0.00145791
+    ],
+    [
+      "2030-07-03",
+      0.00143139
+    ],
+    [
+      "2030-07-17",
+      0.00140528
+    ],
+    [
+      "2030-07-24",
+      0.00137958
+    ],
+    [
+      "2030-07-31",
+      0.00135429
+    ],
+    [
+      "2030-08-07",
+      0.00132939
+    ],
+    [
+      "2030-08-14",
+      0.00130488
+    ],
+    [
+      "2030-08-21",
+      0.00128077
+    ],
+    [
+      "2030-08-28",
+      0.00125703
+    ],
+    [
+      "2030-09-04",
+      0.00123367
+    ],
+    [
+      "2030-09-11",
+      0.00121069
+    ],
+    [
+      "2030-09-18",
+      0.00118807
+    ],
+    [
+      "2030-09-25",
+      0.00116582
+    ],
+    [
+      "2030-10-02",
+      0.00114392
+    ]
+  ],
+  "all_pairs_likelihood_pmf": [
+    [
+      "2026-09-14",
+      1.0
+    ],
+    [
+      "2026-09-28",
+      1.0
+    ],
+    [
+      "2026-10-05",
+      1.0
+    ],
+    [
+      "2026-10-12",
+      1.0
+    ],
+    [
+      "2026-10-19",
+      1.0
+    ],
+    [
+      "2026-10-26",
+      1.0
+    ],
+    [
+      "2026-11-02",
+      1.0
+    ],
+    [
+      "2026-11-09",
+      1.0
+    ],
+    [
+      "2026-11-16",
+      1.0
+    ],
+    [
+      "2026-11-23",
+      1.0
+    ],
+    [
+      "2026-11-30",
+      1.0
+    ],
+    [
+      "2026-12-07",
+      1.0
+    ],
+    [
+      "2026-12-14",
+      1.0
+    ],
+    [
+      "2026-12-21",
+      1.0
+    ],
+    [
+      "2026-12-28",
+      1.0
+    ],
+    [
+      "2027-01-01",
+      1.0
+    ],
+    [
+      "2027-01-08",
+      1.0
+    ],
+    [
+      "2027-01-15",
+      1.0
+    ],
+    [
+      "2027-01-22",
+      1.0
+    ],
+    [
+      "2027-01-29",
+      1.0
+    ],
+    [
+      "2027-02-05",
+      1.0
+    ],
+    [
+      "2027-02-12",
+      1.0
+    ],
+    [
+      "2027-02-19",
+      1.0
+    ],
+    [
+      "2027-02-26",
+      1.0
+    ],
+    [
+      "2027-03-05",
+      1.0
+    ],
+    [
+      "2027-03-12",
+      1.0
+    ],
+    [
+      "2027-03-19",
+      1.0
+    ],
+    [
+      "2027-03-26",
+      1.0
+    ],
+    [
+      "2027-04-02",
+      1.0
+    ],
+    [
+      "2027-04-09",
+      1.0
+    ],
+    [
+      "2027-04-23",
+      1.0
+    ],
+    [
+      "2027-04-30",
+      1.0
+    ],
+    [
+      "2027-05-07",
+      1.0
+    ],
+    [
+      "2027-05-14",
+      1.0
+    ],
+    [
+      "2027-05-21",
+      1.0
+    ],
+    [
+      "2027-05-28",
+      1.0
+    ],
+    [
+      "2027-06-04",
+      1.0
+    ],
+    [
+      "2027-06-11",
+      1.0
+    ],
+    [
+      "2027-06-18",
+      1.0
+    ],
+    [
+      "2027-06-25",
+      1.0
+    ],
+    [
+      "2027-07-02",
+      1.0
+    ],
+    [
+      "2027-07-09",
+      1.0
+    ],
+    [
+      "2027-07-16",
+      1.0
+    ],
+    [
+      "2027-07-23",
+      1.0
+    ],
+    [
+      "2027-08-06",
+      1.0
+    ],
+    [
+      "2027-08-13",
+      1.0
+    ],
+    [
+      "2027-08-20",
+      1.0
+    ],
+    [
+      "2027-08-27",
+      1.0
+    ],
+    [
+      "2027-09-10",
+      1.0
+    ],
+    [
+      "2027-09-17",
+      1.0
+    ],
+    [
+      "2027-09-24",
+      1.0
+    ],
+    [
+      "2027-10-01",
+      1.0
+    ],
+    [
+      "2027-10-08",
+      1.0
+    ],
+    [
+      "2027-10-15",
+      1.0
+    ],
+    [
+      "2027-10-22",
+      1.0
+    ],
+    [
+      "2027-10-29",
+      1.0
+    ],
+    [
+      "2027-11-05",
+      1.0
+    ],
+    [
+      "2027-11-12",
+      1.0
+    ],
+    [
+      "2027-11-19",
+      1.0
+    ],
+    [
+      "2027-11-26",
+      1.0
+    ],
+    [
+      "2027-12-03",
+      1.0
+    ],
+    [
+      "2027-12-10",
+      1.0
+    ],
+    [
+      "2027-12-14",
+      1.0
+    ],
+    [
+      "2027-12-21",
+      1.0
+    ],
+    [
+      "2027-12-28",
+      1.0
+    ],
+    [
+      "2028-01-04",
+      1.0
+    ],
+    [
+      "2028-01-11",
+      1.0
+    ],
+    [
+      "2028-01-18",
+      1.0
+    ],
+    [
+      "2028-01-25",
+      1.0
+    ],
+    [
+      "2028-02-01",
+      1.0
+    ],
+    [
+      "2028-02-08",
+      1.0
+    ],
+    [
+      "2028-02-15",
+      1.0
+    ],
+    [
+      "2028-02-22",
+      1.0
+    ],
+    [
+      "2028-02-29",
+      1.0
+    ],
+    [
+      "2028-03-07",
+      1.0
+    ],
+    [
+      "2028-03-14",
+      1.0
+    ],
+    [
+      "2028-03-21",
+      1.0
+    ],
+    [
+      "2028-04-04",
+      1.0
+    ],
+    [
+      "2028-04-11",
+      1.0
+    ],
+    [
+      "2028-04-18",
+      1.0
+    ],
+    [
+      "2028-04-25",
+      1.0
+    ],
+    [
+      "2028-05-02",
+      1.0
+    ],
+    [
+      "2028-05-09",
+      1.0
+    ],
+    [
+      "2028-05-16",
+      1.0
+    ],
+    [
+      "2028-05-23",
+      1.0
+    ],
+    [
+      "2028-05-30",
+      1.0
+    ],
+    [
+      "2028-06-06",
+      1.0
+    ],
+    [
+      "2028-06-13",
+      1.0
+    ],
+    [
+      "2028-06-20",
+      1.0
+    ],
+    [
+      "2028-06-27",
+      1.0
+    ],
+    [
+      "2028-07-04",
+      1.0
+    ],
+    [
+      "2028-07-18",
+      1.0
+    ],
+    [
+      "2028-07-25",
+      1.0
+    ],
+    [
+      "2028-08-01",
+      1.0
+    ],
+    [
+      "2028-08-08",
+      1.0
+    ],
+    [
+      "2028-08-22",
+      1.0
+    ],
+    [
+      "2028-08-29",
+      1.0
+    ],
+    [
+      "2028-09-05",
+      1.0
+    ],
+    [
+      "2028-09-12",
+      1.0
+    ],
+    [
+      "2028-09-19",
+      1.0
+    ],
+    [
+      "2028-09-26",
+      1.0
+    ],
+    [
+      "2028-10-03",
+      1.0
+    ],
+    [
+      "2028-10-10",
+      1.0
+    ],
+    [
+      "2028-10-17",
+      1.0
+    ],
+    [
+      "2028-10-24",
+      1.0
+    ],
+    [
+      "2028-10-31",
+      1.0
+    ],
+    [
+      "2028-11-07",
+      1.0
+    ],
+    [
+      "2028-11-14",
+      1.0
+    ],
+    [
+      "2028-11-21",
+      1.0
+    ],
+    [
+      "2028-11-25",
+      1.0
+    ],
+    [
+      "2028-12-02",
+      1.0
+    ],
+    [
+      "2028-12-09",
+      1.0
+    ],
+    [
+      "2028-12-16",
+      1.0
+    ],
+    [
+      "2028-12-23",
+      1.0
+    ],
+    [
+      "2028-12-30",
+      1.0
+    ],
+    [
+      "2029-01-06",
+      1.0
+    ],
+    [
+      "2029-01-13",
+      1.0
+    ],
+    [
+      "2029-01-20",
+      1.0
+    ],
+    [
+      "2029-01-27",
+      1.0
+    ],
+    [
+      "2029-02-03",
+      1.0
+    ],
+    [
+      "2029-02-10",
+      1.0
+    ],
+    [
+      "2029-02-17",
+      1.0
+    ],
+    [
+      "2029-02-24",
+      1.0
+    ],
+    [
+      "2029-03-03",
+      1.0
+    ],
+    [
+      "2029-03-17",
+      1.0
+    ],
+    [
+      "2029-03-24",
+      1.0
+    ],
+    [
+      "2029-03-31",
+      1.0
+    ],
+    [
+      "2029-04-07",
+      1.0
+    ],
+    [
+      "2029-04-14",
+      1.0
+    ],
+    [
+      "2029-04-21",
+      1.0
+    ],
+    [
+      "2029-04-28",
+      1.0
+    ],
+    [
+      "2029-05-05",
+      1.0
+    ],
+    [
+      "2029-05-12",
+      1.0
+    ],
+    [
+      "2029-05-19",
+      1.0
+    ],
+    [
+      "2029-05-26",
+      1.0
+    ],
+    [
+      "2029-06-02",
+      1.0
+    ],
+    [
+      "2029-06-09",
+      1.0
+    ],
+    [
+      "2029-06-16",
+      1.0
+    ],
+    [
+      "2029-06-30",
+      1.0
+    ],
+    [
+      "2029-07-07",
+      1.0
+    ],
+    [
+      "2029-07-14",
+      1.0
+    ],
+    [
+      "2029-07-21",
+      1.0
+    ],
+    [
+      "2029-08-04",
+      1.0
+    ],
+    [
+      "2029-08-11",
+      1.0
+    ],
+    [
+      "2029-08-18",
+      1.0
+    ],
+    [
+      "2029-08-25",
+      1.0
+    ],
+    [
+      "2029-09-01",
+      1.0
+    ],
+    [
+      "2029-09-08",
+      1.0
+    ],
+    [
+      "2029-09-15",
+      1.0
+    ],
+    [
+      "2029-09-22",
+      1.0
+    ],
+    [
+      "2029-09-29",
+      1.0
+    ],
+    [
+      "2029-10-06",
+      1.0
+    ],
+    [
+      "2029-10-13",
+      1.0
+    ],
+    [
+      "2029-10-20",
+      1.0
+    ],
+    [
+      "2029-10-27",
+      1.0
+    ],
+    [
+      "2029-11-03",
+      1.0
+    ],
+    [
+      "2029-11-07",
+      1.0
+    ],
+    [
+      "2029-11-14",
+      1.0
+    ],
+    [
+      "2029-11-21",
+      1.0
+    ],
+    [
+      "2029-11-28",
+      1.0
+    ],
+    [
+      "2029-12-05",
+      1.0
+    ],
+    [
+      "2029-12-12",
+      1.0
+    ],
+    [
+      "2029-12-19",
+      1.0
+    ],
+    [
+      "2029-12-26",
+      1.0
+    ],
+    [
+      "2030-01-02",
+      1.0
+    ],
+    [
+      "2030-01-09",
+      1.0
+    ],
+    [
+      "2030-01-16",
+      1.0
+    ],
+    [
+      "2030-01-23",
+      1.0
+    ],
+    [
+      "2030-01-30",
+      1.0
+    ],
+    [
+      "2030-02-06",
+      1.0
+    ],
+    [
+      "2030-02-13",
+      1.0
+    ],
+    [
+      "2030-02-27",
+      1.0
+    ],
+    [
+      "2030-03-06",
+      1.0
+    ],
+    [
+      "2030-03-13",
+      1.0
+    ],
+    [
+      "2030-03-20",
+      1.0
+    ],
+    [
+      "2030-03-27",
+      1.0
+    ],
+    [
+      "2030-04-03",
+      1.0
+    ],
+    [
+      "2030-04-10",
+      1.0
+    ],
+    [
+      "2030-04-17",
+      1.0
+    ],
+    [
+      "2030-04-24",
+      1.0
+    ],
+    [
+      "2030-05-01",
+      1.0
+    ],
+    [
+      "2030-05-08",
+      1.0
+    ],
+    [
+      "2030-05-15",
+      1.0
+    ],
+    [
+      "2030-05-22",
+      1.0
+    ],
+    [
+      "2030-05-29",
+      1.0
+    ],
+    [
+      "2030-06-12",
+      1.0
+    ],
+    [
+      "2030-06-19",
+      1.0
+    ],
+    [
+      "2030-06-26",
+      1.0
+    ],
+    [
+      "2030-07-03",
+      1.0
+    ],
+    [
+      "2030-07-17",
+      1.0
+    ],
+    [
+      "2030-07-24",
+      1.0
+    ],
+    [
+      "2030-07-31",
+      1.0
+    ],
+    [
+      "2030-08-07",
+      1.0
+    ],
+    [
+      "2030-08-14",
+      1.0
+    ],
+    [
+      "2030-08-21",
+      1.0
+    ],
+    [
+      "2030-08-28",
+      1.0
+    ],
+    [
+      "2030-09-04",
+      1.0
+    ],
+    [
+      "2030-09-11",
+      1.0
+    ],
+    [
+      "2030-09-18",
+      1.0
+    ],
+    [
+      "2030-09-25",
+      1.0
+    ],
+    [
+      "2030-10-02",
+      1.0
+    ]
+  ],
+  "level2_likelihood_pmf": [
+    [
+      "2026-09-14",
+      1.0
+    ],
+    [
+      "2026-09-28",
+      1.0
+    ],
+    [
+      "2026-10-05",
+      1.0
+    ],
+    [
+      "2026-10-12",
+      1.0
+    ],
+    [
+      "2026-10-19",
+      1.0
+    ],
+    [
+      "2026-10-26",
+      1.0
+    ],
+    [
+      "2026-11-02",
+      1.0
+    ],
+    [
+      "2026-11-09",
+      1.0
+    ],
+    [
+      "2026-11-16",
+      1.0
+    ],
+    [
+      "2026-11-23",
+      1.0
+    ],
+    [
+      "2026-11-30",
+      1.0
+    ],
+    [
+      "2026-12-07",
+      1.0
+    ],
+    [
+      "2026-12-14",
+      1.0
+    ],
+    [
+      "2026-12-21",
+      1.0
+    ],
+    [
+      "2026-12-28",
+      1.0
+    ],
+    [
+      "2027-01-01",
+      1.0
+    ],
+    [
+      "2027-01-08",
+      1.0
+    ],
+    [
+      "2027-01-15",
+      1.0
+    ],
+    [
+      "2027-01-22",
+      1.0
+    ],
+    [
+      "2027-01-29",
+      1.0
+    ],
+    [
+      "2027-02-05",
+      1.0
+    ],
+    [
+      "2027-02-12",
+      1.0
+    ],
+    [
+      "2027-02-19",
+      1.0
+    ],
+    [
+      "2027-02-26",
+      1.0
+    ],
+    [
+      "2027-03-05",
+      1.0
+    ],
+    [
+      "2027-03-12",
+      1.0
+    ],
+    [
+      "2027-03-19",
+      1.0
+    ],
+    [
+      "2027-03-26",
+      1.0
+    ],
+    [
+      "2027-04-02",
+      1.0
+    ],
+    [
+      "2027-04-09",
+      1.0
+    ],
+    [
+      "2027-04-23",
+      1.0
+    ],
+    [
+      "2027-04-30",
+      1.0
+    ],
+    [
+      "2027-05-07",
+      1.0
+    ],
+    [
+      "2027-05-14",
+      1.0
+    ],
+    [
+      "2027-05-21",
+      1.0
+    ],
+    [
+      "2027-05-28",
+      1.0
+    ],
+    [
+      "2027-06-04",
+      1.0
+    ],
+    [
+      "2027-06-11",
+      1.0
+    ],
+    [
+      "2027-06-18",
+      1.0
+    ],
+    [
+      "2027-06-25",
+      1.0
+    ],
+    [
+      "2027-07-02",
+      1.0
+    ],
+    [
+      "2027-07-09",
+      1.0
+    ],
+    [
+      "2027-07-16",
+      1.0
+    ],
+    [
+      "2027-07-23",
+      1.0
+    ],
+    [
+      "2027-08-06",
+      1.0
+    ],
+    [
+      "2027-08-13",
+      1.0
+    ],
+    [
+      "2027-08-20",
+      1.0
+    ],
+    [
+      "2027-08-27",
+      1.0
+    ],
+    [
+      "2027-09-10",
+      1.0
+    ],
+    [
+      "2027-09-17",
+      1.0
+    ],
+    [
+      "2027-09-24",
+      1.0
+    ],
+    [
+      "2027-10-01",
+      1.0
+    ],
+    [
+      "2027-10-08",
+      1.0
+    ],
+    [
+      "2027-10-15",
+      1.0
+    ],
+    [
+      "2027-10-22",
+      1.0
+    ],
+    [
+      "2027-10-29",
+      1.0
+    ],
+    [
+      "2027-11-05",
+      1.0
+    ],
+    [
+      "2027-11-12",
+      1.0
+    ],
+    [
+      "2027-11-19",
+      1.0
+    ],
+    [
+      "2027-11-26",
+      1.0
+    ],
+    [
+      "2027-12-03",
+      1.0
+    ],
+    [
+      "2027-12-10",
+      1.0
+    ],
+    [
+      "2027-12-14",
+      1.0
+    ],
+    [
+      "2027-12-21",
+      1.0
+    ],
+    [
+      "2027-12-28",
+      1.0
+    ],
+    [
+      "2028-01-04",
+      1.0
+    ],
+    [
+      "2028-01-11",
+      1.0
+    ],
+    [
+      "2028-01-18",
+      1.0
+    ],
+    [
+      "2028-01-25",
+      1.0
+    ],
+    [
+      "2028-02-01",
+      1.0
+    ],
+    [
+      "2028-02-08",
+      1.0
+    ],
+    [
+      "2028-02-15",
+      1.0
+    ],
+    [
+      "2028-02-22",
+      1.0
+    ],
+    [
+      "2028-02-29",
+      1.0
+    ],
+    [
+      "2028-03-07",
+      1.0
+    ],
+    [
+      "2028-03-14",
+      1.0
+    ],
+    [
+      "2028-03-21",
+      1.0
+    ],
+    [
+      "2028-04-04",
+      1.0
+    ],
+    [
+      "2028-04-11",
+      1.0
+    ],
+    [
+      "2028-04-18",
+      1.0
+    ],
+    [
+      "2028-04-25",
+      1.0
+    ],
+    [
+      "2028-05-02",
+      1.0
+    ],
+    [
+      "2028-05-09",
+      1.0
+    ],
+    [
+      "2028-05-16",
+      1.0
+    ],
+    [
+      "2028-05-23",
+      1.0
+    ],
+    [
+      "2028-05-30",
+      1.0
+    ],
+    [
+      "2028-06-06",
+      1.0
+    ],
+    [
+      "2028-06-13",
+      1.0
+    ],
+    [
+      "2028-06-20",
+      1.0
+    ],
+    [
+      "2028-06-27",
+      1.0
+    ],
+    [
+      "2028-07-04",
+      1.0
+    ],
+    [
+      "2028-07-18",
+      1.0
+    ],
+    [
+      "2028-07-25",
+      1.0
+    ],
+    [
+      "2028-08-01",
+      1.0
+    ],
+    [
+      "2028-08-08",
+      1.0
+    ],
+    [
+      "2028-08-22",
+      1.0
+    ],
+    [
+      "2028-08-29",
+      1.0
+    ],
+    [
+      "2028-09-05",
+      1.0
+    ],
+    [
+      "2028-09-12",
+      1.0
+    ],
+    [
+      "2028-09-19",
+      1.0
+    ],
+    [
+      "2028-09-26",
+      1.0
+    ],
+    [
+      "2028-10-03",
+      1.0
+    ],
+    [
+      "2028-10-10",
+      1.0
+    ],
+    [
+      "2028-10-17",
+      1.0
+    ],
+    [
+      "2028-10-24",
+      1.0
+    ],
+    [
+      "2028-10-31",
+      1.0
+    ],
+    [
+      "2028-11-07",
+      1.0
+    ],
+    [
+      "2028-11-14",
+      1.0
+    ],
+    [
+      "2028-11-21",
+      1.0
+    ],
+    [
+      "2028-11-25",
+      1.0
+    ],
+    [
+      "2028-12-02",
+      1.0
+    ],
+    [
+      "2028-12-09",
+      1.0
+    ],
+    [
+      "2028-12-16",
+      1.0
+    ],
+    [
+      "2028-12-23",
+      1.0
+    ],
+    [
+      "2028-12-30",
+      1.0
+    ],
+    [
+      "2029-01-06",
+      1.0
+    ],
+    [
+      "2029-01-13",
+      1.0
+    ],
+    [
+      "2029-01-20",
+      1.0
+    ],
+    [
+      "2029-01-27",
+      1.0
+    ],
+    [
+      "2029-02-03",
+      1.0
+    ],
+    [
+      "2029-02-10",
+      1.0
+    ],
+    [
+      "2029-02-17",
+      1.0
+    ],
+    [
+      "2029-02-24",
+      1.0
+    ],
+    [
+      "2029-03-03",
+      1.0
+    ],
+    [
+      "2029-03-17",
+      1.0
+    ],
+    [
+      "2029-03-24",
+      1.0
+    ],
+    [
+      "2029-03-31",
+      1.0
+    ],
+    [
+      "2029-04-07",
+      1.0
+    ],
+    [
+      "2029-04-14",
+      1.0
+    ],
+    [
+      "2029-04-21",
+      1.0
+    ],
+    [
+      "2029-04-28",
+      1.0
+    ],
+    [
+      "2029-05-05",
+      1.0
+    ],
+    [
+      "2029-05-12",
+      1.0
+    ],
+    [
+      "2029-05-19",
+      1.0
+    ],
+    [
+      "2029-05-26",
+      1.0
+    ],
+    [
+      "2029-06-02",
+      1.0
+    ],
+    [
+      "2029-06-09",
+      1.0
+    ],
+    [
+      "2029-06-16",
+      1.0
+    ],
+    [
+      "2029-06-30",
+      1.0
+    ],
+    [
+      "2029-07-07",
+      1.0
+    ],
+    [
+      "2029-07-14",
+      1.0
+    ],
+    [
+      "2029-07-21",
+      1.0
+    ],
+    [
+      "2029-08-04",
+      1.0
+    ],
+    [
+      "2029-08-11",
+      1.0
+    ],
+    [
+      "2029-08-18",
+      1.0
+    ],
+    [
+      "2029-08-25",
+      1.0
+    ],
+    [
+      "2029-09-01",
+      1.0
+    ],
+    [
+      "2029-09-08",
+      1.0
+    ],
+    [
+      "2029-09-15",
+      1.0
+    ],
+    [
+      "2029-09-22",
+      1.0
+    ],
+    [
+      "2029-09-29",
+      1.0
+    ],
+    [
+      "2029-10-06",
+      1.0
+    ],
+    [
+      "2029-10-13",
+      1.0
+    ],
+    [
+      "2029-10-20",
+      1.0
+    ],
+    [
+      "2029-10-27",
+      1.0
+    ],
+    [
+      "2029-11-03",
+      1.0
+    ],
+    [
+      "2029-11-07",
+      1.0
+    ],
+    [
+      "2029-11-14",
+      1.0
+    ],
+    [
+      "2029-11-21",
+      1.0
+    ],
+    [
+      "2029-11-28",
+      1.0
+    ],
+    [
+      "2029-12-05",
+      1.0
+    ],
+    [
+      "2029-12-12",
+      1.0
+    ],
+    [
+      "2029-12-19",
+      1.0
+    ],
+    [
+      "2029-12-26",
+      1.0
+    ],
+    [
+      "2030-01-02",
+      1.0
+    ],
+    [
+      "2030-01-09",
+      1.0
+    ],
+    [
+      "2030-01-16",
+      1.0
+    ],
+    [
+      "2030-01-23",
+      1.0
+    ],
+    [
+      "2030-01-30",
+      1.0
+    ],
+    [
+      "2030-02-06",
+      1.0
+    ],
+    [
+      "2030-02-13",
+      1.0
+    ],
+    [
+      "2030-02-27",
+      1.0
+    ],
+    [
+      "2030-03-06",
+      1.0
+    ],
+    [
+      "2030-03-13",
+      1.0
+    ],
+    [
+      "2030-03-20",
+      1.0
+    ],
+    [
+      "2030-03-27",
+      1.0
+    ],
+    [
+      "2030-04-03",
+      1.0
+    ],
+    [
+      "2030-04-10",
+      1.0
+    ],
+    [
+      "2030-04-17",
+      1.0
+    ],
+    [
+      "2030-04-24",
+      1.0
+    ],
+    [
+      "2030-05-01",
+      1.0
+    ],
+    [
+      "2030-05-08",
+      1.0
+    ],
+    [
+      "2030-05-15",
+      1.0
+    ],
+    [
+      "2030-05-22",
+      1.0
+    ],
+    [
+      "2030-05-29",
+      1.0
+    ],
+    [
+      "2030-06-12",
+      1.0
+    ],
+    [
+      "2030-06-19",
+      1.0
+    ],
+    [
+      "2030-06-26",
+      1.0
+    ],
+    [
+      "2030-07-03",
+      1.0
+    ],
+    [
+      "2030-07-17",
+      1.0
+    ],
+    [
+      "2030-07-24",
+      1.0
+    ],
+    [
+      "2030-07-31",
+      1.0
+    ],
+    [
+      "2030-08-07",
+      1.0
+    ],
+    [
+      "2030-08-14",
+      1.0
+    ],
+    [
+      "2030-08-21",
+      1.0
+    ],
+    [
+      "2030-08-28",
+      1.0
+    ],
+    [
+      "2030-09-04",
+      1.0
+    ],
+    [
+      "2030-09-11",
+      1.0
+    ],
+    [
+      "2030-09-18",
+      1.0
+    ],
+    [
+      "2030-09-25",
+      1.0
+    ],
+    [
+      "2030-10-02",
+      1.0
+    ]
+  ],
+  "ten_chapter_forecast": [
+    {
+      "chapter": 421,
+      "median": "2027-03-05",
+      "i50": [
+        "2027-01-01",
+        "2027-05-14"
+      ],
+      "i80": [
+        "2026-11-23",
+        "2027-07-16"
+      ]
+    },
+    {
+      "chapter": 422,
+      "median": "2027-03-12",
+      "i50": [
+        "2027-01-08",
+        "2027-05-21"
+      ],
+      "i80": [
+        "2026-11-30",
+        "2027-07-23"
+      ]
+    },
+    {
+      "chapter": 423,
+      "median": "2027-03-19",
+      "i50": [
+        "2027-01-15",
+        "2027-05-28"
+      ],
+      "i80": [
+        "2026-12-07",
+        "2027-08-06"
+      ]
+    },
+    {
+      "chapter": 424,
+      "median": "2027-03-26",
+      "i50": [
+        "2027-01-22",
+        "2027-06-04"
+      ],
+      "i80": [
+        "2026-12-14",
+        "2027-08-13"
+      ]
+    },
+    {
+      "chapter": 425,
+      "median": "2027-04-02",
+      "i50": [
+        "2027-01-29",
+        "2027-06-11"
+      ],
+      "i80": [
+        "2026-12-21",
+        "2027-08-20"
+      ]
+    },
+    {
+      "chapter": 426,
+      "median": "2027-04-09",
+      "i50": [
+        "2027-02-05",
+        "2027-06-18"
+      ],
+      "i80": [
+        "2026-12-28",
+        "2027-08-27"
+      ]
+    },
+    {
+      "chapter": 427,
+      "median": "2027-04-23",
+      "i50": [
+        "2027-02-12",
+        "2027-06-25"
+      ],
+      "i80": [
+        "2027-01-01",
+        "2027-09-10"
+      ]
+    },
+    {
+      "chapter": 428,
+      "median": "2027-04-30",
+      "i50": [
+        "2027-02-19",
+        "2027-07-02"
+      ],
+      "i80": [
+        "2027-01-08",
+        "2027-09-17"
+      ]
+    },
+    {
+      "chapter": 429,
+      "median": "2027-05-07",
+      "i50": [
+        "2027-02-26",
+        "2027-07-09"
+      ],
+      "i80": [
+        "2027-01-15",
+        "2027-09-24"
+      ]
+    },
+    {
+      "chapter": 430,
+      "median": "2027-05-14",
+      "i50": [
+        "2027-03-05",
+        "2027-07-16"
+      ],
+      "i80": [
+        "2027-01-22",
+        "2027-10-01"
+      ]
+    }
+  ],
+  "within_batch_schedule": {
+    "model": "shared_regular_or_disrupted_batch_regime",
+    "regular_probability": 0.933333,
+    "disrupted_probability": 0.066667,
+    "disrupted_extra_issue_before_positions": [
+      6,
+      9
+    ],
+    "evidence": "Fourteen of fifteen completed modeling-era batches were consecutive; both exceptional intervals occurred in the same remaining batch."
+  },
+  "next_batch": {
+    "batch": 51,
+    "first_chapter": 431,
+    "target": "W_51 — publication of ch 431",
+    "mode": "forecast",
+    "median": "2028-09-19",
+    "intervals": {
+      "50": [
+        "2027-11-19",
+        "2029-08-18"
+      ],
+      "80": [
+        "2027-06-04",
+        "2030-05-29"
+      ],
+      "90": [
+        "2027-03-26",
+        "2030-11-03"
+      ]
+    },
+    "pmf": [
+      [
+        "2027-01-01",
+        0.00246529
+      ],
+      [
+        "2027-01-08",
+        0.00267707
+      ],
+      [
+        "2027-01-15",
+        0.00306749
+      ],
+      [
+        "2027-01-22",
+        0.00329843
+      ],
+      [
+        "2027-01-29",
+        0.00352996
+      ],
+      [
+        "2027-02-05",
+        0.00376089
+      ],
+      [
+        "2027-02-12",
+        0.00399
+      ],
+      [
+        "2027-02-19",
+        0.00421608
+      ],
+      [
+        "2027-02-26",
+        0.00443793
+      ],
+      [
+        "2027-03-05",
+        0.00465437
+      ],
+      [
+        "2027-03-12",
+        0.00483719
+      ],
+      [
+        "2027-03-19",
+        0.00504326
+      ],
+      [
+        "2027-03-26",
+        0.00523918
+      ],
+      [
+        "2027-04-02",
+        0.00542816
+      ],
+      [
+        "2027-04-09",
+        0.00560716
+      ],
+      [
+        "2027-04-23",
+        0.00577545
+      ],
+      [
+        "2027-04-30",
+        0.00593241
+      ],
+      [
+        "2027-05-07",
+        0.00607753
+      ],
+      [
+        "2027-05-14",
+        0.00621043
+      ],
+      [
+        "2027-05-21",
+        0.00633088
+      ],
+      [
+        "2027-05-28",
+        0.00643875
+      ],
+      [
+        "2027-06-04",
+        0.00653407
+      ],
+      [
+        "2027-06-11",
+        0.00661697
+      ],
+      [
+        "2027-06-18",
+        0.00668773
+      ],
+      [
+        "2027-06-25",
+        0.00674672
+      ],
+      [
+        "2027-07-02",
+        0.00669041
+      ],
+      [
+        "2027-07-09",
+        0.00671728
+      ],
+      [
+        "2027-07-16",
+        0.00672735
+      ],
+      [
+        "2027-07-23",
+        0.00673555
+      ],
+      [
+        "2027-08-06",
+        0.00673601
+      ],
+      [
+        "2027-08-13",
+        0.00672959
+      ],
+      [
+        "2027-08-20",
+        0.00671714
+      ],
+      [
+        "2027-08-27",
+        0.00669952
+      ],
+      [
+        "2027-09-10",
+        0.00667758
+      ],
+      [
+        "2027-09-17",
+        0.00665214
+      ],
+      [
+        "2027-09-24",
+        0.00662399
+      ],
+      [
+        "2027-10-01",
+        0.00659388
+      ],
+      [
+        "2027-10-08",
+        0.00656251
+      ],
+      [
+        "2027-10-15",
+        0.00653053
+      ],
+      [
+        "2027-10-22",
+        0.00639122
+      ],
+      [
+        "2027-10-29",
+        0.00636091
+      ],
+      [
+        "2027-11-05",
+        0.00632427
+      ],
+      [
+        "2027-11-12",
+        0.00629703
+      ],
+      [
+        "2027-11-19",
+        0.00619096
+      ],
+      [
+        "2027-11-26",
+        0.00617053
+      ],
+      [
+        "2027-12-03",
+        0.00614672
+      ],
+      [
+        "2027-12-10",
+        0.00613132
+      ],
+      [
+        "2027-12-14",
+        0.00611836
+      ],
+      [
+        "2027-12-21",
+        0.00610779
+      ],
+      [
+        "2027-12-28",
+        0.00609955
+      ],
+      [
+        "2028-01-04",
+        0.00609351
+      ],
+      [
+        "2028-01-11",
+        0.00608956
+      ],
+      [
+        "2028-01-18",
+        0.00608753
+      ],
+      [
+        "2028-01-25",
+        0.00608727
+      ],
+      [
+        "2028-02-01",
+        0.00608858
+      ],
+      [
+        "2028-02-08",
+        0.0060913
+      ],
+      [
+        "2028-02-15",
+        0.00609523
+      ],
+      [
+        "2028-02-22",
+        0.00610862
+      ],
+      [
+        "2028-02-29",
+        0.00611367
+      ],
+      [
+        "2028-03-07",
+        0.00612005
+      ],
+      [
+        "2028-03-14",
+        0.00612633
+      ],
+      [
+        "2028-03-21",
+        0.00613298
+      ],
+      [
+        "2028-04-04",
+        0.00613986
+      ],
+      [
+        "2028-04-11",
+        0.0061468
+      ],
+      [
+        "2028-04-18",
+        0.00615367
+      ],
+      [
+        "2028-04-25",
+        0.00616033
+      ],
+      [
+        "2028-05-02",
+        0.00616666
+      ],
+      [
+        "2028-05-09",
+        0.00617255
+      ],
+      [
+        "2028-05-16",
+        0.00617791
+      ],
+      [
+        "2028-05-23",
+        0.00618264
+      ],
+      [
+        "2028-05-30",
+        0.00618666
+      ],
+      [
+        "2028-06-06",
+        0.0061899
+      ],
+      [
+        "2028-06-13",
+        0.00619051
+      ],
+      [
+        "2028-06-20",
+        0.00619225
+      ],
+      [
+        "2028-06-27",
+        0.00619289
+      ],
+      [
+        "2028-07-04",
+        0.00619265
+      ],
+      [
+        "2028-07-18",
+        0.00619136
+      ],
+      [
+        "2028-07-25",
+        0.006189
+      ],
+      [
+        "2028-08-01",
+        0.00618555
+      ],
+      [
+        "2028-08-08",
+        0.00618098
+      ],
+      [
+        "2028-08-22",
+        0.0061753
+      ],
+      [
+        "2028-08-29",
+        0.00616849
+      ],
+      [
+        "2028-09-05",
+        0.00616054
+      ],
+      [
+        "2028-09-12",
+        0.00615145
+      ],
+      [
+        "2028-09-19",
+        0.00614123
+      ],
+      [
+        "2028-09-26",
+        0.00612987
+      ],
+      [
+        "2028-10-03",
+        0.0061173
+      ],
+      [
+        "2028-10-10",
+        0.00610369
+      ],
+      [
+        "2028-10-17",
+        0.00608896
+      ],
+      [
+        "2028-10-24",
+        0.00607311
+      ],
+      [
+        "2028-10-31",
+        0.00605614
+      ],
+      [
+        "2028-11-07",
+        0.00603809
+      ],
+      [
+        "2028-11-14",
+        0.00601896
+      ],
+      [
+        "2028-11-21",
+        0.00599876
+      ],
+      [
+        "2028-11-25",
+        0.00597751
+      ],
+      [
+        "2028-12-02",
+        0.0059552
+      ],
+      [
+        "2028-12-09",
+        0.00593187
+      ],
+      [
+        "2028-12-16",
+        0.00590753
+      ],
+      [
+        "2028-12-23",
+        0.00588218
+      ],
+      [
+        "2028-12-30",
+        0.00585586
+      ],
+      [
+        "2029-01-06",
+        0.00582857
+      ],
+      [
+        "2029-01-13",
+        0.00580033
+      ],
+      [
+        "2029-01-20",
+        0.00577117
+      ],
+      [
+        "2029-01-27",
+        0.0057411
+      ],
+      [
+        "2029-02-03",
+        0.00571014
+      ],
+      [
+        "2029-02-10",
+        0.0056783
+      ],
+      [
+        "2029-02-17",
+        0.00564562
+      ],
+      [
+        "2029-02-24",
+        0.00561211
+      ],
+      [
+        "2029-03-03",
+        0.00557778
+      ],
+      [
+        "2029-03-17",
+        0.00554267
+      ],
+      [
+        "2029-03-24",
+        0.00550679
+      ],
+      [
+        "2029-03-31",
+        0.00547017
+      ],
+      [
+        "2029-04-07",
+        0.00543282
+      ],
+      [
+        "2029-04-14",
+        0.00539477
+      ],
+      [
+        "2029-04-21",
+        0.00535604
+      ],
+      [
+        "2029-04-28",
+        0.00531666
+      ],
+      [
+        "2029-05-05",
+        0.00527664
+      ],
+      [
+        "2029-05-12",
+        0.00523601
+      ],
+      [
+        "2029-05-19",
+        0.0051948
+      ],
+      [
+        "2029-05-26",
+        0.00515302
+      ],
+      [
+        "2029-06-02",
+        0.0051107
+      ],
+      [
+        "2029-06-09",
+        0.00506786
+      ],
+      [
+        "2029-06-16",
+        0.00502453
+      ],
+      [
+        "2029-06-30",
+        0.00498072
+      ],
+      [
+        "2029-07-07",
+        0.00493647
+      ],
+      [
+        "2029-07-14",
+        0.0048918
+      ],
+      [
+        "2029-07-21",
+        0.00484673
+      ],
+      [
+        "2029-08-04",
+        0.00480127
+      ],
+      [
+        "2029-08-11",
+        0.00475547
+      ],
+      [
+        "2029-08-18",
+        0.00470934
+      ],
+      [
+        "2029-08-25",
+        0.00466289
+      ],
+      [
+        "2029-09-01",
+        0.00461617
+      ],
+      [
+        "2029-09-08",
+        0.00456918
+      ],
+      [
+        "2029-09-15",
+        0.00452196
+      ],
+      [
+        "2029-09-22",
+        0.00447451
+      ],
+      [
+        "2029-09-29",
+        0.00442688
+      ],
+      [
+        "2029-10-06",
+        0.00437907
+      ],
+      [
+        "2029-10-13",
+        0.00433112
+      ],
+      [
+        "2029-10-20",
+        0.00428303
+      ],
+      [
+        "2029-10-27",
+        0.00423484
+      ],
+      [
+        "2029-11-03",
+        0.00418656
+      ],
+      [
+        "2029-11-07",
+        0.00413822
+      ],
+      [
+        "2029-11-14",
+        0.00408983
+      ],
+      [
+        "2029-11-21",
+        0.00404142
+      ],
+      [
+        "2029-11-28",
+        0.00399301
+      ],
+      [
+        "2029-12-05",
+        0.0039446
+      ],
+      [
+        "2029-12-12",
+        0.00389624
+      ],
+      [
+        "2029-12-19",
+        0.00384792
+      ],
+      [
+        "2029-12-26",
+        0.00379968
+      ],
+      [
+        "2030-01-02",
+        0.00375153
+      ],
+      [
+        "2030-01-09",
+        0.00370348
+      ],
+      [
+        "2030-01-16",
+        0.00365555
+      ],
+      [
+        "2030-01-23",
+        0.00360777
+      ],
+      [
+        "2030-01-30",
+        0.00356014
+      ],
+      [
+        "2030-02-06",
+        0.00351268
+      ],
+      [
+        "2030-02-13",
+        0.00346541
+      ],
+      [
+        "2030-02-27",
+        0.00341835
+      ],
+      [
+        "2030-03-06",
+        0.0033715
+      ],
+      [
+        "2030-03-13",
+        0.00332488
+      ],
+      [
+        "2030-03-20",
+        0.00327851
+      ],
+      [
+        "2030-03-27",
+        0.00323239
+      ],
+      [
+        "2030-04-03",
+        0.00318655
+      ],
+      [
+        "2030-04-10",
+        0.00314098
+      ],
+      [
+        "2030-04-17",
+        0.00309571
+      ],
+      [
+        "2030-04-24",
+        0.00305075
+      ],
+      [
+        "2030-05-01",
+        0.0030061
+      ],
+      [
+        "2030-05-08",
+        0.00296178
+      ],
+      [
+        "2030-05-15",
+        0.0029178
+      ],
+      [
+        "2030-05-22",
+        0.00287416
+      ],
+      [
+        "2030-05-29",
+        0.00283087
+      ],
+      [
+        "2030-06-12",
+        0.00278795
+      ],
+      [
+        "2030-06-19",
+        0.0027454
+      ],
+      [
+        "2030-06-26",
+        0.00270323
+      ],
+      [
+        "2030-07-03",
+        0.00266144
+      ],
+      [
+        "2030-07-17",
+        0.00262004
+      ],
+      [
+        "2030-07-24",
+        0.00257904
+      ],
+      [
+        "2030-07-31",
+        0.00253845
+      ],
+      [
+        "2030-08-07",
+        0.00249826
+      ],
+      [
+        "2030-08-14",
+        0.00245849
+      ],
+      [
+        "2030-08-21",
+        0.00241914
+      ],
+      [
+        "2030-08-28",
+        0.00238021
+      ],
+      [
+        "2030-09-04",
+        0.0023417
+      ],
+      [
+        "2030-09-11",
+        0.00230363
+      ],
+      [
+        "2030-09-18",
+        0.00226599
+      ],
+      [
+        "2030-09-25",
+        0.00222878
+      ],
+      [
+        "2030-10-02",
+        0.002192
+      ],
+      [
+        "2030-10-09",
+        0.00215567
+      ],
+      [
+        "2030-10-16",
+        0.00211977
+      ],
+      [
+        "2030-10-20",
+        0.00208432
+      ],
+      [
+        "2030-10-27",
+        0.00204931
+      ],
+      [
+        "2030-11-03",
+        0.00201474
+      ],
+      [
+        "2030-11-10",
+        0.00198061
+      ],
+      [
+        "2030-11-17",
+        0.00194692
+      ],
+      [
+        "2030-11-24",
+        0.00191368
+      ],
+      [
+        "2030-12-01",
+        0.00188087
+      ],
+      [
+        "2030-12-08",
+        0.0018485
+      ],
+      [
+        "2030-12-15",
+        0.00181658
+      ],
+      [
+        "2030-12-22",
+        0.00178508
+      ],
+      [
+        "2030-12-29",
+        0.00175403
+      ],
+      [
+        "2031-01-05",
+        0.0017234
+      ],
+      [
+        "2031-01-12",
+        0.00169321
+      ],
+      [
+        "2031-01-19",
+        0.00164269
+      ],
+      [
+        "2031-01-26",
+        0.00159192
+      ],
+      [
+        "2031-02-09",
+        0.00153947
+      ],
+      [
+        "2031-02-16",
+        0.0014868
+      ],
+      [
+        "2031-02-23",
+        0.00143397
+      ],
+      [
+        "2031-03-02",
+        0.00138104
+      ],
+      [
+        "2031-03-09",
+        0.00132807
+      ],
+      [
+        "2031-03-16",
+        0.00127514
+      ],
+      [
+        "2031-03-23",
+        0.00122234
+      ],
+      [
+        "2031-03-30",
+        0.00116973
+      ],
+      [
+        "2031-04-06",
+        0.00111766
+      ],
+      [
+        "2031-04-13",
+        0.00106593
+      ],
+      [
+        "2031-04-20",
+        0.00101467
+      ],
+      [
+        "2031-04-27",
+        0.00096395
+      ],
+      [
+        "2031-05-04",
+        0.00091387
+      ],
+      [
+        "2031-05-11",
+        0.00086455
+      ],
+      [
+        "2031-05-25",
+        0.00081607
+      ],
+      [
+        "2031-06-01",
+        0.00076854
+      ],
+      [
+        "2031-06-08",
+        0.00072205
+      ],
+      [
+        "2031-06-15",
+        0.0006767
+      ],
+      [
+        "2031-06-29",
+        0.00063257
+      ],
+      [
+        "2031-07-06",
+        0.00058974
+      ],
+      [
+        "2031-07-13",
+        0.0005483
+      ],
+      [
+        "2031-07-20",
+        0.0005083
+      ],
+      [
+        "2031-07-27",
+        0.00046981
+      ],
+      [
+        "2031-08-03",
+        0.00043375
+      ],
+      [
+        "2031-08-10",
+        0.00039933
+      ],
+      [
+        "2031-08-17",
+        0.00036663
+      ],
+      [
+        "2031-08-24",
+        0.0003356
+      ],
+      [
+        "2031-08-31",
+        0.00030625
+      ],
+      [
+        "2031-09-07",
+        0.00027857
+      ],
+      [
+        "2031-09-14",
+        0.00025255
+      ],
+      [
+        "2031-09-21",
+        0.00022816
+      ],
+      [
+        "2031-09-28",
+        0.00020538
+      ],
+      [
+        "2031-10-02",
+        0.00018416
+      ],
+      [
+        "2031-10-09",
+        0.00016447
+      ],
+      [
+        "2031-10-16",
+        0.00014626
+      ],
+      [
+        "2031-10-23",
+        0.00012946
+      ],
+      [
+        "2031-10-30",
+        0.00011402
+      ],
+      [
+        "2031-11-06",
+        0.00010078
+      ],
+      [
+        "2031-11-13",
+        8.872e-05
+      ],
+      [
+        "2031-11-20",
+        7.783e-05
+      ],
+      [
+        "2031-11-27",
+        6.798e-05
+      ],
+      [
+        "2031-12-04",
+        5.977e-05
+      ],
+      [
+        "2031-12-11",
+        5.24e-05
+      ],
+      [
+        "2031-12-18",
+        4.586e-05
+      ],
+      [
+        "2031-12-25",
+        4.002e-05
+      ],
+      [
+        "2032-01-01",
+        3.484e-05
+      ],
+      [
+        "2032-01-08",
+        3.024e-05
+      ],
+      [
+        "2032-01-22",
+        2.619e-05
+      ],
+      [
+        "2032-01-29",
+        2.261e-05
+      ],
+      [
+        "2032-02-05",
+        1.948e-05
+      ],
+      [
+        "2032-02-12",
+        1.674e-05
+      ],
+      [
+        "2032-02-19",
+        1.435e-05
+      ],
+      [
+        "2032-02-26",
+        1.228e-05
+      ],
+      [
+        "2032-03-04",
+        1.048e-05
+      ],
+      [
+        "2032-03-11",
+        8.93e-06
+      ],
+      [
+        "2032-03-18",
+        7.53e-06
+      ],
+      [
+        "2032-03-25",
+        6.32e-06
+      ],
+      [
+        "2032-04-01",
+        5.28e-06
+      ],
+      [
+        "2032-04-08",
+        4.4e-06
+      ],
+      [
+        "2032-04-15",
+        3.65e-06
+      ],
+      [
+        "2032-04-22",
+        3.02e-06
+      ],
+      [
+        "2032-05-06",
+        2.48e-06
+      ],
+      [
+        "2032-05-13",
+        2.03e-06
+      ],
+      [
+        "2032-05-20",
+        1.65e-06
+      ],
+      [
+        "2032-05-27",
+        1.34e-06
+      ],
+      [
+        "2032-06-10",
+        1.08e-06
+      ],
+      [
+        "2032-06-17",
+        8.6e-07
+      ],
+      [
+        "2032-06-24",
+        6.8e-07
+      ],
+      [
+        "2032-07-01",
+        5.3e-07
+      ],
+      [
+        "2032-07-08",
+        4.1e-07
+      ],
+      [
+        "2032-07-15",
+        3.3e-07
+      ],
+      [
+        "2032-07-22",
+        2.6e-07
+      ],
+      [
+        "2032-07-29",
+        2.1e-07
+      ],
+      [
+        "2032-08-05",
+        1.6e-07
+      ],
+      [
+        "2032-08-12",
+        1.3e-07
+      ],
+      [
+        "2032-08-19",
+        1e-07
+      ]
+    ],
+    "ten_chapter_forecast": [
+      {
+        "chapter": 431,
+        "median": "2028-09-19",
+        "i50": [
+          "2027-11-19",
+          "2029-08-18"
+        ],
+        "i80": [
+          "2027-06-04",
+          "2030-05-29"
+        ]
+      },
+      {
+        "chapter": 432,
+        "median": "2028-09-26",
+        "i50": [
+          "2027-11-26",
+          "2029-08-25"
+        ],
+        "i80": [
+          "2027-06-11",
+          "2030-06-12"
+        ]
+      },
+      {
+        "chapter": 433,
+        "median": "2028-10-03",
+        "i50": [
+          "2027-12-03",
+          "2029-09-01"
+        ],
+        "i80": [
+          "2027-06-18",
+          "2030-06-19"
+        ]
+      },
+      {
+        "chapter": 434,
+        "median": "2028-10-10",
+        "i50": [
+          "2027-12-10",
+          "2029-09-08"
+        ],
+        "i80": [
+          "2027-06-25",
+          "2030-06-26"
+        ]
+      },
+      {
+        "chapter": 435,
+        "median": "2028-10-17",
+        "i50": [
+          "2027-12-14",
+          "2029-09-15"
+        ],
+        "i80": [
+          "2027-07-02",
+          "2030-07-03"
+        ]
+      },
+      {
+        "chapter": 436,
+        "median": "2028-10-24",
+        "i50": [
+          "2027-12-21",
+          "2029-09-22"
+        ],
+        "i80": [
+          "2027-07-09",
+          "2030-07-17"
+        ]
+      },
+      {
+        "chapter": 437,
+        "median": "2028-10-31",
+        "i50": [
+          "2027-12-28",
+          "2029-09-29"
+        ],
+        "i80": [
+          "2027-07-16",
+          "2030-07-24"
+        ]
+      },
+      {
+        "chapter": 438,
+        "median": "2028-11-07",
+        "i50": [
+          "2028-01-04",
+          "2029-10-06"
+        ],
+        "i80": [
+          "2027-07-23",
+          "2030-07-31"
+        ]
+      },
+      {
+        "chapter": 439,
+        "median": "2028-11-14",
+        "i50": [
+          "2028-01-18",
+          "2029-10-13"
+        ],
+        "i80": [
+          "2027-08-06",
+          "2030-08-07"
+        ]
+      },
+      {
+        "chapter": 440,
+        "median": "2028-11-21",
+        "i50": [
+          "2028-01-25",
+          "2029-10-20"
+        ],
+        "i80": [
+          "2027-08-13",
+          "2030-08-14"
+        ]
+      }
+    ],
+    "evidence": "The Level 1 gap prior convolved with the direct predecessor posterior. Following-batch production events are not reused here.",
+    "level1_gap_prior": {
+      "family": "kernel",
+      "separate_zero_mode": true
+    },
+    "conditional_scenarios": []
+  },
+  "correlation_note": "Each historical batch contributes ONE feasibility ramp. The ordered chapter states summarise correlated tweets; treating chapters or events as independent would badly over-sharpen the posterior. Direct observations and order-inferred floors remain separately recorded."
+}
