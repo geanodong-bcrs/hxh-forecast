@@ -1033,3 +1033,12 @@ polled_utc,polled_jst,run_id,new_posts,new_tweet_ids,review_changed,daily,action
 2026-10-22T13:03:03.969652+00:00,2026-10-22,20261022T130303Z,0,,0,0,no_change,
 2026-10-22T14:00:20.475537+00:00,2026-10-22,20261022T140020Z,0,,0,0,no_change,
 2026-10-22T15:05:08.545324+00:00,2026-10-23,20261022T150508Z,0,,0,0,no_change,
+2026-10-22T15:05:09.801628+00:00,2026-10-23,20261022T150509Z,0,,0,1,forecast,scheduled daily run
+2026-10-22T16:00:18.880903+00:00,2026-10-23,20261022T160018Z,0,,0,0,no_change,
+2026-10-22T17:41:41.862396+00:00,2026-10-23,20261022T174141Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-22T18:20:00.080023+00:00,2026-10-23,20261022T182000Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-22T21:23:21.424089+00:00,2026-10-23,20261022T212321Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-23T00:26:39.123564+00:00,2026-10-23,20261023T002639Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-23T03:29:54.912341+00:00,2026-10-23,20261023T032954Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-23T05:32:06.974607+00:00,2026-10-23,20261023T053206Z,,,,,poll_failed,fetch_x_api.py exited non-zero
+2026-10-23T13:03:19.195365+00:00,2026-10-23,20261023T130319Z,,,,,poll_failed,fetch_x_api.py exited non-zero
