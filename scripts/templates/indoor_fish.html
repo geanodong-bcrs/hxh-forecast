@@ -1,0 +1,704 @@
+<!doctype html><html lang=en><meta charset=utf-8><meta name=viewport content="width=device-width,initial-scale=1">
+<title>Indoor Fish</title>
+<meta name=description content="Hunter × Hunter production progress, drawn as Chrollo's Indoor Fish eating Togashi's manuscripts.">
+<style>
+:root{--bg:#fff;--fg:#14161a;--mut:#697079;--line:#e4e7ec;--accent:#2f6fd0;--pend:#c8901a}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1115;--fg:#e8eaed;
+ --mut:#98a1ac;--line:#272b33;--accent:#6fa8ff;--pend:#e0b44a}}
+:root[data-theme="dark"]{--bg:#0f1115;--fg:#e8eaed;--mut:#98a1ac;--line:#272b33;--accent:#6fa8ff;--pend:#e0b44a}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--fg);
+ font:15px/1.6 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+ "Hiragino Sans","Hiragino Kaku Gothic ProN","Noto Sans JP",Meiryo,sans-serif}
+.wrap{max-width:1280px;margin:0 auto;padding:24px 16px 48px}
+.top{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.top .name{font-weight:600}
+.top .name small{font-weight:400;color:var(--mut);margin-left:6px}
+nav.rooms a{margin-left:14px;color:var(--mut);text-decoration:none;font-size:14px}
+nav.rooms a[aria-current]{color:var(--fg);font-weight:600;border-bottom:2px solid var(--pend)}
+h1{font-size:28px;line-height:1.2;margin:18px 0 2px}
+.status{color:var(--mut);font-size:15px;font-variant-numeric:tabular-nums}
+.status b{color:var(--pend);font-weight:600}
+canvas{display:block;width:100%;margin:14px 0 8px;border-radius:4px;touch-action:manipulation;background:#0b0d11}
+figure{margin:0}
+figcaption{color:var(--mut);font-size:14px;min-height:1.6em}
+.key{margin-top:24px;color:var(--mut);font-size:13px;border-top:1px solid var(--line);padding-top:14px;max-width:760px}
+.key p{margin:4px 0}
+a{color:var(--accent)}
+</style>
+<div class=wrap>
+<div class=top>
+ <span class=name>Indoor Fish<small>密室遊魚</small></span>
+ <nav class=rooms id=nav></nav>
+</div>
+<h1 id=title></h1>
+<div class=status id=status></div>
+<figure><canvas aria-hidden=true></canvas><figcaption id=caption></figcaption></figure>
+<div class=key>
+<p>Chrollo's Indoor Fish can only live in a sealed room. You are standing in one with them.
+It holds ten of Togashi's manuscripts, and the two fish eat each one as he draws it.
+A fully eaten room is a finished batch. When the batch begins in Weekly Shōnen Jump, the room is
+opened and the fish are gone.</p>
+<p>Eaten = drawn, from Togashi's production posts on X.</p>
+<p>Progress as of <span id=asof></span>. <a href="index.html">When is the next chapter out? →</a>
+· ASCII rendering adapted from <a href="https://github.com/stackedlol/ascii-sharks">ascii-sharks</a> (MIT).</p>
+</div>
+</div>
+<script>
+const DATA = __DATA__;
+
+// ---------------------------------------------------------------------------
+// We stand inside the room, looking at the far wall. Points in the room are
+// (u, v, z): u across, v down, z depth (0 = where we stand, 1 = the far wall),
+// projected by interpolating the view frame and the far wall.
+//
+// The fish follow ascii-sharks (MIT, github.com/stackedlol/ascii-sharks): a
+// follow-the-leader spine with a travelling body wave, rasterised by
+// supersampling every grid cell against the body shape and painted as shaded
+// blocks with glyphs. The shape is the manga's: a big blunt white head with one
+// black eye and an underbite, a long eel body of chevron plates, needle spines
+// along both edges, scythe pectoral fins and a thin forked tail.
+// ---------------------------------------------------------------------------
+const MONO = 'ui-monospace,"SF Mono",Menlo,Consolas,"DejaVu Sans Mono",monospace';
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const TAU = Math.PI * 2;
+const clamp = (x, lo, hi) => x < lo ? lo : x > hi ? hi : x;
+const lerp = (a, b, t) => a + (b - a) * t;
+const rand = (lo, hi) => lo + Math.random() * (hi - lo);
+const smoothstep = (e0, e1, x) => { const t = clamp((x - e0) / (e1 - e0), 0, 1); return t * t * (3 - 2 * t); };
+function angleDiff(a, b) { let d = (b - a) % TAU; if (d > Math.PI) d -= TAU; if (d < -Math.PI) d += TAU; return d; }
+function hash3(x, y, z) {
+  let h = Math.imul(x | 0, 374761393) ^ Math.imul(y | 0, 668265263) ^ Math.imul(z | 0, 1442695041);
+  h = Math.imul(h ^ (h >>> 13), 1274126177);
+  h ^= h >>> 16;
+  return (h >>> 0) / 4294967296;
+}
+
+// The scene is always night-dark, whatever the page theme: it is a sealed room.
+const PAL = {bg: "#0b0d11", dust: [44, 50, 60], star: [150, 165, 190], wake: [110, 200, 235], edge: "#232832",
+  floor: "#1a1f27", paper: [238, 210, 140], paperBg: [96, 76, 34], ghost: "#3a404a", crumb: "#c8a15a",
+  teeth: "#eef0f3", eye: "#050608", seam: "#0b0d11"};
+const TINT = [0.9, 0.95, 1.04];
+const ACCENTS = ["#3987e5", "#33c8cc", "#b44ae0", "#6fa8ff", "#e0b44a"];
+const PLATE_GLYPHS = ".:'`", HEAD_GLYPHS = " .:;", EDGE_HEAVY = ":;", EDGE_LIGHT = ".',`";
+const N = 40;                         // spine nodes
+const HEAD = 0.15;                    // head length, as a fraction of body length
+const JAW = 0.09;                     // jaw length
+const PLATE = 0.042;                  // chevron plate pitch
+const SWEEP = 0.9;                    // how far back a plate's arms reach per unit of depth
+const SUB = [0.25, 0.3, 0.75, 0.3, 0.25, 0.72, 0.75, 0.72];
+const BODY = 1, HEADF = 2, FIN = 3, SEAM = 4, EYE = 5, GLINT = 6, TEETH = 7;
+// Two fish, as in the manga: one close to us, one further into the room. Each
+// eats from the row of manuscripts at its own depth.
+const FISH = [{z: 0.42, scale: 0.5, row: "back"}, {z: 0.06, scale: 0.72, row: "front"}];
+
+/** Half the body depth at s (0 = snout, 1 = tail), as a fraction of length. */
+function halfDepth(s) {
+  if (s < 0.045) return 0.062 * Math.pow(Math.sin((s / 0.045) * Math.PI / 2), 0.55);
+  if (s < 0.1) return 0.062;
+  if (s < 0.16) return lerp(0.062, 0.025, smoothstep(0.1, 0.16, s));
+  if (s < 0.92) return lerp(0.025, 0.012, (s - 0.16) / 0.76);
+  return lerp(0.012, 0.006, (s - 0.92) / 0.08);
+}
+const rgb = (l, a = 1) => `rgba(${Math.min(255, Math.round(l * TINT[0]))},${Math.min(255, Math.round(l * TINT[1]))},${Math.min(255, Math.round(l * TINT[2] + 4))},${a})`;
+/** The unit normal of a tangent that points up the screen: the fish's back. */
+function upNormal(tx, ty) { return tx >= 0 ? [ty, -tx] : [-ty, tx]; }
+
+class Scene {
+  constructor(room) {
+    this.room = room;
+    this.canvas = document.querySelector("canvas");
+    this.ctx = this.canvas.getContext("2d");
+    this.caption = document.getElementById("caption");
+    this.open = room.open;
+    this.pointer = null;
+    this.visible = true;
+    this.t = 0;
+    this.nextId = 1;
+    this.fish = [];
+    this.particles = [];
+    this.spine = new Float32Array(N * 2);
+    this.tan = new Float32Array(N * 2);
+    this.arc = new Float32Array(N);
+    this.hungry = Object.values(room.progress).some(p => p > 0 && p < 1);
+    this.setCaption();
+    new ResizeObserver(() => this.resize()).observe(this.canvas);
+    new IntersectionObserver(([e]) => { this.visible = e.isIntersecting; }).observe(this.canvas);
+    this.canvas.addEventListener("pointermove", e => {
+      const r = this.canvas.getBoundingClientRect();
+      this.pointer = e.pointerType === "touch" ? null : [e.clientX - r.left, e.clientY - r.top];
+    });
+    this.canvas.addEventListener("pointerleave", () => { this.pointer = null; });
+  }
+
+  // ---------- layout ----------
+  resize() {
+    const w = this.canvas.clientWidth;
+    if (w < 50 || w === this.lastW) return;
+    this.lastW = w;
+    const narrow = w < 700;
+    const cols = Math.round(w / (narrow ? Math.max(4.6, w / 78) : 6.5));
+    this.ctx.font = "100px " + MONO;
+    const ratio = this.ctx.measureText("M").width / 100;
+    this.cols = cols;
+    this.cw = w / cols;
+    this.font = this.cw / ratio;
+    this.chh = this.font * 1.25;
+    this.rows = Math.max(30, Math.round(w * (narrow ? 1.15 : 0.6) / this.chh));
+    const h = Math.round(this.rows * this.chh), dpr = Math.min(devicePixelRatio || 1, 2);
+    this.canvas.style.height = h + "px";
+    this.canvas.width = Math.round(w * dpr);
+    this.canvas.height = Math.round(h * dpr);
+    this.ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    this.geometry();
+    this.fish = [];
+    if (!this.open) this.spawn(reduced ? 1 : 0.15);
+    this.draw();
+  }
+
+  geometry() {
+    const C = this.cols, R = this.rows;
+    this.big = C >= 110;
+    this.envW = this.big ? 11 : 7;
+    this.envH = this.big ? 5 : 3;
+    const floorRows = 2 * this.envH + 4, ix = Math.round(C * 0.2);
+    this.F = {x0: 0, x1: C - 1, y0: 0, y1: R - 1};
+    this.B = {x0: ix, x1: C - 1 - ix, y0: Math.round(R * 0.12), y1: R - 1 - floorRows};
+
+    const chs = Object.keys(this.room.progress).map(Number).sort((a, b) => a - b);
+    this.envs = chs.map((ch, i) => {
+      const row = i < 5 ? "front" : "back", z = row === "front" ? 0.1 : 0.55;
+      const [cx, by] = this.project(0.14 + 0.18 * (i % 5), 1, z);
+      const bottom = Math.floor(by);
+      return {ch, p: this.room.progress[ch], row, z, x: Math.round(cx - this.envW / 2), y: bottom - this.envH + 1};
+    });
+
+    const n = C * R;
+    this.gch = new Array(n); this.gfg = new Array(n); this.gbg = new Array(n); this.ga = new Float32Array(n);
+    this.heat = new Float32Array(n);
+    // Motes hanging in the dark, a few of them bright like the manga's stars.
+    this.dust = new Uint8Array(n);
+    for (let y = 1; y < R - 1; y++) for (let x = 1; x < C - 1; x++) {
+      const h = hash3(x, y, 3);
+      if (h < 0.03) this.dust[y * C + x] = h < 0.004 ? 2 : 1;
+    }
+  }
+
+  rectAt(z) {
+    const F = this.F, B = this.B;
+    return {x0: lerp(F.x0, B.x0, z), x1: lerp(F.x1, B.x1, z), y0: lerp(F.y0, B.y0, z), y1: lerp(F.y1, B.y1, z)};
+  }
+  project(u, v, z) { const r = this.rectAt(z); return [r.x0 + u * (r.x1 - r.x0), r.y0 + v * (r.y1 - r.y0)]; }
+  rectPx(z) { const r = this.rectAt(z); return {x0: (r.x0 + 1) * this.cw, x1: r.x1 * this.cw, y0: (r.y0 + 1) * this.chh, y1: r.y1 * this.chh}; }
+  kept(e) { return e.p <= 0 ? this.envW : Math.max(1, Math.round((1 - e.p) * this.envW)); }
+
+  // ---------- fish ----------
+  spawn(alpha) {
+    const W = this.cols * this.cw, narrow = this.cols < 110;
+    FISH.forEach((spec, i) => {
+      const L = spec.scale * W * (narrow ? 1.6 : 1), R = this.rectPx(spec.z);
+      const heading = (i ? 0 : Math.PI) + rand(-0.2, 0.2);
+      const x = lerp(R.x0, R.x1, i ? 0.35 : 0.65), y = lerp(R.y0, R.y1, i ? 0.55 : 0.3);
+      const nodes = new Float32Array(N * 2), seg = L / (N - 1);
+      for (let n = 0; n < N; n++) { nodes[n * 2] = x - Math.cos(heading) * seg * n; nodes[n * 2 + 1] = y - Math.sin(heading) * seg * n; }
+      this.fish.push({id: this.nextId++, z: spec.z, row: spec.row, L, nodes, heading, speed: 30,
+        phase: rand(0, TAU), wander: 0, mode: "swim", env: null, cool: rand(2, 6), t: 0, jaw: 0, alpha});
+    });
+    this.fish.sort((a, b) => b.z - a.z);
+  }
+
+  bitePoint(f) {
+    // Snout at the torn edge, with the mouth (below the head's midline) level with the paper.
+    const e = f.env, edge = e.x + this.kept(e);
+    return [(edge + 0.6) * this.cw + f.L * 0.01, (e.y + this.envH / 2) * this.chh - 0.4 * 0.062 * f.L];
+  }
+
+  stepFish(f, dt) {
+    const L = f.L, n = f.nodes, hx = n[0], hy = n[1], R = this.rectPx(f.z), W = this.cols * this.cw;
+    f.alpha = Math.min(1, f.alpha + dt * 0.7);
+    f.cool -= dt;
+    f.t += dt;
+    let dx = Math.cos(f.heading), dy = Math.sin(f.heading);
+    f.wander = clamp(f.wander + (Math.random() - 0.5) * dt * 3.2, -1.2, 1.2);
+    dx += Math.cos(f.heading + f.wander) * 0.5;
+    dy += Math.sin(f.heading + f.wander) * 0.5;
+    dy -= Math.sin(f.heading) * (f.mode === "swim" ? 0.6 : 0.2);   // drift back toward level
+
+    const feeding = this.fish.some(o => o !== f && o.mode !== "swim");
+    if (f.mode === "swim" && this.hungry && f.cool <= 0 && !feeding && Math.random() < dt * 0.15) {
+      const options = this.envs.filter(e => e.row === f.row && e.p > 0 && e.p < 1);
+      if (options.length) { f.env = options[Math.floor(Math.random() * options.length)]; f.mode = "approach"; f.t = 0; }
+    }
+    let target = null, closing = 0;
+    if (f.mode !== "swim") target = this.bitePoint(f);
+    else if (this.pointer && Math.hypot(this.pointer[0] - hx, this.pointer[1] - hy) < L * 0.6) target = this.pointer;
+    if (target) {
+      const tx = target[0] - hx, ty = target[1] - hy, d = Math.hypot(tx, ty) || 1;
+      const w = f.mode === "swim" ? 1.6 : 3.2;
+      dx += tx / d * w; dy += ty / d * w;
+      closing = clamp(1 - d / (L * 0.3), 0, 1);
+      if (f.mode === "approach" && d < Math.max(this.cw * 2, L * 0.03)) { f.mode = "bite"; f.t = 0; f.biteFor = rand(3, 5.5); }
+      if (f.mode === "approach" && f.t > 16) { f.mode = "swim"; f.env = null; f.cool = rand(2, 5); }
+    }
+
+    const cruise = (this.hungry ? 18 : 12) + L * 0.03;
+    const want = f.mode === "bite" ? 4 : f.mode === "approach" ? cruise * 1.4 : cruise * (1 + closing * 0.5);
+    f.speed += (want - f.speed) * Math.min(1, dt * 1.2);
+    // A long body turns in a wide arc: the turning circle scales with length,
+    // so the body never crosses itself. Homing in on food it turns tighter.
+    const agility = f.mode === "bite" ? 2 : Math.min(target ? 1.5 : 0.8, f.speed / (L * (f.mode === "approach" ? 0.1 : 0.2)));
+
+    // The room is bigger than what we can see of it. A fish turns back at the
+    // edge of our view, so part of the wide arc happens out of sight. It
+    // steers by where it will be one turning circle ahead, not where it is.
+    if (f.mode === "swim") {
+      const top = R.y0 + L * 0.07, bottom = lerp(R.y0, R.y1, 0.8), mid = (top + bottom) / 2;
+      const ahead = f.speed / agility * 1.2, soft = ahead * 0.4;
+      const lx = hx + Math.cos(f.heading) * ahead, ly = hy + Math.sin(f.heading) * ahead;
+      const out = Math.max(-lx, lx - W);
+      if (out > -soft) {
+        const w = clamp((out + soft) / soft, 0, 1.5);
+        dx += Math.sign(W / 2 - hx) * w * 3;
+        dy += Math.sign(mid - hy) * w * 1.2;
+      }
+      if (ly < top + soft) dy += clamp((top + soft - ly) / soft, 0, 2) * 2.2;
+      if (ly > bottom - soft) dy -= clamp((ly - bottom + soft) / soft, 0, 2) * 2.2;
+    }
+
+    let desired = Math.atan2(dy, dx);
+    if (f.mode === "bite") {
+      // Hold at the torn edge, facing the paper.
+      const [bx, by] = this.bitePoint(f);
+      n[0] = lerp(n[0], bx, Math.min(1, dt * 3));
+      n[1] = lerp(n[1], by, Math.min(1, dt * 3));
+      desired = Math.atan2(by - n[1], bx - L * 0.2 - n[0]);
+    }
+    // Turning nearly all the way round, noise could flip the shorter way from
+    // frame to frame and leave the fish going straight; keep the side it chose.
+    let turn = angleDiff(f.heading, desired);
+    if (Math.abs(turn) > 2.4 && f.turnSign) turn = f.turnSign * Math.abs(turn);
+    if (Math.abs(turn) > 0.05) f.turnSign = Math.sign(turn);
+    f.heading += clamp(turn, -agility * dt, agility * dt);
+    f.phase += dt * (1.1 + f.speed / 40);
+    if (f.mode !== "bite") {
+      n[0] += Math.cos(f.heading) * f.speed * dt;
+      n[1] += Math.sin(f.heading) * f.speed * dt;
+    }
+    // Follow-the-leader spine.
+    const seg = L / (N - 1), maxBend = 0.1;
+    let prev = f.heading + Math.PI;
+    for (let k = 1; k < N; k++) {
+      const px = n[(k - 1) * 2], py = n[(k - 1) * 2 + 1];
+      let a = Math.atan2(n[k * 2 + 1] - py, n[k * 2] - px);
+      a = prev + clamp(angleDiff(prev, a), -maxBend, maxBend);
+      n[k * 2] = px + Math.cos(a) * seg;
+      n[k * 2 + 1] = py + Math.sin(a) * seg;
+      prev = a;
+    }
+
+    const jawGoal = f.mode === "bite" ? 0.5 + 0.5 * Math.sin(f.t * 7) : closing > 0.5 ? 0.85 : 0;
+    const before = f.jaw;
+    f.jaw += (jawGoal - f.jaw) * Math.min(1, dt * 10);
+    if (f.mode === "bite") {
+      if (before > 0.5 && f.jaw <= 0.5) this.crumbs(f.env, 3);   // each snap tears off a few scraps
+      if (f.t > f.biteFor) { f.mode = "swim"; f.env = null; f.cool = rand(18, 35); f.heading = -Math.PI / 2 + (Math.random() < 0.5 ? -0.9 : 0.9); f.speed = cruise; }
+    }
+  }
+
+  crumbs(e, k) {
+    const edge = e.x + this.kept(e);
+    for (let i = 0; i < k; i++) {
+      this.particles.push({x: edge + rand(-0.5, 1), y: e.y + rand(0.5, this.envH - 1), vx: rand(-1, 4), vy: rand(-4, -1),
+        floor: e.y + this.envH, life: rand(2, 4), age: 0, ch: ".,'`"[Math.floor(Math.random() * 4)], col: PAL.crumb});
+    }
+  }
+
+  setCaption() {
+    const chs = Object.keys(this.room.progress).map(Number).sort((a, b) => a - b), groups = [];
+    for (const ch of chs) {
+      const p = this.room.progress[ch];
+      const label = p >= 0.999 ? "eaten" : p <= 0 ? "untouched" : Math.abs(p - 0.5) < 0.01 ? "half eaten" : Math.round(p * 100) + "% eaten";
+      const g = groups[groups.length - 1];
+      if (g && g.label === label) g.last = ch; else groups.push({first: ch, last: ch, label});
+    }
+    this.caption.textContent = this.open ? "The room is open and the fish are gone — serialization has started."
+      : groups.map(g => (g.first === g.last ? g.first : g.first + "–" + g.last) + " " + g.label).join(" · ");
+  }
+
+  step(dt) {
+    this.t += dt;
+    for (const f of this.fish) this.stepFish(f, dt);
+    const decay = Math.exp(-dt * 1.1);
+    for (let i = 0; i < this.heat.length; i++) this.heat[i] *= decay;
+    for (const p of this.particles) {
+      p.age += dt;
+      p.vy += 16 * dt; p.x += p.vx * dt; p.y += p.vy * dt;
+      if (p.y >= p.floor) { p.y = p.floor; p.vx = 0; p.vy = 0; }
+    }
+    this.particles = this.particles.filter(p => p.age < p.life);
+  }
+
+  // ---------- grid ----------
+  put(x, y, c, fg, a = 1, bg = null) {
+    x = Math.round(x); y = Math.round(y);
+    if (x < 0 || y < 0 || x >= this.cols || y >= this.rows) return;
+    const i = y * this.cols + x;
+    this.gch[i] = c; this.gfg[i] = fg; this.ga[i] = a; this.gbg[i] = bg;
+  }
+  text(x, y, s, fg, a = 1, bg = null) { for (let k = 0; k < s.length; k++) this.put(x + k, y, s[k], fg, a, bg); }
+  line(x0, y0, x1, y1, c, fg, a = 1) {
+    x0 = Math.round(x0); y0 = Math.round(y0); x1 = Math.round(x1); y1 = Math.round(y1);
+    const dx = Math.abs(x1 - x0), sx = x0 < x1 ? 1 : -1, dy = -Math.abs(y1 - y0), sy = y0 < y1 ? 1 : -1;
+    let err = dx + dy, x = x0, y = y0;
+    for (;;) {
+      this.put(x, y, c, fg, a);
+      if (x === x1 && y === y1) break;
+      const e2 = 2 * err;
+      if (e2 >= dy) { err += dy; x += sx; }
+      if (e2 <= dx) { err += dx; y += sy; }
+    }
+  }
+  /** The glyph that best draws a stroke running along (vx, vy) in pixels. */
+  slant(vx, vy) {
+    let a = Math.atan2(-vy / this.chh, vx / this.cw);
+    if (a < 0) a += Math.PI;
+    return a < Math.PI / 8 || a > Math.PI * 7 / 8 ? "-" : a < Math.PI * 3 / 8 ? "/" : a < Math.PI * 5 / 8 ? "|" : "\\";
+  }
+  /** A thin stroke through pixel points, each cell drawn with the glyph of its direction. */
+  stroke(pts, fg, a) {
+    let last = -1;
+    for (let k = 0; k + 2 < pts.length; k += 2) {
+      const x0 = pts[k], y0 = pts[k + 1], x1 = pts[k + 2], y1 = pts[k + 3];
+      const glyph = this.slant(x1 - x0, y1 - y0);
+      const steps = Math.max(1, Math.ceil(Math.hypot(x1 - x0, y1 - y0) / (Math.min(this.cw, this.chh) * 0.5)));
+      for (let j = 0; j <= steps; j++) {
+        const c = Math.floor(lerp(x0, x1, j / steps) / this.cw), r = Math.floor(lerp(y0, y1, j / steps) / this.chh);
+        if (c < 0 || r < 0 || c >= this.cols || r >= this.rows) continue;
+        const i = r * this.cols + c;
+        if (i === last) continue;
+        last = i;
+        this.gch[i] = glyph; this.gfg[i] = fg; this.ga[i] = a;
+      }
+    }
+  }
+
+  drawRoom() {
+    const {F, B} = this;
+    // Dust in the air, lit up where a fish has just passed; a few motes glint.
+    for (let i = 0; i < this.dust.length; i++) {
+      const d = this.dust[i];
+      if (!d) continue;
+      const h = Math.min(1, this.heat[i] * 1.4), c = d === 2 ? PAL.star : PAL.dust, w = PAL.wake;
+      const tw = d === 2 ? hash3(i, Math.floor(this.t * 1.5), 9) : 0;
+      this.gch[i] = d === 2 ? (tw < 0.15 ? "+" : "·") : h > 0.5 ? ":" : ".";
+      this.gfg[i] = `rgb(${lerp(c[0], w[0], h) | 0},${lerp(c[1], w[1], h) | 0},${lerp(c[2], w[2], h) | 0})`;
+      this.ga[i] = d === 2 ? 0.55 + 0.45 * (tw < 0.15 ? 1 : 0.4) : 1; this.gbg[i] = null;
+    }
+    // Only the floor shows: the far wall's foot, the two corners, the boards.
+    for (let x = B.x0; x <= B.x1; x++) this.put(x, B.y1, "_", PAL.edge);
+    this.line(B.x0, B.y1 + 1, F.x0, F.y1, "/", PAL.edge);
+    this.line(B.x1, B.y1 + 1, F.x1, F.y1, "\\", PAL.edge);
+    for (let y = B.y1 - 1; y > B.y0; y--) {
+      const a = (y - B.y0) / (B.y1 - B.y0);
+      this.put(B.x0, y, "|", PAL.edge, a); this.put(B.x1, y, "|", PAL.edge, a);
+    }
+    for (let k = 1; k < 8; k++) this.line(lerp(F.x0, F.x1, k / 8), F.y1, lerp(B.x0, B.x1, k / 8), B.y1 + 1, ".", PAL.floor);
+  }
+
+  drawEnvelope(e) {
+    const dim = e.row === "front" ? 1 : 0.78, W = this.envW, H = this.envH, num = String(e.ch);
+    const fg = `rgb(${PAL.paper.map(v => Math.round(v * dim)).join(",")})`;
+    const bg = `rgb(${PAL.paperBg.map(v => Math.round(v * dim)).join(",")})`;
+    if (e.p >= 0.999) {
+      // Eaten: only the chapter number is left, as a ghost, with crumbs where it lay.
+      this.text(e.x + Math.floor((W - num.length) / 2), e.y + Math.floor(H / 2), num, PAL.ghost);
+      for (let k = 0; k < W; k++) if (hash3(e.ch, k, 1) < 0.45) this.put(e.x + k, e.y + H - 1, ".,'`"[Math.floor(hash3(k, e.ch, 2) * 4)], PAL.crumb, 0.6 * dim);
+      return;
+    }
+    const rows = this.big ? [" _________ ", "|\\       /|", "| \\     / |", "|  `" + num + "'  |", "|_________|"]
+                          : [" _____ ", "|\\" + num + "/|", "|_____|"];
+    const kept = this.kept(e);
+    for (let r = 0; r < H; r++) {
+      for (let k = 0; k < kept; k++) {
+        const c = rows[r][k];
+        if (r === 0) { if (c !== " ") this.put(e.x + k, e.y, c, fg); continue; }
+        this.put(e.x + k, e.y + r, c, fg, 1, bg);
+      }
+    }
+    if (kept < W) {
+      // A torn, bitten edge, and scraps on the floor beyond it.
+      for (let r = 1; r < H; r++) this.put(e.x + kept, e.y + r, "<({"[(r + e.ch) % 3], fg);
+      for (let k = kept + 1; k < W; k++) if (hash3(e.ch, k, 4) < 0.45) this.put(e.x + k, e.y + H - 1, ".,'"[Math.floor(hash3(k, e.ch, 5) * 3)], PAL.crumb, 0.75 * dim);
+    }
+  }
+
+  renderSpine(f) {
+    const {spine, tan, arc} = this, n = f.nodes, L = f.L;
+    const swim = clamp(f.speed / 40, 0.35, 1.3);
+    // Travelling body wave, growing toward the tail.
+    for (let k = 0; k < N; k++) {
+      const s = k / (N - 1), a = Math.max(0, k - 1), b = Math.min(N - 1, k + 1);
+      let tx = n[b * 2] - n[a * 2], ty = n[b * 2 + 1] - n[a * 2 + 1];
+      const tl = Math.hypot(tx, ty) || 1;
+      tx /= tl; ty /= tl;
+      const off = L * 0.03 * (0.05 + 0.95 * Math.pow(s, 1.5)) * swim * Math.sin(f.phase - s * 7);
+      spine[k * 2] = n[k * 2] - ty * off;
+      spine[k * 2 + 1] = n[k * 2 + 1] + tx * off;
+    }
+    arc[0] = 0;
+    for (let k = 1; k < N; k++) arc[k] = arc[k - 1] + Math.hypot(spine[k * 2] - spine[k * 2 - 2], spine[k * 2 + 1] - spine[k * 2 - 1]);
+    this.arcTotal = arc[N - 1] || 1;
+    for (let k = 0; k < N; k++) {
+      const a = Math.max(0, k - 1), b = Math.min(N - 1, k + 1);
+      const tx = spine[b * 2] - spine[a * 2], ty = spine[b * 2 + 1] - spine[a * 2 + 1], tl = Math.hypot(tx, ty) || 1;
+      tan[k * 2] = tx / tl; tan[k * 2 + 1] = ty / tl;
+    }
+  }
+
+  /** Point and tangent (head to tail) on the spine at s. */
+  spineAt(s) {
+    const {spine, tan, arc} = this, want = clamp(s, 0, 1) * this.arcTotal;
+    let k = 0;
+    while (k < N - 2 && arc[k + 1] < want) k++;
+    const u = clamp((want - arc[k]) / ((arc[k + 1] - arc[k]) || 1), 0, 1);
+    let tx = lerp(tan[k * 2], tan[k * 2 + 2], u), ty = lerp(tan[k * 2 + 1], tan[k * 2 + 3], u);
+    const tl = Math.hypot(tx, ty) || 1;
+    return [lerp(spine[k * 2], spine[k * 2 + 2], u), lerp(spine[k * 2 + 1], spine[k * 2 + 3], u), tx / tl, ty / tl];
+  }
+
+  /** Is the pixel inside fish f? Sets hitFlag / hitShade / hitS / hitV / hitDist / hitDir. */
+  sample(px, py, f) {
+    const {spine, arc} = this, L = f.L;
+    // The forked tail, past the end of the spine.
+    {
+      const ex = spine[(N - 1) * 2], ey = spine[(N - 1) * 2 + 1], tx = this.tan[(N - 1) * 2], ty = this.tan[(N - 1) * 2 + 1];
+      const t = (px - ex) * tx + (py - ey) * ty, w = Math.abs(-(px - ex) * ty + (py - ey) * tx), Lt = L * 0.085;
+      if (t > -L * 0.02 && t < Lt) {
+        const k = clamp(t / Lt, 0, 1), outer = L * (0.008 + 0.072 * Math.pow(k, 0.8)), inner = L * 0.078 * Math.pow(k, 2.2);
+        if (w <= outer && w >= inner) { this.hitFlag = FIN; this.hitShade = 0.62; this.hitS = 1; this.hitV = w; this.hitDist = 0; return true; }
+      }
+    }
+    if (this.finHit(px, py, this.fins[1])) return true;            // the near pectoral fin, over the body
+    let best = Infinity, bestS = 0, bk = 0, bqx = 0, bqy = 0;
+    for (let k = 0; k < N - 1; k++) {
+      const ax = spine[k * 2], ay = spine[k * 2 + 1], sx = spine[k * 2 + 2] - ax, sy = spine[k * 2 + 3] - ay;
+      const len2 = sx * sx + sy * sy || 1, u = clamp(((px - ax) * sx + (py - ay) * sy) / len2, 0, 1);
+      const qx = ax + sx * u, qy = ay + sy * u, d2 = (px - qx) ** 2 + (py - qy) ** 2;
+      if (d2 < best) { best = d2; bestS = (arc[k] + u * Math.sqrt(len2)) / this.arcTotal; bk = k; bqx = qx; bqy = qy; }
+    }
+    const s = bestS, hw = halfDepth(s) * L;
+    let tx = spine[bk * 2 + 2] - spine[bk * 2], ty = spine[bk * 2 + 3] - spine[bk * 2 + 1];
+    const tl = Math.hypot(tx, ty) || 1;
+    tx /= tl; ty /= tl;
+    const [nx, ny] = upNormal(tx, ty);
+    const v = (px - bqx) * nx + (py - bqy) * ny, up = v > 0, av = Math.abs(v);
+    this.hitDist = Math.sqrt(best); this.hitS = s; this.hitV = v;
+    if (av > hw) return this.finHit(px, py, this.fins[0]);         // the far one shows only outside the body
+    const across = av / (hw || 1);
+
+    if (s < HEAD) {
+      // The jaw: an underbite below the head's midline, toothed when open.
+      const vc = -0.4 * hw, dv = Math.abs(v - vc);
+      if (s < JAW) {
+        const open = (1 - s / JAW) * f.jaw * hw * 0.9;
+        if (dv < open && s > 0.004) return false;                    // inside the open mouth
+        const band = Math.max(L * 0.008, this.chh * 0.45) * (1 - s / JAW * 0.4);
+        if (f.jaw > 0.08 && s > 0.008 && s < JAW * 0.92 && dv < open + band) {
+          this.hitFlag = TEETH; this.hitShade = v > vc ? 1 : 0; return true;
+        }
+        if (f.jaw <= 0.08 && s > 0.006 && s < JAW * 0.85 && dv < this.chh * 0.4) {
+          this.hitFlag = SEAM; this.hitDir = [tx, ty]; this.hitShade = 0.6; return true;   // the closed lips
+        }
+      }
+      // One big round black eye, low on the head.
+      const r = L * 0.021, es = (s - 0.058) * L, ev = v + 0.12 * hw;
+      if (es * es + ev * ev < r * r) {
+        const gs = es + r * 0.4, gv = ev - r * 0.4;
+        this.hitFlag = gs * gs + gv * gv < r * r * 0.07 ? GLINT : EYE; return true;
+      }
+      // Smooth, pale, lit from above.
+      this.hitFlag = HEADF;
+      this.hitShade = 0.86 - across * across * 0.28 + (up ? 0.06 : -0.16) * across - smoothstep(0.11, HEAD, s) * 0.12;
+      return true;
+    }
+    // The body: rows of chevron plates, their arms swept back toward the head.
+    const q = (s * L + SWEEP * av) / (PLATE * L), fr = q - Math.floor(q);
+    if (fr * PLATE * L < this.cw * 0.95) {
+      const sg = up ? 1 : -1;
+      this.hitFlag = SEAM; this.hitShade = 0.55;
+      this.hitDir = [-SWEEP * sg * tx + nx, -SWEEP * sg * ty + ny];
+      return true;
+    }
+    this.hitFlag = BODY;
+    this.hitShade = 0.72 - across * across * 0.3 + (up ? 0.1 : -0.12) * across + (0.5 - fr) * 0.14 - s * 0.12;
+    return true;
+  }
+
+  /** Needle spines along both edges of the body. */
+  drawSpikes(f, dim) {
+    const L = f.L, P = PLATE;
+    const col = rgb(185 * dim), a = f.alpha;
+    for (let j = Math.ceil(0.17 / P); j * P < 0.9; j++) {
+      for (const sg of [1, -1]) {
+        if ((j + (sg > 0 ? 0 : 1)) % 2) continue;
+        const s0 = j * P - SWEEP * halfDepth(j * P);
+        if (s0 < 0.16) continue;
+        const [x, y, tx, ty] = this.spineAt(s0), [nx, ny] = upNormal(tx, ty), hw = halfDepth(s0) * L;
+        const k = hash3(j, sg + 2, f.id);
+        let len = hw * (2.6 + 1.6 * k) * (1 - 0.45 * s0);
+        if (sg > 0 && s0 < 0.34) len *= 1.6;                          // a crest of long spines behind the head
+        const sway = 0.18 * Math.sin(f.phase * 0.8 - s0 * 9), back = 0.62 + sway;
+        const bx = x + nx * sg * hw * 0.9, by = y + ny * sg * hw * 0.9;
+        const dx = tx * back + nx * sg, dy = ty * back + ny * sg, dl = Math.hypot(dx, dy);
+        this.stroke([bx, by, bx + dx / dl * len, by + dy / dl * len], col, a * (0.65 + 0.35 * k));
+      }
+    }
+  }
+
+  /** Pectoral fins: long curved blades under the head, as polylines with a width. */
+  buildFins(f) {
+    const L = f.L;
+    this.fins = [0, 1].map(front => {
+      const [x, y, tx, ty] = this.spineAt(front ? 0.125 : 0.112), [nx, ny] = upNormal(tx, ty);
+      const hw = halfDepth(0.12) * L, flap = 0.35 * Math.sin(f.phase * 0.9 + (front ? 0 : 1.3));
+      const size = front ? 1 : 0.8, bx = x - nx * hw * 0.5, by = y - ny * hw * 0.5;
+      const pts = [], wid = [];
+      let x0 = Infinity, y0 = Infinity, x1 = -Infinity, y1 = -Infinity;
+      for (let i = 0; i <= 10; i++) {
+        const t = i / 10;
+        const down = L * 0.1 * size * Math.sin(t * Math.PI * 0.55) * (1 + flap * 0.4);
+        const back = L * 0.085 * size * t * t * (1 - flap * 0.3);
+        const px = bx - nx * down + tx * back, py = by - ny * down + ty * back;
+        pts.push(px, py);
+        wid.push(L * 0.011 * size * Math.pow(1 - t, 0.8) + this.cw * 0.3);
+        x0 = Math.min(x0, px); x1 = Math.max(x1, px); y0 = Math.min(y0, py); y1 = Math.max(y1, py);
+      }
+      const pad = L * 0.012;
+      return {pts, wid, front, box: [x0 - pad, y0 - pad, x1 + pad, y1 + pad]};
+    });
+  }
+
+  near(x, y) {
+    return this.fins.some(({box: b}) => x > b[0] - this.cw && x < b[2] && y > b[1] - this.chh && y < b[3]);
+  }
+
+  finHit(px, py, fin) {
+    const b = fin.box;
+    if (px < b[0] || px > b[2] || py < b[1] || py > b[3]) return false;
+    const p = fin.pts;
+    for (let i = 0; i + 1 < fin.wid.length; i++) {
+      const ax = p[i * 2], ay = p[i * 2 + 1], sx = p[i * 2 + 2] - ax, sy = p[i * 2 + 3] - ay;
+      const len2 = sx * sx + sy * sy || 1, u = clamp(((px - ax) * sx + (py - ay) * sy) / len2, 0, 1);
+      if (Math.hypot(px - ax - sx * u, py - ay - sy * u) < lerp(fin.wid[i], fin.wid[i + 1], u)) {
+        this.hitFlag = FIN; this.hitShade = fin.front ? 0.78 : 0.4; this.hitS = 0.12; this.hitV = i; this.hitDist = 0;
+        return true;
+      }
+    }
+    return false;
+  }
+
+  drawFish(f) {
+    this.renderSpine(f);
+    const {spine, cw, chh, cols} = this, L = f.L;
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (let k = 0; k < N; k++) {
+      minX = Math.min(minX, spine[k * 2]); maxX = Math.max(maxX, spine[k * 2]);
+      minY = Math.min(minY, spine[k * 2 + 1]); maxY = Math.max(maxY, spine[k * 2 + 1]);
+    }
+    const reach = L * 0.14, skip = L * 0.07 + Math.hypot(cw, chh);
+    const c0 = Math.max(0, Math.floor((minX - reach) / cw)), c1 = Math.min(cols - 1, Math.floor((maxX + reach) / cw));
+    const r0 = Math.max(0, Math.floor((minY - reach) / chh)), r1 = Math.min(this.rows - 1, Math.floor((maxY + reach) / chh));
+    // Depth haze: the far fish sinks toward the dark of the room.
+    const dim = (1 - f.z * 0.85) * f.alpha, haze = f.z > 0.3;
+    this.drawSpikes(f, dim);
+    this.buildFins(f);
+    for (let r = r0; r <= r1; r++) {
+      for (let c = c0; c <= c1; c++) {
+        const x = c * cw, y = r * chh;
+        const centre = this.sample(x + cw / 2, y + chh / 2, f);
+        if (!centre && this.hitDist > skip && !this.near(x, y)) continue;
+        const flag = this.hitFlag, shade = this.hitShade, s = this.hitS, v = this.hitV, dir = this.hitDir;
+        let hits = centre ? 1 : 0;
+        for (let k = 0; k < SUB.length; k += 2) if (this.sample(x + SUB[k] * cw, y + SUB[k + 1] * chh, f)) hits++;
+        if (!hits) continue;
+        const cov = hits / 5, i = r * cols + c;
+        this.heat[i] = 1;
+        // Body-anchored key, so each glyph rides along with the skin.
+        const key = (hash3(Math.round(s * 90), Math.round(v / (cw * 0.9)), f.id) * 4294967295) >>> 0;
+        const roll = haze ? 1 : hash3(key, Math.floor(this.t * 2.4 + (key % 997) / 97), 7);
+        if (!(centre && cov >= 0.6)) {
+          const g = (110 + cov * 100) * dim;
+          this.put(c, r, (cov >= 0.5 ? EDGE_HEAVY : EDGE_LIGHT)[(key >>> 8) % (cov >= 0.5 ? 2 : 4)],
+                   roll < 0.04 ? ACCENTS[key % ACCENTS.length] : rgb(g), f.alpha);
+          continue;
+        }
+        if (flag === EYE) { this.put(c, r, " ", PAL.eye, 1, PAL.eye); continue; }
+        if (flag === GLINT) { this.put(c, r, "·", "#ffffff", 0.85 * dim, PAL.eye); continue; }
+        if (flag === TEETH) { this.put(c, r, shade > 0.5 ? "v" : "^", PAL.teeth, dim, rgb(8 * dim)); continue; }
+        const level = (flag === HEADF ? 95 : 70) + clamp(shade, 0, 1) * 165;
+        if (flag === SEAM) { this.put(c, r, this.slant(dir[0], dir[1]), PAL.seam, 1, rgb(level * dim)); continue; }
+        let glyph;
+        if (flag === HEADF) glyph = HEAD_GLYPHS[clamp(Math.floor((1 - shade) * 6) + ((key >>> 4) % 2), 0, 3)];
+        else if (flag === FIN) glyph = (key >>> 3) % 2 ? " " : ".:'"[(key >>> 8) % 3];
+        else glyph = (key >>> 3) % 3 ? " " : PLATE_GLYPHS[(key >>> 8) % PLATE_GLYPHS.length];
+        const fg = roll < 0.05 ? ACCENTS[key % ACCENTS.length] : roll < 0.07 ? "#ffffff" : rgb(level * 0.55 * dim);
+        this.put(c, r, glyph, fg, haze ? f.alpha * 0.7 : f.alpha, rgb(level * dim));
+      }
+    }
+  }
+
+  draw() {
+    if (!this.cw) return;
+    this.gch.fill(" "); this.gbg.fill(null);
+    this.drawRoom();
+    // Back to front: back manuscripts, far fish, front manuscripts, near fish.
+    const items = this.envs.map(e => ({z: e.z, f: () => this.drawEnvelope(e)}))
+      .concat(this.fish.map(f => ({z: f.z, f: () => this.drawFish(f)})));
+    items.sort((a, b) => b.z - a.z).forEach(it => it.f());
+    for (const p of this.particles) this.put(p.x, p.y, p.ch, p.col, 0.9 * (1 - p.age / p.life));
+
+    const {ctx, cw, chh, cols} = this, gap = cw > 6 ? 1 : 0.5;
+    ctx.globalAlpha = 1;
+    ctx.fillStyle = PAL.bg;
+    ctx.fillRect(0, 0, cols * cw, this.rows * chh);
+    ctx.font = this.font + "px " + MONO;
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    for (let i = 0; i < this.gch.length; i++) {
+      const bg = this.gbg[i], c = this.gch[i];
+      if (!bg && c === " ") continue;
+      const x = (i % cols) * cw, y = ((i / cols) | 0) * chh;
+      if (bg) { ctx.globalAlpha = 1; ctx.fillStyle = bg; ctx.fillRect(x + gap, y + gap, cw - gap, chh - gap); }
+      if (c !== " ") { ctx.globalAlpha = this.ga[i]; ctx.fillStyle = this.gfg[i]; ctx.fillText(c, x + cw / 2, y + chh / 2 + 1); }
+    }
+    ctx.globalAlpha = 1;
+  }
+}
+
+// ---------- page ----------
+const room = DATA.room;
+document.getElementById("asof").textContent = DATA.asof;
+document.getElementById("nav").innerHTML = DATA.pages.map(p =>
+  '<a href="' + p.href + '"' + (p.current ? " aria-current=page" : "") + ">" + p.label + "</a>").join("");
+document.getElementById("title").textContent = "Ch. " + room.first + "–" + (room.first + 9);
+const pct = Math.round(Object.values(room.progress).reduce((a, b) => a + b, 0) * 10);
+document.getElementById("status").innerHTML = "<b>" + pct + "% eaten</b> · " + (room.open ? "room open" : "room sealed");
+const scene = new Scene(room);
+scene.resize();
+
+if (reduced) {
+  for (let i = 0; i < 400; i++) scene.step(1 / 60);
+  scene.particles = [];
+  scene.draw();
+} else {
+  let last = performance.now();
+  const frame = now => {
+    const dt = Math.min(0.05, (now - last) / 1000);
+    last = now;
+    if (scene.visible) { scene.step(dt); scene.draw(); }
+    requestAnimationFrame(frame);
+  };
+  requestAnimationFrame(frame);
+}
+</script>
+</html>
