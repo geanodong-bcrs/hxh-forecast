@@ -278,9 +278,9 @@ def render(d, path):
     # card that is its permanent state -- its forecast cannot move on production
     # evidence. The chip returns of its own accord as soon as something moves,
     # which for ch. 431 means once ch. 421-430 is publishing.
-    # Sub-display floating-point changes (for example 0.003 percentage points)
-    # round to "0.0 pts" and must not produce a green or red news badge.
-    quiet = d["shift_days"] == 0 and abs(d["spike_pp"]) < 0.05
+    # The card's headline is the median date. If that date did not move, keep
+    # the card quiet rather than filling the empty state with probability noise.
+    quiet = d["shift_days"] == 0
     if not quiet:
         ax_chip = fig.add_axes([.055, .47, .42, .085])
         ax_chip.set_axis_off()

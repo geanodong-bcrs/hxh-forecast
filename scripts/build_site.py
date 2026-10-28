@@ -1187,7 +1187,9 @@ def readiness_comparison_chart(post):
         return []
     series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (first, first + 9), "first": first,
                    "css": "rlive", "path": live, "publication": [],
-                   "legend_suffix": tr(" (working)", "(制作中)")})
+                   "legend_suffix": (tr(" (awaiting publication)", "(掲載待ち)")
+                                     if live["path"][-1][1] >= 1.0
+                                     else tr(" (working)", "(制作中)"))})
     following = readiness_path(nfirst, asof, extend_to_end=True)
     if following:
         series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (nfirst, nfirst + 9), "first": nfirst,
