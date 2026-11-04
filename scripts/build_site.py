@@ -293,6 +293,18 @@ def pct(p):
     return "&gt;99%" if p > 0.99 else "&lt;1%" if 0 < p < 0.01 else "%.0f%%" % (p * 100)
 
 
+def last_updated(post):
+    """Hero line giving when the live snapshot was made, from its run time."""
+    try:
+        t = datetime.strptime(post["run_id"], "%Y%m%dT%H%M%SZ")
+    except (KeyError, ValueError):
+        return tr('<div class=sub>Last updated %s</div>', '<div class=sub>最終更新 %s</div>') \
+            % fmt(post["forecast_timestamp"])
+    return (tr('<div class=sub>Last updated %s, %s UTC</div>',
+               '<div class=sub>最終更新 %s %s UTC</div>')
+            % (day_month_year(t.date()), t.strftime("%H:%M")))
+
+
 def month_ticks(o0, o1):
     """Month starts across the range; thinned so labels never collide."""
     d0, d1 = date.fromordinal(o0), date.fromordinal(o1)
@@ -333,7 +345,8 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
 
     pad_l, pad_r, pad_t, pad_b = 44, 16, 16, 40
     W, H = width - pad_l - pad_r, height - pad_t - pad_b
-    x0, x1 = cum[0][0], cum[-1][0]
+    # one week past the last issue, matching pdf_chart's last bar
+    x0, x1 = cum[0][0], cum[-1][0] + 7
     span = max(x1 - x0, 1)
     X = lambda o: pad_l + W * (min(max(o, x0), x1) - x0) / span
     Y = lambda p: pad_t + H * (1 - p)
@@ -389,51 +402,42 @@ def cdf_chart(pmf, median, i80, width=720, height=250, clip=0.99):
              "\n  ".join(g), area, line, X(med), pad_t, X(med), pad_t + H)
 
 
-def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
-    """Probability density: where the mass actually sits, by month.
+def pdf_chart(pmf, median, i80, width=720, height=210, clip=0.99):
+    """Probability per weekly issue: where the mass actually sits.
 
-    Same x-axis as `cdf_chart` — same source pmf, same 0.99 clip — so the two
-    charts stack and read as one picture. Binned by calendar month because the
-    raw pmf is per weekly issue, and per-issue bars are unreadable: the first
-    eligible issue alone carries ~50% while the other 115 issues average 0.4%,
-    a 126:1 range that leaves the tail at one pixel. Monthly bins bring that to
-    about 8:1, which a linear axis shows honestly.
-
-    The spike is still the story, so the month holding it is labelled with the
-    single-issue probability rather than letting the bin hide it.
+    Same x-axis as `cdf_chart` (same source pmf, same 0.99 clip), so the two
+    charts stack and read as one picture. One bar per Weekly Shonen Jump issue,
+    drawn from that issue's on-sale date to the next issue's (at most a week),
+    so each bar sits exactly under the matching step of the cumulative curve
+    and a combined issue shows as a missing week rather than a stretched bar.
     """
     if not pmf:
         return ""
     acc, cum = 0.0, []
     for d, p in pmf:
         acc += p
-        cum.append((d, p, acc))
+        cum.append((date.fromisoformat(d).toordinal(), p, acc))
     cutoff = next((i for i, (_, _, c) in enumerate(cum) if c >= clip), len(cum) - 1)
     cum = cum[:cutoff + 1]
-
-    bins = OrderedDict()
-    for d, p, _ in cum:
-        k = d[:7]
-        bins[k] = bins.get(k, 0.0) + p
-    if not bins:
+    if not cum:
         return ""
 
     pad_l, pad_r, pad_t, pad_b = 44, 16, 16, 40
     W, H = width - pad_l - pad_r, height - pad_t - pad_b
-    x0 = date.fromisoformat(cum[0][0]).toordinal()
-    x1 = date.fromisoformat(cum[-1][0]).toordinal()
+    x0, x1 = cum[0][0], cum[-1][0] + 7
     span = max(x1 - x0, 1)
     X = lambda o: pad_l + W * (min(max(o, x0), x1) - x0) / span
-    top = max(bins.values())
+    top = max(p for _, p, _ in cum)
     Y = lambda p: pad_t + H * (1 - p / top)
 
     g = []
-    step = .1 if top > .25 else .02
+    step = .1 if top > .25 else .02 if top > .06 else .01 if top > .02 else .005
     v = 0.0
     while v <= top + 1e-9:
         g.append('<line class="grid" x1="%d" y1="%.1f" x2="%.1f" y2="%.1f"/>'
-                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
-                 % (pad_l, Y(v), pad_l + W, Y(v), pad_l - 6, Y(v) + 4, round(v * 100)))
+                 '<text class="ax" x="%d" y="%.1f" text-anchor="end">%s%%</text>'
+                 % (pad_l, Y(v), pad_l + W, Y(v), pad_l - 6, Y(v) + 4,
+                    ("%g" % round(v * 100, 1))))
         v += step
     for d, label in month_ticks(x0, x1):
         xx = X(d.toordinal())
@@ -449,25 +453,16 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
         g.append('<text class="ax yr" x="%.1f" y="%d" text-anchor="middle">%d</text>'
                  % ((X(lo) + X(hi)) / 2, height - 7, yr))
 
-    bars, spike_lbl = [], ""
-    for k, p in bins.items():
-        y, m = int(k[:4]), int(k[5:7])
-        b0 = max(x0, date(y, m, 1).toordinal())
-        b1 = min(x1, (date(y + (m == 12), (m % 12) + 1, 1) - timedelta(days=1)).toordinal())
-        xa, xb = X(b0), X(b1)
-        w = max(xb - xa - 1.5, 1)
+    bars = []
+    for i, (o, p, _) in enumerate(cum):
+        nxt = cum[i + 1][0] if i + 1 < len(cum) else o + 7
+        xa, xb = X(o), X(min(nxt, o + 7))
+        w = max(xb - xa - 1, .8)
         bars.append('<rect class="bar" x="%.1f" y="%.1f" width="%.1f" height="%.1f">'
                     '<title>%s — %s</title></rect>'
-                    % (xa + .75, Y(p), w, max(pad_t + H - Y(p), .5),
-                       mon_year(date(y, m, 1)) if LANG == "ja"
-                       else date(y, m, 1).strftime("%B %Y"), pct(p)))
-        if spike and spike[0][:7] == k:
-            # The spike month is the tallest bar, so a label above it would sit
-            # outside the plot. Put it beside the bar instead, at the bar's top.
-            spike_lbl = (('<text class="ax spk" x="%.1f" y="%.1f">'
-                          + tr('%s of it is %s alone', 'うち%sは%s発売号のみ') + '</text>')
-                         % (xa + w + 7, max(Y(p) + 11, pad_t + 11),
-                            pct(spike[1]), fmt(spike[0], True)))
+                    % (xa + .5, Y(p), w, max(pad_t + H - Y(p), .5),
+                       tr("Issue on sale %s", "%s発売号") % fmt(date.fromordinal(o).isoformat()),
+                       pct(p)))
 
     lo, hi = (date.fromisoformat(i80[0]).toordinal(),
               date.fromisoformat(i80[1]).toordinal())
@@ -478,12 +473,10 @@ def pdf_chart(pmf, median, i80, spike=None, width=720, height=210, clip=0.99):
   %s
   %s
   <line class="med" x1="%.1f" y1="%d" x2="%.1f" y2="%d"/>
-  %s
-</svg>""" % (width, height, tr("Probability chapter is published in each month",
-                                  "月ごとの掲載確率"),
+</svg>""" % (width, height, tr("Probability chapter is published in each weekly issue",
+                                  "各号での掲載確率"),
              X(lo), pad_t, max(X(hi) - X(lo), 1), H,
-             "\n  ".join(g), "".join(bars), X(med), pad_t, X(med), pad_t + H,
-             spike_lbl)
+             "\n  ".join(g), "".join(bars), X(med), pad_t, X(med), pad_t + H)
 
 
 def posterior_series(chapter, direct_only=False):
@@ -1166,16 +1159,27 @@ def readiness_comparison_chart(post):
         if batch not in runs:
             continue
         run = runs[batch]
-        # A production line is held flat only while production is unfinished:
-        # a run whose chapters are all out, or whose last report reached 100%,
-        # stops at its last report. Holding every run to its publication end
-        # (and batch 49 to today) drew production as still going after it was
-        # done. A run still publishing is traced through today.
+        # A finished run (100%) is held flat only while it waits for
+        # publication: if it reached 100% before its first chapter went on
+        # sale, the line runs on to that date; if it reached 100% after
+        # publication had begun, it stops there. Either way nothing is drawn
+        # past the first 100% point except that wait. An unfinished run stops
+        # at its last report once fully published, and is traced through
+        # today while it is still publishing.
         published = len(run["publication"]) >= 10
         end = run["end"] if published else asof
-        path = readiness_path(run["first"], end, extend_to_end=not published)
-        if path and path["path"][-1][1] >= 1.0:
-            path = readiness_path(run["first"], end)
+        path = readiness_path(run["first"], end)
+        if path:
+            pts = path["path"]
+            done = next((i for i, (_, v) in enumerate(pts) if v >= 1.0), None)
+            if done is not None:
+                pts = pts[:done + 1]
+                pub_day = (min(w for _, w in run["publication"]) - path["origin"]).days
+                if pts[-1][0] < pub_day:
+                    pts.append((pub_day, pts[-1][1]))
+                path["path"] = pts
+            elif not published:
+                path = readiness_path(run["first"], end, extend_to_end=True)
         if path:
             series.append({"label": tr("ch. %d–%d", "第%d–%d話") % (run["first"], run["first"] + 9),
                            "first": run["first"],
@@ -1893,7 +1897,6 @@ def schedule_section(name, rows, p_started_by=None):
 
 def distribution_charts(chapter, pmf, median, i80):
     """Current release-date distribution, reused on the two chapter pages."""
-    spike = max(pmf, key=lambda x: x[1]) if pmf else None
     h = [tr('<h3>Chance chapter %d has been published by a given date</h3>',
            '<h3>各日付までに第%d話が掲載されている確率</h3>') % chapter,
          cdf_chart(pmf, median, i80),
@@ -1901,12 +1904,12 @@ def distribution_charts(chapter, pmf, median, i80):
          tr('<p class=note>Each step is one Weekly Sh&#333;nen Jump issue; the '
            'shaded band is the 80% range.</p>',
            '<p class=note>段差1つが週刊少年ジャンプ1号分です。網掛けは80%範囲です。</p>'),
-         tr('<h3>Probability distribution by month</h3>', '<h3>月別の確率分布</h3>'),
-         pdf_chart(pmf, median, i80, spike),
-         tr('<p class=note>The same distribution as monthly probability mass, which '
-           'makes the likely dates and the long tail easier to compare.</p>',
-           '<p class=note>同じ分布を月ごとの確率で表したものです。'
-           '可能性の高い時期と、遅い側に長く続く裾野を比べやすくなります。</p>')]
+         tr('<h3>Probability distribution by week</h3>', '<h3>週ごとの確率分布</h3>'),
+         pdf_chart(pmf, median, i80),
+         tr('<p class=note>The same distribution as the probability of each weekly '
+           'issue. A gap between bars is a week with no regular issue.</p>',
+           '<p class=note>同じ分布を、週刊少年ジャンプ各号の掲載確率で表したものです。'
+           'バーの間の空きは、通常号が発売されない週です。</p>')]
     return h
 
 
@@ -2081,17 +2084,7 @@ def build_index(post, l2, pri, snap_path):
 
     # hero. Leads with probabilities, not a date: one day in 46px type claimed
     # a precision the 8-month 80% range does not have.
-    def by_label(iso):
-        d = date.fromisoformat(iso)
-        if LANG == "ja":
-            return "%d年末" % d.year if d.month == 12 else "%d年%d月末" % (d.year, d.month)
-        return ("by end of %d" % d.year if d.month == 12
-                else "by end of %s" % d.strftime("%b %Y"))
-    horizons = [(d, p) for d, p in sorted((post.get("p_started_by") or {}).items())
-                if p <= 0.99][:2]
-    tiles = [tr('<div class=tile><div class=v>%s</div><div class=k>chance it is out %s</div></div>',
-               '<div class=tile><div class=v>%s</div><div class=k>%sまでに掲載される確率</div></div>')
-             % (pct(p), by_label(d)) for d, p in horizons]
+    tiles = []
     tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>',
                    '<div class=tile><div class=v>%s</div><div class=k>予測日(中央値)</div></div>')
                  % fmt(post["median"]))
@@ -2106,8 +2099,7 @@ def build_index(post, l2, pri, snap_path):
           tr('<div class=sub>%s &middot; %d finished manuscript%s waiting</div>'
             % (ann_status, n_finished, "" if n_finished == 1 else "s"),
             '<div class=sub>%s &middot; 完成原稿%d話分が待機中</div>' % (ann_status, n_finished)),
-          tr('<div class=sub>forecast made %s</div>', '<div class=sub>予測作成日 %s</div>')
-          % fmt(post["forecast_timestamp"])]
+          last_updated(post)]
     if spike:
         # Zero-mass issues are dropped from posterior_pmf, so pmf[0] is the
         # earliest issue the batch could still start on. While a zero-gap point
@@ -2234,8 +2226,7 @@ def build_chapter_431(post, l2, pri, snap_path):
           % (fmt(i80[0], True), fmt(i80[1], True)),
           tr('<div class=sub>forecast history and current probability distribution</div>',
             '<div class=sub>予測の推移と現在の確率分布</div>'),
-          tr('<div class=sub>forecast made %s</div></div>', '<div class=sub>予測作成日 %s</div></div>')
-          % fmt(post["forecast_timestamp"])]
+          last_updated(post) + '</div>']
     # Same section order as the next-10 page, so the pair reads as one design.
     h += history_charts(nfirst, post, primary=True, secondary=False, probabilities=False,
                         companion=("index.html", first))
