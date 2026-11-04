@@ -75,7 +75,7 @@ forecast is allowed to land on; calendar weeks without an issue are not eligible
 | `issue_year`, `issue_label`, `issue_no_first`, `issue_no_last`, `is_combined` | Issue identity. |
 | `cover_date` | Nominal date printed on the issue (jajanken). |
 | `on_sale_date` | Actual on-sale date. |
-| `on_sale_provenance` | `observed_hunterpedia` (418 issues, anchored to a real chapter) or `inferred_cover_minus_14d` (1,009). |
+| `on_sale_provenance` | `observed_hunterpedia` (420 issues, anchored to a real chapter), `inferred_new_year_pattern` (107: issues 1–7, whose cover dates are nominal; walked back from 8号 on Mondays, 7 days after a single issue and 14 after a combined one, the rule every observed block 1999–2025 follows) or `inferred_cover_minus_14d` (909). |
 | `days_to_next_issue` | Spacing to the next slot — 7 normally, 14 after a combined issue. |
 | `hxh_chapter`, `hxh_issue_cumulative` | The HxH chapter in this issue, when there is one. |
 

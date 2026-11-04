@@ -26,6 +26,10 @@ RAW = os.path.join(HERE, "..", "data", "raw", "jajanken")
 PROC = os.path.join(HERE, "..", "data", "processed")
 
 NOMINAL_OFFSET_DAYS = 14
+# Issues numbered below this are the New Year block, whose cover dates are
+# nominal (1号 is "1 Jan" but goes on sale in early December). From 8号 on,
+# cover minus 14 days holds again.
+NEW_YEAR_BLOCK_BELOW = 8
 LINK_RE = re.compile(r'href="/issues/(\d{4})-(\d{2})-(\d{2})/"[^>]*>\s*([^<]+?)\s*</a>')
 
 
@@ -100,6 +104,23 @@ def main():
             r["hxh_chapter"] = ""
             r["hxh_issue_cumulative"] = ""
 
+    # New Year block. Cover minus 14 puts these on made-up Thursdays (1 Jan,
+    # 8 Jan, ...) and produced 24- and 4-day gaps that the forecast's calendar
+    # projection then replayed into every future year. Every observed block,
+    # 1999-2025, follows one rule: Monday issues, a week after a single issue
+    # and two weeks after a combined one. So walk back from the first regular
+    # issue (or from a later observed anchor) using that rule. Observed dates
+    # always win.
+    for i in range(len(rows) - 1, -1, -1):
+        r = rows[i]
+        if (r["issue_no_first"] >= NEW_YEAR_BLOCK_BELOW
+                or r["on_sale_provenance"] != "inferred_cover_minus_14d"
+                or i + 1 >= len(rows)):
+            continue
+        nxt = rows[i + 1]
+        r["on_sale_date"] = nxt["on_sale_date"] - timedelta(days=14 if r["is_combined"] else 7)
+        r["on_sale_provenance"] = "inferred_new_year_pattern"
+
     # gap to the next issue, in days - this is what makes a "week" eligible or not
     for i, r in enumerate(rows):
         nxt = rows[i + 1] if i + 1 < len(rows) else None
@@ -117,7 +138,9 @@ def main():
     print("wrote wsj_issues.csv: %d issues, %s..%s" % (
         len(rows), rows[0]["issue_year"], rows[-1]["issue_year"]))
     obs = sum(1 for r in rows if r["on_sale_provenance"] == "observed_hunterpedia")
-    print("  on-sale observed: %d   inferred: %d" % (obs, len(rows) - obs))
+    ny = sum(1 for r in rows if r["on_sale_provenance"] == "inferred_new_year_pattern")
+    print("  on-sale observed: %d   inferred: %d (of which New Year pattern: %d)"
+          % (obs, len(rows) - obs, ny))
     print("  combined issues:  %d" % sum(r["is_combined"] for r in rows))
 
 

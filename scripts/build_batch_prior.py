@@ -90,27 +90,40 @@ def load_calendar(asof=None):
 
 
 def project_calendar(cal, n_future):
-    """Extend the issue calendar by replaying last year's gap structure.
+    """Extend the issue calendar by replaying last year's issues a year on.
 
-    WSJ is weekly but not uniformly so — combined issues at New Year, Golden Week
-    and midsummer insert 14-day gaps. Repeating the preceding 12 months of gaps
-    preserves that structure far better than assuming 7 days forever, which would
-    drift about three weeks per year.
+    WSJ is weekly but not uniformly so: combined issues at New Year, Golden Week
+    and midsummer leave empty weeks. Each future year copies the issue dates of
+    the 52 weeks up to the last known issue, shifted by a whole number of
+    weeks (keeping the Monday on-sale day) closest to whole calendar years (so
+    the New Year break stays at New Year). It used to replay last year's day
+    gaps in sequence instead, which let one bad gap move every later date: a
+    4-day gap left all of 2027 on Fridays with no New Year break.
     """
-    gaps = [(cal[i]["on_sale"] - cal[i - 1]["on_sale"]).days for i in range(1, len(cal))]
-    # The cycle must be one YEAR of issues, not an arbitrary 52. A WSJ year is
-    # ~49 issues (combined issues absorb weeks), so slicing 52 starts the replay
-    # about fourteen months back and lands New-Year/summer double gaps in the
-    # wrong place — it put a 14-day gap immediately after 2026-09-07.
-    year = sum(1 for c in cal if (cal[-1]["on_sale"] - c["on_sale"]).days < 365)
-    last_year = [g for g in gaps[-year:] if 0 < g <= 21] or [7]
-    out, cur, seq, i = [], cal[-1]["on_sale"], cal[-1]["seq"], 0
+    last = cal[-1]["on_sale"]
+    # Exactly 52 weeks of issues, so consecutive copies tile with no overlap.
+    window = sorted(c["on_sale"] for c in cal if 0 <= (last - c["on_sale"]).days < 364)
+    out, seq, cur, k = [], cal[-1]["seq"], last, 1
+    prev_weeks = 0
     while len(out) < n_future:
-        cur = cur + timedelta(days=last_year[i % len(last_year)])
-        seq += 1
-        i += 1
-        out.append({"seq": seq, "label": "", "year": cur.year,
-                    "on_sale": cur, "projected": True})
+        # Whole weeks nearest to k calendar years. Every five or six years
+        # that is 53 weeks more than the previous copy, not 52; the spare week
+        # is an ordinary issue, added just before the new copy starts.
+        weeks = round(365.2425 * k / 7.0)
+        dates = [d + timedelta(weeks=weeks) for d in window]
+        if weeks - prev_weeks > 52:
+            dates.insert(0, cur + timedelta(weeks=1))
+        for nxt in dates:
+            if nxt <= cur:
+                continue
+            seq += 1
+            cur = nxt
+            out.append({"seq": seq, "label": "", "year": cur.year,
+                        "on_sale": cur, "projected": True})
+            if len(out) >= n_future:
+                break
+        prev_weeks = weeks
+        k += 1
     return cal + out
 
 
