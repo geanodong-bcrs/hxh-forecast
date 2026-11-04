@@ -2088,6 +2088,15 @@ def build_index(post, l2, pri, snap_path):
     tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>',
                    '<div class=tile><div class=v>%s</div><div class=k>予測日(中央値)</div></div>')
                  % fmt(post["median"]))
+    if spike:
+        # The mode: the one issue with the most mass. Its probability goes in
+        # the label - with a flat front it can be ~3%, and a date alone would
+        # read as a prediction.
+        tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>single most likely '
+                        'week (%s)</div></div>',
+                        '<div class=tile><div class=v>%s</div><div class=k>最も可能性の高い週'
+                        '(%s)</div></div>')
+                     % (fmt(spike[0]), pct(spike[1])))
     h += ['<div class=hero>',
           tr('<div class=ch>Next 10 chapters &middot; %s &mdash; first up, chapter %d</div>',
             '<div class=ch>次の10話 &middot; %s &mdash; まず第%d話</div>')
