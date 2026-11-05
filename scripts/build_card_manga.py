@@ -16,6 +16,7 @@ Style rules:
   - Generic manga vocabulary only: no Togashi art, logo or characters.
 """
 import argparse
+import glob
 import json
 import math
 import os
@@ -62,7 +63,32 @@ def card_data(chapter, demo=None):
     if demo is not None:
         shift = demo
     level, _, _ = bc.readiness_state(chapter)
+
+    # Baseline for "what changed": the forecast right after Togashi's last post,
+    # i.e. what the previous reply card showed.
+    base, n_posts = None, 0
+    rid = delta.get("effect_run_id")
+    if rid:
+        path = D("data", "forecasts", "%s_batch%d_posterior.json" % (rid, post["batch"]))
+        if os.path.exists(path):
+            with open(path, encoding="utf-8") as fh:
+                b = json.load(fh)
+            bpmf = b["posterior_pmf"] if view == "Next" else (b.get("next_batch") or {}).get("pmf") or []
+            base = {"run_id": rid, "pmf": bpmf,
+                    "median": date.fromisoformat(b["median"] if view == "Next"
+                                                 else b["next_batch"]["median"]),
+                    "asof": date.fromisoformat(b["forecast_timestamp"][:10])}
+            # tweet-triggered forecasts after the baseline = new posts since then
+            for f in glob.glob(D("data", "forecasts", "*_batch%d_posterior.json" % post["batch"])):
+                r = os.path.basename(f).split("_")[0]
+                if rid < r <= post["run_id"]:
+                    with open(f, encoding="utf-8") as fh:
+                        s = json.load(fh)
+                    n_posts += s.get("trigger") == "tweet" and s.get("provenance") != "replay"
     return {
+        "pmf": [(date.fromisoformat(x), p) for x, p in pmf],
+        "asof": date.fromisoformat(post["forecast_timestamp"][:10]),
+        "base": base, "new_posts": n_posts,
         "chapter": chapter, "view": view,
         "median": date.fromisoformat(median),
         "i80": [date.fromisoformat(x) for x in i80],
@@ -254,6 +280,10 @@ def render(d, html_path, png_path):
                  '<text class="tagt" x="1415" y="864" text-anchor="middle">UPDATED %s</text>'
                  % fmt(d["updated"]).upper())
 
+    write_card(parts, html_path, png_path)
+
+
+def write_card(parts, html_path, png_path):
     html = """<!doctype html><html><head><meta charset="utf-8">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand+SC&display=block" rel="stylesheet">
@@ -282,10 +312,23 @@ svg{display:block}
 .rl{font:20px 'Patrick Hand SC';fill:#000}
 .tag{fill:#fff;stroke:#000;stroke-width:3}
 .tagt{font:24px 'Patrick Hand SC';fill:#000}
+.hero2{font:250px 'Bebas Neue';fill:#000}
+.note{font:26px 'Patrick Hand SC';fill:#000}
+.cell{fill:#fff;stroke:#000;stroke-width:4}
+.cellbar{fill:url(#tone);stroke:#000;stroke-width:2}
+.cdate{font:25px 'Patrick Hand SC';fill:#000}
+.cpct{font:44px 'Bebas Neue';fill:#000}
+.gap{fill:url(#hatch);stroke:#000;stroke-width:3}
+.gapt{font:19px 'Patrick Hand SC';fill:#000}
+.cap{fill:#fff;stroke:#000;stroke-width:4}
+.capt{font:25px 'Patrick Hand SC';fill:#000}
+.capt b{font-family:'Bebas Neue';font-weight:400;font-size:30px;letter-spacing:1px}
 </style></head><body>
 <svg width="%d" height="%d" viewBox="0 0 %d %d" xmlns="http://www.w3.org/2000/svg">
 <defs><pattern id="tone" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-<circle cx="4.5" cy="4.5" r="1.6" fill="#000"/></pattern></defs>
+<circle cx="4.5" cy="4.5" r="1.6" fill="#000"/></pattern>
+<pattern id="hatch" width="10" height="10" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<line x1="0" y1="0" x2="0" y2="10" stroke="#000" stroke-width="2"/></pattern></defs>
 <rect width="100%%" height="100%%" fill="#fff"/>
 %s
 <rect x="2" y="2" width="%d" height="%d" fill="none" stroke="#000" stroke-width="4"/>
@@ -301,18 +344,162 @@ svg{display:block}
                    check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
 
 
+def window_chance(pmf, start, weeks=4):
+    """Chance the run starts in [start, start + weeks): the weather-style number.
+
+    Rolling, measured from the forecast date, so a quiet week leaves it about
+    where it was. Fixed-horizon odds ("by end of 2026") fall as the date nears.
+    """
+    end = start + timedelta(weeks=weeks)
+    return sum(p for d, p in pmf if start <= d < end)
+
+
+def pmf_median(pmf):
+    tot, acc = sum(p for _, p in pmf), 0.0
+    for d, p in pmf:
+        acc += p / tot
+        if acc >= .5:
+            return d
+
+
+def attribution(d):
+    """Split the median's move since the last post into time and the rest.
+
+    Time-only: take the baseline forecast, drop the issues that have since
+    gone by without HxH, and renormalise. Whatever that does not explain came
+    from new posts or from a model change.
+    """
+    b = d["base"]
+    if not b or not b["pmf"]:
+        return None
+    first_open = d["pmf"][0][0]
+    kept = [(date.fromisoformat(x), p) for x, p in b["pmf"]
+            if date.fromisoformat(x) >= first_open]
+    passed = sum(1 for x, _ in b["pmf"] if date.fromisoformat(x) < first_open)
+    t_only = pmf_median(kept)
+    return {"since": b["asof"], "passed": passed,
+            "time_days": (t_only - b["median"]).days,
+            "rest_days": (d["median"] - t_only).days,
+            "base_chance": window_chance([(date.fromisoformat(x), p) for x, p in b["pmf"]],
+                                         b["asof"])}
+
+
+def outlook_strip(pmf, x0, y0, w, h, n=8):
+    """The next n issues as a row of panels, like a weather app's daily icons.
+
+    A week with no regular issue (combined issue / New Year) gets its own
+    narrow hatched panel, so the strip still reads as consecutive weeks.
+    """
+    items, prev = [], None
+    for dd, p in pmf:
+        if prev and (dd - prev).days > 7:
+            items.append(("gap", prev + timedelta(days=7), None))
+        if sum(1 for k, _, _ in items if k == "issue") == n:
+            break
+        items.append(("issue", dd, p))
+        prev = dd
+    while items and items[-1][0] == "gap":
+        items.pop()
+    gut, gap_w = 12, 62
+    n_issue = sum(1 for k, _, _ in items if k == "issue")
+    n_gap = len(items) - n_issue
+    cw = (w - gut * (len(items) - 1) - gap_w * n_gap) / float(n_issue)
+    scale = .05   # bar full height = 5%; fixed so the bars are comparable card to card
+    g, x = [], x0
+    for kind, dd, p in items:
+        if kind == "gap":
+            g.append('<rect class="gap" x="%.1f" y="%d" width="%d" height="%d"/>'
+                     % (x, y0 + 62, gap_w, h - 62))
+            g.append('<text class="gapt" x="%.1f" y="%d" text-anchor="middle">NO</text>'
+                     '<text class="gapt" x="%.1f" y="%d" text-anchor="middle">ISSUE</text>'
+                     % (x + gap_w / 2, y0 + 22, x + gap_w / 2, y0 + 46))
+            x += gap_w + gut
+            continue
+        g.append('<rect class="cell" x="%.1f" y="%d" width="%.1f" height="%d"/>' % (x, y0, cw, h))
+        g.append('<text class="cdate" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                 % (x + cw / 2, y0 + 32, dd.strftime("%-d %b").upper()))
+        bh = (h - 100) * min(p / scale, 1)
+        g.append('<rect class="cellbar" x="%.1f" y="%.1f" width="%.1f" height="%.1f"/>'
+                 % (x + 18, y0 + h - 52 - bh, cw - 36, bh))
+        g.append('<text class="cpct" x="%.1f" y="%d" text-anchor="middle">%.1f%%</text>'
+                 % (x + cw / 2, y0 + h - 12, p * 100))
+        x += cw + gut
+    return "\n".join(g)
+
+
+def render_outlook(d, html_path, png_path):
+    """Weather-style card: the near-term chance leads, the median follows."""
+    ch, ch_end = d["chapter"], d["chapter"] + 9
+    chance = window_chance(d["pmf"], d["asof"])
+    att = attribution(d)
+    big = abs(att["rest_days"]) if att and d["new_posts"] else 0
+    intensity = .45 if big < 7 else min(1.0, .45 + big / 40.0)
+
+    parts = [speed_lines(intensity)]
+    parts.append('<rect class="narr" x="150" y="100" width="520" height="52"/>'
+                 '<text class="narrt" x="170" y="136">HUNTER &#215; HUNTER &#183; %s 10 CHAPTERS</text>'
+                 % d["view"].upper())
+    parts.append('<text class="kicker" x="152" y="205">CHANCE CH. %d&#8211;%d STARTS</text>'
+                 '<text class="kicker" x="152" y="243">IN THE NEXT 4 WEEKS</text>' % (ch, ch_end))
+    parts.append('<text class="hero2" x="140" y="455">%.0f%%</text>' % (chance * 100))
+    if att:
+        parts.append('<text class="note" x="152" y="492">%s FROM %.0f%% ON %s</text>'
+                     % ("UP" if chance > att["base_chance"] + .005 else
+                        "DOWN" if chance < att["base_chance"] - .005 else "ABOUT THE SAME",
+                        att["base_chance"] * 100, att["since"].strftime("%-d %b").upper()))
+    parts.append(bubble(705, 330, 175, 88, (492, 395),
+                        '50-50 BY<br/><b>%s</b>' % fmt(d["median"]).upper()))
+
+    chart, tip = chart_panel(d["paths"], 905, 100, 545, 370)
+    parts.append(chart)
+    if d["drawn"] >= 1.0:
+        # Sits on the panel's top edge like a sound effect, its short tail
+        # dropping onto the end of the live line through empty space above 100%.
+        parts.append(burst(1352, 92, 132, 40, (tip[0] - 4, tip[1] - 10),
+                           '<b>ALL 10 DRAWN!</b>', spikes=18))
+
+    parts.append('<text class="note" x="152" y="545">NEXT 8 ISSUES &#8212; CHANCE THE RUN STARTS IN EACH</text>')
+    parts.append(outlook_strip(d["pmf"], 150, 562, 1300, 160))
+
+    if att:
+        if not d["new_posts"]:
+            news = "NO NEW POSTS"
+            rest = (" &#183; <b>%+d DAYS</b> FROM A MODEL UPDATE" % att["rest_days"]
+                    if att["rest_days"] else "")
+        else:
+            news = "<b>%+d DAYS</b> FROM NEW POSTS" % att["rest_days"]
+            rest = ""
+        cap = ('SINCE %s: %d ISSUE%s WENT BY WITHOUT HXH (<b>%+d DAYS</b> TO THE 50-50 DATE) &#183; %s%s'
+               % (att["since"].strftime("%-d %b").upper(), att["passed"],
+                  "" if att["passed"] == 1 else "S", att["time_days"], news, rest))
+        parts.append('<rect class="cap" x="150" y="756" width="1300" height="56"/>'
+                     '<foreignObject x="160" y="756" width="1280" height="56">'
+                     '<div xmlns="http://www.w3.org/1999/xhtml" class="btxt capt">'
+                     '<div>%s</div></div></foreignObject>' % cap)
+
+    parts.append('<rect class="tag" x="60" y="836" width="200" height="40"/>'
+                 '<text class="tagt" x="160" y="864" text-anchor="middle">@HxHforecast</text>')
+    parts.append('<rect class="tag" x="1290" y="836" width="250" height="40"/>'
+                 '<text class="tagt" x="1415" y="864" text-anchor="middle">UPDATED %s</text>'
+                 % fmt(d["updated"]).upper())
+    write_card(parts, html_path, png_path)
+
+
 def main():
     ap = argparse.ArgumentParser()
+    ap.add_argument("--layout", choices=["outlook", "median"], default="outlook",
+                    help="outlook: near-term chance leads (default); median: first draft")
     ap.add_argument("--chapter", type=int, default=421)
     ap.add_argument("--demo", type=int, default=None,
                     help="pretend the median moved N days (negative = earlier)")
     args = ap.parse_args()
     d = card_data(args.chapter, args.demo)
-    stem = "%s_ch%d_manga%s" % (d["updated"].strftime("%Y%m%d"), args.chapter,
-                                "" if args.demo is None else "_demo%+d" % args.demo)
+    stem = "%s_ch%d_manga%s%s" % (d["updated"].strftime("%Y%m%d"), args.chapter,
+                                  "_outlook" if args.layout == "outlook" else "",
+                                  "" if args.demo is None else "_demo%+d" % args.demo)
     html_path = os.path.join(OUT, stem + ".html")
     png_path = os.path.join(OUT, stem + ".png")
-    render(d, html_path, png_path)
+    (render_outlook if args.layout == "outlook" else render)(d, html_path, png_path)
     print("card -> %s" % os.path.relpath(png_path, D()))
 
 

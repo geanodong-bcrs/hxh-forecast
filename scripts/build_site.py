@@ -517,7 +517,14 @@ def posterior_series(chapter, direct_only=False):
         if not row:
             continue
         direct = ("publication of ch %d" % chapter) in (d.get("target") or "")
-        out.append({"t": t, "median": row["median"], "i80": row.get("i80"),
+        # Most likely single issue. Only defined when this chapter opens a
+        # batch whose start distribution the snapshot stores: the target batch
+        # (posterior_pmf) or the one after it (next_batch.pmf).
+        nb = d.get("next_batch") or {}
+        pmf = (d.get("posterior_pmf") if direct else
+               nb.get("pmf") if nb.get("first_chapter") == chapter else None)
+        mode = max(pmf, key=lambda x: x[1])[0] if pmf else None
+        out.append({"t": t, "median": row["median"], "i80": row.get("i80"), "mode": mode,
                     "p_by": (d.get("p_by_chapter") or {}).get(str(chapter)) or {},
                     "replay": d.get("provenance") == "replay",
                     "model": d.get("level2_design") or "legacy_v1",
@@ -1360,6 +1367,11 @@ def step_path(pts):
     return " ".join(d)
 
 
+# Draw the most-likely-issue line on the forecast-history chart. Off until the
+# test figure is approved: the hourly automation deploys whatever this builds.
+SHOW_MODE_LINE = False
+
+
 def fan_chart(rows, annotations=None, width=720, height=250):
     """Predicted publication date for one chapter, as the forecast has moved.
 
@@ -1376,7 +1388,9 @@ def fan_chart(rows, annotations=None, width=720, height=250):
     pad_l, pad_r, pad_t, pad_b, W, H, X, g = _frame(rows, width, height, pad)
 
     O = lambda ds: date.fromisoformat(ds).toordinal()
-    vals = [O(r["median"]) for r in rows]
+    show_mode = SHOW_MODE_LINE and sum(1 for r in rows if r.get("mode")) >= 2
+    vals = [O(r["median"]) for r in rows] + (
+        [O(r["mode"]) for r in rows if r.get("mode")] if show_mode else [])
     y0, y1 = min(vals), max(vals)
     pad_y = max((y1 - y0) * 0.07, 3)
     y0, y1 = y0 - pad_y, y1 + pad_y
@@ -1395,16 +1409,29 @@ def fan_chart(rows, annotations=None, width=720, height=250):
                     mon_year(date.fromordinal(int(o)))))
 
     body, labels = [], []
-    for key, cls, name in ((lambda r: r["median"], "cdfline", tr("median", "中央値")),):
-        pts = [(X(r["t"]), Y(O(key(r)))) for r in rows]
+    series = [(lambda r: r["median"], "cdfline", tr("median", "中央値"), rows)]
+    if show_mode:
+        # Drawn first so the median, the headline series, sits on top.
+        series.insert(0, (lambda r: r["mode"], "modeline", tr("most likely issue", "最も可能性の高い号"),
+                          [r for r in rows if r.get("mode")]))
+    for key, cls, name, rr in series:
+        pts = [(X(r["t"]), Y(O(key(r)))) for r in rr]
         body.append('<path class="%s" d="%s"/>' % (cls, step_path(pts)))
         # Sit the label clear of the line under it: above everything the line
         # does across the label's width (~150px at the right edge), or below
         # when there is no room above. Placed ON the last value it overlapped.
-        span = [y for x, y in pts if x >= pad_l + W - 150] + [pts[-1][1]]
+        # Only the last stretch counts: the mode line can jump a year near
+        # the right edge, and judging by a wider window sent its label to the
+        # top margin, onto the "live record" label.
+        span = [y for x, y in pts if x >= pad_l + W - (60 if show_mode else 150)] + [pts[-1][1]]
         top, bottom = min(span), max(span)
-        ybase = top - 6 if top - 17 >= pad_t else bottom + 15
-        labels.append([ybase - 4, "%s &middot; %s" % (name, fmt(key(rows[-1])))])
+        if show_mode and cls == "cdfline" and bottom + 15 <= pad_t + H:
+            # With two lines, the median label goes UNDER its line and the
+            # most-likely label (always the earlier, higher line) over it.
+            ybase = bottom + 15
+        else:
+            ybase = top - 6 if top - 17 >= pad_t else bottom + 15
+        labels.append([ybase - 4, "%s &middot; %s" % (name, fmt(key(rr[-1])))])
 
     # Posts that land on the same forecast share one dot; stacking identical
     # circles hid every tooltip but the top one.
@@ -1670,6 +1697,7 @@ details>summary{cursor:pointer;font-size:14px;font-weight:600;margin:20px 0 6px}
  font-weight:600;background:var(--band);color:var(--accent)}
 .pill.plain{background:var(--soft);color:var(--mut)}
 .chart{width:100%;height:auto;display:block;margin:10px 0 2px;overflow:visible}
+.modeline{fill:none;stroke:var(--mut);stroke-width:1.6;stroke-dasharray:4 3}
 .grid{stroke:var(--line);stroke-width:1}
 .grid.yr{stroke:var(--mut);opacity:.4}
 .ax{fill:var(--mut);font-size:11px}
