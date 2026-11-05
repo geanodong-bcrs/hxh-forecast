@@ -318,7 +318,14 @@ def main(asof=None, quiet=False, rid=None):
     cutoff = asof or min(today, chapter_data_date())
     past_seq = max((c["seq"] for c in cal if c["on_sale"] < cutoff), default=last_obs)
     floor_seq = max(end_seq + 1, last_obs + 1, past_seq + 1)
-    eligible = lambda s: s >= floor_seq and s not in excluded_seqs
+    # Preview rule (decided 2026-11-05).  Jump previews a return in the issue
+    # before it, so an issue whose predecessor is already on sale cannot carry
+    # the batch unless an announcement naming it was public by now.  In
+    # practice this zeroes the coming Monday when no preview has appeared.
+    # Filled in once first_ch is known, below; the lambda reads it lazily.
+    preview_out = set()
+    eligible = lambda s: (s >= floor_seq and s not in excluded_seqs
+                          and s not in preview_out)
     elapsed_gap = floor_seq - end_seq - 1
     record_hiatus = elapsed_gap > max(g for _, g in gaps)
     # V8 keeps the analog-fade likelihood fixed between public production
@@ -350,6 +357,26 @@ def main(asof=None, quiet=False, rid=None):
     analogs = sorted({r["batch"] for r in rows if "lag" in r})
 
     first_ch = last_ch + 1
+
+    ret_path = D("data", "annotations", "return_announcements.csv")
+    ret_rows = list(csv.DictReader(open(ret_path, encoding="utf-8"))) \
+        if os.path.exists(ret_path) else []
+    # A replay can apply the rule only to a batch whose announcement has been
+    # looked up: where the record is silent, "no announcement" means "not
+    # researched", and the rule would rule out the issue that really carried
+    # it.  Live, the absence of a recorded announcement is the real state.
+    researched = {int(r["chapter"]) for r in ret_rows}
+    if asof is None or first_ch in researched:
+        announced_dates = set(ann.values()) | {
+            date.fromisoformat(r["publication_date"]) for r in ret_rows
+            if r.get("announcement_date")
+            and date.fromisoformat(r["announcement_date"]) <= today}
+        for c in cal:
+            prev = by_seq.get(c["seq"] - 1)
+            if prev is None or prev["on_sale"] > today:
+                continue
+            if c["seq"] >= floor_seq and c["on_sale"] not in announced_dates:
+                preview_out.add(c["seq"])
     target_chapters = list(range(first_ch, first_ch + 10))
     preceding_chapters = list(range(first_ch - 10, first_ch))
     following_chapters = list(range(first_ch + 10, first_ch + 20))
@@ -955,6 +982,8 @@ def main(asof=None, quiet=False, rid=None):
         "implied_by_analog": {str(h): date.fromordinal(int(v)).isoformat()
                               for h, v in implied.items()},
         "truncation_floor": by_seq[first_eligible]["on_sale"].isoformat(),
+        "preview_rule_excluded": [by_seq[x]["on_sale"].isoformat()
+                                  for x in sorted(preview_out)],
         "known_absent_issues": [
             {"on_sale": r["on_sale_date"],
              "issue": "%s no.%s" % (r.get("wsj_issue_year", ""), r.get("wsj_issue_no", "")),

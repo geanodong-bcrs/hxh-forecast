@@ -2090,6 +2090,35 @@ def announcement_status(anns, asof, first):
     return upcoming, past, status
 
 
+# Phase-based headline (approved 2026-11-05). False restores the median-led
+# hero in every phase.
+PHASE_HEADLINE = True
+
+
+def batch_finished(post):
+    """True once every chapter of the target batch has a finished manuscript.
+
+    The headline changes with this phase (decided 2026-11-05). While Togashi is
+    still drawing, progress moves the median, so the median leads. Once the
+    batch is drawn, the wait is on the editors: the mass flattens into a weekly
+    chance, so the single most likely week leads, followed by the chance over
+    the next few weeks. A retake drops a chapter below 0.9 and reverts it.
+    """
+    if os.environ.get("HXH_FORCE_PHASE") in ("finished", "production"):
+        return os.environ["HXH_FORCE_PHASE"] == "finished"
+    if not PHASE_HEADLINE:
+        return False
+    rows = post.get("readiness_target_batch") or []
+    return len(rows) >= 10 and all((r.get("p_hat") or 0) >= 0.9 for r in rows)
+
+
+def window_chance(pmf, start_iso, weeks=4):
+    """P(the batch starts in an issue on sale within `weeks` weeks of start)."""
+    start = date.fromisoformat(start_iso[:10])
+    end = start + timedelta(days=7 * weeks)
+    return sum(p for d, p in pmf if start <= date.fromisoformat(d) < end)
+
+
 def H1():
     return tr('<h1>Hunter &times; Hunter &mdash; manga publication forecast</h1>',
              '<h1>HUNTER&times;HUNTER &mdash; 掲載予測</h1>')
@@ -2113,31 +2142,57 @@ def build_index(post, l2, pri, snap_path):
     # hero. Leads with probabilities, not a date: one day in 46px type claimed
     # a precision the 8-month 80% range does not have.
     tiles = []
-    tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>',
-                   '<div class=tile><div class=v>%s</div><div class=k>予測日(中央値)</div></div>')
-                 % fmt(post["median"]))
-    if spike:
-        # The mode: the one issue with the most mass. Its probability goes in
-        # the label - with a flat front it can be ~3%, and a date alone would
-        # read as a prediction.
-        tiles.append(tr('<div class=tile><div class=v>%s</div><div class=k>single most likely '
-                        'week (%s)</div></div>',
-                        '<div class=tile><div class=v>%s</div><div class=k>最も可能性の高い週'
-                        '(%s)</div></div>')
-                     % (fmt(spike[0]), pct(spike[1])))
+    median_tile = (tr('<div class=tile><div class=v>%s</div><div class=k>median date</div></div>',
+                      '<div class=tile><div class=v>%s</div><div class=k>予測日(中央値)</div></div>')
+                   % fmt(post["median"]))
+    # The mode: the one issue with the most mass. Its probability goes in the
+    # label - with a flat front it can be ~3%, and a date alone would read as
+    # a prediction.
+    mode_tile = (tr('<div class=tile><div class=v>%s</div><div class=k>single most likely '
+                    'week (%s)</div></div>',
+                    '<div class=tile><div class=v>%s</div><div class=k>最も可能性の高い週'
+                    '(%s)</div></div>')
+                 % (fmt(spike[0]), pct(spike[1]))) if spike else ""
+    finished = batch_finished(post)
+    if finished and spike:
+        w4 = window_chance(pmf, asof, 4)
+        window_tile = (tr('<div class=tile><div class=v>%s</div><div class=k>chance it starts '
+                          'in the next 4 weeks</div></div>',
+                          '<div class=tile><div class=v>%s</div><div class=k>今後4週間以内に'
+                          '掲載が始まる確率</div></div>') % pct(w4))
+        tiles += [mode_tile, window_tile]
+        # One date at the top. The other summary drops to a smaller line.
+        second = (tr('<div class=sub>Median date %s &middot; 80%% chance between %s and %s</div>',
+                     '<div class=sub>予測日(中央値)%s &middot; 80%%の確率で %s〜%s の間</div>')
+                  % (fmt(post["median"], True), fmt(i["80"][0], True), fmt(i["80"][1], True)))
+    else:
+        tiles += [median_tile]
+        second = (tr('<div class=sub>Single most likely week %s (%s) &middot; '
+                     '80%% chance between %s and %s</div>',
+                     '<div class=sub>最も可能性の高い週 %s(%s) &middot; '
+                     '80%%の確率で %s〜%s の間</div>')
+                  % (fmt(spike[0], True), pct(spike[1]),
+                     fmt(i["80"][0], True), fmt(i["80"][1], True))) if spike else \
+                 (tr('<div class=sub>80%% chance between %s and %s</div>',
+                     '<div class=sub>80%%の確率で %s〜%s の間</div>')
+                  % (fmt(i["80"][0], True), fmt(i["80"][1], True)))
     h += ['<div class=hero>',
           tr('<div class=ch>Next 10 chapters &middot; %s &mdash; first up, chapter %d</div>',
             '<div class=ch>次の10話 &middot; %s &mdash; まず第%d話</div>')
           % (rng(first), first),
           '<div class=tiles>%s</div>' % "".join(tiles),
-          tr('<div class=sub>80%% chance between %s and %s</div>',
-            '<div class=sub>80%%の確率で %s〜%s の間</div>')
-          % (fmt(i["80"][0], True), fmt(i["80"][1], True)),
+          second,
+          (tr('<div class=sub>All ten chapters are drawn &mdash; the wait is now on '
+              'the Jump editors, so the headline is the most likely week</div>',
+              '<div class=sub>10話分の原稿はすべて完成 &mdash; 残るは編集部の掲載判断のため、'
+              '最も可能性の高い週を先頭に表示</div>') if finished else ""),
           tr('<div class=sub>%s &middot; %d finished manuscript%s waiting</div>'
             % (ann_status, n_finished, "" if n_finished == 1 else "s"),
             '<div class=sub>%s &middot; 完成原稿%d話分が待機中</div>' % (ann_status, n_finished)),
           last_updated(post)]
-    if spike:
+    if spike and not finished:
+        # Dropped once the batch is finished: the 4-week tile already answers
+        # the near-term question, and a third date crowds the top.
         # Zero-mass issues are dropped from posterior_pmf, so pmf[0] is the
         # earliest issue the batch could still start on. While a zero-gap point
         # mass dominated, that was also the spike and the two labels agreed.
@@ -2152,7 +2207,8 @@ def build_index(post, l2, pri, snap_path):
             pill_iso, pill_p = spike
         if pill_iso != first_iso:
             note = tr('the single most likely issue', '最も可能性の高い号')
-        elif any(a["on_sale"] < first_iso for a in (post.get("known_absent_issues") or [])):
+        elif (any(a["on_sale"] < first_iso for a in (post.get("known_absent_issues") or []))
+              or any(d < first_iso for d in (post.get("preview_rule_excluded") or []))):
             # An issue between chapter N-1 and here has been ruled out, so this
             # is NOT the next issue - it is the next one still possible.
             note = tr('the earliest issue it could still appear in',
