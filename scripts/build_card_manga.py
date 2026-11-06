@@ -13,7 +13,10 @@ Style rules:
   - The data lines stay exact; the manga feel is in the frame and lettering only.
   - Speed lines scale with the news: light on a quiet update, full 集中線 when
     the median moves a lot.
-  - Generic manga vocabulary only: no Togashi art, logo or characters.
+  - Generic manga vocabulary only: no logo or characters. The one exception is
+    the `sketch` layout's progress panel, which uses Togashi's own X avatar
+    (the dog he draws for himself) to stand for him — requested 2026-11-05.
+    The Jump spines are drawn generic and cropped, never the real logo.
 """
 import argparse
 import glob
@@ -323,6 +326,25 @@ svg{display:block}
 .cap{fill:#fff;stroke:#000;stroke-width:4}
 .capt{font:25px 'Patrick Hand SC';fill:#000}
 .capt b{font-family:'Bebas Neue';font-weight:400;font-size:30px;letter-spacing:1px}
+.bar{fill:#fff;stroke:#000;stroke-width:3}
+.bar.top{fill:url(#tone)}
+.axis{stroke:#000;stroke-width:4}
+.axl.lg{font-size:26px}
+.btxt.sk{flex-direction:column}
+.btxt.sk>div{display:flex;flex-direction:column;align-items:center;line-height:1.05}
+.rk{font:44px 'Bebas Neue';letter-spacing:2px}
+.mp{font:26px 'Patrick Hand SC'}.mp.s{font-size:20px}
+.btxt.sk b.r1{font-size:56px}.btxt.sk b.r2{font-size:40px}.btxt.sk b.r3{font-size:30px}
+.iss{font:30px 'Bebas Neue';letter-spacing:1px}.iss.r2{font-size:24px}.iss.r3{font-size:20px}
+.ptl{font:40px 'Patrick Hand SC';fill:#000}
+.pct{font:56px 'Bebas Neue';fill:#000}
+.pbar{fill:none;stroke:#000;stroke-width:4}
+.avatar{filter:grayscale(1) brightness(1.35) contrast(2.4);mix-blend-mode:multiply}
+.spine{fill:#fff;stroke:#000;stroke-width:3}.spine.front{stroke-width:5}
+.spt{font:bold 30px 'Hiragino Sans','Hiragino Kaku Gothic ProN',sans-serif;fill:#000;letter-spacing:4px}
+.spbox{fill:#fff;stroke:#000;stroke-width:2.5}
+.spno{font:30px 'Bebas Neue';fill:#000}.spno.q{font-size:52px}.spbox.front{stroke-width:4}
+.nofill{fill:none}
 </style></head><body>
 <svg width="%d" height="%d" viewBox="0 0 %d %d" xmlns="http://www.w3.org/2000/svg">
 <defs><pattern id="tone" width="9" height="9" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
@@ -485,21 +507,174 @@ def render_outlook(d, html_path, png_path):
     write_card(parts, html_path, png_path)
 
 
+# ------------------------------------------------------------------ sketch layout
+
+AVATAR = D("data", "cards", "assets", "togashi_avatar.jpg")
+
+
+def issue_label(day):
+    """WSJ issue label ("2027 No.10") for an on-sale date, projected if needed.
+
+    Projected issues carry no label, so this copies the label of the issue the
+    projection was copied from: the same date a whole number of weeks nearest
+    to k years earlier (build_batch_prior.project_calendar), with the year +k.
+    """
+    from build_batch_prior import load_calendar
+    obs = {c["on_sale"]: (c["year"], c["label"]) for c in load_calendar()}
+    for k in range(0, 8):
+        src = day - timedelta(weeks=round(365.2425 * k / 7.0))
+        if src in obs and obs[src][1]:
+            y, lab = obs[src]
+            return "%d No.%s" % (y + k, lab.replace("号", "").replace("・", "-"))
+    return "No.?"
+
+
+def bar_chart(pmf, x0, y0, w, h):
+    """Weekly bars in ink. Returns (svg, {rank: (x_centre, y_top)})."""
+    pl, pr, pt, pb = 70, 30, 40, 56
+    ix, iy, iw, ih = x0 + pl, y0 + pt, w - pl - pr, h - pt - pb
+    # Show from the earliest possible issue to the 90th percentile: the long
+    # thin tail would only squash the bars that matter.
+    pts, cum, shown = sorted(pmf), 0.0, []
+    for d, pv in pts:
+        shown.append((d, pv))
+        cum += pv
+        if cum >= .90:
+            break
+    t0, t1 = shown[0][0], shown[-1][0] + timedelta(days=7)
+    span = (t1 - t0).days
+    X = lambda d: ix + iw * (d - t0).days / span
+    top = max(pv for _, pv in shown)
+    # Bars use the lower ~60% so the bubbles have the top band to themselves.
+    Y = lambda pv: iy + ih - ih * pv / (top * 1.65)
+    ranked = sorted(shown, key=lambda r: -r[1])[:3]
+    rank = {d: i + 1 for i, (d, _) in enumerate(ranked)}
+    g = ['<rect class="panel" x="%d" y="%d" width="%d" height="%d"/>' % (x0, y0, w, h)]
+    bw = iw * 7 / span
+    tips = {}
+    for d, pv in shown:
+        x = X(d)
+        cls = "bar top" if d in rank else "bar"
+        g.append('<rect class="%s" x="%.1f" y="%.1f" width="%.1f" height="%.1f"/>'
+                 % (cls, x + bw * .1, Y(pv), bw * .8, iy + ih - Y(pv)))
+        if d in rank:
+            tips[rank[d]] = (x + bw / 2, Y(pv))
+    g.append('<line class="axis" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+             % (ix, iy + ih, ix + iw, iy + ih))
+    g.append('<line class="axis" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+             % (ix, iy - 10, ix, iy + ih))
+    m = date(t0.year, t0.month, 1)
+    while m < t1:
+        if t0 <= m and X(m) < ix + iw - 60:
+            g.append('<text class="axl lg" x="%.1f" y="%.1f">%s</text>'
+                     % (X(m) + 4, iy + ih + 34, m.strftime("%b").upper()
+                        + (" ’%s" % m.strftime("%y") if m.month == 1 else "")))
+            g.append('<line class="tick" x1="%.1f" y1="%.1f" x2="%.1f" y2="%.1f"/>'
+                     % (X(m), iy + ih, X(m), iy + ih + 12))
+        m = date(m.year + (m.month == 12), m.month % 12 + 1, 1)
+    g.append('<text class="axl lg" transform="translate(%.1f,%.1f) rotate(-90)" '
+             'text-anchor="middle">PROBABILITY</text>' % (x0 + 40, iy + ih / 2))
+    return "\n".join(g), tips, ranked
+
+
+def spines_panel(x0, y0, w, h, asof):
+    """Weekly Jump spines on a shelf, tilted and cropped by the panel frame.
+
+    Only a fragment of the masthead shows, on purpose. The front spine is the
+    next issue, its number a big question mark; behind it, the issues already
+    out without Hunter x Hunter.
+    """
+    from build_batch_prior import load_calendar
+    past = [c["label"].replace("号", "").replace("・", "-")
+            for c in load_calendar() if c["on_sale"] <= asof][-6:][::-1]
+    cid = "spclip"
+    g = ['<clipPath id="%s"><rect x="%d" y="%d" width="%d" height="%d"/></clipPath>'
+         % (cid, x0, y0, w, h),
+         '<rect class="panel" x="%d" y="%d" width="%d" height="%d"/>' % (x0, y0, w, h),
+         '<g clip-path="url(#%s)"><g transform="translate(%d,%d) rotate(-11)">'
+         % (cid, x0 + 40, y0 + h - 26)]
+    sw, sl = 66, 1000
+    for i in range(6, -1, -1):          # back to front, so the front spine overlaps
+        y = -i * (sw + 4) - sw
+        front = i == 0
+        g.append('<rect class="spine%s" x="%d" y="%d" width="%d" height="%d"/>'
+                 % (" front" if front else "", -i * 14, y, sl, sw))
+        bx = -i * 14 + 14
+        g.append('<rect class="spbox%s" x="%d" y="%d" width="%d" height="%d"/>'
+                 % (" front" if front else "", bx, y + 7, 70 if front else 56, sw - 14))
+        g.append('<text class="spno%s" x="%d" y="%d" text-anchor="middle">%s</text>'
+                 % (" q" if front else "", bx + (35 if front else 28), y + sw - 14,
+                    "?" if front else (past[i - 1] if i - 1 < len(past) else "")))
+        g.append('<text class="spt" x="%d" y="%d">週刊少年ジ</text>'
+                 % (bx + (92 if front else 76), y + sw - 16))
+    g.append('</g></g>')
+    g.append('<rect class="panel nofill" x="%d" y="%d" width="%d" height="%d"/>' % (x0, y0, w, h))
+    return "\n".join(g)
+
+
+def progress_panel(d, x0, y0, w, h):
+    first = d["chapter"] - (d["chapter"] - 1) % 10
+    frac = max(0.0, min(1.0, d["drawn"]))
+    bx, by, bw, bh = x0 + 36, y0 + 108, w - 300, 46
+    g = ['<rect class="panel" x="%d" y="%d" width="%d" height="%d"/>' % (x0, y0, w, h),
+         '<text class="ptl" x="%d" y="%d">CH.%d&#8211;%d PROGRESS</text>'
+         % (x0 + 36, y0 + 70, first, first + 9),
+         '<text class="pct" x="%d" y="%d" text-anchor="end">%d%%</text>'
+         % (bx + bw, y0 + 76, round(frac * 100)),
+         '<clipPath id="pbclip"><rect x="%d" y="%d" width="%.1f" height="%d" rx="%d"/></clipPath>'
+         % (bx, by, bw * frac, bh, bh / 2),
+         '<rect x="%d" y="%d" width="%d" height="%d" rx="%d" fill="url(#hatch)" clip-path="url(#pbclip)"/>'
+         % (bx, by, bw, bh, bh / 2),
+         '<rect class="pbar" x="%d" y="%d" width="%d" height="%d" rx="%d"/>'
+         % (bx, by, bw, bh, bh / 2)]
+    if os.path.exists(AVATAR):
+        g.append('<image class="avatar" href="file://%s" x="%d" y="%d" width="%d" height="%d"/>'
+                 % (os.path.abspath(AVATAR), x0 + w - 236, y0 + 10, 200, 200))
+    return "\n".join(g)
+
+
+def render_sketch(d, html_path, png_path):
+    """The layout from private/story/image_working/paper_sketch_manga_style.pdf:
+    weekly probability bars, the top three weeks in bubbles, production progress
+    with Togashi's dog, and the next issue's spine with a question mark. No
+    probabilities, median or update stamp — by request."""
+    parts = []
+    chart, tips, ranked = bar_chart(d["pmf"], 60, 120, 1480, 500)
+    parts.append(chart)
+    parts.append(progress_panel(d, 60, 650, 820, 220))
+    parts.append(spines_panel(910, 650, 630, 220, d["asof"]))
+    # Bubbles break out of the top of the frame, No.1 biggest; 2 and 3 overlap
+    # it like the sketch, and only No.1 carries a tail.
+    spots = {1: (900, 150, 190, 124), 2: (1185, 196, 146, 100), 3: (1400, 236, 116, 84)}
+    for r in (3, 2, 1):
+        if r not in tips:
+            continue
+        cx, cy, rx, ry = spots[r]
+        day = ranked[r - 1][0]
+        html = ('<span class="rk">NO.%d</span><span class="mp%s">MOST PROBABLE</span>'
+                '<b class="r%d">%s</b><span class="iss r%d">ISSUE %s</span>'
+                % (r, " s" if r > 1 else "", r, fmt(day).upper(), r, issue_label(day)))
+        tip = (tips[r][0], tips[r][1] - 6) if r == 1 else (cx - rx * .9, cy + ry * .55)
+        parts.append(bubble(cx, cy, rx, ry, tip, html, cls="sk"))
+    write_card(parts, html_path, png_path)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--layout", choices=["outlook", "median"], default="outlook",
-                    help="outlook: near-term chance leads (default); median: first draft")
+    ap.add_argument("--layout", choices=["sketch", "outlook", "median"], default="sketch",
+                    help="sketch: the paper-sketch layout (default); outlook / median: earlier drafts")
     ap.add_argument("--chapter", type=int, default=421)
     ap.add_argument("--demo", type=int, default=None,
                     help="pretend the median moved N days (negative = earlier)")
     args = ap.parse_args()
     d = card_data(args.chapter, args.demo)
     stem = "%s_ch%d_manga%s%s" % (d["updated"].strftime("%Y%m%d"), args.chapter,
-                                  "_outlook" if args.layout == "outlook" else "",
+                                  "" if args.layout == "median" else "_" + args.layout,
                                   "" if args.demo is None else "_demo%+d" % args.demo)
     html_path = os.path.join(OUT, stem + ".html")
     png_path = os.path.join(OUT, stem + ".png")
-    (render_outlook if args.layout == "outlook" else render)(d, html_path, png_path)
+    {"sketch": render_sketch, "outlook": render_outlook,
+     "median": render}[args.layout](d, html_path, png_path)
     print("card -> %s" % os.path.relpath(png_path, D()))
 
 
