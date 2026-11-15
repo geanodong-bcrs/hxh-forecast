@@ -659,10 +659,99 @@ def render_sketch(d, html_path, png_path):
     write_card(parts, html_path, png_path)
 
 
+# ------------------------------------------------------------------ hand-drawn template
+
+TEMPLATE = D("data", "cards", "assets", "weekly_forecast_template_clean.png")
+TW, TH = 2260, 2328                    # template pixels (clean_card_template.py)
+T_OUT_W = 1600
+# Layout of the drawing, in template pixels.
+T_AXIS = {"x0": 180, "x1": 2117, "y_base": 1440, "y_top": 806}
+T_BAR = {"x0": 205, "x1": 2080, "y_max": 1035}   # bars stay under the burst
+T_MONTH_Y = 1505
+T_BURST = (1418, 672, -8)                        # centre x, y, text angle
+
+
+def render_template(d, html_path, png_path):
+    """Fill the scanned hand-drawn template: weekly bars, months, the most
+    probable week in the burst. The chapter number is the artist's own."""
+    pts, cum, shown = sorted(d["pmf"]), 0.0, []
+    for day, pv in pts:
+        shown.append((day, pv))
+        cum += pv
+        if cum >= .90:
+            break
+    t0, t1 = shown[0][0], shown[-1][0] + timedelta(days=7)
+    span = (t1 - t0).days
+    bx0, bx1 = T_BAR["x0"], T_BAR["x1"]
+    X = lambda day: bx0 + (bx1 - bx0) * (day - t0).days / span
+    top = max(pv for _, pv in shown)
+    yb = T_AXIS["y_base"]
+    Y = lambda pv: yb - (yb - T_BAR["y_max"]) * pv / top
+    best = max(shown, key=lambda r: r[1])[0]
+    bw = (bx1 - bx0) * 7 / span
+    g = []
+    for day, pv in shown:
+        g.append('<rect class="tbar%s" x="%.1f" y="%.1f" width="%.1f" height="%.1f"/>'
+                 % (" top" if day == best else "", X(day) + bw * .12, Y(pv),
+                    bw * .76, yb - Y(pv)))
+    a = T_AXIS
+    g.append('<path class="taxis" d="M%d,%d L%d,%d L%d,%d"/>'
+             % (a["x0"], a["y_top"], a["x0"], a["y_base"], a["x1"], a["y_base"]))
+    g.append('<path class="taxis" d="M%d,%d L%d,%d L%d,%d"/>'
+             % (a["x1"] - 30, a["y_base"] - 16, a["x1"], a["y_base"],
+                a["x1"] - 30, a["y_base"] + 16))
+    m = date(t0.year, t0.month, 1) + timedelta(days=32)
+    m = date(m.year, m.month, 1)
+    while m < t1:
+        # label sits mid-month, like the pencil draft
+        mid = X(m + timedelta(days=14))
+        if mid < bx1 - 40:
+            g.append('<text class="tmon" x="%.1f" y="%d" text-anchor="middle">%s</text>'
+                     % (mid, T_MONTH_Y, m.strftime("%b")))
+        m = date(m.year + (m.month == 12), m.month % 12 + 1, 1)
+    cx, cy, ang = T_BURST
+    g.append('<g transform="translate(%d,%d) rotate(%g)">'
+             '<text class="tbl" x="0" y="-95" text-anchor="middle">Most probable:</text>'
+             '<text class="tbd" x="0" y="45" text-anchor="middle">%s</text>'
+             '<text class="tbi" x="0" y="125" text-anchor="middle">ISSUE %s</text></g>'
+             % (cx, cy, ang, best.strftime("%b %-d, %Y").upper(), issue_label(best).upper()))
+    # The chapter plate keeps the artist's own pencil lettering (a perspective
+    # copy of the princes' door numbers); nothing is drawn over it.
+
+    th = round(T_OUT_W * TH / TW)
+    html = """<!doctype html><html><head><meta charset="utf-8">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand&display=block" rel="stylesheet">
+<style>html,body{margin:0;background:#fff}svg{display:block}
+.tbar{fill:#fff;stroke:#000;stroke-width:4.5}
+.tbar.top{fill:url(#ttone)}
+.taxis{fill:none;stroke:#000;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
+.tmon{font:52px 'Patrick Hand';fill:#000}
+.tbl{font:66px 'Patrick Hand';fill:#000}
+.tbd{font:150px 'Bebas Neue';fill:#000;letter-spacing:3px}
+.tbi{font:58px 'Bebas Neue';fill:#000;letter-spacing:2px}
+.tplate{font:118px 'Bebas Neue';fill:#000;letter-spacing:6px}
+</style></head><body>
+<svg width="%d" height="%d" viewBox="0 0 %d %d" xmlns="http://www.w3.org/2000/svg">
+<defs><pattern id="ttone" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<circle cx="7" cy="7" r="2.6" fill="#000"/></pattern></defs>
+<image href="file://%s" x="0" y="0" width="%d" height="%d"/>
+%s
+</svg></body></html>""" % (T_OUT_W, th, TW, TH, os.path.abspath(TEMPLATE), TW, TH, "\n".join(g))
+    os.makedirs(os.path.dirname(html_path), exist_ok=True)
+    with open(html_path, "w", encoding="utf-8") as fh:
+        fh.write(html)
+    subprocess.run([CHROME, "--headless=new", "--disable-gpu", "--hide-scrollbars",
+                    "--force-device-scale-factor=1", "--window-size=%d,%d" % (T_OUT_W, th),
+                    "--allow-file-access-from-files",
+                    "--virtual-time-budget=8000", "--screenshot=%s" % png_path,
+                    "file://" + os.path.abspath(html_path)],
+                   check=True, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+
+
 def main():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--layout", choices=["sketch", "outlook", "median"], default="sketch",
-                    help="sketch: the paper-sketch layout (default); outlook / median: earlier drafts")
+    ap.add_argument("--layout", choices=["template", "sketch", "outlook", "median"], default="template",
+                    help="template: the scanned hand-drawn card (default); sketch / outlook / median: earlier drafts")
     ap.add_argument("--chapter", type=int, default=421)
     ap.add_argument("--demo", type=int, default=None,
                     help="pretend the median moved N days (negative = earlier)")
@@ -673,7 +762,7 @@ def main():
                                   "" if args.demo is None else "_demo%+d" % args.demo)
     html_path = os.path.join(OUT, stem + ".html")
     png_path = os.path.join(OUT, stem + ".png")
-    {"sketch": render_sketch, "outlook": render_outlook,
+    {"template": render_template, "sketch": render_sketch, "outlook": render_outlook,
      "median": render}[args.layout](d, html_path, png_path)
     print("card -> %s" % os.path.relpath(png_path, D()))
 
