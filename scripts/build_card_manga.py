@@ -662,78 +662,123 @@ def render_sketch(d, html_path, png_path):
 # ------------------------------------------------------------------ hand-drawn template
 
 TEMPLATE = D("data", "cards", "assets", "weekly_forecast_template_clean.png")
-TW, TH = 2260, 2328                    # template pixels (clean_card_template.py)
+TW, TH = 2550, 2637                    # template pixels (clean_card_template.py, 3x scan)
 T_OUT_W = 1600
 # Layout of the drawing, in template pixels.
-T_AXIS = {"x0": 180, "x1": 2117, "y_base": 1440, "y_top": 806}
-T_BAR = {"x0": 205, "x1": 2080, "y_max": 1035}   # bars stay under the burst
-T_MONTH_Y = 1505
-T_BURST = (1418, 672, -8)                        # centre x, y, text angle
+T_AXIS = {"x0": 225, "x1": 2420, "y_base": 1590, "y_top": 560}
+T_BAR = {"x0": 250, "x1": 2370}
+T_MONTH_Y = 1672                       # building top pokes in below ~1715
+T_BURST = (1655, 760, -7)              # centre x, y, text angle
+T_BURST_BOX = (900, 470, 2300, 1100)   # where to look for the inked burst
+T_STAMP = (2470, 1755)                 # bottom-right corner of the chart panel
+T_CLEAR = 30                           # gap kept between bars and the burst
+
+
+def burst_floor():
+    """Lowest inked-burst pixel for every template column (None outside it)."""
+    import numpy as np
+    from PIL import Image
+    from scipy import ndimage as nd
+    x0, y0, x1, y1 = T_BURST_BOX
+    a = np.asarray(Image.open(TEMPLATE).convert("L"))[y0:y1, x0:x1] < 128
+    lab, n = nd.label(nd.binary_fill_holes(a))
+    m = lab == 1 + int(np.argmax(nd.sum(lab > 0, lab, range(1, n + 1))))
+    floor = {}
+    for i in range(m.shape[1]):
+        ys = np.nonzero(m[:, i])[0]
+        if len(ys):
+            floor[x0 + i] = y0 + int(ys.max())
+    return floor
 
 
 def render_template(d, html_path, png_path):
-    """Fill the scanned hand-drawn template: weekly bars, months, the most
-    probable week in the burst. The chapter number is the artist's own."""
-    pts, cum, shown = sorted(d["pmf"]), 0.0, []
-    for day, pv in pts:
-        shown.append((day, pv))
-        cum += pv
-        if cum >= .90:
-            break
-    t0, t1 = shown[0][0], shown[-1][0] + timedelta(days=7)
+    """Fill the scanned hand-drawn template with the full weekly distribution
+    and the most probable week in the burst. Bar heights are exactly
+    proportional to the model's probabilities, on a labelled % axis."""
+    pts = sorted(d["pmf"])
+    t0, t1 = pts[0][0], pts[-1][0] + timedelta(days=7)
     span = (t1 - t0).days
     bx0, bx1 = T_BAR["x0"], T_BAR["x1"]
     X = lambda day: bx0 + (bx1 - bx0) * (day - t0).days / span
-    top = max(pv for _, pv in shown)
-    yb = T_AXIS["y_base"]
-    Y = lambda pv: yb - (yb - T_BAR["y_max"]) * pv / top
-    best = max(shown, key=lambda r: r[1])[0]
     bw = (bx1 - bx0) * 7 / span
+    yb = T_AXIS["y_base"]
+    # One px-per-probability scale for every bar: as tall as the panel allows
+    # while every bar stays clear of the burst.
+    floor = burst_floor()
+    k = (yb - T_AXIS["y_top"] - 40) / max(pv for _, pv in pts)
+    for day, pv in pts:
+        lo = [floor[x] for x in range(int(X(day)), int(X(day) + bw) + 1) if x in floor]
+        if lo and pv > 0:
+            k = min(k, (yb - max(lo) - T_CLEAR) / pv)
+    Y = lambda pv: yb - k * pv
+    best = max(pts, key=lambda r: r[1])[0]
     g = []
-    for day, pv in shown:
+    for day, pv in pts:
+        h = yb - Y(pv)
+        if h < .5:
+            continue
         g.append('<rect class="tbar%s" x="%.1f" y="%.1f" width="%.1f" height="%.1f"/>'
-                 % (" top" if day == best else "", X(day) + bw * .12, Y(pv),
-                    bw * .76, yb - Y(pv)))
+                 % (" top" if day == best else "", X(day) + bw * .1, Y(pv), bw * .8, h))
     a = T_AXIS
     g.append('<path class="taxis" d="M%d,%d L%d,%d L%d,%d"/>'
              % (a["x0"], a["y_top"], a["x0"], a["y_base"], a["x1"], a["y_base"]))
     g.append('<path class="taxis" d="M%d,%d L%d,%d L%d,%d"/>'
              % (a["x1"] - 30, a["y_base"] - 16, a["x1"], a["y_base"],
                 a["x1"] - 30, a["y_base"] + 16))
-    m = date(t0.year, t0.month, 1) + timedelta(days=32)
-    m = date(m.year, m.month, 1)
-    while m < t1:
-        # label sits mid-month, like the pencil draft
-        mid = X(m + timedelta(days=14))
-        if mid < bx1 - 40:
-            g.append('<text class="tmon" x="%.1f" y="%d" text-anchor="middle">%s</text>'
-                     % (mid, T_MONTH_Y, m.strftime("%b")))
+    # % ticks on the y axis, so the bar heights can be read off
+    step = .01
+    v = step
+    while Y(v) > a["y_top"] + 20:
+        g.append('<path class="ttick" d="M%d,%.1f L%d,%.1f"/>' % (a["x0"] - 16, Y(v), a["x0"], Y(v)))
+        g.append('<text class="tpct" x="%d" y="%.1f" text-anchor="end">%d%%</text>'
+                 % (a["x0"] - 26, Y(v) + 16, round(v * 100)))
+        v += step
+    g.append('<text class="tpct" x="%d" y="%d">chance per issue</text>' % (a["x0"] + 24, a["y_top"] - 10))
+    # month ticks; odd months labelled, January carries the year
+    m = date(t0.year, t0.month, 1)
+    while m <= t1:
+        x = X(m)
+        if x >= bx0:
+            g.append('<path class="ttick" d="M%.1f,%d L%.1f,%d"/>' % (x, yb, x, yb + 14))
+            if m.month % 2 == 1 and x + 40 < bx1:
+                lab = m.strftime("%b") + (" '%02d" % (m.year % 100) if m.month == 1 else "")
+                g.append('<text class="tmon" x="%.1f" y="%d" text-anchor="start">%s</text>'
+                         % (x + 6, T_MONTH_Y, lab))
         m = date(m.year + (m.month == 12), m.month % 12 + 1, 1)
     cx, cy, ang = T_BURST
+    yr, no = issue_label(best).split(" No.")
+    pbest = dict(pts)[best]
     g.append('<g transform="translate(%d,%d) rotate(%g)">'
-             '<text class="tbl" x="0" y="-95" text-anchor="middle">Most probable:</text>'
-             '<text class="tbd" x="0" y="45" text-anchor="middle">%s</text>'
-             '<text class="tbi" x="0" y="125" text-anchor="middle">ISSUE %s</text></g>'
-             % (cx, cy, ang, best.strftime("%b %-d, %Y").upper(), issue_label(best).upper()))
-    # The chapter plate keeps the artist's own pencil lettering (a perspective
-    # copy of the princes' door numbers); nothing is drawn over it.
+             '<text class="tbl" x="0" y="-165" text-anchor="middle">Most probable:</text>'
+             '<text class="tbd" x="0" y="-15" text-anchor="middle">%s</text>'
+             '<text class="tbi" x="0" y="55" text-anchor="middle">WEEKLY SHONEN JUMP ISSUE %s, %s</text>'
+             '<text class="tbc" x="0" y="118" text-anchor="middle">%s %d%% chance for that week</text></g>'
+             % (cx, cy, ang, best.strftime("%b %-d, %Y").upper(), no, yr,
+                "still only a" if pbest < .10 else "a", round(pbest * 100)))
+    # When the card was made and where to find more; images travel without their tweet.
+    g.append('<text class="tstamp" x="%d" y="%d" text-anchor="end">as of %s · More info: @HxHforecast</text>'
+             % (T_STAMP[0], T_STAMP[1], d["asof"].strftime("%-d %b %Y")))
+    # The chapter plate and the building windows are the artist's own ink.
 
     th = round(T_OUT_W * TH / TW)
     html = """<!doctype html><html><head><meta charset="utf-8">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Patrick+Hand&display=block" rel="stylesheet">
 <style>html,body{margin:0;background:#fff}svg{display:block}
-.tbar{fill:#fff;stroke:#000;stroke-width:4.5}
+.tbar{fill:#fff;stroke:#000;stroke-width:3.5}
 .tbar.top{fill:url(#ttone)}
 .taxis{fill:none;stroke:#000;stroke-width:5;stroke-linecap:round;stroke-linejoin:round}
-.tmon{font:52px 'Patrick Hand';fill:#000}
-.tbl{font:66px 'Patrick Hand';fill:#000}
-.tbd{font:150px 'Bebas Neue';fill:#000;letter-spacing:3px}
-.tbi{font:58px 'Bebas Neue';fill:#000;letter-spacing:2px}
-.tplate{font:118px 'Bebas Neue';fill:#000;letter-spacing:6px}
+.ttick{fill:none;stroke:#000;stroke-width:4;stroke-linecap:round}
+.tmon{font:50px 'Patrick Hand';fill:#000}
+.tpct{font:48px 'Patrick Hand';fill:#000}
+.tbl{font:72px 'Patrick Hand';fill:#000}
+.tbd{font:160px 'Bebas Neue';fill:#000;letter-spacing:3px}
+.tbi{font:54px 'Bebas Neue';fill:#000;letter-spacing:2px}
+.tbc{font:52px 'Patrick Hand';fill:#000}
+.tstamp{font:44px 'Patrick Hand';fill:#000}
 </style></head><body>
 <svg width="%d" height="%d" viewBox="0 0 %d %d" xmlns="http://www.w3.org/2000/svg">
-<defs><pattern id="ttone" width="14" height="14" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
-<circle cx="7" cy="7" r="2.6" fill="#000"/></pattern></defs>
+<defs><pattern id="ttone" width="12" height="12" patternUnits="userSpaceOnUse" patternTransform="rotate(45)">
+<circle cx="6" cy="6" r="2.3" fill="#000"/></pattern></defs>
 <image href="file://%s" x="0" y="0" width="%d" height="%d"/>
 %s
 </svg></body></html>""" % (T_OUT_W, th, TW, TH, os.path.abspath(TEMPLATE), TW, TH, "\n".join(g))
