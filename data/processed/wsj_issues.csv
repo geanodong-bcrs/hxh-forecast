@@ -1436,4 +1436,5 @@ seq,issue_year,issue_label,issue_no_first,issue_no_last,is_combined,cover_date,o
 1434,2026,48号,48,48,0,2026-11-09,2026-10-26,inferred_cover_minus_14d,7,,
 1435,2026,49号,49,49,0,2026-11-16,2026-11-02,inferred_cover_minus_14d,7,,
 1436,2026,50号,50,50,0,2026-11-23,2026-11-09,inferred_cover_minus_14d,7,,
-1437,2026,51号,51,51,0,2026-11-30,2026-11-16,inferred_cover_minus_14d,,,
+1437,2026,51号,51,51,0,2026-11-30,2026-11-16,inferred_cover_minus_14d,7,,
+1438,2026,52号,52,52,0,2026-12-07,2026-11-23,inferred_cover_minus_14d,,,
